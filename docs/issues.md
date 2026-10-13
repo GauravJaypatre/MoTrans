@@ -3,6 +3,81 @@
 Track failed sources, substitutions, and open questions here.
 Every issue gets an ID, date, status (open / resolved), and resolution.
 
+The full machine-generated list for the policy table is rebuilt on every run in
+`data/interim/pilot_policy_issues.txt`; the entries below summarise it.
+
 ---
 
-_No issues yet. Phase B will populate this as sources are verified._
+## Phase B1 (2026-10-13)
+
+### ISS-001 — First B1 collector fabricated data · resolved
+The Antigravity/Gemini version of `src/collect_policy.py` hard-coded ~140 RBI decisions,
+the ECB 2024-2026 meeting dates, all emergency meetings and BoJ "exact" times citing
+minutes it never downloaded. Its ECB parser also missed the variable-rate-tender period
+(MRO stored as minimum bid rate 2000-2008), dropping ~10 hikes. Rewritten to parse only
+saved official files (DECISION-010). Old interim outputs were regenerated.
+
+### ISS-002 — Coverage lost to substitutions · open (accepted)
+| Series | Starts | Lost | Why |
+|---|---|---|---|
+| DE banks `EXX1.DE` (ETF) | 2008-01-02 | 2000-2007 | EURO STOXX Banks index not free (stoxx.com gated) |
+| DE banks robustness `^CXPBX` | 2013-03-05 | 2000-2012 | only free country-specific bank index |
+| JP banks `1615.T` (ETF) | 2008-01-04 | 2000-2007 | TOPIX Banks index gated (JPX/J-Quants) |
+| JP small-cap `1563.T` (ETF) | 2011-11-25 | 2000-2011 | TSE Mothers index gated |
+| IN small-cap NIFTY Smallcap 100 | 2004-01-01 | 2000-2003 | index base date |
+
+Fix if the university provides Datastream/Bloomberg/FactSet (official indices from 2000).
+
+### ISS-003 — ETF price quality · open (flagged in data)
+- `1615.T`: 267 zero-volume days (`stale_flag`), 615 zero-return days of 4,606.
+- `1563.T`: trades away from its index at times, e.g. +18%/+15%/-15% on 11-13 Aug 2014
+  with consistent OHLC and heavy volume (real trades at a premium, not a data error).
+- Ex-dividend days carry `exdiv_flag` (price drop is a payout).
+
+### ISS-004 — Yahoo placeholder rows · resolved
+Zero-volume rows on exchange holidays dropped: EXX1.DE 3, ^N225 1, 1615.T 21, 1563.T 21.
+
+### ISS-005 — India special sessions · resolved (kept)
+NIFTY series include ~40 observations on non-session days (Saturday special sessions
+2003-2006, Diwali Muhurat trading). Official index values, so kept.
+
+### ISS-006 — Fed release times 2011-2015 unknown · open → Phase D
+Statement pages for 2011-2015 say "For immediate release" with no time. 45 Fed events
+have `time_quality = unknown` (8/yr 2011-2015 plus 7 unscheduled actions in 2001,
+2007, 2008). Scheduled meetings 2000-Apr 2011 use the assumed 14:15 ET (approximate).
+Resolve with the announcement timestamps in the Phase D US surprise dataset.
+
+### ISS-007 — RBI release times unknown · open → B2 decision needed
+RBI archive pages give no time. All 163 RBI events are `unknown`. Most announcements fall
+inside Indian trading hours; B2 must define how unknown-time events map to sessions.
+
+### ISS-008 — RBI intermeeting changes dated by effective date · open (needs a person)
+23 repo/bank-rate changes (mostly 2000-2010) are not on an archive policy date and are
+kept as `unscheduled_rate_change` with the BIS effective date. Announcement dates must be
+checked against RBI press releases. Pre-3 Apr 2001 rows use the bank rate (BIS note).
+
+### ISS-009 — RBI off-cycle flags incomplete · open
+MPC meeting schedules were found only for FY2020-21 to FY2024-25. Decisions in other
+MPC-era years default to `scheduled = True` (e.g. 27 Mar 2020 is off-cycle). Verify by hand.
+
+### ISS-010 — BoJ quantity-target periods · open → Phase D
+BIS has no BoJ policy rate 12 Feb 1999 - 11 Aug 2000, 19 Mar 2001 - 9 Mar 2006 and
+4 Apr 2013 - 21 Sep 2016. 137 BoJ meetings in those spans are `decision = unclassified`
+(includes QE, QQE and the 29 Jan 2016 negative-rate decision). Classify from statements.
+
+### ISS-011 — BoJ / ECB scheduled flag · open
+Neither the BoJ lists nor EA-MPD mark unscheduled meetings. Known emergency meetings
+currently marked scheduled: BoJ 18 Sep 2008, 29 Sep 2008, 14 Oct 2008, 30 Nov 2011,
+22 May 2020 (evening or short meetings per the minutes); ECB 17 Sep 2001, 8 Oct 2008.
+BoJ times are meeting end times from the minutes (`approximate`); 3 meetings lack minutes.
+
+### ISS-012 — ECB conventions · resolved
+Primary rate MRO until 17 Sep 2024, DFR from 18 Sep 2024 (BIS note). Decisions that moved
+only the DFR before then (e.g. 3 Dec 2015, -10 bp) are `hold` by MRO; all three rates are
+stored. Six EA-MPD meetings have no press conference (August meetings 2002-2007 and
+8 Oct 2008) - expected, not an error.
+
+### ISS-013 — FRED unreachable · resolved
+FRED CSV downloads timed out from this machine. Fed targets come from BIS WS_CBPOL US
+(mid-point + 0.125 for the range era), cross-checked against openmarket.htm (2003+): no
+disagreements.

@@ -17,18 +17,18 @@ the series confirmed in Phase B onward.
 
 | Country | Class | Candidate Index | Candidate Source | API / URL | Access Method | Coverage (est.) | Known Gaps | Licence / Terms | Verified? |
 |---|---|---|---|---|---|---|---|---|---|
-| US | broad | S&P 500 | yfinance | `yfinance: ^GSPC` | Python API | 2000–present | — | Yahoo Finance ToS | ☐ |
-| US | banks | S&P 500 Financials or KBW Bank | yfinance | `yfinance: XLF` or `^BKX` | Python API | ~2000–present | — | Yahoo Finance ToS | ☐ |
-| US | smallcap | Russell 2000 | yfinance | `yfinance: ^RUT` | Python API | 2000–present | — | Yahoo Finance ToS | ☐ |
+| US | broad | S&P 500 | yfinance | `^GSPC` | Python API | 2000-01-03– | none | Yahoo Finance ToS (no redistribution) | ✅ 2026-10-13 |
+| US | banks | KBW Nasdaq Bank Index | yfinance | `^BKX` (replaces XLF ETF) | Python API | 2000-01-03– | 26 zero-return days | Yahoo Finance ToS (no redistribution) | ✅ 2026-10-13 |
+| US | smallcap | Russell 2000 | yfinance | `^RUT` | Python API | 2000-01-03– | none | Yahoo Finance ToS (no redistribution) | ✅ 2026-10-13 |
 | China | broad | CSI 300 | yfinance | `yfinance: 000300.SS` | Python API | ~2005–present | pre-2005 | Yahoo Finance ToS | ☐ |
 | China | banks | CSI 300 Financials / SSE Financials | yfinance / Stooq | TBD | Python API / CSV | ~2005–present | pre-2005 | TBD | ☐ |
 | China | smallcap | CSI 500 or ChiNext | yfinance | `yfinance: 000905.SS` or `399006.SZ` | Python API | ~2007–present | pre-2007 | Yahoo Finance ToS | ☐ |
-| Japan | broad | TOPIX or Nikkei 225 | yfinance | `yfinance: ^N225` or `^TPX` | Python API | 2000–present | — | Yahoo Finance ToS | ☐ |
-| Japan | banks | TOPIX Banks | yfinance / Stooq | TBD | Python API / CSV | 2000–present | TBD | TBD | ☐ |
-| Japan | smallcap | TSE Growth / Mothers | yfinance / Stooq | TBD | Python API / CSV | ~2003–present | TBD | TBD | ☐ |
-| Germany | broad | DAX | yfinance | `yfinance: ^GDAXI` | Python API | 2000–present | — | Yahoo Finance ToS | ☐ |
-| Germany | banks | Euro-area bank index (NOT country-specific — see note) | yfinance / Stooq | TBD | TBD | TBD | TBD | TBD | ☐ |
-| Germany | smallcap | SDAX or MDAX | yfinance | `yfinance: ^SDAXI` or `^MDAXI` | Python API | 2000–present | TBD | Yahoo Finance ToS | ☐ |
+| Japan | broad | Nikkei 225 | yfinance | `^N225` | Python API | 2000-01-04– | none | Yahoo Finance ToS (no redistribution) | ✅ 2026-10-13 |
+| Japan | banks | NEXT FUNDS TOPIX Banks ETF | yfinance | `1615.T` | Python API | 2008-01-04– | ETF; 267 zero-volume days; 2000-2007 missing | Yahoo Finance ToS (no redistribution) | ✅ 2026-10-13 |
+| Japan | smallcap | TSE Mothers ETF | yfinance | `1563.T` | Python API | 2011-11-25– | ETF; trades away from index (e.g. Aug 2014); 2000-2011 missing | Yahoo Finance ToS (no redistribution) | ✅ 2026-10-13 |
+| Germany | broad | DAX | yfinance | `^GDAXI` | Python API | 2000-01-03– | none | Yahoo Finance ToS (no redistribution) | ✅ 2026-10-13 |
+| Germany | banks | iShares EURO STOXX Banks 30-15 ETF (euro-area, not DE-specific); robustness: DAXsector Banks `^CXPBX` (2013+) | yfinance | `EXX1.DE` | Python API | 2008-01-02– | ETF; 2000-2007 missing; ex-div & stale flags | Yahoo Finance ToS (no redistribution) | ✅ 2026-10-13 |
+| Germany | smallcap | MDAX (mid-cap) | yfinance | `^MDAXI` | Python API | 2000-01-03– | mid- not small-cap | Yahoo Finance ToS (no redistribution) | ✅ 2026-10-13 |
 | France | broad | CAC 40 | yfinance | `yfinance: ^FCHI` | Python API | 2000–present | — | Yahoo Finance ToS | ☐ |
 | France | banks | French financials/banks | yfinance / Stooq | TBD | TBD | TBD | TBD | TBD | ☐ |
 | France | smallcap | CAC Mid & Small | yfinance / Stooq | TBD | TBD | TBD | TBD | TBD | ☐ |
@@ -41,9 +41,9 @@ the series confirmed in Phase B onward.
 | UK | broad | FTSE 100 | yfinance | `yfinance: ^FTSE` | Python API | 2000–present | — | Yahoo Finance ToS | ☐ |
 | UK | banks | FTSE 350 Banks | yfinance / Stooq | TBD | TBD | TBD | TBD | TBD | ☐ |
 | UK | smallcap | FTSE 250 or FTSE SmallCap | yfinance | `yfinance: ^FTMC` | Python API | 2000–present | TBD | Yahoo Finance ToS | ☐ |
-| India | broad | Nifty 50 | yfinance | `yfinance: ^NSEI` | Python API | ~2000–present | — | Yahoo Finance ToS | ☐ |
-| India | banks | Nifty Bank | yfinance | `yfinance: ^NSEBANK` | Python API | ~2000–present | TBD | Yahoo Finance ToS | ☐ |
-| India | smallcap | Nifty Smallcap 100 | yfinance / Stooq | TBD | TBD | ~2005–present | TBD | TBD | ☐ |
+| India | broad | NIFTY 50 | niftyindices.com (official) | POST getHistoricaldatatabletoString | HTTP API | 2000-01-03– | special Saturday/Muhurat sessions kept | NSE Indices website terms (no redistribution) | ✅ 2026-10-13 |
+| India | banks | NIFTY BANK | niftyindices.com (official) | POST getHistoricaldatatabletoString | HTTP API | 2000-01-01– | early years back-calculated by index provider (base date) | NSE Indices website terms (no redistribution) | ✅ 2026-10-13 |
+| India | smallcap | NIFTY Smallcap 100 | niftyindices.com (official) | POST getHistoricaldatatabletoString | HTTP API | 2004-01-01– | 2000-2003 missing (base date 2004) | NSE Indices website terms (no redistribution) | ✅ 2026-10-13 |
 | Russia | broad | MOEX Russia | yfinance | `yfinance: IMOEX.ME` | Python API | ~2003–present | post-Feb 2022 halts | Yahoo Finance ToS | ☐ |
 | Russia | banks | MOEX Financials | yfinance / Stooq | TBD | TBD | TBD | post-Feb 2022 halts | TBD | ☐ |
 | Russia | smallcap | MOEX SMID | yfinance / Stooq | TBD | TBD | TBD | post-Feb 2022 halts | TBD | ☐ |
@@ -63,10 +63,9 @@ the series confirmed in Phase B onward.
 | South Korea | banks | KRX Banks | yfinance / Stooq | TBD | TBD | TBD | TBD | TBD | ☐ |
 | South Korea | smallcap | KOSDAQ | yfinance | `yfinance: ^KQ11` | Python API | 2000–present | — | Yahoo Finance ToS | ☐ |
 
-> **Note on Germany banks:** The euro-area bank index is shared across DE, FR,
-> IT, ES (one shock source = ECB). This is documented as a deliberate design
-> choice — there is no freely available country-specific German bank index
-> with sufficient history. Verify in Phase B.
+> **Note on Germany banks (Phase B1):** the only country-specific free series,
+> DAXsector Banks, starts 2013-03-05. The euro-area bank ETF (2008+) is primary so
+> the training period includes the 2008 and 2011 ECB hikes; see DECISION-009.
 
 ---
 
@@ -74,10 +73,10 @@ the series confirmed in Phase B onward.
 
 | Regime | Central Bank | Candidate Source | API / URL | Access Method | Coverage (est.) | Known Gaps | Licence | Verified? |
 |---|---|---|---|---|---|---|---|---|
-| Fed | Federal Reserve | FRED (DFEDTARU) + FOMC calendar | `FRED API` | fredapi | 2000–present | — | Public domain | ☐ |
-| ECB | European Central Bank | ECB Data Portal | `ECB SDW` | REST API / CSV | 2000–present | — | ECB reuse policy | ☐ |
+| Fed | Federal Reserve | FOMC historical pages + calendars (statement links); BIS WS_CBPOL US (rate); openmarket.htm (cross-check) | `federalreserve.gov/monetarypolicy/fomchistorical{YYYY}.htm`, `fomccalendars.htm`, `stats.bis.org/api/v1/data/WS_CBPOL/D.US` | HTML + CSV API | 2000–2026 | times unknown 2011-2015 (ISS-006) | Public domain / BIS terms | ✅ 2026-10-13 |
+| ECB | European Central Bank | EA-MPD (meeting dates to Oct 2023) + ECB monetary-policy-statement lists; ECB Data Portal MRR_FR, MRR_MBR, DFR, MLFR | `ecb.europa.eu/pub/pdf/annex/Dataset_EA-MPD.xlsx`, `data-api.ecb.europa.eu` | XLSX + HTML + CSV API | 2000–2026 | scheduled flag not in source (ISS-011) | ECB reuse policy | ✅ 2026-10-13 |
 | PBoC | People's Bank of China | PBoC website / FRED | TBD | Web / API | ~2000–present | Pre-2005 limited | TBD | ☐ |
-| BoJ | Bank of Japan | BoJ website | `boj.or.jp` | Web scrape / CSV | 2000–present | — | BoJ terms | ☐ |
+| BoJ | Bank of Japan | BoJ statement lists + MPM minutes (dates, meeting end times); BIS WS_CBPOL JP (rate) | `boj.or.jp/en/mopo/mpmdeci/state_{YYYY}`, `.../mpmsche_minu/minu_{YYYY}` | HTML + PDF + CSV API | 2000–2026 | no rate in QE periods (ISS-010) | BoJ terms (credit source) / BIS terms | ✅ 2026-10-13 |
 | BoE | Bank of England | BoE website / FRED | `bankofengland.co.uk` | CSV download | 2000–present | — | OGL v3.0 | ☐ |
 | CBR | Bank of Russia | CBR website | `cbr.ru` | Web / CSV | ~2003–present | Post-2022 disruptions | CBR terms | ☐ |
 | BoC | Bank of Canada | BoC website | `bankofcanada.ca` | CSV download | 2000–present | — | BoC terms | ☐ |
@@ -85,7 +84,7 @@ the series confirmed in Phase B onward.
 | Banxico | Banco de México | Banxico website | `banxico.org.mx` | API / CSV | 2000–present | — | Banxico terms | ☐ |
 | RBA | Reserve Bank of Australia | RBA website | `rba.gov.au` | CSV download | 2000–present | — | CC BY 4.0 | ☐ |
 | BoK | Bank of Korea | BoK ECOS | `ecos.bok.or.kr` | API / CSV | 2000–present | — | BoK terms | ☐ |
-| RBI | Reserve Bank of India | RBI website | `rbi.org.in` | Web / CSV | 2000–present | — | RBI terms | ☐ |
+| RBI | Reserve Bank of India | RBI monetary policy archive (one page per FY); BIS WS_CBPOL IN (rate) | `rbi.org.in/Scripts/Annualpolicy.aspx` (form post), `stats.bis.org/.../D.IN` | HTML + CSV API | 2000–2026 | no release times; intermeeting dates (ISS-007/008) | RBI terms / BIS terms | ✅ 2026-10-13 |
 
 ---
 

@@ -1,12 +1,16 @@
-"""MoTrans-15 data pipeline — end-to-end rebuild from raw to final."""
+"""MoTrans-15 data pipeline — end-to-end rebuild from raw to final.
+
+Each collector reuses files already in data/raw/ and only downloads what is missing.
+"""
+
+from src import audit_pilot, collect_indices, collect_policy
 
 
 def main() -> None:
-    """Run the full pipeline.  Phases B–E will add steps here."""
-    print("MoTrans-15 pipeline")
-    print("=" * 40)
-    print("No pipeline steps configured yet.")
-    print("This will be populated in Phase B onward.")
+    """Run the pipeline steps implemented so far (Phase B1 pilot)."""
+    collect_indices.main()
+    collect_policy.main()
+    audit_pilot.main()
 
 
 if __name__ == "__main__":

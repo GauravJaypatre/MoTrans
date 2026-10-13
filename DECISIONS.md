@@ -69,3 +69,50 @@ decisions require explicit approval.
   exchange_calendars 4.13.2, pandas_market_calendars 5.5.0. pandas 3.x is new;
   if a dependency breaks in Phase B, pinning `pandas<3` is the first fallback
   (log it here if used).
+
+---
+
+## 2026-10-13 — Phase B1 (pilot data: US, euro area/DE, India, Japan)
+
+### DECISION-009: Pilot equity series
+Chosen by the project lead from the options table (see docs/issues.md for coverage losses):
+
+| Market | Broad | Banks | Small-cap |
+|---|---|---|---|
+| US | S&P 500 `^GSPC` | KBW Bank `^BKX` (replaces XLF, an ETF) | Russell 2000 `^RUT` |
+| DE | DAX `^GDAXI` | iShares EURO STOXX Banks 30-15 ETF `EXX1.DE` (2008+); DAXsector Banks `^CXPBX` (2013+) kept as robustness | MDAX `^MDAXI` |
+| IN | NIFTY 50 (niftyindices.com) | NIFTY BANK (niftyindices.com) | NIFTY Smallcap 100 (niftyindices.com) |
+| JP | Nikkei 225 `^N225` | NEXT FUNDS TOPIX Banks ETF `1615.T` (2008+) | TSE Mothers ETF `1563.T` (2011+) |
+
+- India series moved from Yahoo (2007+) to the official NSE Indices source (2000+).
+- Prices are closes with `auto_adjust=False` (price, not total return).
+- ETF rows carry `exdiv_flag` (ex-dividend day) and `stale_flag` (zero traded volume).
+- Yahoo zero-volume rows on exchange holidays are dropped as placeholders (count logged).
+
+### DECISION-010: Policy decisions are rebuilt only from saved official documents
+The first B1 collector (Antigravity/Gemini) hard-coded ~140 RBI decisions, the ECB
+2024-2026 meeting dates, all emergency meetings and the BoJ "exact" times from memory.
+It was rewritten so every row is parsed from files in data/raw (see module docstring
+of src/collect_policy.py). Rate changes that do not match a listed meeting are kept as
+`unscheduled_rate_change` rows and logged, never re-dated by hand.
+
+### DECISION-011: Policy rate and size convention per regime
+- Fed: target rate; upper bound of the target range from 16 Dec 2008 (openmarket.htm).
+- ECB: MRO (fixed rate, or minimum bid rate during variable-rate tenders 28 Jun 2000 -
+  14 Oct 2008) until 17 Sep 2024; deposit facility rate from 18 Sep 2024. Source for the
+  switch: BIS WS_CBPOL euro-area compilation note ("From 18 Sep 2024 onwards: official
+  central bank steering rate is the deposit facility rate"). All three rates are stored.
+- RBI: repo rate from 3 Apr 2001, bank rate before (BIS WS_CBPOL IN).
+- BoJ: BIS WS_CBPOL JP policy rate. In the quantity-target periods the rate is flat, so
+  QE/YCC decisions are classified "hold" by rate; the shock series (Phase D) must
+  capture them.
+- `size_bp` = change in that rate attributed to the decision.
+
+### DECISION-012: Announcement-time rules
+- Fed: "For release at ..." from each statement page = exact. Older pages say "For
+  immediate release": scheduled meetings before 27 Apr 2011 get 14:15 ET (approximate,
+  to verify in Phase D); unscheduled ones are unknown.
+- ECB: 13:45 CET until June 2022, 14:15 CET from July 2022, from the EA-MPD notes.
+- RBI: no time on source pages, so unknown (open issue for B2).
+- BoJ: meeting end time from the MPM minutes = approximate release time; unknown where
+  minutes are not yet published.

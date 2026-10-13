@@ -67,7 +67,7 @@ def save_raw_file(
     dest.write_bytes(content)
 
     row = {
-        "file_path": str(Path("data/raw") / filename),
+        "file_path": (Path("data/raw") / filename).as_posix(),
         "source": source,
         "url_or_api": url_or_api,
         "series_id": series_id,

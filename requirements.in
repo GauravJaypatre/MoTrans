@@ -11,6 +11,8 @@ pyarrow>=17.0
 yfinance>=0.2
 fredapi>=0.5
 requests>=2.31
+beautifulsoup4>=4.12
+pypdf>=5.0
 
 # Exchange calendars (timing rule)
 exchange_calendars>=4.5

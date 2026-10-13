@@ -100,6 +100,44 @@ One row per **central-bank statement**. Built in Phase E.
 
 ---
 
+## Interim (Phase B1): `data/interim/pilot_policy_decisions.csv`
+
+One row per policy event for the pilot regimes (Fed, ECB, RBI, BoJ), 2000 to latest.
+Built by `src/collect_policy.py` from files in `data/raw/` only.
+
+| Column | Type | Definition |
+|---|---|---|
+| `regime` | `str` | `Fed`, `ECB`, `RBI`, `BoJ` |
+| `decision_date` | `date` | Announcement date (local) |
+| `event_type` | `str` | `scheduled_meeting`, `unscheduled_meeting`, or `unscheduled_rate_change` (a rate change with no listed meeting; dated by its effective date) |
+| `scheduled` | `bool` | False for unscheduled meetings and unscheduled rate changes |
+| `decision` | `str` | `hike` / `cut` / `hold`, from the sign of `size_bp` |
+| `size_bp` | `int` | Change in the regime's policy rate attributed to the event (DECISION-011) |
+| `new_rate_pct` | `float` | Policy rate after the event (percent) |
+| `rate_basis` | `str` | Which rate `size_bp` and `new_rate_pct` refer to |
+| `rate_mro`, `rate_dfr`, `rate_mlf` | `float` | ECB key rates after the decision (ECB rows only) |
+| `announce_time_local` | `str` | `HH:MM` local time; empty when unknown |
+| `timezone` | `str` | IANA time zone of `announce_time_local` |
+| `announce_ts_utc` | `str` | ISO 8601 UTC timestamp; empty when unknown |
+| `time_quality` | `str` | `exact` (time stated by the source), `approximate` (schedule or meeting end, see `time_source`), `unknown` |
+| `time_source` | `str` | Where the time comes from |
+| `date_source` | `str` | Where the event date comes from |
+| `source_url` | `str` | Official document for the event |
+
+## Interim (Phase B1): `data/interim/pilot_indices_daily.parquet`
+
+Same columns as `panel_daily` (`date` … `ret_local`) plus:
+
+| Column | Type | Definition |
+|---|---|---|
+| `ticker` | `str` | Yahoo ticker or NSE index name |
+| `source` | `str` | `yfinance` or `niftyindices.com` |
+| `exdiv_flag` | `int8` | 1 on an ETF ex-dividend day (price drop is a payout, not a market move) |
+| `stale_flag` | `int8` | 1 on an ETF day with zero traded volume (close is not a fresh price) |
+| `outlier_flag` | `int8` | 1 if \|ret_local\| > 0.10, for manual review (never deleted) |
+
+---
+
 ## `data/raw/MANIFEST.csv`
 
 Provenance manifest for every raw file download. Tracked in git.
