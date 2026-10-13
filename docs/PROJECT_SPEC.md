@@ -87,6 +87,11 @@ trading day, but reaches US markets the same day. If the announcement comes afte
 close, use that market's next session. Use exchange calendars (e.g. exchange_calendars or
 pandas_market_calendars) and verify the holidays.
 
+**Unknown or approximate times (added Phase B1, see DECISION-013):** use the
+`window_start_utc` / `window_end_utc` columns of the decision table. Baseline = last close
+at or before `window_start_utc`; reacting session = first session closing after it; set
+`timing_ambiguous` = 1 when `window_end_utc` would change the reacting session.
+
 **Sample split tags (labels only, no modelling):** train = up to 2019-12-31;
 crisis = 2020-01-01 to 2021-12-31; blind_test = 2022-01-01 onward.
 

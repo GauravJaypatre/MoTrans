@@ -41,15 +41,16 @@ Zero-volume rows on exchange holidays dropped: EXX1.DE 3, ^N225 1, 1615.T 21, 15
 NIFTY series include ~40 observations on non-session days (Saturday special sessions
 2003-2006, Diwali Muhurat trading). Official index values, so kept.
 
-### ISS-006 — Fed release times 2011-2015 unknown · open → Phase D
+### ISS-006 — Fed release times 2011-2015 unknown · mitigated (DECISION-013), times still wanted from Phase D
 Statement pages for 2011-2015 say "For immediate release" with no time. 45 Fed events
 have `time_quality = unknown` (8/yr 2011-2015 plus 7 unscheduled actions in 2001,
 2007, 2008). Scheduled meetings 2000-Apr 2011 use the assumed 14:15 ET (approximate).
 Resolve with the announcement timestamps in the Phase D US surprise dataset.
 
-### ISS-007 — RBI release times unknown · open → B2 decision needed
-RBI archive pages give no time. All 163 RBI events are `unknown`. Most announcements fall
-inside Indian trading hours; B2 must define how unknown-time events map to sessions.
+### ISS-007 — RBI release times unknown · resolved by DECISION-013
+RBI archive pages give no time. All 163 RBI events are `unknown` and get a whole-day
+announcement window (IST). B2 measures from the last close before the window and flags
+`timing_ambiguous` where the window straddles a session boundary.
 
 ### ISS-008 — RBI intermeeting changes dated by effective date · open (needs a person)
 23 repo/bank-rate changes (mostly 2000-2010) are not on an archive policy date and are
@@ -69,7 +70,8 @@ BIS has no BoJ policy rate 12 Feb 1999 - 11 Aug 2000, 19 Mar 2001 - 9 Mar 2006 a
 Neither the BoJ lists nor EA-MPD mark unscheduled meetings. Known emergency meetings
 currently marked scheduled: BoJ 18 Sep 2008, 29 Sep 2008, 14 Oct 2008, 30 Nov 2011,
 22 May 2020 (evening or short meetings per the minutes); ECB 17 Sep 2001, 8 Oct 2008.
-BoJ times are meeting end times from the minutes (`approximate`); 3 meetings lack minutes.
+BoJ times are meeting end times from the minutes (`approximate`, window = end + 60 min per
+DECISION-013); 3 meetings lack minutes (whole-day window).
 
 ### ISS-012 — ECB conventions · resolved
 Primary rate MRO until 17 Sep 2024, DFR from 18 Sep 2024 (BIS note). Decisions that moved

@@ -171,3 +171,29 @@ class TestPanel:
     def test_india_from_official_source_since_2000(self, panel):
         nifty = panel[panel.index_id == "in_nifty50"]
         assert nifty.source.iloc[0] == "niftyindices.com" and str(nifty.date.min()) < "2000-01-10"
+
+
+# --- announcement windows (DECISION-013) ----------------------------------------
+
+@needs_policy
+class TestAnnouncementWindow:
+    def test_every_row_has_a_window(self, policy):
+        assert policy.window_start_utc.notna().all() and policy.window_end_utc.notna().all()
+        assert (policy.window_start_utc <= policy.window_end_utc).all()
+
+    def test_known_time_inside_window(self, policy):
+        known = policy[policy.time_quality != "unknown"]
+        assert ((known.window_start_utc <= known.announce_ts_utc)
+                & (known.announce_ts_utc <= known.window_end_utc)).all()
+
+    def test_exact_is_a_point(self, policy):
+        e = event(policy, "Fed", "2022-03-16")
+        assert e.window_start_utc == e.window_end_utc == "2022-03-16T18:00:00Z"
+
+    def test_boj_meeting_end_plus_one_hour(self, policy):
+        e = event(policy, "BoJ", "2016-01-29")  # meeting ended 12:31 JST
+        assert (e.window_start_utc, e.window_end_utc) == ("2016-01-29T03:31:00Z", "2016-01-29T04:31:00Z")
+
+    def test_unknown_is_the_whole_local_day(self, policy):
+        e = event(policy, "RBI", "2022-05-04")  # IST = UTC+5:30
+        assert (e.window_start_utc, e.window_end_utc) == ("2022-05-03T18:30:00Z", "2022-05-04T18:29:00Z")

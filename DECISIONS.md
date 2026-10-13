@@ -116,3 +116,35 @@ of src/collect_policy.py). Rate changes that do not match a listed meeting are k
 - RBI: no time on source pages, so unknown (open issue for B2).
 - BoJ: meeting end time from the MPM minutes = approximate release time; unknown where
   minutes are not yet published.
+
+### DECISION-013: Matching events with unknown or approximate times to sessions (2026-10-13)
+Every event gets an announcement window `[window_start_utc, window_end_utc]`, the earliest
+and latest moment it could have been released, sized by what the sources tell us:
+
+| time_quality | Window | Basis |
+|---|---|---|
+| exact | the stated time (a point) | statement page / EA-MPD release schedule |
+| approximate, BoJ | meeting end → +60 min | minutes give the meeting end; the release follows it (60 min is a conservative assumption) |
+| approximate, Fed (pre-Apr 2011) | 14:15 ET ± 15 min | assumed standard schedule |
+| unknown (RBI, Fed 2011-15, some unscheduled) | the whole announcement date, 00:00-23:59 in the central bank's local time | no information, so no assumption |
+
+Phase B2 timing rule, for each event and each exchange:
+1. **Baseline** = close of the last session that closed **at or before `window_start`**.
+   Nothing after the baseline can contain the announcement, so there is no look-ahead.
+2. **Reacting session** = the first session whose close is **after `window_start`**.
+   This is the earliest session that could react, so no reaction is missed.
+3. `clr_h` = log(close of reacting session + h − 1) − log(baseline close); `clr_pre5`
+   ends at the baseline.
+4. **`timing_ambiguous` = 1** if using `window_end` instead would give a different
+   reacting session for that exchange (an open or close falls inside the window). For these
+   rows `clr_1` may include pre-announcement movement or miss the reaction, so headline
+   results use h ≥ 3 for them, and every analysis is repeated without them as robustness.
+
+Why: a wrong guess of the time either leaks future information (if too early) or misses
+the reaction (if too late). Widening the window and measuring from before its start
+never leaks information, and at worst adds noise on short horizons, which is flagged and
+testable. Exact times keep the precise rule, so nothing changes for the well-timed
+events. In practice, RBI announcements on Indian trading days stay same-day for India
+(baseline = previous day's close). The flag mainly hits Asian markets for Fed events of
+unknown time and markets whose open or close falls inside a BoJ hour.
+Revisit when Phase D adds exact Fed times (ISS-006).

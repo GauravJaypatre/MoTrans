@@ -61,8 +61,29 @@ FIELDS = [
     "regime", "decision_date", "event_type", "scheduled", "decision", "size_bp",
     "new_rate_pct", "rate_basis", "rate_mro", "rate_dfr", "rate_mlf",
     "announce_time_local", "timezone", "announce_ts_utc", "time_quality", "time_source",
-    "date_source", "source_url",
+    "window_start_utc", "window_end_utc", "date_source", "source_url",
 ]
+
+# Announcement window per time quality (DECISION-013). B2 measures returns from the last
+# close before window_start and reacts from the first session closing after window_start.
+APPROX_WINDOW = {  # (minutes before, minutes after) the recorded approximate time
+    "BoJ": (0, 60),    # minutes give the meeting END; the release follows it
+    "Fed": (-15, 15),  # assumed 14:15 ET schedule (pre-Apr 2011)
+}
+
+
+def announcement_window(r: dict) -> tuple[str, str]:
+    """[earliest, latest] possible UTC release time for an event row."""
+    fmt = "%Y-%m-%dT%H:%M:%SZ"
+    if r["time_quality"] in ("exact", "approximate") and r["announce_ts_utc"]:
+        t = dt.datetime.strptime(r["announce_ts_utc"], fmt).replace(tzinfo=dt.UTC)
+        before, after = APPROX_WINDOW.get(r["regime"], (0, 0)) if r["time_quality"] == "approximate" else (0, 0)
+        return ((t + dt.timedelta(minutes=before)).strftime(fmt), (t + dt.timedelta(minutes=after)).strftime(fmt))
+    # Unknown time: any moment of the announcement date in the central bank's local time.
+    day = dt.date.fromisoformat(r["decision_date"])
+    start = dt.datetime(day.year, day.month, day.day, tzinfo=TZ[r["regime"]])
+    end = start + dt.timedelta(days=1) - dt.timedelta(minutes=1)
+    return start.astimezone(dt.UTC).strftime(fmt), end.astimezone(dt.UTC).strftime(fmt)
 
 SESSION = requests.Session()
 SESSION.headers["User-Agent"] = "Mozilla/5.0 (MoTrans-15 research data collection)"
@@ -721,6 +742,8 @@ def main() -> list[str]:
         print(f"{name}: {len(part)} rows {counts}")
         rows.extend(part)
     rows.sort(key=lambda r: (r["regime"], r["decision_date"]))
+    for r in rows:
+        r["window_start_utc"], r["window_end_utc"] = announcement_window(r)
     with open(OUT_CSV, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=FIELDS)
         w.writeheader()

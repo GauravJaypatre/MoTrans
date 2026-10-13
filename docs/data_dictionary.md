@@ -41,7 +41,9 @@ One row per **(decision × reacting country × reacting index)**.
 | `country` | `str` | — | ISO 3166-1 alpha-2 code of the reacting market's country |
 | `index_id` | `str` | — | Identifier of the reacting index (matches `panel_daily.index_id`) |
 | `announce_ts_utc` | `datetime64[ns, UTC]` | UTC | Exact announcement timestamp in UTC |
-| `reacting_session_date` | `date` | — | First trading session of this exchange that can react to the announcement (timing rule applied) |
+| `reacting_session_date` | `date` | — | First session of this exchange closing after `window_start_utc` (DECISION-013) |
+| `baseline_date` | `date` | — | Last session closing at or before `window_start_utc`; returns are measured from its close |
+| `timing_ambiguous` | `int8` | flag | 1 if `window_end_utc` would give a different reacting session (use h ≥ 3; robustness without) |
 | `decision` | `str` | — | `hike`, `cut`, or `hold` |
 | `size_bp` | `int16` | basis points | Size of the rate change (0 for holds) |
 | `new_rate_pct` | `float64` | percent | New policy rate after the decision |
@@ -121,6 +123,7 @@ Built by `src/collect_policy.py` from files in `data/raw/` only.
 | `announce_ts_utc` | `str` | ISO 8601 UTC timestamp; empty when unknown |
 | `time_quality` | `str` | `exact` (time stated by the source), `approximate` (schedule or meeting end, see `time_source`), `unknown` |
 | `time_source` | `str` | Where the time comes from |
+| `window_start_utc`, `window_end_utc` | `str` | Earliest / latest possible release time (UTC), per DECISION-013; equal for exact times |
 | `date_source` | `str` | Where the event date comes from |
 | `source_url` | `str` | Official document for the event |
 
