@@ -1,0 +1,37 @@
+# ── Virtual environment ──────────────────────────────────────────
+.venv/
+
+# ── Python artefacts ─────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ── Jupyter ──────────────────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ── Data ─────────────────────────────────────────────────────────
+# Raw: ignore everything EXCEPT .gitkeep and the provenance manifest
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/MANIFEST.csv
+
+# Interim and final are fully regenerable
+data/interim/*
+!data/interim/.gitkeep
+data/final/*
+!data/final/.gitkeep
+
+# ── Outputs (regenerable) ───────────────────────────────────────
+outputs/*
+!outputs/.gitkeep
+
+# ── IDE ──────────────────────────────────────────────────────────
+.vscode/
+.idea/
+
+# ── OS ───────────────────────────────────────────────────────────
+Thumbs.db
+.DS_Store
