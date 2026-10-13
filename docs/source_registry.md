@@ -139,11 +139,11 @@ the series confirmed in Phase B onward.
 
 | Regime | Statement Type | Candidate Source | API / URL | Language | Coverage (est.) | Verified? |
 |---|---|---|---|---|---|---|
-| Fed | FOMC statements | Federal Reserve website | `federalreserve.gov` | English | 2000–present | ☐ |
-| ECB | Monetary policy decisions / press conferences | ECB website | `ecb.europa.eu` | English | 2000–present | ☐ |
+| Fed | FOMC statements | Federal Reserve website | `federalreserve.gov` | English | 227 statements | ✅ 2026-10-13 |
+| ECB | Monetary policy decisions / press conferences | ECB website | `ecb.europa.eu` | English | 270 statements (with Q&A) | ✅ 2026-10-13 |
 | BoE | — | BIS WS_CBPOL GB (rate changes only; no meeting list) | stats.bis.org | CSV API | 2000–2026 | holds missing unless meetings listed (ISS-019) | BIS terms | ✅ 2026-10-13 |
-| BoJ | Monetary policy statements | BoJ website | `boj.or.jp` | English | 2000–present | ☐ |
-| RBI | Policy statements | RBI website | `rbi.org.in` | English | ~2005–present | ☐ |
+| BoJ | Monetary policy statements | BoJ website | `boj.or.jp` | English | 333 statements | ✅ 2026-10-13 |
+| RBI | Policy statements | RBI website | `rbi.org.in` | English | 90 statements (ISS-027) | ✅ 2026-10-13 |
 | BoC | — | BIS WS_CBPOL CA (rate changes only) | stats.bis.org | CSV API | 2000–2026 | holds missing unless meetings listed (ISS-019) | BIS terms | ✅ 2026-10-13 |
 | RBA | — | BIS WS_CBPOL AU (rate changes only; rba.gov.au blocks automated access) | stats.bis.org | CSV API | 2000–2026 | holds missing unless meetings listed (ISS-019) | BIS terms | ✅ 2026-10-13 |
 | BoK | — | BIS WS_CBPOL KR (rate changes only) | stats.bis.org | CSV API | 2000–2026 | holds missing unless meetings listed (ISS-019) | BIS terms | ✅ 2026-10-13 |

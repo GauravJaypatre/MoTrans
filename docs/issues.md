@@ -158,3 +158,20 @@ raw bp shock as robustness. The same caution applies to any regime whose rate sa
 ### ISS-025 — High-frequency series end in 2023 · open
 FRBSF (to Dec 2023) and EA-MPD (to Oct 2023) do not cover the latest meetings; those use the
 grade-B proxy (Fed 26 events, ECB 13). Re-download both files when they are next updated.
+
+## Phase E (2026-10-13)
+
+### ISS-026 — Statement coverage limited to four regimes · open (accepted)
+920 statements: Fed 227/227, BoJ 333/333, ECB 270/299 (the 2000-2001 second-of-month
+meetings had no press conference), RBI 90 (see ISS-027). No statements for BoE, BoC, RBA,
+BoK, CBR, PBoC (no machine-readable meeting list, ISS-019) or BCB and Banxico (Portuguese /
+Spanish lists only). The language claim applies to this subset, as the plan allows.
+
+### ISS-027 — RBI statements for 90 of 140 policy dates · open (needs a person)
+The RBI archive links a usable document for 90 dates; most misses are early-2000s reviews
+whose links are PDFs of the full policy document or are missing. A person can add the
+remaining links by hand; the collector will pick up saved files.
+
+### ISS-028 — Statement lengths differ by design · note for modelling
+ECB texts include the Q&A (median ~6,300 words); BoJ statements are short (median ~300);
+Fed ~500; RBI ~3,000. Tone models should normalise by length or use the introductory part.

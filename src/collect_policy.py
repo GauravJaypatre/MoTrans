@@ -111,7 +111,14 @@ def fetch(url: str, filename: str, *, source: str, series_id: str, licence: str,
     path = RAW_DIR / filename
     if path.exists():
         return path.read_bytes()
-    resp = session.post(url, data=data, timeout=60) if data else session.get(url, timeout=60)
+    for attempt in range(4):  # official servers occasionally drop a connection; retry politely
+        try:
+            resp = session.post(url, data=data, timeout=60) if data else session.get(url, timeout=60)
+            break
+        except (requests.ConnectionError, requests.Timeout):
+            if attempt == 3:
+                raise
+            time.sleep(15 * (attempt + 1))
     time.sleep(0.4)  # be polite to official servers
     if resp.status_code == 404 and missing_ok:
         return None

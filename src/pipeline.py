@@ -11,6 +11,7 @@ from src import (
     collect_indices,
     collect_policy,
     collect_policy_more,
+    collect_statements,
     event_windows,
     hand_check,
 )
@@ -30,6 +31,8 @@ def main() -> None:
     event_windows.main_full()   # data/final/events.parquet + policy_decisions.csv
     # Phase D shocks
     build_shocks.main()         # data/final/shocks.parquet, shock columns in events, docs/shock_validation.md
+    # Phase E statement corpus
+    collect_statements.main()   # data/final/statements.parquet, coverage, hand-label sample
 
 
 if __name__ == "__main__":

@@ -94,13 +94,14 @@ One row per **(regime × decision date)**. Built in Phase D.
 
 ## `data/final/statements.parquet`
 
-One row per **central-bank statement**. Built in Phase E.
+One row per **central-bank statement** (920 rows). Built in Phase E (DECISION-019). Hand-label sample: `docs/hand_label_sample.csv` (same columns plus five empty label columns).
 
 | Column | Type | Unit | Definition |
 |---|---|---|---|
 | `event_id` | `str` | — | Matches `events.event_id` |
-| `regime` | `str` | — | Central bank code |
+| `regime` | `str` | — | Central bank code (Fed, ECB, BoJ, RBI) |
 | `decision_date` | `date` | — | Date of the associated policy decision |
+| `decision` | `str` | — | hike / cut / hold / unclassified, from the decision table |
 | `pub_ts_utc` | `datetime64[ns, UTC]` | UTC | Publication timestamp of the statement |
 | `source_url` | `str` | — | URL of the original statement |
 | `language` | `str` | — | Language of the statement (e.g. `en`, `ja`) |

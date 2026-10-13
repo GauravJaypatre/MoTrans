@@ -240,3 +240,23 @@ reacting sessions, and both closing prices - 160/160 checks "Yes". The timing ru
   statement pages do not state (226 of 227 Fed decisions exact; resolves ISS-006). The signed
   Phase B hand-check workbook keeps its sign-off-time values (one row, fed_2013-06-19, was
   "unknown" then and is 14:00 ET now; its session mapping for the US is unchanged).
+
+---
+
+## 2026-10-13 — Phase E (central-bank text corpus, collection only)
+
+### DECISION-019: Statement corpus scope and rules
+- English statements for the four regimes whose official decision lists link each decision to
+  its statement: Fed (FOMC statement), ECB (monetary policy statement with Q&A), BoJ (statement
+  on monetary policy; the BoJ's main `k<yymmdd>a` document is preferred over background papers
+  and "key points"), RBI (MPC resolution / policy statement / press release for that date).
+- Text is extracted from the saved official page or PDF; website furniture (government
+  banners, cookie notices, menus) is removed line by line. Texts under 40 words are dropped.
+- A raw file is reused only if it was downloaded from exactly the same URL (looked up in
+  MANIFEST.csv), so a statement's text always matches its `source_url`.
+- `docs/hand_label_sample.csv`: 181 statements, stratified by regime x decision (proportional,
+  at least 2 per non-empty cell, random seed 2026). The five label columns are left EMPTY for
+  the Text lead; no code fills them. No tone scoring is done here (that is a modelling step).
+- The tracked docs/hand_label_sample.csv holds IDs, links and the empty label columns only;
+  the labelling copy with full texts is data/final/hand_label_sample_with_text.csv (git-ignored),
+  because ECB/BoJ/RBI terms do not clearly allow republishing their texts in a public repo.

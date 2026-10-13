@@ -16,27 +16,36 @@ Brazil · Spain · Mexico · Australia · South Korea
 
 2000-01-01 (or earliest reliable date, ~2005 for some EMs) to latest available.
 
-## Quick Start
+## Getting started (new teammate)
+
+Needs Git and Python 3.12. On macOS/Linux use `.venv/bin/` instead of `.venv\Scripts\`.
 
 ```bash
-# Activate the virtual environment
-.venv\Scripts\activate        # Windows
-
-# Install pinned dependencies
-python tasks.py setup
-
-# Run the test suite
-python tasks.py test
-
-# Rebuild the full pipeline (raw → interim → final)
-python tasks.py data
-
-# Clean regenerable data (keeps raw)
-python tasks.py clean
-
-# Lint the codebase
-python tasks.py lint
+git clone https://github.com/prachi-3011/MoTrans-15.git
+cd MoTrans-15
+py -3.12 -m venv .venv
+.venv\Scripts\pip install -r requirements.txt
+.venv\Scripts\python tasks.py data    # downloads raw data and builds everything (about 1-2 hours)
+.venv\Scripts\python tasks.py test    # data tests are skipped until the data is built
 ```
+
+Raw data is not in git (licences). `tasks.py data` re-downloads it from the official
+sources; alternatively ask the Data lead for a private copy of `data/` and check it
+against `data/raw/MANIFEST.csv` (SHA-256 of every file). Other tasks: `setup`, `clean`, `lint`.
+
+## The dataset (data/final/)
+
+| File | One row is | Approx. size |
+|---|---|---|
+| `panel_daily.parquet` | one trading day × one equity index (38 series, 16 markets) | 222,646 × 24 |
+| `policy_decisions.csv` | one central-bank decision (12 regimes, 2000-2026) | 1,908 |
+| `events.parquet` | one decision × one reacting index, with event-window returns and shock | 62,461 |
+| `shocks.parquet` | one decision: graded policy surprise (A/B/C) | 1,908 |
+| `statements.parquet` | one English policy statement (Fed, ECB, BoJ, RBI) | see docs/statements_coverage.md |
+
+Read first: [data dictionary](docs/data_dictionary.md), [issues](docs/issues.md) (all known gaps),
+[decisions](DECISIONS.md), [data quality report](docs/data_quality_report.md),
+[shock validation](docs/shock_validation.md).
 
 ## Repository Layout
 
@@ -47,9 +56,13 @@ MoTrans-15/
 │   │   └── MANIFEST.csv   Provenance manifest — tracked in git
 │   ├── interim/            Cleaned intermediate files (regenerable)
 │   └── final/              Publication-ready outputs (regenerable)
-├── src/                    Python source modules
-│   ├── __init__.py         Package init + split_tag() helper
+├── src/                    Python source modules (one per pipeline step, see pipeline.py)
 │   ├── pipeline.py         End-to-end pipeline entry point
+│   ├── collect_*.py        Downloaders/parsers (indices, policy, controls, statements)
+│   ├── alignment.py        Timing rule: announcement -> trading sessions (DECISION-013)
+│   ├── event_windows.py    Event-window returns
+│   ├── build_panel.py      Final daily panel
+│   ├── build_shocks.py     Graded policy shocks
 │   └── download.py         Write-once download helper + manifest writer
 ├── tests/                  pytest test suite
 ├── notebooks/              Exploration notebooks
@@ -74,8 +87,8 @@ MoTrans-15/
    known at *t*.
 3. **Provenance** — every series carries source, URL/API, series ID, retrieval
    date, licence, and transformation history.
-4. **Phase gates** — work proceeds phase by phase (A → E) with human approval
-   between each.
+4. **Phase gates** — work proceeds phase by phase (A → E); the Phase B timing
+   hand-check was signed off by a person (docs/phase_b_hand_check.xlsx).
 
 ## Documentation
 
