@@ -76,12 +76,12 @@ def main() -> pd.DataFrame:
 
     (ROOT / "outputs").mkdir(exist_ok=True)
     sheet.to_csv(ROOT / "outputs" / "hand_check_10_events.csv", index=False)
-    write_markdown(sheet)
     xlsx = ROOT / "docs" / "phase_b_hand_check.xlsx"
-    if reviewed(xlsx):
-        print(f"{xlsx.name} already holds reviewer sign-off; not overwritten "
-              "(delete or rename it to regenerate a blank sheet).")
+    if reviewed(xlsx):  # the signed sheet and its markdown copy are frozen records of the gate
+        print(f"{xlsx.name} already holds reviewer sign-off; it and the .md copy are not overwritten "
+              "(delete or rename the workbook to regenerate blank sheets).")
     else:
+        write_markdown(sheet)
         write_xlsx(sheet, xlsx)
     print(f"Hand-check sheet: {sheet.event_id.nunique()} events, {len(sheet)} rows")
     return sheet

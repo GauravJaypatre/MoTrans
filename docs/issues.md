@@ -138,3 +138,23 @@ state-dependence claim on valuations needs a licensed source, or is dropped from
 ### ISS-022 — Industrial production ends early · open (low impact)
 OECD STES series end between Dec 2023 and Apr 2024 for most markets, Feb 2018 (MX), Jan 2023 (IN)
 and Dec 2021 (RU); none for China and Australia. Values are left empty after the end.
+
+## Phase D (2026-10-13)
+
+### ISS-006 update — resolved by FRBSF times
+226 of 227 Fed decisions now have an exact time (statement page or FRBSF data).
+
+### ISS-023 — Regimes without a usable shock · open
+Grade C (no shock) for every event of RBI, PBoC, RBA, BoK and Banxico (no free daily 1-year
+yield), Brazil after Sep 2019, and a few BoC/CBR dates with stale yields. Per the plan these are
+descriptive only in the causal analysis. A licensed yield source (or OIS / swap curves) would
+upgrade them to B.
+
+### ISS-024 — Scale of standardised BoJ shocks · open (modelling note)
+Japan's 1-year yield barely moved in 2000-2019, so the training-period SD is small and post-2022
+BoJ shocks are large in SD units (e.g. +8.0 on 31 Jul 2024). Models should winsorise or use the
+raw bp shock as robustness. The same caution applies to any regime whose rate sat at its floor.
+
+### ISS-025 — High-frequency series end in 2023 · open
+FRBSF (to Dec 2023) and EA-MPD (to Oct 2023) do not cover the latest meetings; those use the
+grade-B proxy (Fed 26 events, ECB 13). Re-download both files when they are next updated.

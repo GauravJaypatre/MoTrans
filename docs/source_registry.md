@@ -92,8 +92,8 @@ the series confirmed in Phase B onward.
 
 | Regime | Shock Type | Grade | Candidate Source | API / URL | Notes | Verified? |
 |---|---|---|---|---|---|---|
-| Fed | Public HF surprise series | A (if found) | TBD — must find a maintained, citable series | TBD | Extend to latest FOMC if possible | ☐ |
-| ECB | EA-MPD or equivalent | A (if found) | Euro Area Monetary Policy Event-Study Database | TBD | Verify public access | ☐ |
+| Fed | HF surprise (Bauer-Swanson MPS) | A | FRBSF | frbsf.org/wp-content/uploads/monetary-policy-surprises-data.xlsx | to Dec 2023; proxy after | ✅ 2026-10-13 |
+| ECB | EA-MPD OIS 1Y, monetary event window | A | ECB | ecb.europa.eu/pub/pdf/annex/Dataset_EA-MPD.xlsx | to Oct 2023; proxy after | ✅ 2026-10-13 |
 | PBoC | — | BIS WS_CBPOL CN (lending rate; LPR from Aug 2019; no meetings) | stats.bis.org | CSV API | 2000–2026 | holds missing unless meetings listed (ISS-019) | BIS terms | ✅ 2026-10-13 |
 | BoJ | 1Y gov yield change (proxy) | B | FRED (Japan 1Y yield) | TBD | — | ☐ |
 | BoE | — | BIS WS_CBPOL GB (rate changes only; no meeting list) | stats.bis.org | CSV API | 2000–2026 | holds missing unless meetings listed (ISS-019) | BIS terms | ✅ 2026-10-13 |

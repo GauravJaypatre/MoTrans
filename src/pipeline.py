@@ -6,6 +6,7 @@ Each collector reuses files already in data/raw/ and only downloads what is miss
 from src import (
     audit_pilot,
     build_panel,
+    build_shocks,
     collect_controls,
     collect_indices,
     collect_policy,
@@ -27,6 +28,8 @@ def main() -> None:
     collect_controls.main()     # FX, policy rate, CPI, industrial production, 1y yield, VIX
     build_panel.main()          # data/final/panel_daily.parquet + docs/data_quality_report.md
     event_windows.main_full()   # data/final/events.parquet + policy_decisions.csv
+    # Phase D shocks
+    build_shocks.main()         # data/final/shocks.parquet, shock columns in events, docs/shock_validation.md
 
 
 if __name__ == "__main__":

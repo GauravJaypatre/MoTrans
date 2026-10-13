@@ -82,9 +82,12 @@ One row per **(regime × decision date)**. Built in Phase D.
 | `decision` | `str` | — | `hike`, `cut`, or `hold` |
 | `size_bp` | `int16` | basis points | Rate change size |
 | `shock_raw` | `float64` | source units | Raw shock value (surprise in source units) |
-| `shock_std` | `float64` | SD | Standardized shock (within-source z-score) |
+| `shock_std` | `float64` | SD | raw / training-period (to 2019) SD of the same source; HF where available, else proxy (DECISION-018) |
 | `shock_source` | `str` | — | Source of the shock (e.g. "HF surprise series", "1Y yield change proxy") |
 | `shock_grade` | `str` | — | A / B / C with written justification in `docs/shock_validation.md` |
+| `event_type` | `str` | — | As in the decision table |
+| `shock_hf_raw`, `shock_hf_std` | `float64` | bp / SD | High-frequency surprise (Fed MPS, ECB OIS 1Y) and its standardised value |
+| `shock_proxy_raw`, `shock_proxy_std` | `float64` | bp / SD | 1-year yield change proxy and its standardised value |
 | `split_tag` | `str` | — | Sample split label |
 
 ---

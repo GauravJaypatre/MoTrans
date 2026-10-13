@@ -216,3 +216,27 @@ reacting sessions, and both closing prices - 160/160 checks "Yes". The timing ru
 - Holds are included only where an official meeting list was readable: BCB (Copom API) and
   Banxico (announcement list). BoE, BoC, RBA, BoK, CBR: rate changes only; PBoC has no meetings.
 - No source states release times for these regimes, so all use whole-day windows (DECISION-013).
+
+---
+
+## 2026-10-13 — Phase D (shock construction)
+
+### DECISION-018: Shock sources, grades and standardisation
+- Fed (grade A): FRBSF update of Bauer and Swanson (2023), `MPS` = first principal component of
+  30-minute futures-rate changes around FOMC announcements, to Dec 2023 (in bp).
+- ECB (grade A): EA-MPD (Altavilla et al. 2019), 1-year OIS change in the monetary event window
+  (press release + press conference), to Oct 2023 (in bp).
+- All regimes (grade B proxy): change in the home 1-year yield from the baseline close to the
+  reacting-session close, using the DECISION-013 session rule on the home market (euro area:
+  ECB euro-area curve on Xetra sessions). Left empty when the yield is more than 5 days stale.
+- Grade C: no high-frequency surprise and no usable yield -> `shock_std` empty (descriptive use).
+- `shock_std` = raw / SD of the same source over training-period events (to 2019), per regime.
+  Using the training SD keeps the 2022+ blind test out of the scaling. Not de-meaned, so zero
+  still means "no surprise". Both the HF and the proxy shock are stored for every event.
+- Validation (docs/shock_validation.md): HF vs proxy correlation 0.55 (Fed) and 0.61 (ECB);
+  2020 emergency cuts strongly negative, 2022 Fed and ECB hikes strongly positive; the 15 largest
+  shocks are all recognisable episodes (9/11, CBR Dec 2014, BoJ Jul 2024, Brazil 2002, ...).
+- The FRBSF file also gives FOMC announcement times; they now fill the Fed release times that
+  statement pages do not state (226 of 227 Fed decisions exact; resolves ISS-006). The signed
+  Phase B hand-check workbook keeps its sign-off-time values (one row, fed_2013-06-19, was
+  "unknown" then and is 14:00 ET now; its session mapping for the US is unchanged).

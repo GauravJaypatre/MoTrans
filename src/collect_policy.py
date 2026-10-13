@@ -333,6 +333,26 @@ def fed_target_upper(issues: list[str]) -> StepSeries:
     return upper
 
 
+FRBSF_URL = "https://www.frbsf.org/wp-content/uploads/monetary-policy-surprises-data.xlsx"
+
+
+def frbsf_announcement_times() -> dict[dt.date, str]:
+    """FOMC announcement times (ET) recorded in the FRBSF high-frequency surprise data."""
+    raw = fetch(FRBSF_URL, "shocks/frbsf_monetary_policy_surprises.xlsx",
+                source="Federal Reserve Bank of San Francisco",
+                series_id="Bauer-Swanson MPS (FOMC update 2023 sheet)",
+                licence="FRBSF public data; cite Bauer and Swanson (2023)",
+                notes="High-frequency FOMC announcement surprises with announcement times")
+    import pandas as pd
+    df = pd.read_excel(io.BytesIO(raw), sheet_name="FOMC (update 2023)")
+    out = {}
+    for day, t in zip(pd.to_datetime(df["Date"]).dt.date, df["Time"].astype(str)):
+        m = re.match(r"(\d{1,2}):(\d{2})\s*([ap])m", t.strip().lower())
+        if m:
+            out[day] = to_24h(*m.groups())
+    return out
+
+
 def harvest_fed(issues: list[str]) -> list[dict]:
     rate = fed_target_upper(issues)
     stmts = fed_statement_links()
@@ -340,6 +360,7 @@ def harvest_fed(issues: list[str]) -> list[dict]:
     # BIS/openmarket dates can be the effective day after the announcement.
     by_stmt, unmatched = attribute_changes(sdates, rate.changes(START), max_lag_days=2)
     basis = "Fed funds target; upper bound of the 25 bp range from 16 Dec 2008 (BIS WS_CBPOL US mid-point + 0.125)"
+    hf_times = frbsf_announcement_times()
     rows = []
     for e in stmts:
         d = e["date"]
@@ -348,6 +369,9 @@ def harvest_fed(issues: list[str]) -> list[dict]:
         hhmm = fed_release_time(e["url"], d)
         if hhmm:
             quality, tsrc = "exact", f"Statement page: 'For release at {hhmm}' ({e['url']})"
+        elif d in hf_times:
+            hhmm, quality = hf_times[d], "exact"
+            tsrc = f"FRBSF Bauer-Swanson surprise data, announcement time {hhmm} ET ({FRBSF_URL})"
         elif e["scheduled"] and d < dt.date(2011, 4, 27):
             hhmm, quality = "14:15", "approximate"
             tsrc = ("Statement page says 'For immediate release'; FOMC standard 2:15 p.m. ET release "
