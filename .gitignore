@@ -35,3 +35,6 @@ outputs/*
 # ── OS ───────────────────────────────────────────────────────────
 Thumbs.db
 .DS_Store
+
+# Office lock files (created while a document is open)
+~$*

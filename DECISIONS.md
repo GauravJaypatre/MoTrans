@@ -170,3 +170,10 @@ Revisit when Phase D adds exact Fed times (ISS-006).
 - Horizons that run past the last available observation are left empty, never filled.
 - Output is `data/interim/pilot_events.parquet`; `data/final/events.parquet` is built in
   Phase C once all 15 countries are in.
+
+### GATE-B: Phase B hand-check passed (2026-10-13)
+Prachi verified all 10 events x 4 broad indices in `docs/phase_b_hand_check.xlsx`
+against the official announcements and price histories: date/time, baseline and
+reacting sessions, and both closing prices - 160/160 checks "Yes". The timing rule
+(DECISION-013) is accepted; Phase C (full 15-country dataset) may start.
+`src/hand_check.py` will not overwrite a signed workbook.

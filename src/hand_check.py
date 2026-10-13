@@ -77,9 +77,24 @@ def main() -> pd.DataFrame:
     (ROOT / "outputs").mkdir(exist_ok=True)
     sheet.to_csv(ROOT / "outputs" / "hand_check_10_events.csv", index=False)
     write_markdown(sheet)
-    write_xlsx(sheet, ROOT / "docs" / "phase_b_hand_check.xlsx")
+    xlsx = ROOT / "docs" / "phase_b_hand_check.xlsx"
+    if reviewed(xlsx):
+        print(f"{xlsx.name} already holds reviewer sign-off; not overwritten "
+              "(delete or rename it to regenerate a blank sheet).")
+    else:
+        write_xlsx(sheet, xlsx)
     print(f"Hand-check sheet: {sheet.event_id.nunique()} events, {len(sheet)} rows")
     return sheet
+
+
+def reviewed(path: Path) -> bool:
+    """True if any reviewer column (CHECK 1-4, Checked by) in the workbook is filled."""
+    if not path.exists():
+        return False
+    from openpyxl import load_workbook
+    ws = load_workbook(path, read_only=True)["Checklist"]
+    return any(v not in (None, "") for row in ws.iter_rows(min_row=2, min_col=23, max_col=27, values_only=True)
+               for v in row)
 
 
 def write_xlsx(sheet: pd.DataFrame, path: Path) -> None:

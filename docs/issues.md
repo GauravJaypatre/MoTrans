@@ -100,7 +100,9 @@ the ECB twice a month in 2000-2001). `clr_20` and `clr_60` therefore mix several
 decisions; Phase D/E models must control for this (clustering by date, or dropping
 overlaps as robustness).
 
-### ISS-016 — Hand-check pending · open (gate for Phase C)
+### ISS-016 — Hand-check · resolved 2026-10-13 (Phase B gate passed)
 `docs/phase_b_hand_check.md` / `outputs/hand_check_10_events.csv` list 10 events × 4
 broad indices. A person must verify every row against the official release and the price
 history before Phase C starts (spec, Phase B gate).
+Resolved: Prachi checked all 40 rows (160/160 checks Yes, no notes) in
+`docs/phase_b_hand_check.xlsx`.
