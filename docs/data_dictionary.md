@@ -12,21 +12,26 @@ The main daily panel in **long format** (one row per date × country × index).
 | Column | Type | Unit | Definition | Source |
 |---|---|---|---|---|
 | `date` | `date` | — | Trading date on the local exchange calendar | Exchange calendars |
-| `country` | `str` | — | ISO 3166-1 alpha-2 country code (e.g. `US`, `DE`, `IN`) | Design spec |
+| `country` | `str` | — | ISO 3166-1 alpha-2 code (UK = `GB`); `EA` = euro-area-wide series | Design spec |
 | `index_id` | `str` | — | Unique identifier for the index series (e.g. `us_sp500`, `de_dax`) | Source registry |
 | `index_class` | `str` | — | One of: `broad`, `banks`, `smallcap` | Design spec |
 | `level_local` | `float64` | index points | Daily closing level in local currency (price index, not total return) | yfinance / source |
 | `ret_local` | `float64` | log return | Daily log return: ln(P_t / P_{t−1}) in local currency | Computed |
 | `ret_usd` | `float64` | log return | Daily log return denominated in USD (using daily FX) | Computed from FX + ret_local |
-| `yield_1y` | `float64` | percent | 1-year government bond yield (or closest available tenor, documented) | FRED / national source |
-| `fx_usd` | `float64` | local per USD | Exchange rate: units of local currency per 1 USD | FRED / ECB |
-| `vol` | `float64` | — | Implied volatility index (e.g. VIX for US) or realized volatility from the broad index | VIX-like index / computed |
-| `cpi` | `float64` | index | Consumer Price Index (release-date-aware lag — no look-ahead) | FRED / OECD / national stats |
-| `growth` | `float64` | — | Growth indicator: industrial production index or GDP (release-date-aware lag) | FRED / OECD |
-| `valuation` | `float64` | ratio | P/E ratio or earnings yield where freely available; NaN where not | yfinance / national source |
+| `yield_1y` | `float64` | percent | 1-year government yield (CA: 2-year; FR/IT/ES: euro-area curve); empty if older than 7 days | National sources (DECISION-016) |
+| `fx_lcu_per_usd` | `float64` | local per USD | Units of local currency per 1 USD (US = 1) | BIS WS_XRU |
+| `cpi` | `float64` | index | Consumer price index for month m, usable from the first day of month m+2 (DECISION-016) | BIS WS_LONG_CPI |
+| `valuation` | `float64` | ratio | Empty: no free historical P/E or earnings-yield source (ISS-021) | — |
 | `split_tag` | `str` | — | Sample split label: `train` (≤2019-12-31), `crisis` (2020-01-01–2021-12-31), `blind_test` (≥2022-01-01) | Date-based rule (`src.split_tag()`) |
 | `russia_post_feb2022` | `int8` | flag | 1 from 2022-02-24 onward for Russia rows; 0 otherwise | Date-based rule |
-| `halt_flag` | `int8` | flag | 1 during known Russian trading halt periods; 0 otherwise. Halt dates must come from cited sources (see `source_registry.md` §5). Missing data during halts is NOT zero returns. | Cited MOEX/CBR sources |
+| `halt_flag` | `int8` | flag | 1 on Moscow Exchange sessions 24 Feb - 31 Mar 2022 with no index value (prices empty). Missing data, NOT zero returns. | MOEX ISS history + XMOS calendar |
+| `ret_spans_halt` | `int8` | flag | 1 on the first return after a halt (it spans the whole halt) | Computed |
+| `ticker`, `source` | `str` | — | Ticker / index code and data provider | Source registry |
+| `policy_rate` | `float64` | percent | Central bank policy rate as of the date | BIS WS_CBPOL |
+| `vol_realized_20d` | `float64` | annualised | Std. dev. of the broad index's last 20 daily log returns x sqrt(252) (EA: DAX) | Computed |
+| `vol_implied` | `float64` | index points | VIX for US rows; empty elsewhere | CBOE via Yahoo |
+| `ind_prod` | `float64` | index | Industrial production (SA) for month m, usable from month m+2 | OECD STES |
+| `exdiv_flag`, `stale_flag`, `outlier_flag` | `int8` | flag | ETF ex-dividend day, ETF zero volume, abs return > 10% | Computed |
 
 ---
 

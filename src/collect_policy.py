@@ -55,6 +55,15 @@ TZ = {
     "ECB": zoneinfo.ZoneInfo("Europe/Berlin"),
     "RBI": zoneinfo.ZoneInfo("Asia/Kolkata"),
     "BoJ": zoneinfo.ZoneInfo("Asia/Tokyo"),
+    # Phase C regimes (collected in src/collect_policy_more.py)
+    "BoE": zoneinfo.ZoneInfo("Europe/London"),
+    "PBoC": zoneinfo.ZoneInfo("Asia/Shanghai"),
+    "CBR": zoneinfo.ZoneInfo("Europe/Moscow"),
+    "BoC": zoneinfo.ZoneInfo("America/Toronto"),
+    "BCB": zoneinfo.ZoneInfo("America/Sao_Paulo"),
+    "Banxico": zoneinfo.ZoneInfo("America/Mexico_City"),
+    "RBA": zoneinfo.ZoneInfo("Australia/Sydney"),
+    "BoK": zoneinfo.ZoneInfo("Asia/Seoul"),
 }
 
 FIELDS = [

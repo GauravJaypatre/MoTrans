@@ -177,3 +177,42 @@ against the official announcements and price histories: date/time, baseline and
 reacting sessions, and both closing prices - 160/160 checks "Yes". The timing rule
 (DECISION-013) is accepted; Phase C (full 15-country dataset) may start.
 `src/hand_check.py` will not overwrite a signed workbook.
+
+---
+
+## 2026-10-13 — Phase C (full dataset: 15 countries, controls)
+
+### DECISION-015: Full equity series list (38 series)
+- Official sources preferred over Yahoo where Yahoo has no history: China (CSIndex: CSI 300,
+  CSI 300 Banks, CSI 500), Russia (Moscow Exchange ISS: MOEX Russia, MOEX Financials, MOEX
+  SMID), Brazil sector/small-cap (B3: IFNC, SMLL), India (NSE Indices, from Phase B).
+- Euro area: no free country-level bank or small-cap index exists for FR/IT/ES, so they share
+  euro-area series: banks = `EXX1.DE` (the pilot's DE banks ETF), small-cap = MSCI EMU Small
+  Cap ETF `SXRJ.DE` (2009+), stored once with country code `EA`. ECB home markets are
+  DE, FR, IT, ES and EA. Shared series are counted once, never duplicated per country.
+- Dropped (no free daily source): UK banks (FTSE 350 Banks), Mexico banks and small-cap.
+- Canada small-cap uses the S&P/TSX Venture Composite (growth/small proxy; TSX SmallCap not free).
+- Korea banks uses the KODEX Banks ETF (2007+); Australia financials the ASX 200 Financials
+  index (2013+).
+
+### DECISION-016: Controls and look-ahead rules
+- Daily controls (FX, policy rate, 1-year yield) are usable from their observation date;
+  monthly macro (CPI, industrial production) for month m from the first day of month m+2,
+  because free sources carry no release calendars (conservative fixed lag).
+- No stale carry-forward: a daily value older than 7 days, or a monthly value older than 62
+  days past its availability date, is left empty. (This fixed an as-of merge that had carried
+  Brazil's 2019 yield forward to 2026 - caught in review before commit.)
+- 1-year yield sources: US Treasury, Bundesbank (DE), ECB euro-area 1Y spot (FR/IT/ES/EA proxy),
+  MoF Japan, Bank of England spot curve (GB), Bank of Canada 2-year benchmark (CA; 1-year bills
+  are weekly), Bank of Russia zero-coupon curve (RU), BCB swap DI 360 (BR, ends Sep 2019).
+- Volatility: 20-day realised volatility of the country's broad index for all markets (EA uses
+  the DAX); VIX as implied volatility for the US only.
+- `ret_usd` = local log return minus the change in log(local currency per USD), BIS daily FX.
+
+### DECISION-017: Decisions for the eight Phase C regimes
+- Rate changes for all eight from BIS WS_CBPOL (same source as RBI/BoJ), excluding level jumps
+  on definition switches (BIS notes: CN 2019 LPR, RU 2013 key rate, KR 2008, GB 2006),
+  sub-0.5 bp data noise (seen in the BIS AU series) and Mexico before its target rate (21 Jan 2008).
+- Holds are included only where an official meeting list was readable: BCB (Copom API) and
+  Banxico (announcement list). BoE, BoC, RBA, BoK, CBR: rate changes only; PBoC has no meetings.
+- No source states release times for these regimes, so all use whole-day windows (DECISION-013).

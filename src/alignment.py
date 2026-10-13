@@ -22,8 +22,13 @@ import numpy as np
 import pandas as pd
 
 # exchange_calendars has no NSE calendar; BSE (XBOM) has the same sessions and hours.
-CALENDARS = {"US": "XNYS", "DE": "XETR", "IN": "XBOM", "JP": "XTKS"}
-HOME_MARKET = {"Fed": "US", "ECB": "DE", "RBI": "IN", "BoJ": "JP"}
+# EA = euro-area-wide series traded on Xetra. Single source of truth: src.collect_indices.
+from src.collect_indices import CALENDARS
+
+# Regime -> markets it is the home central bank of (ECB covers every euro-area market).
+HOME_MARKETS = {"Fed": {"US"}, "ECB": {"DE", "FR", "IT", "ES", "EA"}, "RBI": {"IN"}, "BoJ": {"JP"},
+                "BoE": {"GB"}, "PBoC": {"CN"}, "CBR": {"RU"}, "BoC": {"CA"}, "BCB": {"BR"},
+                "Banxico": {"MX"}, "RBA": {"AU"}, "BoK": {"KR"}}
 
 
 @dataclass(frozen=True)

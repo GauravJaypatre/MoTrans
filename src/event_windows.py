@@ -21,7 +21,7 @@ import numpy as np
 import pandas as pd
 
 from src import split_tag
-from src.alignment import HOME_MARKET, align
+from src.alignment import HOME_MARKETS, align
 
 ROOT = Path(__file__).resolve().parent.parent
 INTERIM = ROOT / "data" / "interim"
@@ -83,7 +83,7 @@ def build(policy: pd.DataFrame, panel: pd.DataFrame) -> pd.DataFrame:
             rows.append({
                 "event_id": event_id, **{k: ev[k] for k in KEEP},
                 "country": country, "index_id": sid, "index_class": s["index_class"],
-                "home_market": int(HOME_MARKET[ev["regime"]] == country),
+                "home_market": int(country in HOME_MARKETS[ev["regime"]]),
                 "baseline_date": a.baseline_date, "reacting_session_date": a.reacting_date,
                 "announce_in_session": int(a.announce_in_session),
                 "timing_ambiguous": int(a.timing_ambiguous), **w,
@@ -94,6 +94,7 @@ def build(policy: pd.DataFrame, panel: pd.DataFrame) -> pd.DataFrame:
 
 
 def main() -> pd.DataFrame:
+    """Phase B pilot table (4 regimes x 13 series) -> data/interim/pilot_events.parquet."""
     policy = pd.read_csv(INTERIM / "pilot_policy_decisions.csv", dtype={"decision_date": str})
     panel = pd.read_parquet(INTERIM / "pilot_indices_daily.parquet")
     events = build(policy, panel)
@@ -101,6 +102,28 @@ def main() -> pd.DataFrame:
     events.to_csv(INTERIM / "pilot_events.csv", index=False)
     print(f"{events['event_id'].nunique()} events x {events['index_id'].nunique()} series = "
           f"{len(events)} rows -> {INTERIM / 'pilot_events.parquet'}")
+    return events
+
+
+def policy_all() -> pd.DataFrame:
+    """All 12 regimes: pilot decisions + Phase C regimes."""
+    parts = [pd.read_csv(INTERIM / f, dtype={"decision_date": str})
+             for f in ("pilot_policy_decisions.csv", "policy_decisions_more.csv")]
+    return pd.concat(parts, ignore_index=True).sort_values(["regime", "decision_date"]).reset_index(drop=True)
+
+
+def main_full() -> pd.DataFrame:
+    """Phase C: every regime x every series -> data/final/events.parquet."""
+    final = ROOT / "data" / "final"
+    final.mkdir(parents=True, exist_ok=True)
+    policy = policy_all()
+    policy.to_csv(final / "policy_decisions.csv", index=False)
+    panel = pd.read_parquet(final / "panel_daily.parquet")
+    panel = panel[panel["level_local"].notna()]  # halt placeholders carry no price
+    events = build(policy, panel)
+    events.to_parquet(final / "events.parquet", index=False)
+    print(f"events: {events['event_id'].nunique()} events x {events['index_id'].nunique()} series = "
+          f"{len(events):,} rows -> {final / 'events.parquet'}")
     return events
 
 

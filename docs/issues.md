@@ -106,3 +106,35 @@ broad indices. A person must verify every row against the official release and t
 history before Phase C starts (spec, Phase B gate).
 Resolved: Prachi checked all 40 rows (160/160 checks Yes, no notes) in
 `docs/phase_b_hand_check.xlsx`.
+
+## Phase C (2026-10-13)
+
+### ISS-017 — Series not available free · open (accepted)
+UK banks (FTSE 350 Banks), Mexico banks and Mexico small-cap: no free daily history found
+(Yahoo; Stooq blocked; FTSE/BMV paid). Dropped. France/Italy/Spain bank and small-cap series
+are the shared euro-area ETFs (DECISION-015). With Datastream/Bloomberg these can be restored.
+
+### ISS-018 — Short histories · open (accepted)
+CSI 300 from 2002; CSI 300 Banks, CSI 500, IFNC, MOEX Financials from end-2004; SMLL 2005;
+Korea banks ETF 2007; EMU small-cap ETF 2009; MOEX SMID 2012; ASX 200 Financials 2013.
+These series add little or nothing to the pre-2008 training sample.
+
+### ISS-019 — Holds missing for six regimes · open (needs a person)
+BoE, BoC, RBA, BoK, CBR: only rate changes are in the decision table (no machine-readable
+official meeting list; rba.gov.au blocks automated access; BoE minutes URLs are inconsistent).
+PBoC has no scheduled meetings. Fix: a team member saves each bank's meeting calendar by hand
+into data/raw/ and the collector adds the holds. Until then, analyses that need holds use
+Fed, ECB, RBI, BoJ, BCB and Banxico only.
+
+### ISS-020 — 1-year yields missing · open → Phase D grades
+No free daily 1-year yield for China, India, Mexico, Australia (RBA blocks downloads) and Korea
+(BoK ECOS needs an account); Brazil's series ends Sep 2019; FR/IT/ES use the euro-area curve;
+Canada uses the 2-year benchmark. Shocks for these regimes are grade C where no proxy exists.
+
+### ISS-021 — Valuation not collected · open (accepted)
+No free historical P/E or earnings-yield series for these indices. `valuation` is empty; the
+state-dependence claim on valuations needs a licensed source, or is dropped from the paper.
+
+### ISS-022 — Industrial production ends early · open (low impact)
+OECD STES series end between Dec 2023 and Apr 2024 for most markets, Feb 2018 (MX), Jan 2023 (IN)
+and Dec 2021 (RU); none for China and Australia. Values are left empty after the end.
