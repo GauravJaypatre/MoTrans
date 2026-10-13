@@ -139,6 +139,20 @@ Same columns as `panel_daily` (`date` … `ret_local`) plus:
 | `stale_flag` | `int8` | 1 on an ETF day with zero traded volume (close is not a fresh price) |
 | `outlier_flag` | `int8` | 1 if \|ret_local\| > 0.10, for manual review (never deleted) |
 
+## Interim (Phase B2): `data/interim/pilot_events.parquet`
+
+One row per (policy event × pilot series). Columns as in `events.parquet` above, plus:
+
+| Column | Type | Definition |
+|---|---|---|
+| `home_market` | `int8` | 1 if the series is in the regime's own market |
+| `event_type`, `time_quality`, `window_start_utc`, `window_end_utc` | — | Copied from the decision table |
+| `announce_in_session` | `int8` | 1 if the window starts while this market is open |
+| `baseline_obs_date`, `react_obs_date` | `date` | Index observations actually used for the baseline and the reaction |
+| `react_obs_gap` | `int8` | 1 if the index has no value on the reacting session (next observation used) |
+| `stale_on_react` | `int8` | ETF reacting observation had zero volume |
+| `exdiv_in_clr5` | `int8` | An ETF ex-dividend day falls inside the 5-observation window |
+
 ---
 
 ## `data/raw/MANIFEST.csv`

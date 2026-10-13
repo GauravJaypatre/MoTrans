@@ -144,7 +144,29 @@ Why: a wrong guess of the time either leaks future information (if too early) or
 the reaction (if too late). Widening the window and measuring from before its start
 never leaks information, and at worst adds noise on short horizons, which is flagged and
 testable. Exact times keep the precise rule, so nothing changes for the well-timed
-events. In practice, RBI announcements on Indian trading days stay same-day for India
-(baseline = previous day's close). The flag mainly hits Asian markets for Fed events of
-unknown time and markets whose open or close falls inside a BoJ hour.
+events. In practice (Phase B2 results): RBI announcements on Indian trading days still
+react the same day in India (baseline = previous close), but because RBI times are
+unknown nearly all RBI rows (~95%) are flagged `timing_ambiguous`; ~21% of Fed rows
+(2011-15 and some unscheduled actions) are flagged; ECB rows never and BoJ rows rarely.
+Correction (2026-10-13): an earlier draft said RBI rows would stay unflagged for India.
 Revisit when Phase D adds exact Fed times (ISS-006).
+
+---
+
+## 2026-10-13 — Phase B2 (timing rule and event windows)
+
+### DECISION-014: Event-window construction
+- One row per (policy event × pilot series), for all four regimes and all 13 series, so
+  cross-market responses (e.g. Fed → Japan) are available; `home_market` = 1 marks the
+  regime's own market (Fed→US, ECB→DE, RBI→IN, BoJ→JP).
+- Session timing uses exchange calendars (`src/alignment.py`); prices use each index's own
+  observations, so `clr_h` spans h index observations from the reacting one. If the index
+  has no value on the reacting session the next observation is used and
+  `react_obs_gap` = 1 (0 cases in the pilot).
+- `announce_in_session` = 1 when the window starts while that market is open (the day's
+  close already partly reflects pre-announcement trading).
+- ETF rows carry `stale_on_react` and `exdiv_in_clr5` so those observations can be
+  excluded.
+- Horizons that run past the last available observation are left empty, never filled.
+- Output is `data/interim/pilot_events.parquet`; `data/final/events.parquet` is built in
+  Phase C once all 15 countries are in.

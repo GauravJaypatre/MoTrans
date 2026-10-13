@@ -83,3 +83,24 @@ stored. Six EA-MPD meetings have no press conference (August meetings 2002-2007 
 FRED CSV downloads timed out from this machine. Fed targets come from BIS WS_CBPOL US
 (mid-point + 0.125 for the range era), cross-checked against openmarket.htm (2003+): no
 disagreements.
+
+## Phase B2 (2026-10-13)
+
+### ISS-014 — Historical trading hours not modelled · open (low impact)
+`exchange_calendars` applies today's session hours to the whole history (except changes
+it tracks, e.g. Tokyo's close moving to 15:30 on 5 Nov 2024). Earlier changes in Xetra and
+NSE hours are not modelled, so events within the changed hours in early years may be
+mapped to the wrong session. ECB (13:45/14:15 CET) and Fed (US afternoon) releases are far
+from those boundaries. The Data lead should confirm the historical hours and list affected
+events.
+
+### ISS-015 — Overlapping event windows · open → Phase C/D
+Windows of up to 60 sessions overlap other events (BoJ met ~14 times a year before 2006,
+the ECB twice a month in 2000-2001). `clr_20` and `clr_60` therefore mix several
+decisions; Phase D/E models must control for this (clustering by date, or dropping
+overlaps as robustness).
+
+### ISS-016 — Hand-check pending · open (gate for Phase C)
+`docs/phase_b_hand_check.md` / `outputs/hand_check_10_events.csv` list 10 events × 4
+broad indices. A person must verify every row against the official release and the price
+history before Phase C starts (spec, Phase B gate).

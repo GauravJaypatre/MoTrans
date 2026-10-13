@@ -197,3 +197,40 @@ class TestAnnouncementWindow:
     def test_unknown_is_the_whole_local_day(self, policy):
         e = event(policy, "RBI", "2022-05-04")  # IST = UTC+5:30
         assert (e.window_start_utc, e.window_end_utc) == ("2022-05-03T18:30:00Z", "2022-05-04T18:29:00Z")
+
+
+# --- event windows (Phase B2) -----------------------------------------------------
+
+EVENTS = ROOT / "data" / "interim" / "pilot_events.parquet"
+
+
+@pytest.fixture(scope="module")
+def events() -> pd.DataFrame:
+    return pd.read_parquet(EVENTS)
+
+
+@pytest.mark.skipif(not EVENTS.exists(), reason="run src.event_windows first")
+class TestEventWindows:
+    def test_one_row_per_event_and_series(self, events):
+        assert not events.duplicated(["event_id", "index_id"]).any()
+
+    def test_baseline_before_reaction(self, events):
+        assert (events.baseline_date < events.reacting_session_date).all()
+        assert (events.baseline_obs_date < events.react_obs_date).all()
+
+    def test_clr_1_matches_the_daily_return(self, events, panel):
+        # When the reacting observation directly follows the baseline one, clr_1 is that day's return.
+        ret = panel.set_index(["index_id", "date"])["ret_local"]
+        sample = events.sample(500, random_state=0)
+        for r in sample.itertuples():
+            dates = panel.loc[panel.index_id == r.index_id, "date"]
+            prev = dates[dates < r.react_obs_date].max()
+            if prev == r.baseline_obs_date:
+                assert np.isclose(r.clr_1, ret[(r.index_id, r.react_obs_date)])
+
+    def test_home_market_flag(self, events):
+        home = events[events.home_market == 1].groupby("regime").country.unique()
+        assert {k: list(v) for k, v in home.items()} == {"BoJ": ["JP"], "ECB": ["DE"], "Fed": ["US"], "RBI": ["IN"]}
+
+    def test_exact_time_events_are_never_ambiguous(self, events):
+        assert events.loc[events.time_quality == "exact", "timing_ambiguous"].eq(0).all()
