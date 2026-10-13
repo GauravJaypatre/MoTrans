@@ -43,6 +43,10 @@ against `data/raw/MANIFEST.csv` (SHA-256 of every file). Other tasks: `setup`, `
 | `shocks.parquet` | one decision: graded policy surprise (A/B/C) | 1,908 |
 | `statements.parquet` | one English policy statement (Fed, ECB, BoJ, RBI) | see docs/statements_coverage.md |
 
+Excel copy of every table: `.venv\Scripts\python -m src.export_excel` writes
+`data/final/MoTrans15_all_records.xlsx` (local only - it contains licensed price data).
+Plain-language summary of all phases: [docs/MoTrans15_Project_Summary.docx](docs/MoTrans15_Project_Summary.docx).
+
 Read first: [data dictionary](docs/data_dictionary.md), [issues](docs/issues.md) (all known gaps),
 [decisions](DECISIONS.md), [data quality report](docs/data_quality_report.md),
 [shock validation](docs/shock_validation.md).
