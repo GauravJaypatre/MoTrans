@@ -16,6 +16,7 @@ comm==0.2.3
 curl_cffi==0.16.3
 debugpy==1.8.22
 defusedxml==0.7.1
+et_xmlfile==2.0.0
 exchange_calendars==4.13.2
 executing==2.3.0
 fastjsonschema==2.22.2
@@ -64,6 +65,7 @@ nest-asyncio2==1.7.4
 notebook==7.6.3
 notebook_shim==0.2.4
 numpy==2.5.4
+openpyxl==3.1.5
 packaging==26.3
 pandas==3.0.6
 pandas_market_calendars==5.5.0
