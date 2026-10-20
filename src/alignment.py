@@ -54,17 +54,29 @@ def _ts(value: str | pd.Timestamp | dt.datetime) -> np.datetime64:
         if pd.Timestamp(value).tzinfo else pd.Timestamp(value).to_datetime64()
 
 
-def align(window_start, window_end, country: str) -> Alignment:
-    """Baseline and reacting sessions of `country` for an announcement window."""
+def align(window_start, window_end, country: str, time_quality: str | None = None) -> Alignment:
+    """Baseline and reacting sessions of `country` for an announcement window.
+
+    Conservative reaction-session rule for unknown announcement time:
+    When the announcement time is unknown, the announcement could have occurred at any point
+    during the window up to `window_end`. To guarantee that no session that closed BEFORE
+    the possible announcement is ever treated as the reaction, the reacting session must close
+    strictly after `window_end` (index j).
+    """
     dates, opens, closes = sessions(country)
     start, end = _ts(window_start), _ts(window_end)
     i = int(np.searchsorted(closes, start, side="right"))  # first close strictly after start
-    j = int(np.searchsorted(closes, end, side="right"))
-    if i >= len(dates):
-        return Alignment(dates[i - 1] if i else None, None, False, False)
+    j = int(np.searchsorted(closes, end, side="right"))    # first close strictly after end
+
+    is_unknown = (time_quality == "unknown") or (time_quality is None and (end - start > np.timedelta64(6, "h")))
+    react_idx = j if is_unknown else i
+
+    if react_idx >= len(dates):
+        return Alignment(dates[i - 1] if i > 0 else None, None, False, False)
     return Alignment(
         baseline_date=dates[i - 1] if i > 0 else None,
-        reacting_date=dates[i],
-        announce_in_session=bool(opens[i] <= start < closes[i]),
+        reacting_date=dates[react_idx],
+        announce_in_session=bool(opens[i] <= start < closes[i]) if not is_unknown else False,
         timing_ambiguous=bool(j != i),
     )
+

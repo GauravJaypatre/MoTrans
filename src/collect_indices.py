@@ -10,7 +10,8 @@ Moscow Exchange ISS (Russia) and B3 (Brazil sector / small-cap indices).
 Columns: unadjusted close (auto_adjust=False), ret_local = ln(P_t / P_{t-1}),
 exdiv_flag (ETF ex-dividend day, from the raw Dividends column), stale_flag (ETF day
 with zero traded volume, so the close is not a fresh price), outlier_flag (|ret| > 0.10).
-The current (possibly still trading) day is excluded.
+Observations dated on or after the raw file's download day are excluded (they may be intraday
+prices, not closes); the download day comes from MANIFEST.csv.
 
 Outputs: data/interim/indices_daily.parquet (all series) and
 data/interim/pilot_indices_daily.parquet (the Phase B pilot subset: US, DE, IN, JP).
@@ -28,7 +29,7 @@ import numpy as np
 import pandas as pd
 import requests
 
-from src.download import RAW_DIR, save_raw_file
+from src.download import MANIFEST_PATH, RAW_DIR, save_raw_file
 
 INTERIM_DIR = Path(__file__).resolve().parent.parent / "data" / "interim"
 # EA = euro-area-wide series traded on Xetra (shared by DE, FR, IT, ES; see DECISION-015).
@@ -224,9 +225,21 @@ def raw_b3(code: str, raw_file: str) -> pd.DataFrame:
 READERS = {"niftyindices": raw_niftyindices, "csindex": raw_csindex, "moex": raw_moex, "b3": raw_b3}
 
 
+def retrieval_date(raw_file: str) -> dt.date:
+    """UTC download date of a raw file, from MANIFEST.csv (today if not yet registered)."""
+    import csv
+    with open(MANIFEST_PATH, encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            if r["file_path"] == f"data/raw/{raw_file}":
+                return dt.date.fromisoformat(r["retrieval_utc"][:10])
+    return dt.date.today()
+
+
 def build_series(country, index_id, index_class, code, source, is_etf, raw_file) -> pd.DataFrame:
     df = raw_yfinance(code, raw_file, is_etf) if source == "yfinance" else READERS[source](code, raw_file)
-    df = df[(df["date"] >= START) & (df["date"] < dt.date.today()) & (df["level_local"] > 0)]
+    # A value dated on/after the download day may be an intraday price, not a close.
+    cutoff = min(dt.date.today(), retrieval_date(raw_file))
+    df = df[(df["date"] >= START) & (df["date"] < cutoff) & (df["level_local"] > 0)]
     if source == "yfinance":
         # Yahoo inserts zero-volume placeholder rows on some exchange holidays; they are not prices.
         import exchange_calendars as xcals

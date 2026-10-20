@@ -29,6 +29,7 @@ from src.collect_policy import (
     bis_policy_rate,
     classify,
     fetch,
+    localize,
     row,
 )
 
@@ -66,6 +67,54 @@ MEETINGS = {"BCB": (copom_meetings, COPOM_API), "Banxico": (banxico_meetings, BA
 TARGET_FROM = {"Banxico": dt.date(2008, 1, 21)}  # BIS WS_CBPOL MX note: target rate from this date
 
 
+def regime_announcement_time(regime: str, day: dt.date, scheduled: bool, meeting_title: str = "") -> tuple[str | None, str, str]:
+    """Return (hhmm_local, time_quality, time_source) according to official central-bank convention.
+
+    All times here are PENDING sourcing from saved official pages (DECISION-020 / ISS-029).
+    The conditional structure is kept so that once a saved raw file contains a verified time,
+    the appropriate branch can be filled without restructuring. Until then every branch
+    returns ("unknown") so no time is fabricated.
+    """
+    if regime == "BCB":
+        # TODO: source from saved BCB Copom regulation document (data/raw/)
+        return (None, "unknown", "Not yet sourced (pending official page)")
+
+    if regime == "Banxico":
+        if day < TARGET_FROM["Banxico"]:
+            return (None, "unknown", "Not yet sourced (pending official page)")
+        # TODO: source from saved Banxico announcement list (data/raw/policy_more/banxico_anuncios.html)
+        return (None, "unknown", "Not yet sourced (pending official page)")
+
+    if regime == "BoE":
+        # TODO: source from saved Bank of England press releases (data/raw/)
+        return (None, "unknown", "Not yet sourced (pending official page)")
+
+    if regime == "BoC":
+        if day < dt.date(2000, 12, 1):
+            return (None, "unknown", "Not yet sourced (pending official page)")
+        # TODO: source from saved Bank of Canada announcement pages (data/raw/)
+        return (None, "unknown", "Not yet sourced (pending official page)")
+
+    if regime == "RBA":
+        # TODO: source from saved RBA media releases (data/raw/)
+        return (None, "unknown", "Not yet sourced (pending official page)")
+
+    if regime == "BoK":
+        # TODO: source from saved Bank of Korea MPB schedule (data/raw/)
+        return (None, "unknown", "Not yet sourced (pending official page)")
+
+    if regime == "CBR":
+        # TODO: source from saved Bank of Russia key rate decision pages (data/raw/)
+        return (None, "unknown", "Not yet sourced (pending official page)")
+
+    if regime == "PBoC":
+        # TODO: source from saved NIFC/chinamoney LPR announcement pages (data/raw/)
+        return (None, "unknown", "Not yet sourced (pending official page)")
+
+    return (None, "unknown", "Not yet sourced (pending official page)")
+
+
+
 def harvest(regime: str, issues: list[str]) -> list[dict]:
     rate, breaks, note = bis_policy_rate(BIS_AREA[regime])
     # Not decisions: level jumps on a definition switch (BIS "From <date>" notes), changes across
@@ -85,16 +134,20 @@ def harvest(regime: str, issues: list[str]) -> list[dict]:
         by_meeting, unmatched = attribute_changes(sorted(meetings), changes, max_lag_days=5)
         for d in sorted(meetings):
             ch = by_meeting.get(d, [])
+            hhmm, quality, tsrc = regime_announcement_time(regime, d, True, meetings[d])
+            local, utc = localize(regime, d, hhmm)
             if d < target_from:
                 rows.append(row(regime, d, event_type="scheduled_meeting", scheduled=True, decision="unclassified",
                                 rate_basis=f"No policy-rate target before {target_from} (BIS note)",
-                                time_quality="unknown", time_source="Release time not stated by the source",
+                                announce_time_local=local, announce_ts_utc=utc,
+                                time_quality=quality, time_source=tsrc,
                                 date_source=meetings[d], source_url=url))
                 continue
             size = round((ch[-1][2] - ch[0][1]) * 100) if ch else 0
             rows.append(row(regime, d, event_type="scheduled_meeting", scheduled=True, decision=classify(size),
                             size_bp=size, new_rate_pct=ch[-1][2] if ch else rate.asof(d), rate_basis=basis,
-                            time_quality="unknown", time_source="Release time not stated by the source",
+                            announce_time_local=local, announce_ts_utc=utc,
+                            time_quality=quality, time_source=tsrc,
                             date_source=meetings[d], source_url=url))
     else:
         unmatched = changes
@@ -102,20 +155,24 @@ def harvest(regime: str, issues: list[str]) -> list[dict]:
                       "included, holds are missing.")
     for eff, old, new in unmatched:
         size = round((new - old) * 100)
+        sched = regime not in MEETINGS and regime != "PBoC"
+        hhmm, quality, tsrc = regime_announcement_time(regime, eff, sched)
+        local, utc = localize(regime, eff, hhmm)
         if regime in MEETINGS:
             issues.append(f"{regime}: rate change effective {eff} ({old}->{new}) not on a listed meeting; kept as "
                           "unscheduled_rate_change.")
         rows.append(row(regime, eff, event_type="rate_change" if regime not in MEETINGS else "unscheduled_rate_change",
-                        scheduled=regime not in MEETINGS and regime != "PBoC", decision=classify(size), size_bp=size,
-                        new_rate_pct=new, rate_basis=basis, time_quality="unknown",
-                        time_source="Not available from rate series",
+                        scheduled=sched, decision=classify(size), size_bp=size,
+                        new_rate_pct=new, rate_basis=basis,
+                        announce_time_local=local, announce_ts_utc=utc,
+                        time_quality=quality, time_source=tsrc,
                         date_source="BIS WS_CBPOL effective date (announcement date may be earlier)",
                         source_url=bis_url))
     if regime in TARGET_FROM:
         issues.append(f"{regime}: meetings before {target_from} are 'unclassified' (no policy-rate target; {note[:90]}).")
     if gaps:
         issues.append(f"{regime}: BIS series has gaps ({', '.join(f'{a}..{b}' for a, b in gaps if b >= START)}); "
-                      "level changes across gaps are not treated as decisions.")
+                       "level changes across gaps are not treated as decisions.")
     return rows
 
 
@@ -135,6 +192,7 @@ def main() -> list[str]:
             unique.append(r)
     for r in unique:
         r["window_start_utc"], r["window_end_utc"] = announcement_window(r)
+        r["analysis_ready_timing"] = 1 if r["time_quality"] in ("exact", "approximate") else 0
     with open(OUT_CSV, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=FIELDS)
         w.writeheader()

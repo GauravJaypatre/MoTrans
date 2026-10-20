@@ -16,7 +16,7 @@ Brazil · Spain · Mexico · Australia · South Korea
 
 2000-01-01 (or earliest reliable date, ~2005 for some EMs) to latest available.
 
-## Getting started (new teammate)
+## Getting started (other teammate)
 
 Needs Git and Python 3.12. On macOS/Linux use `.venv/bin/` instead of `.venv\Scripts\`.
 

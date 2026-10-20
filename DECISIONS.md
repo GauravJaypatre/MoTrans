@@ -215,7 +215,9 @@ reacting sessions, and both closing prices - 160/160 checks "Yes". The timing ru
   sub-0.5 bp data noise (seen in the BIS AU series) and Mexico before its target rate (21 Jan 2008).
 - Holds are included only where an official meeting list was readable: BCB (Copom API) and
   Banxico (announcement list). BoE, BoC, RBA, BoK, CBR: rate changes only; PBoC has no meetings.
-- No source states release times for these regimes, so all use whole-day windows (DECISION-013).
+- No source states release times for these regimes, so all use whole-day windows (DECISION-013 /
+  DECISION-020). Announcement times for all 9 non-sourced regimes are pending sourcing from
+  saved official pages (ISS-029).
 
 ---
 
@@ -260,3 +262,44 @@ reacting sessions, and both closing prices - 160/160 checks "Yes". The timing ru
 - The tracked docs/hand_label_sample.csv holds IDs, links and the empty label columns only;
   the labelling copy with full texts is data/final/hand_label_sample_with_text.csv (git-ignored),
   because ECB/BoJ/RBI terms do not clearly allow republishing their texts in a public repo.
+
+---
+
+## 2026-10-18 — Priority Group 1 (timing audit)
+
+### DECISION-020: Conservative reaction-session rule for unknown announcement time
+
+Replaces / refines the unknown-time alignment rule from DECISION-013.
+
+**Problem:** When `time_quality = "unknown"`, the full local day of `decision_date` is used
+as the announcement window. For Asian central banks, local midnight maps to the afternoon or
+evening of `decision_date − 1` in UTC. Under the original rule (first close after
+`window_start`), Western markets closing on `decision_date − 1` in UTC (but strictly after
+local midnight) were labelled as the reacting session — one calendar day before the decision.
+This is not look-ahead bias; the baseline was always set before the window. It is noise in
+1-day event-window returns for rows already flagged `timing_ambiguous`.
+
+**Rule (implemented in `src/alignment.py`):**
+When `time_quality == "unknown"`, the reacting session is the first session whose close is
+strictly after `window_end_utc` (the latest possible announcement time):
+
+```
+react_idx = j = np.searchsorted(closes, window_end_utc, side="right")
+```
+
+This guarantees `reacting_session_date >= decision_date` for every row, regardless of
+the central bank's local time zone.
+
+**Exclusion flag:** A new column `analysis_ready_timing` (int8, 0/1) marks the clean subset:
+```
+analysis_ready_timing = 1  iff  timing_ambiguous == 0
+                              AND time_quality in {"exact", "approximate"}
+                              AND reacting_session_date >= decision_date
+```
+Rows with `analysis_ready_timing = 0` are never deleted; the flag is the explicit,
+reversible exclusion criterion (see `docs/data_dictionary.md`).
+
+**Announcement times for 9 regimes pending:** BoE, BoC, RBA, BoK, Banxico, BCB, CBR,
+PBoC, and RBI announcement times have not yet been sourced from saved official pages.
+All 9 retain `time_quality = "unknown"` and `time_source = "Not yet sourced (pending
+official page)"`. See ISS-029 for the sourcing plan.

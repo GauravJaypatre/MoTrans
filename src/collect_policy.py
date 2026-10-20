@@ -70,15 +70,18 @@ FIELDS = [
     "regime", "decision_date", "event_type", "scheduled", "decision", "size_bp",
     "new_rate_pct", "rate_basis", "rate_mro", "rate_dfr", "rate_mlf",
     "announce_time_local", "timezone", "announce_ts_utc", "time_quality", "time_source",
-    "window_start_utc", "window_end_utc", "date_source", "source_url",
+    "window_start_utc", "window_end_utc", "date_source", "source_url", "analysis_ready_timing",
 ]
 
-# Announcement window per time quality (DECISION-013). B2 measures returns from the last
-# close before window_start and reacts from the first session closing after window_start.
+# Announcement window per time quality (DECISION-013). Returns are measured from the last close
+# before window_start; the reacting session is the first close after window_start, or after
+# window_end when the time is unknown (DECISION-020).
 APPROX_WINDOW = {  # (minutes before, minutes after) the recorded approximate time
-    "BoJ": (0, 60),    # minutes give the meeting END; the release follows it
-    "Fed": (-15, 15),  # assumed 14:15 ET schedule (pre-Apr 2011)
+    "BoJ": (0, 60),      # minutes give the meeting END; the release follows it
+    "Fed": (-15, 15),    # assumed 14:15 ET schedule (pre-Apr 2011)
+    # Other regimes get windows here only once their times are sourced (ISS-029).
 }
+
 
 
 def announcement_window(r: dict) -> tuple[str, str]:
@@ -613,11 +616,17 @@ def harvest_rbi(issues: list[str]) -> list[dict]:
         fy = d.year + 1 if d.month >= 4 else d.year
         fy_schedule = schedule.get(fy)
         scheduled = (d in fy_schedule) if d >= dt.date(2016, 10, 1) and fy_schedule else True
+        # Announcement times for RBI are pending sourcing from official saved pages.
+        # Once a saved raw file contains the time, update the conditional below and
+        # set time_quality to "exact" or "approximate" (DECISION-020).
+        hhmm, quality, tsrc = None, "unknown", "Not yet sourced (pending official page)"
+        local, utc = localize("RBI", d, hhmm)
         rows.append(row("RBI", d, event_type="scheduled_meeting" if scheduled else "unscheduled_meeting",
                         scheduled=scheduled, decision=classify(size), size_bp=size,
                         new_rate_pct=rate.asof(d + dt.timedelta(days=3)),
                         rate_basis="Repo rate from 3 Apr 2001; bank rate before (BIS WS_CBPOL IN)",
-                        time_quality="unknown", time_source="Release time not stated on RBI archive pages",
+                        announce_time_local=local, announce_ts_utc=utc,
+                        time_quality=quality, time_source=tsrc,
                         date_source=decisions[d], source_url=RBI_URL))
     for eff, old, new in unmatched:
         size = round((new - old) * 100)
@@ -784,6 +793,7 @@ def main() -> list[str]:
     rows.sort(key=lambda r: (r["regime"], r["decision_date"]))
     for r in rows:
         r["window_start_utc"], r["window_end_utc"] = announcement_window(r)
+        r["analysis_ready_timing"] = 1 if r["time_quality"] in ("exact", "approximate") else 0
     with open(OUT_CSV, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=FIELDS)
         w.writeheader()

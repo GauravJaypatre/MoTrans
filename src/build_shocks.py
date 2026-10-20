@@ -90,7 +90,7 @@ def build(policy: pd.DataFrame, controls: pd.DataFrame) -> pd.DataFrame:
     for ev in policy.itertuples(index=False):
         d = dt.date.fromisoformat(ev.decision_date)
         market = YIELD_MARKET[ev.regime]
-        a = align(ev.window_start_utc, ev.window_end_utc, CAL_MARKET.get(market, market))
+        a = align(ev.window_start_utc, ev.window_end_utc, CAL_MARKET.get(market, market), time_quality=getattr(ev, "time_quality", None))
         proxy = proxy_change(ys.get(market), a.baseline_date, a.reacting_date)
         hf, hf_source = np.nan, ""
         if ev.regime == "Fed" and d in fs.index and pd.notna(fs.loc[d, "MPS"]):

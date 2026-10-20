@@ -86,9 +86,8 @@ the series confirmed in Phase B onward.
 | BoK | — | BIS WS_CBPOL KR (rate changes only) | stats.bis.org | CSV API | 2000–2026 | holds missing unless meetings listed (ISS-019) | BIS terms | ✅ 2026-10-13 |
 | RBI | Reserve Bank of India | RBI monetary policy archive (one page per FY); BIS WS_CBPOL IN (rate) | `rbi.org.in/Scripts/Annualpolicy.aspx` (form post), `stats.bis.org/.../D.IN` | HTML + CSV API | 2000–2026 | no release times; intermeeting dates (ISS-007/008) | RBI terms / BIS terms | ✅ 2026-10-13 |
 
----
-
 ## 3. Monetary Policy Shocks (12 regimes)
+
 
 | Regime | Shock Type | Grade | Candidate Source | API / URL | Notes | Verified? |
 |---|---|---|---|---|---|---|

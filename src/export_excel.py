@@ -22,7 +22,7 @@ from openpyxl.styles import Alignment, Font, PatternFill
 ROOT = Path(__file__).resolve().parent.parent
 FINAL = ROOT / "data" / "final"
 INTERIM = ROOT / "data" / "interim"
-OUT = FINAL / "MoTrans15_all_records.xlsx"
+OUT = FINAL / "MoTrans15_v2.xlsx"
 MAX_TEXT = 32_000
 
 SHEETS = [  # (sheet name, loader, description)

@@ -62,6 +62,9 @@ One row per **(decision × reacting country × reacting index)**.
 | `clr_60` | `float64` | log return | Cumulative log return over 60 trading days after the reacting session |
 | `clr_pre5` | `float64` | log return | Cumulative log return over 5 trading days BEFORE the reacting session (pre-event window for placebo use) |
 | `split_tag` | `str` | — | Sample split label (same rule as panel_daily) |
+| `time_quality` | `str` | — | `exact`, `approximate`, or `unknown`; from the decision table |
+| `window_start_utc`, `window_end_utc` | `str` | UTC ISO | Earliest / latest possible announcement time (DECISION-013/020) |
+| `analysis_ready_timing` | `int8` | flag | 1 if `timing_ambiguous == 0` AND `time_quality` in {exact, approximate} AND `reacting_session_date >= decision_date`; 0 otherwise. Rows with 0 are kept; use this flag to restrict to the unambiguous clean subset (DECISION-020). |
 
 > **Naming convention:** `clr` = cumulative log return. These are NOT called
 > "cumulative abnormal returns" (CAR) because no benchmark model has been
@@ -135,6 +138,7 @@ Built by `src/collect_policy.py` from files in `data/raw/` only.
 | `window_start_utc`, `window_end_utc` | `str` | Earliest / latest possible release time (UTC), per DECISION-013; equal for exact times |
 | `date_source` | `str` | Where the event date comes from |
 | `source_url` | `str` | Official document for the event |
+| `analysis_ready_timing` | `int8` | 1 if `time_quality` in {exact, approximate}; 0 for unknown (DECISION-020). Present in both `policy_decisions.csv` and `events.parquet`. |
 
 ## Interim (Phase B1): `data/interim/pilot_indices_daily.parquet`
 

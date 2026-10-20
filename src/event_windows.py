@@ -73,20 +73,27 @@ def build(policy: pd.DataFrame, panel: pd.DataFrame) -> pd.DataFrame:
         for sid, s in series.items():
             country = s["country"]
             if country not in cache:
-                cache[country] = align(ev["window_start_utc"], ev["window_end_utc"], country)
+                cache[country] = align(ev["window_start_utc"], ev["window_end_utc"], country, time_quality=ev.get("time_quality"))
             a = cache[country]
             if a.baseline_date is None or a.reacting_date is None:
                 continue
             w = window_returns(s, a.baseline_date, a.reacting_date)
             if w is None:
                 continue
+            is_clean_timing = int(
+                (not a.timing_ambiguous) and
+                (ev.get("time_quality") in ("exact", "approximate")) and
+                (a.reacting_date is not None) and
+                (str(a.reacting_date) >= str(ev["decision_date"]))
+            )
             rows.append({
                 "event_id": event_id, **{k: ev[k] for k in KEEP},
                 "country": country, "index_id": sid, "index_class": s["index_class"],
                 "home_market": int(country in HOME_MARKETS[ev["regime"]]),
                 "baseline_date": a.baseline_date, "reacting_session_date": a.reacting_date,
                 "announce_in_session": int(a.announce_in_session),
-                "timing_ambiguous": int(a.timing_ambiguous), **w,
+                "timing_ambiguous": int(a.timing_ambiguous),
+                "analysis_ready_timing": is_clean_timing, **w,
                 "shock_std": np.nan, "shock_grade": "",
                 "split_tag": split_tag(dt.date.fromisoformat(ev["decision_date"])),
             })

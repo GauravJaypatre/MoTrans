@@ -175,3 +175,27 @@ remaining links by hand; the collector will pick up saved files.
 ### ISS-028 — Statement lengths differ by design · note for modelling
 ECB texts include the Q&A (median ~6,300 words); BoJ statements are short (median ~300);
 Fed ~500; RBI ~3,000. Tone models should normalise by length or use the introductory part.
+
+## Priority Group 1 (2026-10-18)
+
+### ISS-029 — Announcement times for 9 regimes pending official sources · open
+Announcement times for BoE, BoC, RBA, BoK, Banxico, BCB, CBR, PBoC and RBI have not been
+sourced from any saved file in `data/raw/`. All 9 regimes currently carry
+`time_quality = "unknown"` and `time_source = "Not yet sourced (pending official page)"`.
+
+To resolve: save the official schedule or press-release page for each regime to `data/raw/`
+via `src.download.save_raw_file()` (write-once, MANIFEST.csv entry required), then update the
+corresponding conditional in `src/collect_policy_more.py::regime_announcement_time()` or
+`src/collect_policy.py::harvest_rbi()`, pointing `time_source` at the saved file path or URL
+recorded in MANIFEST.csv. Re-run the pipeline and re-export `MoTrans15_v2.xlsx`.
+
+Candidate official pages (to be verified and saved — not yet downloaded):
+- BoE: https://www.bankofengland.co.uk/monetary-policy/monetary-policy-committee
+- BoC: https://www.bankofcanada.ca/core-functions/monetary-policy/key-interest-rate/
+- RBA: https://www.rba.gov.au/monetary-policy/rba-board-calendar.html
+- BoK: https://www.bok.or.kr/eng/main/contents.do?menuNo=400037
+- Banxico: https://www.banxico.org.mx/publicaciones-y-prensa/anuncios-de-las-decisiones-de-politica-monetaria/anuncios-politica-monetaria-t.html
+- BCB: https://www.bcb.gov.br/controleinflacao/copomregulamento
+- CBR: https://www.cbr.ru/eng/press/event/?id=monetary_policy
+- PBoC / NIFC: http://www.chinamoney.com.cn (LPR announcement regulation)
+- RBI: https://www.rbi.org.in/Scripts/Annualpolicy.aspx (existing saved pages)

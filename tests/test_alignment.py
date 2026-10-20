@@ -32,10 +32,10 @@ CASES = {
     "fed_2020_03_15": (("2020-03-15T21:00Z", "2020-03-15T21:00Z"), {
         "US": (D(2020, 3, 13), D(2020, 3, 16), False), "DE": (D(2020, 3, 13), D(2020, 3, 16), False),
         "IN": (D(2020, 3, 13), D(2020, 3, 16), False), "JP": (D(2020, 3, 13), D(2020, 3, 16), False)}),
-    # Taper-tantrum FOMC 19 Jun 2013, time unknown -> whole ET day -> ambiguous everywhere.
+    # Taper-tantrum FOMC 19 Jun 2013, time unknown -> whole ET day -> conservative reaction is next session after window end.
     "fed_2013_06_19": (("2013-06-19T04:00Z", "2013-06-20T03:59Z"), {
-        "US": (D(2013, 6, 18), D(2013, 6, 19), True), "DE": (D(2013, 6, 18), D(2013, 6, 19), True),
-        "IN": (D(2013, 6, 18), D(2013, 6, 19), True), "JP": (D(2013, 6, 18), D(2013, 6, 19), True)}),
+        "US": (D(2013, 6, 18), D(2013, 6, 20), True), "DE": (D(2013, 6, 18), D(2013, 6, 20), True),
+        "IN": (D(2013, 6, 18), D(2013, 6, 20), True), "JP": (D(2013, 6, 18), D(2013, 6, 20), True)}),
     # BoJ 29 Jan 2016: meeting ended 12:31 JST, window to 13:31 JST - inside the Tokyo session.
     "boj_2016_01_29": (("2016-01-29T03:31Z", "2016-01-29T04:31Z"), {
         "US": (D(2016, 1, 28), D(2016, 1, 29), False), "DE": (D(2016, 1, 28), D(2016, 1, 29), False),
@@ -50,11 +50,17 @@ CASES = {
     # ECB 7 Apr 2011, 13:45 CEST.
     "ecb_2011_04_07": (("2011-04-07T11:45Z", "2011-04-07T11:45Z"), {
         "DE": (D(2011, 4, 6), D(2011, 4, 7), False), "JP": (D(2011, 4, 7), D(2011, 4, 8), False)}),
-    # RBI 4 May 2022, time unknown -> whole IST day. India same day but flagged;
-    # 3 May was an Indian holiday and Tokyo is shut 3-5 May (Golden Week).
+    # RBI 4 May 2022, whole-day IST window under conservative rule:
+    # US reacts 4 May (closes 20:00Z > 18:29Z window end); IN/DE closed earlier so conservative reaction is 5 May.
+    # 3 May was Indian holiday; Tokyo shut 3-5 May (Golden Week) -> 6 May.
     "rbi_2022_05_04": (("2022-05-03T18:30Z", "2022-05-04T18:29Z"), {
-        "IN": (D(2022, 5, 2), D(2022, 5, 4), True), "JP": (D(2022, 5, 2), D(2022, 5, 6), False),
-        "US": (D(2022, 5, 2), D(2022, 5, 3), True), "DE": (D(2022, 5, 3), D(2022, 5, 4), True)}),
+        "IN": (D(2022, 5, 2), D(2022, 5, 5), True), "JP": (D(2022, 5, 2), D(2022, 5, 6), False),
+        "US": (D(2022, 5, 2), D(2022, 5, 4), True), "DE": (D(2022, 5, 3), D(2022, 5, 5), True)}),
+    # RBI 4 May 2022 with exact official announcement time (14:00 IST / 08:30Z):
+    # IN, DE, and US all react cleanly same day on 4 May 2022.
+    "rbi_2022_05_04_exact": (("2022-05-04T08:30Z", "2022-05-04T08:30Z"), {
+        "IN": (D(2022, 5, 2), D(2022, 5, 4), False), "JP": (D(2022, 5, 2), D(2022, 5, 6), False),
+        "US": (D(2022, 5, 3), D(2022, 5, 4), False), "DE": (D(2022, 5, 3), D(2022, 5, 4), False)}),
 }
 
 
@@ -89,3 +95,44 @@ def test_window_returns_on_synthetic_series():
     assert np.isnan(w["clr_pre5"])                                 # only 3 days before the baseline
     w2 = window_returns(s, baseline=D(2024, 1, 9), reacting=D(2024, 1, 10))
     assert np.isclose(w2["clr_pre5"], np.log(105 / 100))           # 9 Jan vs five observations earlier
+
+
+def test_reacting_session_never_precedes_earliest_possible_announcement():
+    """Fail if any reacting session precedes the earliest possible announcement.
+    
+    Verifies that the 4,467 former timing defects (where Asian announcements on day T had
+    reacting sessions on day T-1 in Western markets) are strictly rejected.
+    """
+    from src.alignment import _ts, sessions
+
+    # Test cases representing the 5 regimes that previously had violations
+    # (BoJ, BoK, PBoC, RBA, RBI) paired with Western markets (US, BR, CA, MX)
+    cases = [
+        # regime, decision_date, window_start_utc, window_end_utc
+        ("BoJ", D(2007, 4, 27), "2007-04-26T15:00:00Z", "2007-04-27T14:59:00Z"),
+        ("BoK", D(2008, 10, 9), "2008-10-08T15:00:00Z", "2008-10-09T14:59:00Z"),
+        ("PBoC", D(2008, 9, 16), "2008-09-15T16:00:00Z", "2008-09-16T15:59:00Z"),
+        ("RBA", D(2008, 10, 8), "2008-10-07T14:00:00Z", "2008-10-08T13:59:00Z"),
+        ("RBI", D(2008, 10, 20), "2008-10-19T18:30:00Z", "2008-10-20T18:29:00Z"),
+    ]
+
+    western_countries = ["US", "BR", "CA", "MX"]
+
+    for regime, dec_date, start_utc, end_utc in cases:
+        for country in western_countries:
+            a = align(start_utc, end_utc, country, time_quality="unknown")
+            # 1. Reacting date must never precede the decision date
+            assert a.reacting_date is not None
+            assert a.reacting_date >= dec_date, (
+                f"{regime} on {dec_date} got reacting date {a.reacting_date} in {country}, "
+                f"which precedes the decision date!"
+            )
+            # 2. Reacting session close must be strictly after window_end (conservative rule)
+            dates, _opens, closes = sessions(country)
+            idx = int(np.where(dates == a.reacting_date)[0][0])
+            react_close = closes[idx]
+            end_ts = _ts(end_utc)
+            assert react_close > end_ts, (
+                f"{country} reacting session close {react_close} did not close after window end {end_ts}"
+            )
+
