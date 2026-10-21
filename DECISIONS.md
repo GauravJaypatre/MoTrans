@@ -329,4 +329,18 @@ official page)"`. See ISS-029 for the sourcing plan.
    ```
 5. **Zero-Rate Sensitivity Flag**:
    - BoJ decisions prior to the end of Yield Curve Control (on or before 2024-03-18) are flagged as `shock_quality_flag = 'low_sensitivity_zero_lower_bound'` because the 1Y yield was pinned near zero (training SD = 1.13 bp), distorting post-2022 standardized shocks.
+6. **`shock_primary` Definition**:
+   ```python
+   # 1 for clean analysis cases only; 0 for:
+   # (a) BoJ decisions during ZIRP/YCC (<= 2024-03-18)
+   # (b) CBR decisions post-Feb 2022 (>= 2022-02-24, structural break / sanctions)
+   # (c) PBoC decisions (2Y proxy caveats)
+   shock_primary = int(shock_usable == 1 and not (is_boj_zirp or is_cbr_break or is_pboc))
+   ```
+7. **Winsorized Shocks (`shock_std_w`)**:
+   - Standardized shocks are winsorized at `[-4.0, +4.0]` standard deviations alongside raw values. Raw `shock_std` is never overwritten.
+8. **Tenor Tracking & Control Variable Renaming**:
+   - AU and CN 2-year sovereign benchmark yields are renamed to `yield_2y` in `controls_long` (never conflated with `yield_1y`).
+   - `shock_proxy_tenor` explicitly records the tenor used (`1Y` for US, EA, JP, GB, RU, BR; `2Y` for AU, CN, CA).
+
 

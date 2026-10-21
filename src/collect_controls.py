@@ -392,8 +392,9 @@ def collect_yields(issues: list[str]) -> list[dict]:
             issues.append(f"{country}: 1-year yield source failed ({desc}): {type(e).__name__}: {str(e)[:120]}")
             continue
         if not pts:
-            issues.append(f"{country}: 1-year yield source returned no observations ({desc}).")
-        out += rows(country, "yield_1y", pts, desc)
+            issues.append(f"{country}: yield source returned no observations ({desc}).")
+        var_name = "yield_2y" if country in ("AU", "CN") else "yield_1y"
+        out += rows(country, var_name, pts, desc)
     return out
 
 

@@ -34,33 +34,41 @@ In the initial audit of `MoTrans15_all_records.xlsx`:
 
 4. **New Columns**:
    - `shock_usable` (int8, 0/1): Set to 1 if `shock_grade` is A or B and `shock_std` is finite and non-null; 0 for Grade C.
-   - `shock_quality_flag` (str): BoJ decisions during the zero-rate/YCC regime ($\le 2024-03-18$) are flagged as `low_sensitivity_zero_lower_bound` due to yield pegging.
+   - `shock_primary` (int8, 0/1): Set to 1 for clean analysis cases; 0 for BoJ ZIRP/YCC ($\le 2024-03-18$), CBR post-Feb 2022 ($\ge 2022-02-24$), and China PBoC (pending 2Y proxy caveats).
+   - `shock_std_w` (float64): Winsorized standardized shock, strictly capped at `[-4.0, +4.0]` standard deviations. Raw `shock_std` is untouched.
+   - `shock_proxy_tenor` (str): Explicitly records proxy maturity (`1Y` for US, EA, JP, GB, RU, BR; `2Y` for AU, CN, CA; empty for unshocked).
+   - `shock_quality_flag` (str): Detailed caveats (`low_sensitivity_zero_lower_bound`, `structural_break_ukraine_sanctions`, `tenor_2y_proxy_policy_transmission`).
+   - AU and CN 2-year sovereign yields renamed to `yield_2y` in `controls_long` (never conflated with `yield_1y`).
 
 5. **Sample Split Usability Breakdown & Low-Event Flags**:
-   Regimes with fewer than 20 usable events in `blind_test` ($\ge 2022$) are flagged:
-   - BoC: 19 usable events (flagged < 20)
-   - BoE: 19 usable events (flagged < 20)
-   - RBA: 19 usable events (flagged < 20)
-   - PBoC: 7 usable events (flagged < 20)
-   - BCB: 0 usable events (flagged < 20; SGS 7806 ended Sep 2019)
-   - Banxico: 0 usable events (flagged < 20; gated)
-   - BoK: 0 usable events (flagged < 20; gated)
-   - RBI: 0 usable events (flagged < 20; gated)
+   Regimes with fewer than 20 primary events in `blind_test` ($\ge 2022$) are flagged:
+   - BoC: 19 primary events (flagged < 20)
+   - BoE: 19 primary events (flagged < 20)
+   - RBA: 19 primary events (flagged < 20)
+   - CBR: 1 primary event (flagged < 20; structural break 2022-02-24)
+   - PBoC: 0 primary events (flagged < 20; 2Y proxy transmission caution)
+   - BCB: 0 primary events (flagged < 20; SGS 7806 ended Sep 2019)
+   - Banxico: 0 primary events (flagged < 20; gated)
+   - BoK: 0 primary events (flagged < 20; gated)
+   - RBI: 0 primary events (flagged < 20; gated)
+   - Note on BoJ: 21 post-ZIRP exit events ($\ge 2024-03-19$) in blind test.
 
 ### Quantitative Before / After
 
 | Metric | Before (MoTrans15_all_records.xlsx) | After (MoTrans15_v2.xlsx) | Change |
 |---|---|---|---|
-| Grade A shocks | 496 | 496 | 0 |
-| Grade B shocks | 772 | **883** | +111 (RBA +71, PBoC +40) |
+| Grade A shocks | 487 (Fed 201, ECB 286) | **487** (Fed 201, ECB 286) | 0 |
+| Grade B shocks | 781 | **892** | +111 (RBA +71, PBoC +40) |
 | Grade C shocks | 640 | **529** | −111 |
-| Decisions with `shock_usable == 1` | 0 (column absent) | **1,379** (72.27%) | +1,379 |
-| Decisions with `shock_usable == 0` | 0 (column absent) | **529** (27.73%) | +529 |
+| Total decisions with `shock_usable == 1` | 0 (column absent) | **1,379** (72.27%) | +1,379 |
+| Total decisions with `shock_primary == 1` | 0 (column absent) | **837** (43.87%) | +837 |
+| Events with \|shock_std\| > 5 SD | 7 | **7** (raw preserved) | 0 |
+| Events with \|shock_std_w\| capped at 4.0 | 0 | **15** (8 at +4, 7 at -4) | +15 |
 | BoJ events flagged `low_sensitivity_zero_lower_bound` | 0 | **318** | +318 |
 | Events sheet rows deleted | 0 | 0 | 0 (Rule 2 maintained) |
 
 ### Tests Added
-- [`tests/test_priority_group_2_shocks.py`](tests/test_priority_group_2_shocks.py): 7 tests covering `shock_usable` definition, prevention of size-based shock imputation, proxy grade assignments, gated regime retention, merge consistency, blind-test counts, and Japan ZIRP quality flags.
+- [`tests/test_priority_group_2_shocks.py`](tests/test_priority_group_2_shocks.py): 11 tests covering `shock_usable`, `shock_primary`, `shock_std_w` bounds, `shock_proxy_tenor`, `yield_2y` control separation, prevention of size-based shock imputation, proxy grade assignments, gated regime retention, merge consistency, blind-test counts, and Japan ZIRP quality flags.
 
 ---
 

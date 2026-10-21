@@ -54,9 +54,12 @@ One row per **(decision × reacting country × reacting index)**.
 | `new_rate_pct` | `float64` | percent | New policy rate after the decision |
 | `scheduled` | `bool` | — | `True` if scheduled meeting; `False` if emergency/unscheduled |
 | `shock_std` | `float64` | standard deviations | Standardized shock (1 SD = 1 SD of that shock source). NaN until Phase D. |
+| `shock_std_w` | `float64` | standard deviations | Winsorized standardized shock, capped strictly at [-4.0, +4.0] SD (DECISION-021). |
 | `shock_grade` | `str` | — | Quality grade: `A` (clean public surprise), `B` (reasonable proxy), `C` (weak). Populated in Phase D. |
 | `shock_usable` | `int8` | flag | 1 if `shock_grade` in {A, B} AND `shock_std` is finite and non-null; 0 for Grade C / missing shock (DECISION-021). |
-| `shock_quality_flag` | `str` | — | Quality caveats; e.g. `low_sensitivity_zero_lower_bound` for BoJ decisions during the zero-rate/YCC era (DECISION-021). |
+| `shock_primary` | `int8` | flag | 1 for clean analysis cases; 0 for BoJ ZIRP/YCC, CBR post-Feb 2022, PBoC, and unusable shocks (DECISION-021). |
+| `shock_proxy_tenor` | `str` | — | Tenor of sovereign yield proxy (e.g. `1Y`, `2Y`); empty if no proxy used (DECISION-021). |
+| `shock_quality_flag` | `str` | — | Quality caveats; e.g. `low_sensitivity_zero_lower_bound`, `structural_break_ukraine_sanctions`, `tenor_2y_proxy_policy_transmission` (DECISION-021). |
 | `clr_1` | `float64` | log return | Cumulative log return over 1 trading day after the reacting session |
 | `clr_3` | `float64` | log return | Cumulative log return over 3 trading days after the reacting session |
 | `clr_5` | `float64` | log return | Cumulative log return over 5 trading days after the reacting session |
@@ -88,13 +91,16 @@ One row per **(regime × decision date)**. Built in Phase D.
 | `size_bp` | `int16` | basis points | Rate change size |
 | `shock_raw` | `float64` | source units | Raw shock value (surprise in source units) |
 | `shock_std` | `float64` | SD | raw / training-period (to 2019) SD of the same source; HF where available, else proxy (DECISION-018) |
+| `shock_std_w` | `float64` | SD | Winsorized standardized shock, capped strictly at [-4.0, +4.0] SD (DECISION-021) |
 | `shock_source` | `str` | — | Source of the shock (e.g. "HF surprise series", "1Y yield change proxy") |
 | `shock_grade` | `str` | — | A / B / C with written justification in `docs/shock_validation.md` |
 | `shock_usable` | `int8` | flag | 1 if `shock_grade` in {A, B} AND `shock_std` is finite and non-null; 0 for Grade C / missing shock (DECISION-021). |
-| `shock_quality_flag` | `str` | — | Quality caveats; e.g. `low_sensitivity_zero_lower_bound` for BoJ decisions during the zero-rate/YCC era (DECISION-021). |
+| `shock_primary` | `int8` | flag | 1 for clean analysis cases; 0 for BoJ ZIRP/YCC, CBR post-Feb 2022, PBoC, and unusable shocks (DECISION-021). |
+| `shock_proxy_tenor` | `str` | — | Tenor of sovereign yield proxy (e.g. `1Y`, `2Y`); empty if no proxy used (DECISION-021). |
+| `shock_quality_flag` | `str` | — | Quality caveats; e.g. `low_sensitivity_zero_lower_bound`, `structural_break_ukraine_sanctions`, `tenor_2y_proxy_policy_transmission` (DECISION-021). |
 | `event_type` | `str` | — | As in the decision table |
 | `shock_hf_raw`, `shock_hf_std` | `float64` | bp / SD | High-frequency surprise (Fed MPS, ECB OIS 1Y) and its standardised value |
-| `shock_proxy_raw`, `shock_proxy_std` | `float64` | bp / SD | 1-year yield change proxy and its standardised value |
+| `shock_proxy_raw`, `shock_proxy_std` | `float64` | bp / SD | 1-year or 2-year yield change proxy and its standardised value |
 | `split_tag` | `str` | — | Sample split label |
 
 ---

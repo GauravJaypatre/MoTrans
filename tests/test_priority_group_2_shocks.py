@@ -100,3 +100,47 @@ class TestPriorityGroup2Shocks:
         """BoJ events during the zero-rate / QQE era must carry the honest quality flag."""
         boj_zirp = shocks_df[(shocks_df["regime"] == "BoJ") & (shocks_df["decision_date"].astype(str) <= "2024-03-18")]
         assert (boj_zirp["shock_quality_flag"] == "low_sensitivity_zero_lower_bound").all()
+
+    def test_shock_primary_definition(self, shocks_df):
+        """shock_primary must be 0 for BoJ ZIRP, CBR post-Feb 2022, and China PBoC."""
+        # BoJ ZIRP
+        boj_zirp = shocks_df[(shocks_df["regime"] == "BoJ") & (shocks_df["decision_date"].astype(str) <= "2024-03-18")]
+        assert (boj_zirp["shock_primary"] == 0).all()
+
+        # CBR post-Feb 2022
+        cbr_break = shocks_df[(shocks_df["regime"] == "CBR") & (shocks_df["decision_date"].astype(str) >= "2022-02-24")]
+        assert (cbr_break["shock_primary"] == 0).all()
+
+        # PBoC
+        pboc = shocks_df[shocks_df["regime"] == "PBoC"]
+        assert (pboc["shock_primary"] == 0).all()
+
+        # Clean Fed and ECB must have shock_primary == shock_usable
+        for reg in ["Fed", "ECB"]:
+            sub = shocks_df[shocks_df["regime"] == reg]
+            assert (sub["shock_primary"] == sub["shock_usable"]).all()
+
+    def test_winsorized_shock_bounds(self, shocks_df):
+        """shock_std_w must be capped strictly within [-4.0, 4.0]."""
+        valid = shocks_df[shocks_df["shock_std"].notna()]
+        assert (valid["shock_std_w"] >= -4.0).all()
+        assert (valid["shock_std_w"] <= 4.0).all()
+        # Raw shock must not be overwritten
+        assert (valid["shock_std"] != valid["shock_std_w"]).any(), "Winsorization did not cap any outliers!"
+
+    def test_shock_proxy_tenor(self, shocks_df):
+        """Tenors must match expected values (2Y for AU, CN, CA; 1Y for US, EA, JP, GB, RU, BR)."""
+        tenors = shocks_df[shocks_df["shock_proxy_std"].notna()].groupby("regime")["shock_proxy_tenor"].unique()
+        assert tenors["RBA"] == ["2Y"]
+        assert tenors["PBoC"] == ["2Y"]
+        assert tenors["BoC"] == ["2Y"]
+        for reg in ["Fed", "ECB", "BoJ", "BoE", "CBR", "BCB"]:
+            assert tenors[reg] == ["1Y"]
+
+    def test_controls_yield_2y(self):
+        """AU and CN yields in controls_long must be labeled yield_2y, not yield_1y."""
+        controls = pd.read_parquet(INTERIM / "controls_long.parquet")
+        assert (controls[controls["country"] == "AU"]["variable"] == "yield_2y").any()
+        assert not (controls[controls["country"] == "AU"]["variable"] == "yield_1y").any()
+        assert (controls[controls["country"] == "CN"]["variable"] == "yield_2y").any()
+        assert not (controls[controls["country"] == "CN"]["variable"] == "yield_1y").any()

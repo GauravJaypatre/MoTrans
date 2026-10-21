@@ -77,8 +77,14 @@ def eampd() -> pd.DataFrame:
     return df[df["date"] >= dt.date(1999, 1, 1)][["date", "OIS_1Y"]]
 
 
+PROXY_TENOR = {
+    "Fed": "1Y", "ECB": "1Y", "BoJ": "1Y", "BoE": "1Y", "BoC": "2Y",
+    "CBR": "1Y", "BCB": "1Y", "RBA": "2Y", "PBoC": "2Y",
+}
+
+
 def yield_series(controls: pd.DataFrame) -> dict[str, pd.Series]:
-    y = controls[controls["variable"] == "yield_1y"]
+    y = controls[controls["variable"].isin(["yield_1y", "yield_2y"])]
     return {c: g.set_index("date")["value"].sort_index() for c, g in y.groupby("country")}
 
 
@@ -103,6 +109,7 @@ def build(policy: pd.DataFrame, controls: pd.DataFrame) -> pd.DataFrame:
         market = YIELD_MARKET[ev.regime]
         a = align(ev.window_start_utc, ev.window_end_utc, CAL_MARKET.get(market, market), time_quality=getattr(ev, "time_quality", None))
         proxy = proxy_change(ys.get(market), a.baseline_date, a.reacting_date)
+        tenor = PROXY_TENOR.get(ev.regime, "1Y")
         hf, hf_source = np.nan, ""
         if ev.regime == "Fed" and d in fs.index and pd.notna(fs.loc[d, "MPS"]):
             hf, hf_source = float(fs.loc[d, "MPS"]) * 100, "FRBSF Bauer-Swanson MPS (bp)"
@@ -112,7 +119,7 @@ def build(policy: pd.DataFrame, controls: pd.DataFrame) -> pd.DataFrame:
                      "decision_date": d, "announce_ts_utc": ev.announce_ts_utc, "decision": ev.decision,
                      "size_bp": ev.size_bp, "event_type": ev.event_type, "shock_hf_raw": hf,
                      "shock_hf_source": hf_source, "shock_proxy_raw": proxy,
-                     "shock_proxy_source": f"1-year yield change, {market} (bp)" if not np.isnan(proxy) else "",
+                     "shock_proxy_source": f"{tenor} yield change, {market} (bp)" if not np.isnan(proxy) else "",
                      "split_tag": split_tag(d)})
     df = pd.DataFrame(rows)
 
@@ -126,16 +133,32 @@ def build(policy: pd.DataFrame, controls: pd.DataFrame) -> pd.DataFrame:
     use_hf = df["shock_hf_std"].notna()
     df["shock_raw"] = np.where(use_hf, df["shock_hf_raw"], df["shock_proxy_raw"])
     df["shock_std"] = np.where(use_hf, df["shock_hf_std"], df["shock_proxy_std"])
+    df["shock_std_w"] = df["shock_std"].clip(lower=-4.0, upper=4.0)
     df["shock_source"] = np.where(use_hf, df["shock_hf_source"], df["shock_proxy_source"])
     df["shock_grade"] = np.select([use_hf, df["shock_proxy_std"].notna()], ["A", "B"], "C")
     df["shock_usable"] = (df["shock_grade"].isin(["A", "B"]) & df["shock_std"].notna()).astype(int)
+    df["shock_proxy_tenor"] = np.where(df["shock_proxy_std"].notna(), df["regime"].map(PROXY_TENOR).fillna(""), "")
 
     is_boj_zirp = (df["regime"] == "BoJ") & (pd.to_datetime(df["decision_date"]).dt.date <= dt.date(2024, 3, 18))
+    is_cbr_break = (df["regime"] == "CBR") & (pd.to_datetime(df["decision_date"]).dt.date >= dt.date(2022, 2, 24))
+    is_china = (df["regime"] == "PBoC")
+
+    is_primary_excluded = is_boj_zirp | is_cbr_break | is_china
+    df["shock_primary"] = ((df["shock_usable"] == 1) & (~is_primary_excluded)).astype(int)
+
     df["shock_quality_flag"] = np.where(
         is_boj_zirp,
         "low_sensitivity_zero_lower_bound",
-        np.where(df["shock_grade"] == "A", "high_frequency",
-                 np.where(df["shock_grade"] == "B", "sovereign_yield_proxy", "no_shock"))
+        np.where(
+            is_cbr_break,
+            "structural_break_ukraine_sanctions",
+            np.where(
+                is_china,
+                "tenor_2y_proxy_policy_transmission",
+                np.where(df["shock_grade"] == "A", "high_frequency",
+                         np.where(df["shock_grade"] == "B", "sovereign_yield_proxy", "no_shock"))
+            )
+        )
     )
     return df
 
@@ -153,20 +176,26 @@ def validation_md(df: pd.DataFrame) -> str:
                      f"{(g.shock_grade == 'C').sum()} | {s.decision_date.min() if len(s) else '-'} | "
                      f"{s.decision_date.max() if len(s) else '-'} |")
 
-    lines += ["", "## Usable shocks by regime and split (Priority Group 2)", "",
+    lines += ["", "## Usable and Primary shocks by regime and split (Priority Group 2)", "",
               ("`shock_usable = 1` requires a valid non-missing standardized shock (`shock_grade` in {'A', 'B'}). "
-               "Regimes with fewer than 20 usable blind-test events are flagged below (DECISION-021)."), "",
-              "| regime | train (to 2019) | crisis (2020-21) | blind_test (2022+) | total usable | blind-test status |",
-              "|---|---|---|---|---|---|"]
+               "`shock_primary = 1` restricts to clean shocks (excluding BoJ ZIRP/YCC, CBR post-Feb 2022, and PBoC). "
+               "Regimes with fewer than 20 primary blind-test events are flagged below."), "",
+              "| regime | usable train | primary train | usable crisis | primary crisis | usable blind | primary blind | total usable | total primary | primary blind status |",
+              "|---|---|---|---|---|---|---|---|---|---|"]
 
     for reg, g in df.groupby("regime"):
-        usable = g[g["shock_usable"] == 1]
-        n_train = len(usable[usable["split_tag"] == "train"])
-        n_crisis = len(usable[usable["split_tag"] == "crisis"])
-        n_blind = len(usable[usable["split_tag"] == "blind_test"])
-        n_total = len(usable)
-        status = "**FLAGGED (< 20)**" if n_blind < 20 else "Sufficient (>= 20)"
-        lines.append(f"| {reg} | {n_train} | {n_crisis} | {n_blind} | {n_total} | {status} |")
+        u = g[g["shock_usable"] == 1]
+        p = g[g["shock_primary"] == 1]
+        u_train = len(u[u["split_tag"] == "train"])
+        p_train = len(p[p["split_tag"] == "train"])
+        u_crisis = len(u[u["split_tag"] == "crisis"])
+        p_crisis = len(p[p["split_tag"] == "crisis"])
+        u_blind = len(u[u["split_tag"] == "blind_test"])
+        p_blind = len(p[p["split_tag"] == "blind_test"])
+        u_total = len(u)
+        p_total = len(p)
+        status = "**FLAGGED (< 20)**" if p_blind < 20 else "Sufficient (>= 20)"
+        lines.append(f"| {reg} | {u_train} | {p_train} | {u_crisis} | {p_crisis} | {u_blind} | {p_blind} | {u_total} | {p_total} | {status} |")
 
     lines += ["", "## Japan zero-rate proxy review", "",
               "During 2000-2019 (ZIRP/QQE), the 1-year JGB yield was compressed near zero with minimal variance "
@@ -228,21 +257,24 @@ def main() -> pd.DataFrame:
     controls = pd.read_parquet(INTERIM / "controls_long.parquet")
     shocks = build(policy, controls)
     cols = ["event_id", "regime", "decision_date", "announce_ts_utc", "decision", "size_bp", "event_type",
-            "shock_raw", "shock_std", "shock_source", "shock_grade", "shock_usable", "shock_quality_flag",
+            "shock_raw", "shock_std", "shock_std_w", "shock_source", "shock_grade",
+            "shock_usable", "shock_primary", "shock_proxy_tenor", "shock_quality_flag",
             "shock_hf_raw", "shock_hf_std", "shock_proxy_raw", "shock_proxy_std", "split_tag"]
     shocks[cols].to_parquet(FINAL / "shocks.parquet", index=False)
 
     events = pd.read_parquet(FINAL / "events.parquet").drop(
-        columns=["shock_std", "shock_grade", "shock_usable", "shock_quality_flag"], errors="ignore"
+        columns=["shock_std", "shock_std_w", "shock_grade", "shock_usable", "shock_primary",
+                 "shock_proxy_tenor", "shock_quality_flag"], errors="ignore"
     )
     events = events.merge(
-        shocks[["event_id", "shock_std", "shock_grade", "shock_usable", "shock_quality_flag"]],
+        shocks[["event_id", "shock_std", "shock_std_w", "shock_grade", "shock_usable",
+                "shock_primary", "shock_proxy_tenor", "shock_quality_flag"]],
         on="event_id", how="left"
     )
     events.to_parquet(FINAL / "events.parquet", index=False)
 
-    policy = policy.drop(columns=["shock_usable", "shock_grade"], errors="ignore")
-    shocks_subset = shocks[["event_id", "shock_usable", "shock_grade"]].drop_duplicates()
+    policy = policy.drop(columns=["shock_usable", "shock_primary", "shock_grade", "shock_quality_flag"], errors="ignore")
+    shocks_subset = shocks[["event_id", "shock_usable", "shock_primary", "shock_grade", "shock_quality_flag"]].drop_duplicates()
     if "event_id" not in policy.columns:
         policy["event_id"] = policy["regime"].str.lower() + "_" + policy["decision_date"].astype(str)
     policy = policy.merge(shocks_subset, on="event_id", how="left")
