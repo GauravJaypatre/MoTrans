@@ -91,22 +91,22 @@ the series confirmed in Phase B onward.
 
 | Regime | Shock Type | Grade | Candidate Source | API / URL | Notes | Verified? |
 |---|---|---|---|---|---|---|
-| Fed | HF surprise (Bauer-Swanson MPS) | A | FRBSF | frbsf.org/wp-content/uploads/monetary-policy-surprises-data.xlsx | to Dec 2023; proxy after | ✅ 2026-10-13 |
-| ECB | EA-MPD OIS 1Y, monetary event window | A | ECB | ecb.europa.eu/pub/pdf/annex/Dataset_EA-MPD.xlsx | to Oct 2023; proxy after | ✅ 2026-10-13 |
-| PBoC | — | BIS WS_CBPOL CN (lending rate; LPR from Aug 2019; no meetings) | stats.bis.org | CSV API | 2000–2026 | holds missing unless meetings listed (ISS-019) | BIS terms | ✅ 2026-10-13 |
-| BoJ | 1Y gov yield change (proxy) | B | FRED (Japan 1Y yield) | TBD | — | ☐ |
-| BoE | — | BIS WS_CBPOL GB (rate changes only; no meeting list) | stats.bis.org | CSV API | 2000–2026 | holds missing unless meetings listed (ISS-019) | BIS terms | ✅ 2026-10-13 |
-| CBR | — | BIS WS_CBPOL RU (refinancing rate; key rate from Sep 2013) | stats.bis.org | CSV API | 2000–2026 | holds missing unless meetings listed (ISS-019) | BIS terms | ✅ 2026-10-13 |
-| BoC | — | BIS WS_CBPOL CA (rate changes only) | stats.bis.org | CSV API | 2000–2026 | holds missing unless meetings listed (ISS-019) | BIS terms | ✅ 2026-10-13 |
-| BCB | — | BCB Copom communiqué API (meetings) + BIS WS_CBPOL BR | stats.bis.org | CSV API | 2000–2026 | holds missing unless meetings listed (ISS-019) | BIS terms | ✅ 2026-10-13 |
-| Banxico | — | Banxico announcement list (meetings) + BIS WS_CBPOL MX (target from Jan 2008) | stats.bis.org | CSV API | 2000–2026 | holds missing unless meetings listed (ISS-019) | BIS terms | ✅ 2026-10-13 |
-| RBA | — | BIS WS_CBPOL AU (rate changes only; rba.gov.au blocks automated access) | stats.bis.org | CSV API | 2000–2026 | holds missing unless meetings listed (ISS-019) | BIS terms | ✅ 2026-10-13 |
-| BoK | — | BIS WS_CBPOL KR (rate changes only) | stats.bis.org | CSV API | 2000–2026 | holds missing unless meetings listed (ISS-019) | BIS terms | ✅ 2026-10-13 |
-| RBI | 1Y gov yield change (proxy) | B | RBI / FRED | TBD | — | ☐ |
+| Fed | HF surprise (Bauer-Swanson MPS) | A | FRBSF | frbsf.org/wp-content/uploads/monetary-policy-surprises-data.xlsx | to Dec 2023; 1Y Treasury proxy after | ✅ 2026-10-13 |
+| ECB | EA-MPD OIS 1Y, monetary event window | A | ECB | ecb.europa.eu/pub/pdf/annex/Dataset_EA-MPD.xlsx | to Oct 2023; 1Y Bund proxy after | ✅ 2026-10-13 |
+| BoJ | 1Y sovereign yield change proxy | B | FRED / MoF Japan (`IRLTLT01JPM156N` / JGB 1Y) | FRED API / MoF | Flagged `low_sensitivity_zero_lower_bound` during ZIRP/QQE era (to 2024-03-18) | ✅ 2026-10-13 |
+| BoE | 1Y/2Y Gilt yield change proxy | B | BoE / FRED (`IR3TIB01GBM156N`) | FRED API | 55 usable events | ✅ 2026-10-13 |
+| BoC | 2Y sovereign yield change proxy | B | BoC / FRED (`IR3TIB01CAM156N`) | FRED API | 72 usable events | ✅ 2026-10-13 |
+| CBR | 1Y OFZ sovereign yield change proxy | B | MOEX ISS / CBR | MOEX API | 100 usable events | ✅ 2026-10-13 |
+| BCB | Selic swap / 1Y DI yield proxy | B | BCB SGS (series 7806) | api.bcb.gov.br | Series ended Sep 2019; Grade C post-2019 | ✅ 2026-10-13 |
+| RBA | 2Y government bond yield change proxy | B | Reserve Bank of Australia Table F2 (`FCMYGBAG2D`) | `rba.gov.au/statistics/tables/xls/f02dhist.xls` + `f2-data.csv` | 71 events Grade B (1 event Grade C due to 2013 publication transition gap) | ✅ 2026-10-21 |
+| PBoC | 2Y sovereign benchmark yield change proxy | B | ChinaBond / Eastmoney (`bond_zh_us_rate`) | akshare Python API | 40 events Grade B | ✅ 2026-10-21 |
+| Banxico | 1Y sovereign yield | C | Banxico SIE API (gated) | banxico.org.mx | Gated behind token/captcha. Per Rule 1, not fabricated. shock_usable = 0 | ✗ Gated (ISS-023) |
+| BoK | 1Y/3Y MSB/KTB sovereign yield | C | BoK ECOS / KRX | ecos.bok.or.kr / data.krx.co.kr | Requires authenticated account/token. Per Rule 1, not fabricated. shock_usable = 0 | ✗ Gated (ISS-023) |
+| RBI | 1Y G-Sec / ZCYC yield | C | CCIL / RBI DBIE | ccilindia.com / dbie.rbi.org.in | CCIL login-gated; DBIE only monthly/month-end. Per Rule 1, not fabricated. shock_usable = 0 | ✗ Gated (ISS-023) |
 
 > **Grade definitions:** A = clean public surprise series, B = reasonable
 > proxy, C = weak (descriptive use only). Written justification required for
-> each grade in Phase D.
+> each grade in Phase D / docs/shock_validation.md.
 
 ---
 

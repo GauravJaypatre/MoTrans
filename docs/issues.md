@@ -126,10 +126,11 @@ PBoC has no scheduled meetings. Fix: a team member saves each bank's meeting cal
 into data/raw/ and the collector adds the holds. Until then, analyses that need holds use
 Fed, ECB, RBI, BoJ, BCB and Banxico only.
 
-### ISS-020 — 1-year yields missing · open → Phase D grades
-No free daily 1-year yield for China, India, Mexico, Australia (RBA blocks downloads) and Korea
-(BoK ECOS needs an account); Brazil's series ends Sep 2019; FR/IT/ES use the euro-area curve;
-Canada uses the 2-year benchmark. Shocks for these regimes are grade C where no proxy exists.
+### ISS-020 — 1-year / 2-year sovereign yields · resolved for AU & CN (2026-10-21)
+Sourced official 2-year sovereign bond yields for Australia (RBA Table F2 `FCMYGBAG2D`, 1995–2026)
+and China (ChinaBond 2Y benchmark via `akshare.bond_zh_us_rate()`, 2002–2026). Yields added to
+controls long table and used to generate Grade B shock proxies. India (RBI/CCIL), Mexico (Banxico SIE),
+and South Korea (BoK ECOS) remain gated behind logins/captchas; per Rule 1 they are left missing.
 
 ### ISS-021 — Valuation not collected · open (accepted)
 No free historical P/E or earnings-yield series for these indices. `valuation` is empty; the
@@ -144,16 +145,18 @@ and Dec 2021 (RU); none for China and Australia. Values are left empty after the
 ### ISS-006 update — resolved by FRBSF times
 226 of 227 Fed decisions now have an exact time (statement page or FRBSF data).
 
-### ISS-023 — Regimes without a usable shock · open
-Grade C (no shock) for every event of RBI, PBoC, RBA, BoK and Banxico (no free daily 1-year
-yield), Brazil after Sep 2019, and a few BoC/CBR dates with stale yields. Per the plan these are
-descriptive only in the causal analysis. A licensed yield source (or OIS / swap curves) would
-upgrade them to B.
+### ISS-023 — Regimes without a usable shock · partially resolved (2026-10-21)
+Resolved for RBA (71 events upgraded to Grade B) and PBoC (40 events upgraded to Grade B).
+Added `shock_usable` flag (1 for Grade A/B with non-missing standardized shock, 0 for Grade C).
+Banxico (238), BoK (60), RBI (163) remain Grade C (`shock_usable = 0`) because their daily secondary
+yield curves are gated behind authentication/captchas. BCB has 0 usable shocks post-2019 because SGS 7806
+ended Sep 2019. These regimes are flagged as having < 20 usable blind-test events.
 
-### ISS-024 — Scale of standardised BoJ shocks · open (modelling note)
-Japan's 1-year yield barely moved in 2000-2019, so the training-period SD is small and post-2022
-BoJ shocks are large in SD units (e.g. +8.0 on 31 Jul 2024). Models should winsorise or use the
-raw bp shock as robustness. The same caution applies to any regime whose rate sat at its floor.
+### ISS-024 — Scale of standardised BoJ shocks & Zero Lower Bound · flagged (2026-10-21)
+Japan's 1-year yield was pinned during the ZIRP/QQE/YCC era, resulting in a training SD of only 1.13 bp.
+Post-2022 rate hikes produce outsized standardized shocks (e.g. +8.02 SD on 31 Jul 2024).
+Flagged honestly in data with `shock_quality_flag = 'low_sensitivity_zero_lower_bound'` for all BoJ
+decisions on or before 2024-03-18. Models should evaluate robustness using unstandardized bp or winsorization.
 
 ### ISS-025 — High-frequency series end in 2023 · open
 FRBSF (to Dec 2023) and EA-MPD (to Oct 2023) do not cover the latest meetings; those use the

@@ -1,6 +1,6 @@
-# Shock validation (Phase D)
+# Shock validation (Phase D & Priority Group 2)
 
-Grades: A = public high-frequency surprise; B = 1-year yield change proxy; C = no usable shock (descriptive only). `shock_std` is in units of the training-period (to 2019) SD of its source.
+Grades: A = public high-frequency surprise; B = 1-year (or 2-year benchmark) yield change proxy; C = no usable shock (descriptive only). `shock_std` is in units of the training-period (to 2019) SD of its source.
 
 ## Coverage by regime
 
@@ -15,9 +15,33 @@ Grades: A = public high-frequency surprise; B = 1-year yield change proxy; C = n
 | CBR | 108 | 0 | 100 | 8 | 2003-02-17 | 2026-07-27 |
 | ECB | 299 | 286 | 13 | 0 | 2000-01-05 | 2026-09-10 |
 | Fed | 227 | 201 | 26 | 0 | 2000-02-02 | 2026-09-16 |
-| PBoC | 40 | 0 | 0 | 40 | - | - |
-| RBA | 72 | 0 | 0 | 72 | - | - |
+| PBoC | 40 | 0 | 40 | 0 | 2002-02-21 | 2025-05-20 |
+| RBA | 72 | 0 | 71 | 1 | 2000-02-02 | 2026-05-06 |
 | RBI | 163 | 0 | 0 | 163 | - | - |
+
+## Usable shocks by regime and split (Priority Group 2)
+
+`shock_usable = 1` requires a valid non-missing standardized shock (`shock_grade` in {'A', 'B'}). Regimes with fewer than 20 usable blind-test events are flagged below (DECISION-021).
+
+| regime | train (to 2019) | crisis (2020-21) | blind_test (2022+) | total usable | blind-test status |
+|---|---|---|---|---|---|
+| BCB | 182 | 0 | 0 | 182 | **FLAGGED (< 20)** |
+| Banxico | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
+| BoC | 50 | 3 | 19 | 72 | **FLAGGED (< 20)** |
+| BoE | 33 | 3 | 19 | 55 | **FLAGGED (< 20)** |
+| BoJ | 278 | 17 | 38 | 333 | Sufficient (>= 20) |
+| BoK | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
+| CBR | 64 | 11 | 25 | 100 | Sufficient (>= 20) |
+| ECB | 245 | 16 | 38 | 299 | Sufficient (>= 20) |
+| Fed | 170 | 18 | 39 | 227 | Sufficient (>= 20) |
+| PBoC | 30 | 3 | 7 | 40 | **FLAGGED (< 20)** |
+| RBA | 49 | 3 | 19 | 71 | **FLAGGED (< 20)** |
+| RBI | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
+
+## Japan zero-rate proxy review
+
+During 2000-2019 (ZIRP/QQE), the 1-year JGB yield was compressed near zero with minimal variance (train SD = 1.13 bp). As an artifact of standardization by the training SD, post-2022 rate movements scale to extreme values (e.g. +8.02 SD on 2024-07-31). In addition, during quantitative easing and Yield Curve Control, short yields were pinned, reducing sensitivity to policy surprises. Events during the zero-rate era carry `shock_quality_flag = 'low_sensitivity_zero_lower_bound'`.
+
 
 ## High-frequency vs proxy (overlap, standardised)
 

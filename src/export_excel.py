@@ -118,7 +118,7 @@ def main() -> Path:
         write_sheet(wb, name, df)
         print(f"{name}: {len(df):,} rows x {df.shape[1]} columns")
     wb.save(OUT)
-    print(f"Saved {OUT} ({OUT.stat().st_size / 1e6:.1f} MB)")
+    print(f"Saved {OUT.name} ({OUT.stat().st_size / 1e6:.1f} MB)")
     return OUT
 
 

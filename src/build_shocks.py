@@ -59,7 +59,18 @@ def frbsf() -> pd.DataFrame:
 
 def eampd() -> pd.DataFrame:
     """EA-MPD 'Monetary Event Window' (sheet 4): 1-year OIS change in bp."""
-    raw = (RAW_DIR / "ecb_ea_mpd_dataset.xlsx").read_bytes()
+    path = RAW_DIR / "ecb_ea_mpd_dataset.xlsx"
+    if not path.exists():
+        import requests
+        url = "https://www.ecb.europa.eu/pub/pdf/annex/Dataset_EA-MPD.xlsx"
+        resp = requests.get(url, headers={"User-Agent": "Mozilla/5.0 (MoTrans-15 research)"}, timeout=120)
+        resp.raise_for_status()
+        save_raw_file(resp.content, "ecb_ea_mpd_dataset.xlsx",
+                      source="European Central Bank", url_or_api=url,
+                      series_id="EA-MPD (Altavilla et al. 2019)",
+                      licence="ECB terms of use (free reuse with attribution)",
+                      notes="Euro Area Monetary Policy Event-Study Database")
+    raw = path.read_bytes()
     df = pd.read_excel(io.BytesIO(raw), sheet_name="Monetary Event Window")
     df = df[pd.to_datetime(df["date"], errors="coerce").notna()].copy()
     df["date"] = pd.to_datetime(df["date"]).dt.date
@@ -117,13 +128,23 @@ def build(policy: pd.DataFrame, controls: pd.DataFrame) -> pd.DataFrame:
     df["shock_std"] = np.where(use_hf, df["shock_hf_std"], df["shock_proxy_std"])
     df["shock_source"] = np.where(use_hf, df["shock_hf_source"], df["shock_proxy_source"])
     df["shock_grade"] = np.select([use_hf, df["shock_proxy_std"].notna()], ["A", "B"], "C")
+    df["shock_usable"] = (df["shock_grade"].isin(["A", "B"]) & df["shock_std"].notna()).astype(int)
+
+    is_boj_zirp = (df["regime"] == "BoJ") & (pd.to_datetime(df["decision_date"]).dt.date <= dt.date(2024, 3, 18))
+    df["shock_quality_flag"] = np.where(
+        is_boj_zirp,
+        "low_sensitivity_zero_lower_bound",
+        np.where(df["shock_grade"] == "A", "high_frequency",
+                 np.where(df["shock_grade"] == "B", "sovereign_yield_proxy", "no_shock"))
+    )
     return df
 
 
 def validation_md(df: pd.DataFrame) -> str:
-    lines = ["# Shock validation (Phase D)", "",
-             ("Grades: A = public high-frequency surprise; B = 1-year yield change proxy; C = no usable shock "
-             "(descriptive only). `shock_std` is in units of the training-period (to 2019) SD of its source."), "",
+    lines = ["# Shock validation (Phase D & Priority Group 2)", "",
+             ("Grades: A = public high-frequency surprise; B = 1-year (or 2-year benchmark) yield change proxy; "
+              "C = no usable shock (descriptive only). `shock_std` is in units of the training-period (to 2019) SD "
+              "of its source."), "",
              "## Coverage by regime", "",
              "| regime | events | A | B | C | first shock | last shock |", "|---|---|---|---|---|---|---|"]
     for reg, g in df.groupby("regime"):
@@ -131,6 +152,29 @@ def validation_md(df: pd.DataFrame) -> str:
         lines.append(f"| {reg} | {len(g)} | {(g.shock_grade == 'A').sum()} | {(g.shock_grade == 'B').sum()} | "
                      f"{(g.shock_grade == 'C').sum()} | {s.decision_date.min() if len(s) else '-'} | "
                      f"{s.decision_date.max() if len(s) else '-'} |")
+
+    lines += ["", "## Usable shocks by regime and split (Priority Group 2)", "",
+              ("`shock_usable = 1` requires a valid non-missing standardized shock (`shock_grade` in {'A', 'B'}). "
+               "Regimes with fewer than 20 usable blind-test events are flagged below (DECISION-021)."), "",
+              "| regime | train (to 2019) | crisis (2020-21) | blind_test (2022+) | total usable | blind-test status |",
+              "|---|---|---|---|---|---|"]
+
+    for reg, g in df.groupby("regime"):
+        usable = g[g["shock_usable"] == 1]
+        n_train = len(usable[usable["split_tag"] == "train"])
+        n_crisis = len(usable[usable["split_tag"] == "crisis"])
+        n_blind = len(usable[usable["split_tag"] == "blind_test"])
+        n_total = len(usable)
+        status = "**FLAGGED (< 20)**" if n_blind < 20 else "Sufficient (>= 20)"
+        lines.append(f"| {reg} | {n_train} | {n_crisis} | {n_blind} | {n_total} | {status} |")
+
+    lines += ["", "## Japan zero-rate proxy review", "",
+              "During 2000-2019 (ZIRP/QQE), the 1-year JGB yield was compressed near zero with minimal variance "
+              "(train SD = 1.13 bp). As an artifact of standardization by the training SD, post-2022 rate movements "
+              "scale to extreme values (e.g. +8.02 SD on 2024-07-31). In addition, during quantitative easing and "
+              "Yield Curve Control, short yields were pinned, reducing sensitivity to policy surprises. "
+              "Events during the zero-rate era carry `shock_quality_flag = 'low_sensitivity_zero_lower_bound'`.", ""]
+
     lines += ["", "## High-frequency vs proxy (overlap, standardised)", "",
               "| regime | events with both | correlation |", "|---|---|---|"]
     for reg in ("Fed", "ECB"):
@@ -184,13 +228,25 @@ def main() -> pd.DataFrame:
     controls = pd.read_parquet(INTERIM / "controls_long.parquet")
     shocks = build(policy, controls)
     cols = ["event_id", "regime", "decision_date", "announce_ts_utc", "decision", "size_bp", "event_type",
-            "shock_raw", "shock_std", "shock_source", "shock_grade", "shock_hf_raw", "shock_hf_std",
-            "shock_proxy_raw", "shock_proxy_std", "split_tag"]
+            "shock_raw", "shock_std", "shock_source", "shock_grade", "shock_usable", "shock_quality_flag",
+            "shock_hf_raw", "shock_hf_std", "shock_proxy_raw", "shock_proxy_std", "split_tag"]
     shocks[cols].to_parquet(FINAL / "shocks.parquet", index=False)
 
-    events = pd.read_parquet(FINAL / "events.parquet").drop(columns=["shock_std", "shock_grade"], errors="ignore")
-    events = events.merge(shocks[["event_id", "shock_std", "shock_grade"]], on="event_id", how="left")
+    events = pd.read_parquet(FINAL / "events.parquet").drop(
+        columns=["shock_std", "shock_grade", "shock_usable", "shock_quality_flag"], errors="ignore"
+    )
+    events = events.merge(
+        shocks[["event_id", "shock_std", "shock_grade", "shock_usable", "shock_quality_flag"]],
+        on="event_id", how="left"
+    )
     events.to_parquet(FINAL / "events.parquet", index=False)
+
+    policy = policy.drop(columns=["shock_usable", "shock_grade"], errors="ignore")
+    shocks_subset = shocks[["event_id", "shock_usable", "shock_grade"]].drop_duplicates()
+    if "event_id" not in policy.columns:
+        policy["event_id"] = policy["regime"].str.lower() + "_" + policy["decision_date"].astype(str)
+    policy = policy.merge(shocks_subset, on="event_id", how="left")
+    policy.to_csv(FINAL / "policy_decisions.csv", index=False)
 
     (ROOT / "docs" / "shock_validation.md").write_text(validation_md(shocks), encoding="utf-8")
     plots(shocks)

@@ -94,7 +94,7 @@ def build(policy: pd.DataFrame, panel: pd.DataFrame) -> pd.DataFrame:
                 "announce_in_session": int(a.announce_in_session),
                 "timing_ambiguous": int(a.timing_ambiguous),
                 "analysis_ready_timing": is_clean_timing, **w,
-                "shock_std": np.nan, "shock_grade": "",
+                "shock_std": np.nan, "shock_grade": "", "shock_usable": 0, "shock_quality_flag": "",
                 "split_tag": split_tag(dt.date.fromisoformat(ev["decision_date"])),
             })
     return pd.DataFrame(rows)

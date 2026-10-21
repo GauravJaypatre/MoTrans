@@ -262,6 +262,106 @@ def y_br() -> list[tuple]:
     return pts
 
 
+def y_au() -> list[tuple]:
+    """Reserve Bank of Australia 2-year benchmark bond yield (daily interpolated).
+
+    Sourced from official RBA Table F2 Capital Market Yields:
+    1995-2013: f02dhist.xls (Mnemonic FCMYGBAG2D)
+    2013-present: f2-data.csv (Series ID FCMYGBAG2D)
+    """
+    path_hist = RAW_DIR / "controls/rba_f02dhist.xls"
+    if not path_hist.exists():
+        from curl_cffi import requests as c_requests
+        resp = c_requests.get("https://www.rba.gov.au/statistics/tables/xls-hist/f02dhist.xls",
+                              impersonate="chrome120", timeout=30)
+        resp.raise_for_status()
+        save_raw_file(resp.content, "controls/rba_f02dhist.xls", source="Reserve Bank of Australia",
+                      url_or_api="https://www.rba.gov.au/statistics/tables/xls-hist/f02dhist.xls",
+                      series_id="Table F2 Capital Market Yields - Government Bonds (historical daily)",
+                      licence="Reserve Bank of Australia terms (free reuse with attribution)",
+                      notes="Australian Government 2-year bond yield (interpolated, daily, 1995-2013)")
+    raw_hist = path_hist.read_bytes()
+
+    path_curr = RAW_DIR / "controls/rba_f2_data.csv"
+    if not path_curr.exists():
+        from curl_cffi import requests as c_requests
+        resp = c_requests.get("https://www.rba.gov.au/statistics/tables/csv/f2-data.csv",
+                              impersonate="chrome120", timeout=30)
+        resp.raise_for_status()
+        save_raw_file(resp.content, "controls/rba_f2_data.csv", source="Reserve Bank of Australia",
+                      url_or_api="https://www.rba.gov.au/statistics/tables/csv/f2-data.csv",
+                      series_id="Table F2 Capital Market Yields - Government Bonds (current daily)",
+                      licence="Reserve Bank of Australia terms (free reuse with attribution)",
+                      notes="Australian Government 2-year bond yield (interpolated, daily, 2013-present)")
+    raw_curr = path_curr.read_bytes()
+
+    df_hist = pd.read_excel(io.BytesIO(raw_hist), sheet_name=0, header=None)
+    hdr = df_hist.index[df_hist.iloc[:, 0].astype(str).str.contains("Mnemonic", case=False, na=False)][0]
+    col_2y = None
+    for c in range(1, df_hist.shape[1]):
+        if str(df_hist.iloc[hdr, c]).strip() == "FCMYGBAG2D":
+            col_2y = c
+            break
+
+    pts = {}
+    for _, row in df_hist.iloc[hdr + 1:].iterrows():
+        d = row.iloc[0]
+        v = row.iloc[col_2y]
+        if isinstance(d, (dt.datetime, pd.Timestamp)) and pd.notna(v) and str(v).strip() != "":
+            try:
+                pts[d.date()] = float(v)
+            except ValueError:
+                pass
+
+    lines = raw_curr.decode("utf-8-sig").splitlines()
+    col_curr, data_start = None, None
+    for i, l in enumerate(lines[:15]):
+        if "FCMYGBAG2D" in l:
+            parts = [p.strip() for p in l.split(",")]
+            col_curr = parts.index("FCMYGBAG2D")
+            data_start = i + 1
+            break
+
+    if col_curr is not None and data_start is not None:
+        for l in lines[data_start:]:
+            parts = [p.strip() for p in l.split(",")]
+            if len(parts) > col_curr:
+                d_str = parts[0]
+                v_str = parts[col_curr]
+                if v_str != "":
+                    try:
+                        d = dt.datetime.strptime(d_str, "%d-%b-%Y").date()
+                        pts[d] = float(v_str)
+                    except Exception:
+                        pass
+
+    return sorted(pts.items())
+
+
+def y_cn() -> list[tuple]:
+    """ChinaBond 2-year sovereign benchmark yield (daily).
+
+    Sourced from Eastmoney / ChinaBond via AKShare.
+    """
+    path = RAW_DIR / "controls/chinabond_yield_2y.csv"
+    if not path.exists():
+        import akshare as ak
+        df = ak.bond_zh_us_rate(start_date="20020101")
+        col_2y = "中国国债收益率2年"
+        sub = df[["日期", col_2y]].dropna()
+        csv_bytes = sub.to_csv(index=False).encode("utf-8")
+        save_raw_file(csv_bytes, "controls/chinabond_yield_2y.csv",
+                      source="ChinaBond / Eastmoney via AKShare",
+                      url_or_api="akshare.bond_zh_us_rate(start_date='20020101')",
+                      series_id="China Government Bond 2-year Yield (Daily)",
+                      licence="Public financial market data (free research reuse with attribution)",
+                      notes="China 2-year sovereign benchmark yield, daily from 2002")
+    raw = path.read_bytes()
+    df = pd.read_csv(io.BytesIO(raw))
+    pts = [(dt.date.fromisoformat(str(d)), float(v)) for d, v in zip(df.iloc[:, 0], df.iloc[:, 1]) if pd.notna(v)]
+    return sorted(pts)
+
+
 YIELD_SOURCES = {  # country -> (function, description)
     "US": (y_us, "US Treasury daily par yield, 1 year"),
     "DE": (y_de, "Bundesbank 1-year yield on listed Federal securities"),
@@ -274,6 +374,8 @@ YIELD_SOURCES = {  # country -> (function, description)
     "GB": (y_gb, "Bank of England nominal spot curve, 1 year"),
     "RU": (y_ru, "Bank of Russia zero-coupon curve, 1 year"),
     "BR": (y_br, "BCB SGS 7806 swap DI x pre 360 days (ends 2019)"),
+    "AU": (y_au, "Reserve Bank of Australia 2-year benchmark bond yield (daily interpolated; Table F2)"),
+    "CN": (y_cn, "ChinaBond 2-year sovereign benchmark yield (daily)"),
 }
 
 

@@ -4,6 +4,64 @@ All modifications are applied at the pipeline code level (`src/`), never by hand
 output files. The original workbook `data/final/MoTrans15_all_records.xlsx` is untouched.
 The cleaned output is `data/final/MoTrans15_v2.xlsx`.
 
+## [v2.1.0-pg2] — 2026-10-21  Priority Group 2 (Monetary policy shocks: sovereign yield proxies & usability)
+
+### Problem addressed
+
+In the initial audit of `MoTrans15_all_records.xlsx`:
+- 640 policy decisions across five central banks (Banxico, BoK, PBoC, RBA, RBI) lacked shocks (`shock_grade == "C"`, `shock_std` missing).
+- No explicit `shock_usable` flag existed to distinguish clean, usable shocks from unshocked or weak proxies without silent row deletion.
+- In zero-rate/quantitative easing regimes (notably Japan's ZIRP and YCC era), daily 1-year sovereign yield changes had near-zero variance during the 2000–2019 training window (SD = 1.13 bp), causing post-2022 policy adjustments to produce outsized standardised shocks (e.g., +8.02 SD on 2024-07-31).
+
+### Fixes implemented (DECISION-021)
+
+1. **Sovereign Yield Data Sourcing**:
+   - **Australia (RBA)**: Official Reserve Bank of Australia Table F2 ("Capital Market Yields - Government Bonds - Daily - 2-year yield", series `FCMYGBAG2D`) sourced from `rba.gov.au/statistics/tables/xls/f02dhist.xls` (1995–2013) and `f2-data.csv` (2013–2026). Yields added to `src/collect_controls.py::y_au()` and controls long parquet.
+   - **China (PBoC)**: Official ChinaBond 2-year sovereign benchmark yield (`中国国债收益率2年`) sourced via `akshare.bond_zh_us_rate()` / Eastmoney (6,193 daily observations from 2002 to 2026). Added to `src/collect_controls.py::y_cn()` and controls long parquet.
+   - **ECB EA-MPD**: Updated `src/build_shocks.py` to auto-fetch official `Dataset_EA-MPD.xlsx` from ECB if not present in cache.
+
+2. **Yield-Change Proxies Built (Grade B)**:
+   - Built standardized yield-change proxies ($\Delta y$) for RBA and PBoC around announcement windows.
+   - PBoC: 40 of 40 events upgraded from Grade C to Grade B (training SD = 2.45 bp).
+   - RBA: 71 of 72 events upgraded from Grade C to Grade B (training SD = 4.39 bp; 1 event on 2013-08-07 remains Grade C due to a 5-day publication gap during RBA's Table F2 transition).
+   - Rate change size (`size_bp`) is **never** used as a substitute for shock surprise (strictly enforced per Rule 1 and PG2 rules).
+
+3. **Adherence to Rule 1 for Unsourceable Regimes**:
+   - Banxico (Mexico, 238 events): Secondary market yield data is paywalled / gated behind Banxico's captcha-protected SIE API.
+   - BoK (South Korea, 60 events): BoK ECOS API requires authenticated developer keys (sample key limited to 10 rows); KRX OTC requires subscription login.
+   - RBI (India, 163 events): CCIL ZCYC requires registered login; RBI DBIE provides only monthly/month-end SGL transaction averages.
+   - Per Non-Negotiable Rule 1, these 461 events were **not** fabricated or interpolated from memory. They honestly remain Grade C with `shock_usable = 0`.
+
+4. **New Columns**:
+   - `shock_usable` (int8, 0/1): Set to 1 if `shock_grade` is A or B and `shock_std` is finite and non-null; 0 for Grade C.
+   - `shock_quality_flag` (str): BoJ decisions during the zero-rate/YCC regime ($\le 2024-03-18$) are flagged as `low_sensitivity_zero_lower_bound` due to yield pegging.
+
+5. **Sample Split Usability Breakdown & Low-Event Flags**:
+   Regimes with fewer than 20 usable events in `blind_test` ($\ge 2022$) are flagged:
+   - BoC: 19 usable events (flagged < 20)
+   - BoE: 19 usable events (flagged < 20)
+   - RBA: 19 usable events (flagged < 20)
+   - PBoC: 7 usable events (flagged < 20)
+   - BCB: 0 usable events (flagged < 20; SGS 7806 ended Sep 2019)
+   - Banxico: 0 usable events (flagged < 20; gated)
+   - BoK: 0 usable events (flagged < 20; gated)
+   - RBI: 0 usable events (flagged < 20; gated)
+
+### Quantitative Before / After
+
+| Metric | Before (MoTrans15_all_records.xlsx) | After (MoTrans15_v2.xlsx) | Change |
+|---|---|---|---|
+| Grade A shocks | 496 | 496 | 0 |
+| Grade B shocks | 772 | **883** | +111 (RBA +71, PBoC +40) |
+| Grade C shocks | 640 | **529** | −111 |
+| Decisions with `shock_usable == 1` | 0 (column absent) | **1,379** (72.27%) | +1,379 |
+| Decisions with `shock_usable == 0` | 0 (column absent) | **529** (27.73%) | +529 |
+| BoJ events flagged `low_sensitivity_zero_lower_bound` | 0 | **318** | +318 |
+| Events sheet rows deleted | 0 | 0 | 0 (Rule 2 maintained) |
+
+### Tests Added
+- [`tests/test_priority_group_2_shocks.py`](tests/test_priority_group_2_shocks.py): 7 tests covering `shock_usable` definition, prevention of size-based shock imputation, proxy grade assignments, gated regime retention, merge consistency, blind-test counts, and Japan ZIRP quality flags.
+
 ---
 
 ## [v2.0.0-pg1] — 2026-10-18  Priority Group 1 (Timing: conservative reaction-session rule)

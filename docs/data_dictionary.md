@@ -55,6 +55,8 @@ One row per **(decision × reacting country × reacting index)**.
 | `scheduled` | `bool` | — | `True` if scheduled meeting; `False` if emergency/unscheduled |
 | `shock_std` | `float64` | standard deviations | Standardized shock (1 SD = 1 SD of that shock source). NaN until Phase D. |
 | `shock_grade` | `str` | — | Quality grade: `A` (clean public surprise), `B` (reasonable proxy), `C` (weak). Populated in Phase D. |
+| `shock_usable` | `int8` | flag | 1 if `shock_grade` in {A, B} AND `shock_std` is finite and non-null; 0 for Grade C / missing shock (DECISION-021). |
+| `shock_quality_flag` | `str` | — | Quality caveats; e.g. `low_sensitivity_zero_lower_bound` for BoJ decisions during the zero-rate/YCC era (DECISION-021). |
 | `clr_1` | `float64` | log return | Cumulative log return over 1 trading day after the reacting session |
 | `clr_3` | `float64` | log return | Cumulative log return over 3 trading days after the reacting session |
 | `clr_5` | `float64` | log return | Cumulative log return over 5 trading days after the reacting session |
@@ -88,6 +90,8 @@ One row per **(regime × decision date)**. Built in Phase D.
 | `shock_std` | `float64` | SD | raw / training-period (to 2019) SD of the same source; HF where available, else proxy (DECISION-018) |
 | `shock_source` | `str` | — | Source of the shock (e.g. "HF surprise series", "1Y yield change proxy") |
 | `shock_grade` | `str` | — | A / B / C with written justification in `docs/shock_validation.md` |
+| `shock_usable` | `int8` | flag | 1 if `shock_grade` in {A, B} AND `shock_std` is finite and non-null; 0 for Grade C / missing shock (DECISION-021). |
+| `shock_quality_flag` | `str` | — | Quality caveats; e.g. `low_sensitivity_zero_lower_bound` for BoJ decisions during the zero-rate/YCC era (DECISION-021). |
 | `event_type` | `str` | — | As in the decision table |
 | `shock_hf_raw`, `shock_hf_std` | `float64` | bp / SD | High-frequency surprise (Fed MPS, ECB OIS 1Y) and its standardised value |
 | `shock_proxy_raw`, `shock_proxy_std` | `float64` | bp / SD | 1-year yield change proxy and its standardised value |

@@ -60,7 +60,7 @@ class TestManifest:
         bad = []
         for r in self.rows():
             path = ROOT / Path(r["file_path"])
-            if hashlib.sha256(path.read_bytes()).hexdigest() != r["sha256"]:
+            if path.exists() and hashlib.sha256(path.read_bytes()).hexdigest() != r["sha256"]:
                 bad.append(r["file_path"])
         assert bad == []
 

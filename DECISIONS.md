@@ -303,3 +303,30 @@ reversible exclusion criterion (see `docs/data_dictionary.md`).
 PBoC, and RBI announcement times have not yet been sourced from saved official pages.
 All 9 retain `time_quality = "unknown"` and `time_source = "Not yet sourced (pending
 official page)"`. See ISS-029 for the sourcing plan.
+
+---
+
+## 2026-10-21 — Priority Group 2 (Shocks audit)
+
+### DECISION-021: Sovereign yield proxies, shock_usable criteria, and zero-rate sensitivity flags
+
+**Context & Problem:**
+640 decisions in `MoTrans15_all_records.xlsx` (Banxico, BoK, PBoC, RBA, RBI) had no shocks (Grade C, missing `shock_std`). There was no explicit `shock_usable` column, and Japan's zero-rate yield proxy produced outsized standard deviations in the post-2022 hiking cycle.
+
+**Rules & Implementation:**
+1. **Sovereign Yield Sourcing**:
+   - Australia: Sourced official Table F2 2Y government bond yield (`FCMYGBAG2D`) from RBA (`f02dhist.xls` + `f2-data.csv`).
+   - China: Sourced official ChinaBond 2Y sovereign benchmark yield (`中国国债收益率2年`) from ChinaBond/Eastmoney via `akshare`.
+   - Downloaded ECB EA-MPD official dataset directly from `ecb.europa.eu`.
+2. **Grade B Proxy Assignment**:
+   - RBA (71 decisions) and PBoC (40 decisions) are upgraded from Grade C to Grade B yield-change proxies.
+   - Decision size (`size_bp`) is never used as a proxy for shock surprise.
+3. **Non-Negotiable Rule 1 Compliance (Unsourceable Regimes)**:
+   - Banxico (MX), BoK (KR), and RBI (IN) require authentication, captchas, or user-restricted portals. In strict adherence to Rule 1, no data was fabricated or filled from memory. These 461 decisions remain Grade C with `shock_usable = 0`.
+4. **`shock_usable` Definition**:
+   ```python
+   shock_usable = int(shock_grade in ["A", "B"] and pd.notna(shock_std) and np.isfinite(shock_std))
+   ```
+5. **Zero-Rate Sensitivity Flag**:
+   - BoJ decisions prior to the end of Yield Curve Control (on or before 2024-03-18) are flagged as `shock_quality_flag = 'low_sensitivity_zero_lower_bound'` because the 1Y yield was pinned near zero (training SD = 1.13 bp), distorting post-2022 standardized shocks.
+
