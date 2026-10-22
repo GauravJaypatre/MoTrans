@@ -8,15 +8,15 @@ Grades: A = public high-frequency surprise; B = 1-year (or 2-year benchmark) yie
 |---|---|---|---|---|---|---|
 | BCB | 238 | 0 | 182 | 56 | 2000-03-29 | 2019-09-18 |
 | Banxico | 238 | 0 | 0 | 238 | - | - |
-| BoC | 75 | 0 | 72 | 3 | 2001-01-23 | 2025-10-30 |
-| BoE | 55 | 0 | 55 | 0 | 2000-01-13 | 2025-12-18 |
+| BoC | 214 | 0 | 210 | 4 | 2001-01-23 | 2026-09-02 |
+| BoE | 284 | 0 | 284 | 0 | 2000-01-13 | 2026-09-17 |
 | BoJ | 333 | 0 | 333 | 0 | 2000-01-17 | 2026-09-18 |
 | BoK | 60 | 0 | 0 | 60 | - | - |
 | CBR | 108 | 0 | 100 | 8 | 2003-02-17 | 2026-07-27 |
-| ECB | 299 | 286 | 13 | 0 | 2000-01-05 | 2026-09-10 |
+| ECB | 299 | 292 | 7 | 0 | 2000-01-05 | 2026-09-10 |
 | Fed | 227 | 201 | 26 | 0 | 2000-02-02 | 2026-09-16 |
 | PBoC | 40 | 0 | 40 | 0 | 2002-02-21 | 2025-05-20 |
-| RBA | 72 | 0 | 71 | 1 | 2000-02-02 | 2026-05-06 |
+| RBA | 220 | 0 | 217 | 3 | 2000-02-02 | 2026-09-29 |
 | RBI | 163 | 0 | 0 | 163 | - | - |
 
 ## Usable and Primary shocks by regime and split (Priority Group 2)
@@ -27,15 +27,15 @@ Grades: A = public high-frequency surprise; B = 1-year (or 2-year benchmark) yie
 |---|---|---|---|---|---|---|---|---|---|
 | BCB | 182 | 182 | 0 | 0 | 0 | 0 | 182 | 182 | **FLAGGED (< 20)** |
 | Banxico | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
-| BoC | 50 | 50 | 3 | 3 | 19 | 19 | 72 | 72 | **FLAGGED (< 20)** |
-| BoE | 33 | 33 | 3 | 3 | 19 | 19 | 55 | 55 | **FLAGGED (< 20)** |
-| BoJ | 278 | 0 | 17 | 0 | 38 | 21 | 333 | 21 | Sufficient (>= 20) |
+| BoC | 154 | 154 | 18 | 18 | 38 | 38 | 210 | 210 | Sufficient (>= 20) |
+| BoE | 228 | 228 | 18 | 18 | 38 | 38 | 284 | 284 | Sufficient (>= 20) |
+| BoJ | 278 | 0 | 17 | 0 | 38 | 0 | 333 | 0 | **FLAGGED (< 20)** |
 | BoK | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
 | CBR | 64 | 64 | 11 | 11 | 25 | 1 | 100 | 76 | **FLAGGED (< 20)** |
 | ECB | 245 | 245 | 16 | 16 | 38 | 38 | 299 | 299 | Sufficient (>= 20) |
 | Fed | 170 | 170 | 18 | 18 | 39 | 39 | 227 | 227 | Sufficient (>= 20) |
 | PBoC | 30 | 0 | 3 | 0 | 7 | 0 | 40 | 0 | **FLAGGED (< 20)** |
-| RBA | 49 | 49 | 3 | 3 | 19 | 19 | 71 | 71 | **FLAGGED (< 20)** |
+| RBA | 150 | 150 | 23 | 23 | 44 | 44 | 217 | 217 | Sufficient (>= 20) |
 | RBI | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
 
 ## Japan zero-rate proxy review
@@ -48,7 +48,7 @@ During 2000-2019 (ZIRP/QQE), the 1-year JGB yield was compressed near zero with 
 | regime | events with both | correlation |
 |---|---|---|
 | Fed | 201 | 0.55 |
-| ECB | 205 | 0.61 |
+| ECB | 211 | 0.61 |
 
 ## Known episodes
 
@@ -67,7 +67,7 @@ Expected sign: tightening surprises positive, easing surprises negative. A hike 
 | ecb_2022-07-21 | hike | 50 | A | +2.05 |
 | ecb_2022-09-08 | hike | 75 | A | +2.42 |
 | boj_2024-03-19 | hike | 15 | B | -1.85 |
-| boe_2022-02-03 | hike | 25 | B | +2.22 |
+| boe_2022-02-03 | hike | 25 | B | +3.34 |
 | bcb_2022-03-16 | hike | 100 | C | - |
 | rbi_2022-05-04 | hike | 40 | C | - |
 
@@ -78,17 +78,17 @@ Expected sign: tightening surprises positive, easing surprises negative. A hike 
 | fed_2001-09-17 | cut | -50 | B | 1Y yield change, US (bp) | -8.34 |
 | boj_2024-07-31 | hike | 20 | B | 1Y yield change, JP (bp) | +8.01 |
 | boj_2016-07-29 | unclassified | nan | B | 1Y yield change, JP (bp) | +7.66 |
+| cbr_2014-12-16 | hike | 650 | B | 1Y yield change, RU (bp) | +7.61 |
+| boe_2026-03-19 | hold | 0 | B | 1Y yield change, GB (bp) | +7.37 |
 | bcb_2001-03-21 | hike | 50 | B | 1Y yield change, BR (bp) | +6.52 |
-| cbr_2014-12-16 | hike | 650 | B | 1Y yield change, RU (bp) | +5.90 |
+| rba_2008-10-07 | cut | -100 | B | 2Y yield change, AU (bp) | -6.00 |
+| boe_2023-02-02 | hike | 50 | B | 1Y yield change, GB (bp) | -5.96 |
 | bcb_2002-10-14 | hike | 300 | B | 1Y yield change, BR (bp) | +5.76 |
 | boj_2008-10-31 | cut | -20 | B | 1Y yield change, JP (bp) | -5.02 |
 | fed_2001-04-18 | cut | -50 | A | FRBSF Bauer-Swanson MPS (bp) | -4.98 |
+| boe_2008-11-06 | cut | -150 | B | 1Y yield change, GB (bp) | -4.95 |
+| boe_2003-02-06 | cut | -25 | B | 1Y yield change, GB (bp) | -4.76 |
+| boe_2023-03-23 | hike | 25 | B | 1Y yield change, GB (bp) | -4.69 |
 | ecb_2008-06-05 | hold | 0 | A | EA-MPD OIS 1Y, monetary event window (bp) | +4.62 |
-| boj_2008-12-19 | cut | -20 | B | 1Y yield change, JP (bp) | -4.40 |
-| fed_2008-12-16 | cut | -75 | A | FRBSF Bauer-Swanson MPS (bp) | -4.40 |
-| bcb_2002-06-19 | hold | 0 | B | 1Y yield change, BR (bp) | +4.31 |
-| bcb_2002-07-17 | cut | -50 | B | 1Y yield change, BR (bp) | -4.29 |
-| boj_2026-09-18 | hike | 25 | B | 1Y yield change, JP (bp) | +4.05 |
-| ecb_2011-08-04 | hold | 0 | A | EA-MPD OIS 1Y, monetary event window (bp) | -4.00 |
 
 Plots per regime: outputs/shocks_<regime>.png (regenerate with `python -m src.build_shocks`).

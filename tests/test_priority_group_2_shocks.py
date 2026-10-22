@@ -61,10 +61,10 @@ class TestPriorityGroup2Shocks:
         assert len(pboc) == 40
 
         rba = shocks_df[shocks_df["regime"] == "RBA"]
-        # Exactly 71 of 72 events have Grade B; 1 (2013-08-07) has no 2y yield in transition window
-        assert (rba["shock_grade"] == "B").sum() == 71
-        assert (rba["shock_grade"] == "C").sum() == 1
-        assert (rba["shock_usable"] == 1).sum() == 71
+        # With scheduled holds added, RBA has 220 decisions: 217 Grade B, 3 Grade C
+        assert (rba["shock_grade"] == "B").sum() == 217
+        assert (rba["shock_grade"] == "C").sum() == 3
+        assert (rba["shock_usable"] == 1).sum() == 217
 
     def test_gated_regimes_remain_grade_c(self, shocks_df):
         """Banxico, BoK, and RBI must remain Grade C (no unsourced/fabricated numbers)."""
@@ -86,14 +86,12 @@ class TestPriorityGroup2Shocks:
         bt = shocks_df[(shocks_df["split_tag"] == "blind_test") & (shocks_df["shock_usable"] == 1)]
         counts = bt.groupby("regime").size().to_dict()
 
-        # Check regimes with >= 20 blind-test events
-        assert counts.get("Fed", 0) >= 20
-        assert counts.get("ECB", 0) >= 20
-        assert counts.get("BoJ", 0) >= 20
-        assert counts.get("CBR", 0) >= 20
+        # Check regimes with >= 20 blind-test events (including newly expanded holds)
+        for reg in ["Fed", "ECB", "BoJ", "CBR", "BoC", "BoE", "RBA"]:
+            assert counts.get(reg, 0) >= 20, f"{reg} expected >= 20 blind-test events but got {counts.get(reg, 0)}"
 
         # Check regimes flagged with < 20 blind-test events
-        for reg in ["BCB", "Banxico", "BoC", "BoE", "BoK", "PBoC", "RBA", "RBI"]:
+        for reg in ["BCB", "Banxico", "BoK", "PBoC", "RBI"]:
             assert counts.get(reg, 0) < 20, f"{reg} expected < 20 blind-test events but got {counts.get(reg, 0)}"
 
     def test_japan_zirp_quality_flag(self, shocks_df):
@@ -102,10 +100,13 @@ class TestPriorityGroup2Shocks:
         assert (boj_zirp["shock_quality_flag"] == "low_sensitivity_zero_lower_bound").all()
 
     def test_shock_primary_definition(self, shocks_df):
-        """shock_primary must be 0 for BoJ ZIRP, CBR post-Feb 2022, and China PBoC."""
-        # BoJ ZIRP
-        boj_zirp = shocks_df[(shocks_df["regime"] == "BoJ") & (shocks_df["decision_date"].astype(str) <= "2024-03-18")]
-        assert (boj_zirp["shock_primary"] == 0).all()
+        """shock_primary must be 0 for all BoJ (pre-registered baseline rule), CBR post-Feb 2022, and China PBoC."""
+        # BoJ: all 333 decisions have shock_primary == 0 under pre-registered baseline rule
+        boj = shocks_df[shocks_df["regime"] == "BoJ"]
+        assert (boj["shock_primary"] == 0).all()
+        # Sensitivity analysis flag shock_primary_rescaled admits post-exit events
+        boj_post = shocks_df[(shocks_df["regime"] == "BoJ") & (shocks_df["decision_date"].astype(str) > "2024-03-18")]
+        assert (boj_post["shock_primary_rescaled"] == 1).all()
 
         # CBR post-Feb 2022
         cbr_break = shocks_df[(shocks_df["regime"] == "CBR") & (shocks_df["decision_date"].astype(str) >= "2022-02-24")]
@@ -119,6 +120,20 @@ class TestPriorityGroup2Shocks:
         for reg in ["Fed", "ECB"]:
             sub = shocks_df[shocks_df["regime"] == reg]
             assert (sub["shock_primary"] == sub["shock_usable"]).all()
+
+    def test_shock_measure_type(self, shocks_df):
+        """shock_measure_type must be 'hf_ois' for Grade A, 'yield_proxy' for Grade B, '' for Grade C."""
+        assert (shocks_df[shocks_df["shock_grade"] == "A"]["shock_measure_type"] == "hf_ois").all()
+        assert (shocks_df[shocks_df["shock_grade"] == "B"]["shock_measure_type"] == "yield_proxy").all()
+        assert (shocks_df[shocks_df["shock_grade"] == "C"]["shock_measure_type"] == "").all()
+
+    def test_shock_std_peer_scale(self, shocks_df):
+        """shock_std_peer_scale must rescale BoJ shocks using peer DM scale and match shock_std elsewhere."""
+        boj_post = shocks_df[(shocks_df["regime"] == "BoJ") & (shocks_df["decision_date"].astype(str) > "2024-03-18")]
+        nonzero = boj_post[boj_post["shock_proxy_raw"] != 0]
+        assert (nonzero["shock_std_peer_scale"] != nonzero["shock_std"]).all()
+        non_boj = shocks_df[shocks_df["regime"] != "BoJ"]
+        pd.testing.assert_series_equal(non_boj["shock_std_peer_scale"], non_boj["shock_std"], check_names=False)
 
     def test_winsorized_shock_bounds(self, shocks_df):
         """shock_std_w must be capped strictly within [-4.0, 4.0]."""

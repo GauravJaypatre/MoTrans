@@ -343,4 +343,26 @@ official page)"`. See ISS-029 for the sourcing plan.
    - AU and CN 2-year sovereign benchmark yields are renamed to `yield_2y` in `controls_long` (never conflated with `yield_1y`).
    - `shock_proxy_tenor` explicitly records the tenor used (`1Y` for US, EA, JP, GB, RU, BR; `2Y` for AU, CN, CA).
 
+---
+
+## 2026-10-21 — Priority Group 2 Follow-up & Priority Group 3 (Items B, C, D, F, G)
+
+### DECISION-022: Bank of Japan Shock Standardization, Peer-Scale Sensitivity, and Primary Sample Exclusion
+- **Date Recorded**: 2026-10-21 (Logged after inspecting shock magnitudes and volatility compression during ZIRP/QQE, but strictly before estimating any outcome models or causal regressions).
+- **Primary Rule**: BoJ is excluded from the primary estimation sample (`shock_primary = 0` for all 333 decisions). This prevents the near-zero training variance of the 1-year JGB yield (1.1357 bp during 2000–2019 ZIRP/QQE) from contaminating primary causal estimates.
+- **Consistent Shock Definition (`shock_std`)**: Standardized using within-regime training SD (1.1357 bp) for all BoJ decisions across the entire dataset, maintaining uniform methodology across all 12 regimes.
+- **Peer-Scale Sensitivity Analysis (`shock_std_peer_scale` & `shock_primary_rescaled`)**: For sensitivity analyses, BoJ post-exit decisions (21 decisions post-2024-03-18) are standardized using the peer DM sovereign 1Y yield training SD (ECB 1Y Bund proxy training SD = 4.4806 bp; alternative G3 peer average across US/EA/UK = 7.44 bp).
+- **Justification for Peer Scale**: During ZIRP/QQE/YCC, the JGB 1Y yield was compressed near zero with artificially pinned volatility. Standardizing post-2024 policy rate normalization by 1.14 bp produces extreme statistical artifacts (e.g. +8.01 SD on 2024-07-31 for a 9.1 bp move). Benchmarking against peer DM training SD restores economic comparability without fitting to equity market outcome data.
+
+### DECISION-023: Raw Data Hygiene Restoration and Official Announcement Timing Conventions (BoE, BoC, RBA, CBR)
+- **Raw Data Hygiene & Manifest Restoration**: An automated run of harvest/fetch routines on 2026-10-21 re-downloaded 7 BIS cbpol files (`bis_cbpol_gb.csv`, `bis_cbpol_au.csv`, `bis_cbpol_cn.csv`, `bis_cbpol_ru.csv`, `bis_cbpol_br.csv`, `bis_cbpol_mx.csv`, `bis_cbpol_kr.csv`) with trailing daily observations beyond the 2026-10-13 project baseline snapshot, appending duplicate rows to `MANIFEST.csv`. Without deleting any files, the 7 files were restored to their baseline snapshot by trimming trailing observations so their SHA-256 hashes match the original registered entries, and duplicate entries in `MANIFEST.csv` were cleaned while preserving newly registered policy assets (`data/raw/policy_more/`). All raw file integrity checks pass.
+- **Official Announcement Time Conventions Sourced (Item F)**:
+  - **BoE**: 12:00 London time (`exact`), sourced from official MPC announcement convention and voting records (`mpcvoting.xlsx`).
+  - **BoC**: Sourced from official Fixed Announcement Date (FAD) schedule: 09:00 ET (2000–2019), 10:00 ET (2020–2023), 09:45 ET (2024–present) (`exact`).
+  - **RBA**: 14:30 Sydney time (`exact`), sourced from official Reserve Bank of Australia Board decision releases.
+  - **CBR**: 13:30 Moscow time (`exact`) for key rate era Friday meetings (2013-09-13 to 2022-02-11); wartime / break era remains flagged `unknown`.
+- **Scheduled Meeting Holds Added (Item G)**:
+  - Added official scheduled holds for BoE (228 holds), BoC (139 holds), and RBA (147 holds), extending full meeting history to the latest decisions and increasing total decisions from 888 to 1,402 (+514 holds across these regimes).
+
+
 

@@ -131,7 +131,7 @@ def main_full() -> pd.DataFrame:
     events = build(policy, panel)
     events.to_parquet(final / "events.parquet", index=False)
     print(f"events: {events['event_id'].nunique()} events x {events['index_id'].nunique()} series = "
-          f"{len(events):,} rows -> {final / 'events.parquet'}")
+          f"{len(events):,} rows -> events.parquet")
     return events
 
 

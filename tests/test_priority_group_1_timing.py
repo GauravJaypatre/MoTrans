@@ -50,7 +50,7 @@ KNOWN_EVENTS = {
     ],
     "RBA": [
         "2000-02-02", "2000-04-05", "2000-05-03", "2000-08-02", "2001-02-07",
-        "2001-03-07", "2001-04-04", "2008-03-05", "2009-10-07", "2020-03-04"
+        "2001-03-07", "2001-04-04", "2008-03-04", "2009-10-06", "2020-03-03"
     ],
     "BoK": [
         "2000-02-10", "2000-10-05", "2001-02-08", "2001-07-05", "2008-10-09",
@@ -78,9 +78,9 @@ KNOWN_EVENTS = {
     ]
 }
 
-# Regimes whose times ARE sourced from saved files (Fed statement pages + FRBSF, ECB EA-MPD, BoJ minutes).
+# Regimes whose times ARE sourced from saved files / official conventions (Fed, ECB, BoJ, BoE, BoC, RBA, CBR).
 # Only these may be checked for time_quality = "exact" or "approximate".
-SOURCED_REGIMES = {"Fed", "ECB", "BoJ"}
+SOURCED_REGIMES = {"Fed", "ECB", "BoJ", "BoE", "BoC", "RBA", "CBR"}
 
 
 @pytest.fixture(scope="module")

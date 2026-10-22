@@ -72,8 +72,16 @@ def eampd() -> pd.DataFrame:
                       notes="Euro Area Monetary Policy Event-Study Database")
     raw = path.read_bytes()
     df = pd.read_excel(io.BytesIO(raw), sheet_name="Monetary Event Window")
-    df = df[pd.to_datetime(df["date"], errors="coerce").notna()].copy()
-    df["date"] = pd.to_datetime(df["date"]).dt.date
+
+    def _parse_eampd_date(x):
+        if pd.isna(x):
+            return None
+        if isinstance(x, (dt.datetime, dt.date)):
+            return x.date() if isinstance(x, dt.datetime) else x
+        return dt.datetime.strptime(str(x).strip(), "%d/%m/%Y").date()
+
+    df["date"] = df["date"].apply(_parse_eampd_date)
+    df = df[df["date"].notna()].copy()
     return df[df["date"] >= dt.date(1999, 1, 1)][["date", "OIS_1Y"]]
 
 
@@ -132,19 +140,39 @@ def build(policy: pd.DataFrame, controls: pd.DataFrame) -> pd.DataFrame:
     df["shock_proxy_std"] = scale("shock_proxy_raw", df["regime"])
     use_hf = df["shock_hf_std"].notna()
     df["shock_raw"] = np.where(use_hf, df["shock_hf_raw"], df["shock_proxy_raw"])
+
+    # Consistent definition: within-regime training SD scale for all regimes and events (BoJ = 1.1357 bp)
     df["shock_std"] = np.where(use_hf, df["shock_hf_std"], df["shock_proxy_std"])
+    df["shock_std_legacy_sd"] = df["shock_std"]
     df["shock_std_w"] = df["shock_std"].clip(lower=-4.0, upper=4.0)
+
+    # Peer DM benchmark scale for BoJ sensitivity analysis (ECB Bund 1Y proxy training SD = 4.4806 bp)
+    train_mask = df["decision_date"] <= TRAIN_END
+    peer_dm_scale = float(df[train_mask & (df["regime"] == "ECB")]["shock_proxy_raw"].std())
+
+    # Peer-scale version in shock_std_peer_scale: rescaled for BoJ, matches shock_std for other regimes
+    df["shock_std_peer_scale"] = np.where(
+        df["regime"] == "BoJ",
+        df["shock_proxy_raw"] / peer_dm_scale,
+        df["shock_std"]
+    )
     df["shock_source"] = np.where(use_hf, df["shock_hf_source"], df["shock_proxy_source"])
     df["shock_grade"] = np.select([use_hf, df["shock_proxy_std"].notna()], ["A", "B"], "C")
+    df["shock_measure_type"] = np.select([use_hf, df["shock_proxy_std"].notna()], ["hf_ois", "yield_proxy"], "")
     df["shock_usable"] = (df["shock_grade"].isin(["A", "B"]) & df["shock_std"].notna()).astype(int)
     df["shock_proxy_tenor"] = np.where(df["shock_proxy_std"].notna(), df["regime"].map(PROXY_TENOR).fillna(""), "")
 
     is_boj_zirp = (df["regime"] == "BoJ") & (pd.to_datetime(df["decision_date"]).dt.date <= dt.date(2024, 3, 18))
+    is_boj_all = (df["regime"] == "BoJ")
     is_cbr_break = (df["regime"] == "CBR") & (pd.to_datetime(df["decision_date"]).dt.date >= dt.date(2022, 2, 24))
     is_china = (df["regime"] == "PBoC")
 
-    is_primary_excluded = is_boj_zirp | is_cbr_break | is_china
+    # Baseline pre-registered default: shock_primary = 0 for all BoJ
+    is_primary_excluded = is_boj_all | is_cbr_break | is_china
     df["shock_primary"] = ((df["shock_usable"] == 1) & (~is_primary_excluded)).astype(int)
+
+    # Labeled sensitivity analysis: shock_primary_rescaled includes 21 post-exit BoJ events
+    df["shock_primary_rescaled"] = ((df["shock_usable"] == 1) & (~(is_boj_zirp | is_cbr_break | is_china))).astype(int)
 
     df["shock_quality_flag"] = np.where(
         is_boj_zirp,
@@ -257,31 +285,50 @@ def main() -> pd.DataFrame:
     controls = pd.read_parquet(INTERIM / "controls_long.parquet")
     shocks = build(policy, controls)
     cols = ["event_id", "regime", "decision_date", "announce_ts_utc", "decision", "size_bp", "event_type",
-            "shock_raw", "shock_std", "shock_std_w", "shock_source", "shock_grade",
-            "shock_usable", "shock_primary", "shock_proxy_tenor", "shock_quality_flag",
-            "shock_hf_raw", "shock_hf_std", "shock_proxy_raw", "shock_proxy_std", "split_tag"]
+            "shock_raw", "shock_std", "shock_std_peer_scale", "shock_std_legacy_sd", "shock_std_w", "shock_source",
+            "shock_grade", "shock_measure_type", "shock_usable", "shock_primary", "shock_primary_rescaled",
+            "shock_proxy_tenor", "shock_quality_flag", "shock_hf_raw", "shock_hf_std", "shock_proxy_raw",
+            "shock_proxy_std", "split_tag"]
     shocks[cols].to_parquet(FINAL / "shocks.parquet", index=False)
 
     events = pd.read_parquet(FINAL / "events.parquet").drop(
-        columns=["shock_std", "shock_std_w", "shock_grade", "shock_usable", "shock_primary",
-                 "shock_proxy_tenor", "shock_quality_flag"], errors="ignore"
+        columns=["shock_std", "shock_std_peer_scale", "shock_std_legacy_sd", "shock_std_w", "shock_source",
+                 "shock_grade", "shock_measure_type", "shock_usable", "shock_primary", "shock_primary_rescaled",
+                 "shock_proxy_tenor", "shock_quality_flag"],
+        errors="ignore"
     )
     events = events.merge(
-        shocks[["event_id", "shock_std", "shock_std_w", "shock_grade", "shock_usable",
-                "shock_primary", "shock_proxy_tenor", "shock_quality_flag"]],
+        shocks[["event_id", "shock_std", "shock_std_peer_scale", "shock_std_legacy_sd", "shock_std_w",
+                "shock_source", "shock_grade", "shock_measure_type", "shock_usable", "shock_primary",
+                "shock_primary_rescaled", "shock_proxy_tenor", "shock_quality_flag"]],
         on="event_id", how="left"
     )
     events.to_parquet(FINAL / "events.parquet", index=False)
 
-    policy = policy.drop(columns=["shock_usable", "shock_primary", "shock_grade", "shock_quality_flag"], errors="ignore")
-    shocks_subset = shocks[["event_id", "shock_usable", "shock_primary", "shock_grade", "shock_quality_flag"]].drop_duplicates()
+    policy = policy.drop(columns=["shock_usable", "shock_primary", "shock_primary_rescaled", "shock_grade",
+                                 "shock_measure_type", "shock_quality_flag", "analysis_ready_timing"], errors="ignore")
+    shocks_subset = shocks[["event_id", "shock_usable", "shock_primary", "shock_primary_rescaled",
+                            "shock_grade", "shock_measure_type", "shock_quality_flag"]].drop_duplicates()
     if "event_id" not in policy.columns:
         policy["event_id"] = policy["regime"].str.lower() + "_" + policy["decision_date"].astype(str)
     policy = policy.merge(shocks_subset, on="event_id", how="left")
+    
+    # Attach analysis_ready_timing to policy_decisions (1 iff exact or approximate time with resolved session)
+    ev_timing = events.groupby("event_id")["analysis_ready_timing"].max().reset_index()
+    policy = policy.merge(ev_timing, on="event_id", how="left")
+    policy["analysis_ready_timing"] = policy["analysis_ready_timing"].fillna(0).astype(int)
     policy.to_csv(FINAL / "policy_decisions.csv", index=False)
 
     (ROOT / "docs" / "shock_validation.md").write_text(validation_md(shocks), encoding="utf-8")
     plots(shocks)
+
+    # Regenerate docs/validation_report.md
+    try:
+        from scratch.generate_validation_report import generate_report
+        generate_report()
+    except Exception as e:
+        print(f"Warning: validation report generation failed: {e}")
+
     print(shocks.groupby("regime").shock_grade.value_counts().unstack(fill_value=0).to_string())
     return shocks
 
