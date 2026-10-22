@@ -50,8 +50,11 @@ FILL = PatternFill("solid", fgColor="1F3864")
 def clean(value):
     if value is None:
         return None
-    if isinstance(value, float) and math.isnan(value):
-        return None
+    try:
+        if pd.isna(value):
+            return None
+    except (ValueError, TypeError):
+        pass
     if isinstance(value, pd.Timestamp):
         return None if pd.isna(value) else value.to_pydatetime()
     if value is pd.NaT:

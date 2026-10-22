@@ -159,6 +159,18 @@ def build(policy: pd.DataFrame, controls: pd.DataFrame) -> pd.DataFrame:
     df["shock_source"] = np.where(use_hf, df["shock_hf_source"], df["shock_proxy_source"])
     df["shock_grade"] = np.select([use_hf, df["shock_proxy_std"].notna()], ["A", "B"], "C")
     df["shock_measure_type"] = np.select([use_hf, df["shock_proxy_std"].notna()], ["hf_ois", "yield_proxy"], "")
+    df["shock_tier"] = pd.Series(
+        np.where(
+            (df["shock_grade"] == "A") & (df["shock_measure_type"] == "hf_ois"),
+            1,
+            np.where(
+                (df["shock_grade"] == "B") & (df["shock_measure_type"] == "yield_proxy"),
+                2,
+                np.nan
+            )
+        ),
+        dtype="Int64"
+    )
     df["shock_usable"] = (df["shock_grade"].isin(["A", "B"]) & df["shock_std"].notna()).astype(int)
     df["shock_proxy_tenor"] = np.where(df["shock_proxy_std"].notna(), df["regime"].map(PROXY_TENOR).fillna(""), "")
 
@@ -188,6 +200,22 @@ def build(policy: pd.DataFrame, controls: pd.DataFrame) -> pd.DataFrame:
             )
         )
     )
+
+    # Overlap counting for window lengths 1, 3, 5, 20, 60 trading days
+    bdate_range = pd.bdate_range("1999-12-01", "2026-12-31")
+    event_dates = pd.to_datetime(df["decision_date"]).to_numpy()
+    event_ids = df["event_id"].to_numpy()
+
+    for W in (1, 3, 5, 20, 60):
+        cnts = []
+        for d, eid in zip(event_dates, event_ids):
+            b_idx = int(np.searchsorted(bdate_range, d))
+            end_b = bdate_range[min(b_idx + W - 1, len(bdate_range) - 1)]
+            mask = (event_dates >= d) & (event_dates <= end_b) & (event_ids != eid)
+            cnts.append(int(mask.sum()))
+        df[f"overlap_count_{W}d"] = cnts
+        df[f"overlap_{W}d"] = (df[f"overlap_count_{W}d"] > 0).astype(int)
+
     return df
 
 
@@ -284,31 +312,35 @@ def main() -> pd.DataFrame:
     policy = pd.read_csv(FINAL / "policy_decisions.csv", dtype={"decision_date": str})
     controls = pd.read_parquet(INTERIM / "controls_long.parquet")
     shocks = build(policy, controls)
+    overlap_cols = [f"overlap_{w}d" for w in (1, 3, 5, 20, 60)] + [f"overlap_count_{w}d" for w in (1, 3, 5, 20, 60)]
     cols = ["event_id", "regime", "decision_date", "announce_ts_utc", "decision", "size_bp", "event_type",
             "shock_raw", "shock_std", "shock_std_peer_scale", "shock_std_legacy_sd", "shock_std_w", "shock_source",
-            "shock_grade", "shock_measure_type", "shock_usable", "shock_primary", "shock_primary_rescaled",
+            "shock_grade", "shock_measure_type", "shock_tier", "shock_usable", "shock_primary", "shock_primary_rescaled",
             "shock_proxy_tenor", "shock_quality_flag", "shock_hf_raw", "shock_hf_std", "shock_proxy_raw",
-            "shock_proxy_std", "split_tag"]
+            "shock_proxy_std", "split_tag"] + overlap_cols
     shocks[cols].to_parquet(FINAL / "shocks.parquet", index=False)
 
+    drop_ev_cols = ["shock_std", "shock_std_peer_scale", "shock_std_legacy_sd", "shock_std_w", "shock_source",
+                    "shock_grade", "shock_measure_type", "shock_tier", "shock_usable", "shock_primary", "shock_primary_rescaled",
+                    "shock_proxy_tenor", "shock_quality_flag"] + overlap_cols
     events = pd.read_parquet(FINAL / "events.parquet").drop(
-        columns=["shock_std", "shock_std_peer_scale", "shock_std_legacy_sd", "shock_std_w", "shock_source",
-                 "shock_grade", "shock_measure_type", "shock_usable", "shock_primary", "shock_primary_rescaled",
-                 "shock_proxy_tenor", "shock_quality_flag"],
+        columns=drop_ev_cols,
         errors="ignore"
     )
+    merge_ev_cols = ["event_id", "shock_std", "shock_std_peer_scale", "shock_std_legacy_sd", "shock_std_w",
+                     "shock_source", "shock_grade", "shock_measure_type", "shock_tier", "shock_usable", "shock_primary",
+                     "shock_primary_rescaled", "shock_proxy_tenor", "shock_quality_flag"] + overlap_cols
     events = events.merge(
-        shocks[["event_id", "shock_std", "shock_std_peer_scale", "shock_std_legacy_sd", "shock_std_w",
-                "shock_source", "shock_grade", "shock_measure_type", "shock_usable", "shock_primary",
-                "shock_primary_rescaled", "shock_proxy_tenor", "shock_quality_flag"]],
+        shocks[merge_ev_cols],
         on="event_id", how="left"
     )
     events.to_parquet(FINAL / "events.parquet", index=False)
 
-    policy = policy.drop(columns=["shock_usable", "shock_primary", "shock_primary_rescaled", "shock_grade",
-                                 "shock_measure_type", "shock_quality_flag", "analysis_ready_timing"], errors="ignore")
-    shocks_subset = shocks[["event_id", "shock_usable", "shock_primary", "shock_primary_rescaled",
-                            "shock_grade", "shock_measure_type", "shock_quality_flag"]].drop_duplicates()
+    drop_pol_cols = ["shock_tier", "shock_usable", "shock_primary", "shock_primary_rescaled", "shock_grade",
+                     "shock_measure_type", "shock_quality_flag", "analysis_ready_timing"] + overlap_cols
+    policy = policy.drop(columns=drop_pol_cols, errors="ignore")
+    shocks_subset = shocks[["event_id", "shock_tier", "shock_usable", "shock_primary", "shock_primary_rescaled",
+                            "shock_grade", "shock_measure_type", "shock_quality_flag"] + overlap_cols].drop_duplicates()
     if "event_id" not in policy.columns:
         policy["event_id"] = policy["regime"].str.lower() + "_" + policy["decision_date"].astype(str)
     policy = policy.merge(shocks_subset, on="event_id", how="left")

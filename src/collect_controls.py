@@ -247,7 +247,7 @@ def y_ru() -> list[tuple]:
 
 def y_br() -> list[tuple]:
     pts = []
-    for start in range(2000, TODAY.year + 1, 10):
+    for start in range(2000, 2020, 10):
         end = min(start + 9, TODAY.year)
         url = (f"https://api.bcb.gov.br/dados/serie/bcdata.sgs.7806/dados?formato=json"
                f"&dataInicial=01/01/{start}&dataFinal=31/12/{end}")
@@ -420,7 +420,7 @@ def main() -> list[str]:
     (INTERIM / "controls_issues.txt").write_text("\n".join(issues) + "\n", encoding="utf-8")
     cov = df.groupby(["country", "variable"])["date"].agg(["min", "max", "size"])
     print(cov.to_string())
-    print(f"{len(df)} control rows; {len(issues)} issues -> {INTERIM / 'controls_issues.txt'}")
+    print(f"{len(df)} control rows; {len(issues)} issues -> data/interim/controls_issues.txt")
     return issues
 
 

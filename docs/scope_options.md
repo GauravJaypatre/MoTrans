@@ -38,20 +38,20 @@ Option A restricts policy shocks to the systemic major central banks with consen
   - *Foreign market spillover*: All non-home equity indices across the Americas, Europe, Asia-Pacific, and emerging markets responding to Fed and ECB policy shocks.
 
 ### Empirical Counts
-| Central Bank | Shock Measure Type | Total Shocks | Train Shocks (to 2019) | Crisis Shocks (2020-2021) | Blind-Test Shocks (2022+) |
-|:---|:---|:---:|:---:|:---:|:---:|
-| **Fed** | `hf_ois` (to 2023) / `yield_proxy` | 227 | 179 | 24 | 24 |
-| **ECB** | `hf_ois` (to 2025) / `yield_proxy` | 299 | 241 | 18 | 40 |
-| **Subtotal (Primary Fed + ECB)** | `hf_ois` | **526** | **420** | **42** | **64** |
-| *BoJ (Sensitivity only)* | `yield_proxy` | 333 | 258 | 32 | 43 |
-| **Total (with BoJ Sensitivity)** | | **859** | **678** | **74** | **107** |
+| Central Bank | Shock Measure Type | Total Shocks | Train Shocks (to 2019) | Crisis Shocks (2020-2021) | Blind-Test Shocks (2022+) | Actual `events.parquet` Rows |
+|:---|:---|:---:|:---:|:---:|:---:|:---:|
+| **Fed** | `hf_ois` (to 2023) / `yield_proxy` | 227 | 174 | 18 | 35 | 7,557 |
+| **ECB** | `hf_ois` (to 2025) / `yield_proxy` | 299 | 241 | 18 | 40 | 9,443 |
+| **Subtotal (Primary Fed + ECB)** | `hf_ois` | **526** | **415** | **36** | **75** | **17,000** |
+| *BoJ (Sensitivity only)* | `yield_proxy` | 333 | 278 | 17 | 38 | 10,668 |
+| **Total (with BoJ Sensitivity)** | | **859** | **693** | **53** | **113** | **27,668** |
 
-- **Index-Event Observations**:
-  - Primary (Fed + ECB): $526 \text{ shocks} \times 38 \text{ indices} = \mathbf{19,988}$ index-event observations.
-  - With BoJ Sensitivity: $859 \text{ shocks} \times 38 \text{ indices} = \mathbf{32,642}$ index-event observations.
+- **Actual Index-Event Observations (events.parquet)**:
+  - Primary (Fed + ECB): **17,000** index-event observations (replaces naive product $526 \times 38 = 19,988$).
+  - With BoJ Sensitivity: **27,668** index-event observations (replaces naive product $859 \times 38 = 32,642$).
 - **Independent Blind-Test Shocks**:
-  - Primary (Fed + ECB): **64 independent decision events** (24 Fed, 40 ECB).
-  - With BoJ Sensitivity: **107 independent decision events**.
+  - Primary (Fed + ECB): **75 independent decision events** (35 Fed, 40 ECB).
+  - With BoJ Sensitivity: **113 independent decision events**.
 
 ### Feasibility of Pre-registered Tests & Structural Limitations
 - **Leave-One-Country-Out (LOCO) Limitation**:
@@ -73,24 +73,33 @@ Option B supplements Option A by incorporating all additional central bank regim
 ### Qualifying Regimes
 - **Fed & ECB**: Primary high-frequency OIS/futures shocks (`hf_ois`).
 - **BoE (Bank of England)**: 284 official MPC meetings (2000-2026) with complete holds sourced from `mpcvoting.xlsx`; announcement convention 12:00 London time; 1-year gilt proxy (`yield_proxy`).
-- **BoC (Bank of Canada)**: 205 official Fixed Announcement Dates (FADs, 2000-2026) with complete holds sourced from official BoC releases; announcement convention 09:00/10:00/09:45 ET; 2-year benchmark proxy (`yield_proxy`).
-- **RBA (Reserve Bank of Australia)**: 220 official Board meeting rate decisions (2000-2026) with complete holds sourced from official RBA records; announcement convention 14:30 Sydney time; Table F2 2-year benchmark proxy (`yield_proxy`).
+- **BoC (Bank of Canada)**: 214 official Fixed Announcement Dates (FADs, 2000-2026) with complete holds sourced from official BoC releases; announcement convention 09:00/10:00/09:45 ET; 2-year benchmark proxy (`yield_proxy`).
+- **RBA (Reserve Bank of Australia)**: 287 official Board meeting rate decisions (2000-2026) with complete holds sourced from official RBA records (including all 67 pre-2008 holds restored); announcement convention 14:30 Sydney time (from Feb 2008); Table F2 2-year benchmark proxy (`yield_proxy`).
 - *(Excluded from Primary)*: BoJ (ZIRP/YCC), CBR (post-Feb 2022 sanctions break and pre-2013 unscheduled era), PBoC (LPR/administrative benchmark), and regimes with unsourced announcement times (BCB, Banxico, BoK).
 
 ### Empirical Counts
-| Central Bank | Shock Measure Type | Total Shocks | Train Shocks (to 2019) | Crisis Shocks (2020-2021) | Blind-Test Shocks (2022+) |
-|:---|:---|:---:|:---:|:---:|:---:|
-| **Fed** | `hf_ois` / `yield_proxy` | 227 | 179 | 24 | 24 |
-| **ECB** | `hf_ois` / `yield_proxy` | 299 | 241 | 18 | 40 |
-| **BoE** | `yield_proxy` | 284 | 230 | 16 | 38 |
-| **BoC** | `yield_proxy` | 205 | 151 | 16 | 38 |
-| **RBA** | `yield_proxy` | 220 | 168 | 20 | 32 |
-| **Total Option B Primary** | | **1,235** | **969** | **94** | **172** |
+| Central Bank | Shock Measure Type | Total Shocks | Train Shocks (to 2019) | Crisis Shocks (2020-2021) | Blind-Test Shocks (2022+) | Actual `events.parquet` Rows |
+|:---|:---|:---:|:---:|:---:|:---:|:---:|
+| **Fed** | `hf_ois` / `yield_proxy` | 227 | 174 | 18 | 35 | 7,557 |
+| **ECB** | `hf_ois` / `yield_proxy` | 299 | 241 | 18 | 40 | 9,443 |
+| **BoE** | `yield_proxy` | 284 | 228 | 18 | 38 | 9,289 |
+| **BoC** | `yield_proxy` | 214 | 154 | 18 | 42 | 7,195 |
+| **RBA** | `yield_proxy` | 287 | 220 | 23 | 44 | 9,545 |
+| **Total Option B Primary** | | **1,311** | **1,017** | **95** | **199** | **43,029** |
 
-- **Index-Event Observations**:
-  - $1,235 \text{ shocks} \times 38 \text{ indices} = \mathbf{46,930}$ index-event observations.
+- **Actual Index-Event Observations (events.parquet)**:
+  - **43,029** index-event observations (replaces naive product $1,311 \times 38 = 49,818$).
 - **Independent Blind-Test Shocks**:
-  - **172 independent decision events** (Fed 24, ECB 40, BoE 38, BoC 38, RBA 32). Every qualifying regime provides $> 30$ independent blind-test shocks, satisfying pre-registration power thresholds.
+  - **199 independent decision events** (Fed 35, ECB 40, BoE 38, BoC 42, RBA 44). Every qualifying regime provides $> 30$ independent blind-test shocks, satisfying pre-registration power thresholds.
+
+### Arithmetic Reconciliation & Dataset Inceptions
+- **Arithmetic Explanation ($2,424 \times 38 = 92,112$ vs 80,344; and $2,491 \times 38 = 94,658$ vs 82,054)**:
+  Naive multiplication of total policy decisions by 38 equity indices assumes every series was actively trading from 2000-01-01 to 2026-10-22. In reality, multiple equity indices and ETFs have staggered inception dates:
+  - China CSI 300 was launched in 2002; CSI 300 Banks and CSI 500 in late 2004.
+  - Russia MOEX Financials launched in late 2004; MOEX SMID in 2012.
+  - Brazil IFNC and SMLL launched in 2004/2005.
+  - Sector and country ETFs launched later (e.g. Korea Banks ETF 2007, Euro-area small-cap ETF 2009, Australia financials index 2013).
+  Per Non-Negotiable Rule 1, rows are never backfilled with interpolated or fabricated prices prior to an index's official inception date. Early decisions (2000–2005) therefore match against 18 to 25 series, rather than 38, explaining why the actual count is **82,054 rows** rather than 94,658 (a difference of 12,604 rows; or 11,768 rows in the prior 2,424-event snapshot).
 
 ### Feasibility of Pre-registered Tests & Enhancements
 - **Restoration of Leave-One-Country-Out (LOCO)**:
@@ -107,9 +116,9 @@ Option B supplements Option A by incorporating all additional central bank regim
 |:---|:---:|:---:|
 | **Central Banks Included** | Fed, ECB (BoJ in sensitivity) | Fed, ECB, BoE, BoC, RBA |
 | **Primary Identification** | High-frequency OIS/futures (`hf_ois`) | High-frequency OIS (`hf_ois`) + Sovereign yield proxies (`yield_proxy`) |
-| **Total Primary Shocks** | 526 | 1,235 |
-| **Total Index-Event Rows** | 19,988 | 46,930 |
-| **Blind-Test Shocks (2022+)** | 64 | 172 |
+| **Total Primary Shocks** | 526 | 1,311 |
+| **Actual Index-Event Rows** | 17,000 | 43,029 |
+| **Blind-Test Shocks (2022+)** | 75 | 199 |
 | **Domestic Markets Tested** | 2 (US, Euro Area) | 5 (US, Euro Area, UK, Canada, Australia) |
 | **Foreign Receiving Indices** | 38 | 38 |
 | **Leave-One-Country-Out (LOCO)**| **Infeasible for home transmission** | **Fully feasible across 5 sovereign jurisdictions** |

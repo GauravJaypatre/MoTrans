@@ -266,7 +266,7 @@ def main() -> pd.DataFrame:
     pilot.to_parquet(INTERIM_DIR / "pilot_indices_daily.parquet", index=False)
     pilot.to_csv(INTERIM_DIR / "pilot_indices_daily.csv", index=False)
     print("Zero-volume non-session rows dropped:", {k: v for k, v in DROPPED.items() if v})
-    print(f"{panel['index_id'].nunique()} series, {len(panel)} rows -> {INTERIM_DIR / 'indices_daily.parquet'}")
+    print(f"{panel['index_id'].nunique()} series, {len(panel)} rows -> data/interim/indices_daily.parquet")
     return panel
 
 

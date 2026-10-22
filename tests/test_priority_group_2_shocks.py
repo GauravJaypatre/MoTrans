@@ -61,10 +61,10 @@ class TestPriorityGroup2Shocks:
         assert len(pboc) == 40
 
         rba = shocks_df[shocks_df["regime"] == "RBA"]
-        # With scheduled holds added, RBA has 220 decisions: 217 Grade B, 3 Grade C
-        assert (rba["shock_grade"] == "B").sum() == 217
+        # With all scheduled holds added (including 67 pre-2008 holds), RBA has 287 decisions: 284 Grade B, 3 Grade C
+        assert (rba["shock_grade"] == "B").sum() == 284
         assert (rba["shock_grade"] == "C").sum() == 3
-        assert (rba["shock_usable"] == 1).sum() == 217
+        assert (rba["shock_usable"] == 1).sum() == 284
 
     def test_gated_regimes_remain_grade_c(self, shocks_df):
         """Banxico, BoK, and RBI must remain Grade C (no unsourced/fabricated numbers)."""
@@ -159,3 +159,31 @@ class TestPriorityGroup2Shocks:
         assert not (controls[controls["country"] == "AU"]["variable"] == "yield_1y").any()
         assert (controls[controls["country"] == "CN"]["variable"] == "yield_2y").any()
         assert not (controls[controls["country"] == "CN"]["variable"] == "yield_1y").any()
+
+    def test_shock_tier_definition(self, shocks_df):
+        """shock_tier must be 1 for hf_ois (Grade A), 2 for yield_proxy (Grade B), and null for Grade C."""
+        tier1 = shocks_df[shocks_df["shock_tier"] == 1]
+        assert (tier1["shock_grade"] == "A").all()
+        assert (tier1["shock_measure_type"] == "hf_ois").all()
+        assert set(tier1["regime"].unique()) == {"Fed", "ECB"}
+
+        tier2 = shocks_df[shocks_df["shock_tier"] == 2]
+        assert (tier2["shock_grade"] == "B").all()
+        assert (tier2["shock_measure_type"] == "yield_proxy").all()
+
+        unshocked = shocks_df[shocks_df["shock_tier"].isna()]
+        assert (unshocked["shock_grade"] == "C").all()
+        assert (unshocked["shock_usable"] == 0).all()
+
+    def test_overlap_columns(self, shocks_df, events_df):
+        """Overlap columns must be present in shocks and events for W in 1, 3, 5, 20, 60."""
+        for W in (1, 3, 5, 20, 60):
+            flag_col = f"overlap_{W}d"
+            cnt_col = f"overlap_count_{W}d"
+            assert flag_col in shocks_df.columns
+            assert cnt_col in shocks_df.columns
+            assert flag_col in events_df.columns
+            assert cnt_col in events_df.columns
+
+            assert shocks_df[flag_col].isin([0, 1]).all()
+            assert (shocks_df[cnt_col] >= 0).all()

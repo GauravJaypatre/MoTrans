@@ -96,11 +96,14 @@ One row per **(regime × decision date)**. Built in Phase D.
 | `shock_source` | `str` | — | Source of the shock (e.g. "HF surprise series", "1Y yield change proxy") |
 | `shock_grade` | `str` | — | A / B / C with written justification in `docs/shock_validation.md` |
 | `shock_measure_type` | `str` | — | `hf_ois` for high-frequency surprise (Grade A); `yield_proxy` for sovereign yield change proxy (Grade B); empty for Grade C (NEW 1) |
+| `shock_tier` | `Int64` | tier | 1 for consensus high-frequency intraday OIS/futures surprise (`hf_ois`, Grade A); 2 for daily sovereign yield change proxy (`yield_proxy`, Grade B); `<NA>` for Grade C (TIERS requirement). Headline blind test uses Tier 1 only; Tier 2 is secondary transfer test. |
 | `shock_usable` | `int8` | flag | 1 if `shock_grade` in {A, B} AND `shock_std` is finite and non-null; 0 for Grade C / missing shock (DECISION-021). |
 | `shock_primary` | `int8` | flag | 1 for primary clean analysis cases; 0 for all BoJ (pre-registered baseline rule), CBR post-Feb 2022, PBoC, and unusable shocks (DECISION-021, DECISION-022). |
 | `shock_primary_rescaled` | `int8` | flag | 1 for labeled sensitivity analysis cases admitting post-exit BoJ events under peer scaling; 0 for BoJ ZIRP, CBR post-Feb 2022, PBoC, and unusable shocks (DECISION-022). |
 | `shock_proxy_tenor` | `str` | — | Tenor of sovereign yield proxy (e.g. `1Y`, `2Y`); empty if no proxy used (DECISION-021). |
 | `shock_quality_flag` | `str` | — | Quality caveats; e.g. `low_sensitivity_zero_lower_bound`, `structural_break_ukraine_sanctions`, `tenor_2y_proxy_policy_transmission` (DECISION-021). |
+| `overlap_1d`, `overlap_3d`, `overlap_5d`, `overlap_20d`, `overlap_60d` | `int8` | flag | 1 if at least one other central bank policy decision occurs within the trading horizon window of $W \in \{1, 3, 5, 20, 60\}$ days; 0 otherwise (OVERLAP requirement). |
+| `overlap_count_1d`, `overlap_count_3d`, `overlap_count_5d`, `overlap_count_20d`, `overlap_count_60d` | `int16` | count | Number of other policy decisions from any regime occurring within the trading horizon window of $W \in \{1, 3, 5, 20, 60\}$ days (OVERLAP requirement). |
 | `event_type` | `str` | — | As in the decision table |
 | `shock_hf_raw`, `shock_hf_std` | `float64` | bp / SD | High-frequency surprise (Fed MPS, ECB OIS 1Y) and its standardised value |
 | `shock_proxy_raw`, `shock_proxy_std` | `float64` | bp / SD | 1-year or 2-year yield change proxy and its standardised value |

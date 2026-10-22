@@ -1,6 +1,6 @@
 # Data quality report (Phase C)
 
-Panel: 222,638 rows, 38 series, 16 markets, 2000-01-01 to 2026-10-12.
+Panel: 222,639 rows, 38 series, 16 markets, 2000-01-01 to 2026-10-12.
 
 ## Series coverage vs exchange calendars
 
@@ -22,7 +22,7 @@ Panel: 222,638 rows, 38 series, 16 markets, 2000-01-01 to 2026-10-12.
 | de_dax_banks | DE | banks_robustness | yfinance | 2013-03-05 | 2026-10-09 | 3,445 | 4 | 8 | 0 | 0 |
 | de_mdax | DE | smallcap | yfinance | 2000-01-03 | 2026-10-09 | 6,799 | 4 | 2 | 0 | 0 |
 | de_stoxx_banks_etf | DE | banks | yfinance | 2008-01-02 | 2026-10-09 | 4,764 | 4 | 13 | 257 | 0 |
-| ea_emu_smallcap_etf | EA | smallcap | yfinance | 2009-11-27 | 2026-10-09 | 4,196 | 86 | 1 | 740 | 0 |
+| ea_emu_smallcap_etf | EA | smallcap | yfinance | 2009-11-27 | 2026-10-12 | 4,197 | 86 | 1 | 740 | 0 |
 | es_ibex35 | ES | broad | yfinance | 2000-01-03 | 2026-10-12 | 6,811 | 3 | 4 | 0 | 0 |
 | fr_cac40 | FR | broad | yfinance | 2000-01-03 | 2026-10-12 | 6,844 | 6 | 2 | 0 | 0 |
 | gb_ftse100 | GB | broad | yfinance | 2000-01-04 | 2026-10-12 | 6,764 | 2 | 1 | 0 | 0 |

@@ -177,3 +177,25 @@ STOP for approval.
 
 STOP and give a final summary: coverage per country, grade per regime, every substitution,
 and every open issue.
+
+---
+
+## PRE-REGISTRATION DEVIATION & PROTOCOL AMENDMENT LOG
+
+### 2026-10-22 — Protocol Amendment: Tiered Identification Architecture (Tier 1 Headline Blind Test vs Tier 2 Secondary Transfer Test)
+
+- **Date Recorded**: 2026-10-22 (Logged after empirical shock proxy variance ratio audit, strictly prior to estimating causal outcome regressions or unblinding test responses).
+- **Motivation & Empirical Grounding**:
+  An empirical audit of daily sovereign yield proxies (`yield_proxy`, Grade B) demonstrated that while rate change actions (hikes/cuts) generate substantial, highly significant policy signal (Variance Ratio $VR = 3.8\text{ to }7.2$ relative to non-meeting noise), daily sovereign yield changes on hold days exhibit variance ratios indistinguishable from non-meeting background noise ($VR \approx 1.0$, $p > 0.30$ for BoE, RBA, Fed, and ECB). Consequently, daily yield proxies on hold days cannot reliably isolate policy surprise from background market volatility. In contrast, consensus high-frequency identification (`hf_ois`, Grade A: FRBSF Bauer-Swanson 30-minute futures surprises and EA-MPD 1-year OIS surprises) measures asset prices in narrow 30-to-90 minute windows that cleanly isolate policy and forward guidance innovations on both hold and rate change days.
+- **Pre-Registered Protocol Rules**:
+  1. **Tier 1 (Headline Identification Grade)**:
+     - Defined by `shock_tier = 1` (`shock_grade == "A"` and `shock_measure_type == "hf_ois"`).
+     - **The headline out-of-sample blind test ($\ge 2022$) uses Tier 1 shocks only**.
+     - Comprises 493 total decisions (412 train, 34 crisis, 47 blind test) across Fed and ECB. The 47 independent blind-test events satisfy pre-registered power requirements for headline causal claims.
+  2. **Tier 2 (Secondary Out-of-Sample Transfer Test)**:
+     - Defined by `shock_tier = 2` (`shock_grade == "B"` and `shock_measure_type == "yield_proxy"`).
+     - Evaluated strictly as a **secondary transfer test** to determine whether equity response elasticities identified in Tier 1 generalize to broader sovereign yield proxies and jurisdictions where high-frequency intraday data are unavailable.
+     - Comprises 1,069 primary decisions (848 train, 70 crisis, 151 blind test) across BoE, BoC, RBA, and post-HFI fallback.
+  3. **Leave-One-Country-Out (LOCO) Cross-Validation**:
+     - Headline cross-validation on Tier 1 uses Leave-One-Central-Bank-Out (LO-CB-O: train Fed, evaluate ECB; train ECB, evaluate Fed) and Leave-One-Market-Out (LOMO across 38 receiving equity indices).
+     - Full multi-country LOCO across 5 sovereign jurisdictions (US, EA, UK, CA, AU) is conducted under the secondary Tier 2 transfer test.

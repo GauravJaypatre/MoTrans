@@ -16,7 +16,7 @@ Grades: A = public high-frequency surprise; B = 1-year (or 2-year benchmark) yie
 | ECB | 299 | 292 | 7 | 0 | 2000-01-05 | 2026-09-10 |
 | Fed | 227 | 201 | 26 | 0 | 2000-02-02 | 2026-09-16 |
 | PBoC | 40 | 0 | 40 | 0 | 2002-02-21 | 2025-05-20 |
-| RBA | 220 | 0 | 217 | 3 | 2000-02-02 | 2026-09-29 |
+| RBA | 287 | 0 | 284 | 3 | 2000-02-02 | 2026-09-29 |
 | RBI | 163 | 0 | 0 | 163 | - | - |
 
 ## Usable and Primary shocks by regime and split (Priority Group 2)
@@ -35,7 +35,7 @@ Grades: A = public high-frequency surprise; B = 1-year (or 2-year benchmark) yie
 | ECB | 245 | 245 | 16 | 16 | 38 | 38 | 299 | 299 | Sufficient (>= 20) |
 | Fed | 170 | 170 | 18 | 18 | 39 | 39 | 227 | 227 | Sufficient (>= 20) |
 | PBoC | 30 | 0 | 3 | 0 | 7 | 0 | 40 | 0 | **FLAGGED (< 20)** |
-| RBA | 150 | 150 | 23 | 23 | 44 | 44 | 217 | 217 | Sufficient (>= 20) |
+| RBA | 217 | 217 | 23 | 23 | 44 | 44 | 284 | 284 | Sufficient (>= 20) |
 | RBI | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
 
 ## Japan zero-rate proxy review
@@ -81,7 +81,7 @@ Expected sign: tightening surprises positive, easing surprises negative. A hike 
 | cbr_2014-12-16 | hike | 650 | B | 1Y yield change, RU (bp) | +7.61 |
 | boe_2026-03-19 | hold | 0 | B | 1Y yield change, GB (bp) | +7.37 |
 | bcb_2001-03-21 | hike | 50 | B | 1Y yield change, BR (bp) | +6.52 |
-| rba_2008-10-07 | cut | -100 | B | 2Y yield change, AU (bp) | -6.00 |
+| rba_2008-10-07 | cut | -100 | B | 2Y yield change, AU (bp) | -6.08 |
 | boe_2023-02-02 | hike | 50 | B | 1Y yield change, GB (bp) | -5.96 |
 | bcb_2002-10-14 | hike | 300 | B | 1Y yield change, BR (bp) | +5.76 |
 | boj_2008-10-31 | cut | -20 | B | 1Y yield change, JP (bp) | -5.02 |

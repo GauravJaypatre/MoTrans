@@ -3,6 +3,14 @@
 Each collector reuses files already in data/raw/ and only downloads what is missing.
 """
 
+import sys
+
+if sys.platform == "win32":
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    if hasattr(sys.stderr, "reconfigure"):
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 from src import (
     audit_pilot,
     build_panel,

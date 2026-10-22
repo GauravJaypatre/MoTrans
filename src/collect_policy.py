@@ -544,20 +544,11 @@ RBI_POLICY = re.compile(r"Monetary Policy Statement|Monetary and Credit Policy|P
 
 
 def rbi_year_pages() -> dict[int, bytes]:
-    pages, form = {}, None
-    sess = requests.Session()
-    sess.headers.update(SESSION.headers)
-    for fy in range(2000, TODAY.year + 2):
+    pages = {}
+    for fy in range(2000, 2028):
         path = RAW_DIR / f"rbi_policy/rbi_policy_fy{fy}.html"
-        if not path.exists() and form is None:
-            soup = bs4.BeautifulSoup(sess.get(RBI_URL, timeout=60).text, "html.parser")
-            form = {i.get("name"): i.get("value", "") for i in soup.find_all("input") if i.get("name")}
-        data = dict(form or {}, hdnYear=str(fy))
-        pages[fy] = fetch(RBI_URL, f"rbi_policy/rbi_policy_fy{fy}.html", source="Reserve Bank of India",
-                          series_id=f"RBI_MONETARY_POLICY_FY{fy - 1}-{str(fy)[2:]}",
-                          licence="RBI website terms of use",
-                          notes=f"Monetary policy archive, financial year {fy - 1}-{fy} (form post hdnYear={fy})",
-                          data=data, session=sess)
+        if path.exists():
+            pages[fy] = path.read_bytes()
     return pages
 
 
@@ -799,7 +790,7 @@ def main() -> list[str]:
         w.writeheader()
         w.writerows(rows)
     (INTERIM_DIR / "pilot_policy_issues.txt").write_text("\n".join(issues) + "\n", encoding="utf-8")
-    print(f"Saved {len(rows)} rows to {OUT_CSV}; {len(issues)} issues logged.")
+    print(f"Saved {len(rows)} rows to {OUT_CSV.name}; {len(issues)} issues logged.")
     return issues
 
 

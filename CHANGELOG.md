@@ -4,6 +4,34 @@ All modifications are applied at the pipeline code level (`src/`), never by hand
 output files. The original workbook `data/final/MoTrans15_all_records.xlsx` is untouched.
 The cleaned output is `data/final/MoTrans15_v2.xlsx`.
 
+## [v2.2.0-pg3] — 2026-10-22  Priority Group 3 (Rebuild Verification, Tiers, Overlap, Completeness, and Timing Evidence)
+
+### Corrective Record & Commit Verification
+- **Rebuild Claim Correction**: Commit `5efbbcf` stated that a clean rebuild test was completed; however, that test only compared `MoTrans15_v2.xlsx` against existing parquet files in `data/final/` using `compare_v2_to_final.py` without deleting derived files and executing an end-to-end rebuild from `data/raw/` alone. Because `git commit --amend` is strictly forbidden by project rules, this entry serves as the official corrective log.
+- **Explanation of Deleted Backup Folders**: Directories `data/backup_final` and `data/backup_interim` were transient scratch staging folders created during local testing and were deleted prior to commit to maintain repository hygiene and avoid storing untracked duplicate data.
+- **Correction of Grade A Count and Root Cause of "496"**:
+  - In `MoTrans15_all_records.xlsx`, Grade A was **487** (Fed 201, ECB 286).
+  - In `MoTrans15_v2.xlsx`, Grade A is **493** (Fed 201, ECB 292), an exact increase of +6 events resulting from explicit `DD/MM/YYYY` date parsing of EA-MPD meeting strings.
+  - The figure **496** was an arithmetic error hand-typed in Step 476/477 by adding all 204 in-range Fed decisions to 292 ECB decisions ($204 + 292 = 496$), mistakenly assuming all 204 Fed decisions were Grade A. Three in-range Fed decisions (`2001-09-17`, `2007-06-18`, `2010-05-09`) are not in Bauer-Swanson futures data and have always been Grade B in every version of the codebase. The number 496 never existed in any data file.
+
+### Enhancements Implemented
+1. **Two-Tier Shock Architecture (`shock_tier`)**:
+   - `shock_tier = 1`: Consensus high-frequency intraday OIS / futures surprise (`hf_ois`, Grade A; Fed and ECB). 493 total decisions (412 train, 34 crisis, 47 blind test). Pre-registered headline blind-test sample.
+   - `shock_tier = 2`: Daily sovereign benchmark yield change proxy (`yield_proxy`, Grade B; BoE, BoC, RBA, CBR, BCB, post-HFI fallback). 1,069 primary decisions (848 train, 70 crisis, 151 blind test). Evaluated as secondary out-of-sample transfer test.
+2. **Empirical Proxy Quality & Variance Ratio Audit**:
+   - Variance ratio analysis demonstrated that while rate changes carry strong policy signal ($VR = 3.8\text{ to }7.2$), sovereign yield changes on hold days exhibit variance ratios indistinguishable from non-meeting background noise ($VR \approx 1.0$, $p > 0.30$ for BoE, RBA, Fed, ECB). This empirically justifies pre-registering Tier 1 as the headline identification sample.
+3. **Decision Overlap and Contamination Tracking**:
+   - Attached `overlap_Wd` and `overlap_count_Wd` for $W \in \{1, 3, 5, 20, 60\}$ trading days to `shocks.parquet` and `events.parquet`. Share of contaminated events is 36.01% (1d), 69.05% (3d), 84.58% (5d), 99.72% (20d), and 99.96% (60d).
+4. **Announcement Timing Sourcing & RBA Convention Correction**:
+   - BoE announcement convention (12:00 London time) sourced from official Bank of England publication convention. Sourcing documentation updated to clarify that `mpcvoting.xlsx` verifies meeting dates and votes but does not provide release timestamps.
+   - RBA 14:30 Sydney time rule confirmed to commence only in February 2008 (MR-07-22). Pre-2008 decisions marked `time_quality = "unknown"`.
+   - Restored 67 scheduled meeting holds from 2000 to 2007 for RBA, restoring exactly 11 meetings per year ($11 \times 20 = 220$ train decisions).
+5. **Unit Tests Added**:
+   - [`tests/test_official_timing_samples.py`](tests/test_official_timing_samples.py): Verifies at least 10 decisions per regime against official central bank calendars for BoE, BoC, RBA, and CBR, including assertion that RBA pre-2008 never claims 14:30.
+   - [`tests/test_priority_group_2_shocks.py`](tests/test_priority_group_2_shocks.py): Added `test_shock_tier_definition` and `test_overlap_columns`.
+
+---
+
 ## [v2.1.0-pg2] — 2026-10-21  Priority Group 2 (Monetary policy shocks: sovereign yield proxies & usability)
 
 ### Problem addressed
@@ -57,7 +85,7 @@ In the initial audit of `MoTrans15_all_records.xlsx`:
 
 | Metric | Before (MoTrans15_all_records.xlsx) | After (MoTrans15_v2.xlsx) | Change |
 |---|---|---|---|
-| Grade A shocks | 487 (Fed 201, ECB 286) | **487** (Fed 201, ECB 286) | 0 |
+| Grade A shocks | 487 (Fed 201, ECB 286) | **493** (Fed 201, ECB 292) | +6 (ECB date matching fix) |
 | Grade B shocks | 781 | **892** | +111 (RBA +71, PBoC +40) |
 | Grade C shocks | 640 | **529** | −111 |
 | Total decisions with `shock_usable == 1` | 0 (column absent) | **1,379** (72.27%) | +1,379 |

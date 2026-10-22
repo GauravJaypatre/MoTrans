@@ -66,16 +66,18 @@ def banxico_meetings() -> dict[dt.date, str]:
 BOE_URL = "https://www.bankofengland.co.uk/-/media/boe/files/monetary-policy-summary-and-minutes/mpcvoting.xlsx"
 BOC_URL = "https://www.bankofcanada.ca/core-functions/monetary-policy/key-interest-rate/"
 RBA_URL = "https://www.rba.gov.au/monetary-policy/int-rate-decisions/"
+RAW_DIR = Path(__file__).resolve().parent.parent / "data" / "raw"
 
 
 def boe_meetings() -> dict[dt.date, str]:
-    path = INTERIM / "boe_meetings.json"
-    if path.exists():
-        raw = json.loads(path.read_text(encoding="utf-8"))
-        return {dt.date.fromisoformat(k): v for k, v in raw.items()}
-    import requests, io, openpyxl
-    r = requests.get(BOE_URL, headers={"User-Agent": "Mozilla/5.0"}, timeout=30)
-    wb = openpyxl.load_workbook(io.BytesIO(r.content), data_only=True)
+    raw_path = RAW_DIR / "policy_more" / "mpcvoting.xlsx"
+    if not raw_path.exists():
+        import requests
+        r = requests.get(BOE_URL, headers={"User-Agent": "Mozilla/5.0 (MoTrans-15 research data collection)"}, timeout=30)
+        raw_path.parent.mkdir(parents=True, exist_ok=True)
+        raw_path.write_bytes(r.content)
+    import io, openpyxl
+    wb = openpyxl.load_workbook(raw_path, data_only=True)
     ws = wb["Bank Rate Decisions"]
     meetings = {}
     for r_row in ws.iter_rows(min_row=5, values_only=True):
@@ -88,7 +90,9 @@ def boe_meetings() -> dict[dt.date, str]:
 
 
 def boc_meetings() -> dict[dt.date, str]:
-    path = INTERIM / "boc_meetings.json"
+    path = RAW_DIR / "policy_more" / "boc_meetings.json"
+    if not path.exists():
+        path = INTERIM / "boc_meetings.json"
     if path.exists():
         raw = json.loads(path.read_text(encoding="utf-8"))
         return {dt.date.fromisoformat(k): v for k, v in raw.items()}
@@ -96,11 +100,24 @@ def boc_meetings() -> dict[dt.date, str]:
 
 
 def rba_meetings() -> dict[dt.date, str]:
-    path = INTERIM / "rba_meetings.json"
+    path = RAW_DIR / "policy_more" / "rba_meetings.json"
+    if not path.exists():
+        path = INTERIM / "rba_meetings.json"
+    meetings = {}
     if path.exists():
         raw = json.loads(path.read_text(encoding="utf-8"))
-        return {dt.date.fromisoformat(k): v for k, v in raw.items()}
-    return {}
+        meetings = {dt.date.fromisoformat(k): v for k, v in raw.items()}
+
+    # Add 67 scheduled holds 2000-2007 (first Tuesday of Feb-Dec)
+    for y in range(2000, 2008):
+        for m in range(2, 13):
+            d = dt.date(y, m, 1)
+            while d.weekday() != 1:  # Tuesday is weekday 1
+                d += dt.timedelta(days=1)
+            wed = d + dt.timedelta(days=1)
+            if d not in meetings and wed not in meetings:
+                meetings[d] = "RBA Board scheduled meeting (rate held; pre-2008 unannounced hold convention)"
+    return meetings
 
 
 MEETINGS = {
@@ -131,7 +148,9 @@ def regime_announcement_time(regime: str, day: dt.date, scheduled: bool, meeting
         return (hhmm, "exact", f"Bank of Canada official Fixed Announcement Date (FAD) convention ({hhmm} ET)")
 
     if regime == "RBA":
-        return ("14:30", "exact", "Reserve Bank of Australia official Board decision announcement convention (14:30 Sydney time)")
+        if day < dt.date(2008, 2, 1):
+            return (None, "unknown", "Pre-2008 convention: decisions announced morning after meeting (rate changes) or unannounced (holds); 14:30 rule did not apply (MR-07-22)")
+        return ("14:30", "exact", "Reserve Bank of Australia official Board decision announcement convention (14:30 Sydney time, per MR-07-22)")
 
     if regime == "BoK":
         return (None, "unknown", "Not yet sourced (pending official page)")
