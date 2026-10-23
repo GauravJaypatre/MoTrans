@@ -14,7 +14,7 @@ Grades: A = public high-frequency surprise; B = 1-year (or 2-year benchmark) yie
 | BoK | 60 | 0 | 0 | 60 | - | - |
 | CBR | 108 | 0 | 100 | 8 | 2003-02-17 | 2026-07-27 |
 | ECB | 299 | 292 | 7 | 0 | 2000-01-05 | 2026-09-10 |
-| Fed | 227 | 201 | 26 | 0 | 2000-02-02 | 2026-09-16 |
+| Fed | 227 | 202 | 24 | 1 | 2000-02-02 | 2026-09-16 |
 | PBoC | 40 | 0 | 40 | 0 | 2002-02-21 | 2025-05-20 |
 | RBA | 287 | 0 | 284 | 3 | 2000-02-02 | 2026-09-29 |
 | RBI | 163 | 0 | 0 | 163 | - | - |
@@ -33,7 +33,7 @@ Grades: A = public high-frequency surprise; B = 1-year (or 2-year benchmark) yie
 | BoK | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
 | CBR | 64 | 64 | 11 | 11 | 25 | 1 | 100 | 76 | **FLAGGED (< 20)** |
 | ECB | 245 | 245 | 16 | 16 | 38 | 33 | 299 | 294 | Sufficient (>= 20) |
-| Fed | 170 | 168 | 18 | 18 | 39 | 23 | 227 | 209 | Sufficient (>= 20) |
+| Fed | 170 | 169 | 18 | 18 | 38 | 23 | 226 | 210 | Sufficient (>= 20) |
 | PBoC | 30 | 0 | 3 | 0 | 7 | 0 | 40 | 0 | **FLAGGED (< 20)** |
 | RBA | 217 | 49 | 23 | 3 | 44 | 19 | 284 | 71 | **FLAGGED (< 20)** |
 | RBI | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
@@ -47,7 +47,7 @@ During 2000-2019 (ZIRP/QQE), the 1-year JGB yield was compressed near zero with 
 
 | regime | events with both | correlation |
 |---|---|---|
-| Fed | 201 | 0.55 |
+| Fed | 202 | 0.55 |
 | ECB | 211 | 0.61 |
 
 ## Known episodes
@@ -58,10 +58,10 @@ Expected sign: tightening surprises positive, easing surprises negative. A hike 
 |---|---|---|---|---|
 | fed_2013-06-19 | hold | 0 | A | +0.19 |
 | fed_2020-03-03 | cut | -50 | A | -2.53 |
-| fed_2020-03-15 | cut | -100 | A | -3.75 |
-| fed_2022-03-16 | hike | 25 | A | +2.43 |
+| fed_2020-03-15 | cut | -100 | A | -3.76 |
+| fed_2022-03-16 | hike | 25 | A | +2.44 |
 | fed_2022-06-15 | hike | 75 | A | +1.65 |
-| fed_2022-09-21 | hike | 75 | A | +2.37 |
+| fed_2022-09-21 | hike | 75 | A | +2.38 |
 | ecb_2011-04-07 | hike | 25 | A | +0.11 |
 | ecb_2011-07-07 | hike | 25 | A | +0.32 |
 | ecb_2022-07-21 | hike | 50 | A | +2.05 |
@@ -81,11 +81,11 @@ Expected sign: tightening surprises positive, easing surprises negative. A hike 
 | cbr_2014-12-16 | hike | 650 | B | 1Y yield change, RU (bp) | +7.61 |
 | boe_2026-03-19 | hold | 0 | B | 1Y yield change, GB (bp) | +7.37 |
 | bcb_2001-03-21 | hike | 50 | B | 1Y yield change, BR (bp) | +6.52 |
-| rba_2008-10-07 | cut | -100 | B | 2Y yield change, AU (bp) | -6.47 |
+| rba_2008-10-07 | cut | -100 | B | 2Y yield change, AU (bp) | -6.34 |
 | boe_2023-02-02 | hike | 50 | B | 1Y yield change, GB (bp) | -5.96 |
 | bcb_2002-10-14 | hike | 300 | B | 1Y yield change, BR (bp) | +5.76 |
 | boj_2008-10-31 | cut | -20 | B | 1Y yield change, JP (bp) | -5.02 |
-| fed_2001-04-18 | cut | -50 | A | FRBSF Bauer-Swanson MPS (bp) | -4.98 |
+| fed_2001-04-18 | cut | -50 | A | FRBSF Bauer-Swanson MPS (bp) | -4.99 |
 | boe_2008-11-06 | cut | -150 | B | 1Y yield change, GB (bp) | -4.95 |
 | boe_2003-02-06 | cut | -25 | B | 1Y yield change, GB (bp) | -4.76 |
 | boe_2023-03-23 | hike | 25 | B | 1Y yield change, GB (bp) | -4.69 |

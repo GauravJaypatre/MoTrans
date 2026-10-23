@@ -139,25 +139,26 @@ def regime_announcement_time(regime: str, day: dt.date, scheduled: bool, meeting
         return (None, "unknown", "Not yet sourced (pending official page)")
 
     if regime == "BoE":
-        return ("12:00", "exact", "Bank of England official MPC announcement convention (12:00 London time)")
+        return ("12:00", "exact", "Bank of England official MPC announcement convention (12:00 London time, verified by boe_mpc_official.html)")
 
     if regime == "BoC":
-        if day < dt.date(2000, 11, 28):
-            return (None, "unknown", "Pre-FAD era: unscheduled announcement")
-        hhmm = "09:00" if day < dt.date(2013, 1, 1) else ("10:00" if day < dt.date(2024, 1, 1) else "09:45")
-        return (hhmm, "exact", f"Bank of Canada official Fixed Announcement Date (FAD) convention ({hhmm} ET)")
+        if day < dt.date(2013, 1, 1):
+            return (None, "unknown", "Pre-2013 FAD era: unverified timing page; pending evidence")
+        hhmm = "10:00" if day < dt.date(2024, 1, 1) else "09:45"
+        vfile = "boc_schedule_2023.html" if day < dt.date(2024, 1, 1) else "boc_schedule_official.html"
+        return (hhmm, "exact", f"Bank of Canada official Fixed Announcement Date (FAD) convention ({hhmm} ET, verified by {vfile})")
 
     if regime == "RBA":
         if day < dt.date(2008, 2, 1):
             return (None, "unknown", "Pre-2008 convention: decisions announced morning after meeting (rate changes) or unannounced (holds); 14:30 rule did not apply (MR-07-22)")
-        return ("14:30", "exact", "Reserve Bank of Australia official Board decision announcement convention (14:30 Sydney time, per MR-07-22)")
+        return ("14:30", "exact", "Reserve Bank of Australia official Board decision announcement convention (14:30 Sydney time, verified by rba_mr_07_22.html)")
 
     if regime == "BoK":
         return (None, "unknown", "Not yet sourced (pending official page)")
 
     if regime == "CBR":
         if dt.date(2013, 9, 13) <= day < dt.date(2022, 2, 24) and scheduled:
-            return ("13:30", "exact", "Bank of Russia official press release convention (13:30 Moscow time for Friday Board rate meetings)")
+            return ("13:30", "exact", "Bank of Russia official press release convention (13:30 Moscow time for Friday Board rate meetings, verified by cbr_cal_mp.html)")
         return (None, "unknown", "Refinancing rate era or wartime break; no verified exact time")
 
     if regime == "PBoC":
@@ -190,10 +191,10 @@ def harvest(regime: str, issues: list[str]) -> list[dict]:
                 size = round((ch[-1][2] - ch[0][1]) * 100) if ch else 0
                 dec = classify(size)
                 if dec in ("hike", "cut"):
-                    ann_date = d + dt.timedelta(days=1)
+                    ann_date = d  # decision_date from BIS effective date is already the Wednesday announcement date
                     local, utc = localize(regime, ann_date, "09:30")
                     quality = "exact"
-                    tsrc = "RBA MR-07-22 pre-2008 convention: rate changes announced 09:30 Sydney day after meeting"
+                    tsrc = "RBA MR-07-22 pre-2008 convention: rate changes announced 09:30 Sydney day of decision date (morning after meeting)"
                     rows.append(row(regime, d, event_type="scheduled_meeting", scheduled=True, decision=dec,
                                     size_bp=size, new_rate_pct=ch[-1][2] if ch else rate.asof(d), rate_basis=basis,
                                     announce_time_local=local, announce_ts_utc=utc,

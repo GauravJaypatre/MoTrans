@@ -62,11 +62,11 @@ class TestHighFrequencyCoverage:
 
         assert len(in_range) == 204, f"Expected 204 Fed decisions in HF coverage range, found {len(in_range)}"
 
-        # The 3 documented in-range exceptions
-        known_exceptions = {dt.date(2001, 9, 17), dt.date(2007, 6, 18), dt.date(2010, 5, 9)}
+        # The 2 documented in-range exceptions (2007-06-28 now matches Bauer-Swanson MPS)
+        known_exceptions = {dt.date(2001, 9, 17), dt.date(2010, 5, 9)}
         matched = in_range[~pd.to_datetime(in_range["decision_date"]).dt.date.isin(known_exceptions)]
 
-        assert len(matched) == 201, f"Expected 201 matched Fed decisions, got {len(matched)}"
+        assert len(matched) == 202, f"Expected 202 matched Fed decisions, got {len(matched)}"
         unmatched = matched[matched["shock_grade"] != "A"]
         assert len(unmatched) == 0, (
             f"Found {len(unmatched)} Fed decisions in HF coverage without Grade A: "
@@ -84,5 +84,11 @@ class TestHighFrequencyCoverage:
 
         fed_post = shocks_df[(shocks_df["regime"] == "Fed") & (pd.to_datetime(shocks_df["decision_date"]).dt.date > dt.date(2023, 12, 13))]
         assert len(fed_post) == 23
-        assert (fed_post["shock_grade"] == "B").all()
-        assert (fed_post["shock_measure_type"] == "yield_proxy").all()
+        fed_meetings = fed_post[fed_post["event_type"] != "non_decision"]
+        assert len(fed_meetings) == 22
+        assert (fed_meetings["shock_grade"] == "B").all()
+        assert (fed_meetings["shock_measure_type"] == "yield_proxy").all()
+        # 2025-08-22 notation vote is a non_decision excluded from shocks (Grade C)
+        fed_non_dec = fed_post[fed_post["event_type"] == "non_decision"]
+        assert len(fed_non_dec) == 1
+        assert (fed_non_dec["shock_grade"] == "C").all()

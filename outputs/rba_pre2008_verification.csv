@@ -1,0 +1,11 @@
+event_id,decision_date_in_data,rba_announcement_date,decision,size_bp,time_quality,resulting_announce_ts_utc,announcement_rule
+rba_2000-02-02,2000-02-02,2000-02-02 (Wednesday),hike,50.0,exact,2000-02-01T22:30:00Z,09:30 Sydney on announcement date (MR-07-22)
+rba_2000-04-05,2000-04-05,2000-04-05 (Wednesday),hike,25.0,exact,2000-04-04T23:30:00Z,09:30 Sydney on announcement date (MR-07-22)
+rba_2000-05-03,2000-05-03,2000-05-03 (Wednesday),hike,25.0,exact,2000-05-02T23:30:00Z,09:30 Sydney on announcement date (MR-07-22)
+rba_2000-08-02,2000-08-02,2000-08-02 (Wednesday),hike,25.0,exact,2000-08-01T23:30:00Z,09:30 Sydney on announcement date (MR-07-22)
+rba_2001-02-07,2001-02-07,2001-02-07 (Wednesday),cut,-50.0,exact,2001-02-06T22:30:00Z,09:30 Sydney on announcement date (MR-07-22)
+rba_2001-03-07,2001-03-07,2001-03-07 (Wednesday),cut,-25.0,exact,2001-03-06T22:30:00Z,09:30 Sydney on announcement date (MR-07-22)
+rba_2001-04-04,2001-04-04,2001-04-04 (Wednesday),cut,-50.0,exact,2001-04-03T23:30:00Z,09:30 Sydney on announcement date (MR-07-22)
+rba_2001-09-05,2001-09-05,2001-09-05 (Wednesday),cut,-25.0,exact,2001-09-04T23:30:00Z,09:30 Sydney on announcement date (MR-07-22)
+rba_2001-10-03,2001-10-03,2001-10-03 (Wednesday),cut,-25.0,exact,2001-10-02T23:30:00Z,09:30 Sydney on announcement date (MR-07-22)
+rba_2001-12-05,2001-12-05,2001-12-05 (Wednesday),cut,-25.0,exact,2001-12-04T22:30:00Z,09:30 Sydney on announcement date (MR-07-22)

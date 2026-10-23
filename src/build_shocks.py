@@ -159,31 +159,42 @@ def build(policy: pd.DataFrame, controls: pd.DataFrame) -> pd.DataFrame:
     df["shock_source"] = np.where(use_hf, df["shock_hf_source"], df["shock_proxy_source"])
     df["shock_grade"] = np.select([use_hf, df["shock_proxy_std"].notna()], ["A", "B"], "C")
     df["shock_measure_type"] = np.select([use_hf, df["shock_proxy_std"].notna()], ["hf_ois", "yield_proxy"], "")
+    is_boj_zirp = (df["regime"] == "BoJ") & (pd.to_datetime(df["decision_date"]).dt.date <= dt.date(2024, 3, 18))
+    is_boj_all = (df["regime"] == "BoJ")
+    is_cbr_break = (df["regime"] == "CBR") & (pd.to_datetime(df["decision_date"]).dt.date >= dt.date(2022, 2, 24))
+    is_china = (df["regime"] == "PBoC")
+    is_bcb_all = (df["regime"] == "BCB")
+    is_non_decision = (df["event_type"] == "non_decision")
+    is_rba_pre2008_hold = (df["regime"] == "RBA") & (pd.to_datetime(df["decision_date"]).dt.date < dt.date(2008, 2, 1)) & (df["decision"] == "hold")
+
+    # Tier definition:
+    # Tier 1: Consensus high-frequency identification (Fed Bauer-Swanson MPS, ECB EA-MPD OIS 1Y)
+    # Tier 2: Clean sovereign benchmark yield proxy
     df["shock_tier"] = pd.Series(
         np.where(
             (df["shock_grade"] == "A") & (df["shock_measure_type"] == "hf_ois"),
             1,
             np.where(
-                (df["shock_grade"] == "B") & (df["shock_measure_type"] == "yield_proxy"),
+                (df["shock_grade"] == "B") & (df["shock_measure_type"] == "yield_proxy") & (~is_non_decision),
                 2,
                 np.nan
             )
         ),
         dtype="Int64"
     )
-    df["shock_usable"] = (df["shock_grade"].isin(["A", "B"]) & df["shock_std"].notna()).astype(int)
+    df["shock_usable"] = (df["shock_grade"].isin(["A", "B"]) & df["shock_std"].notna() & (~is_non_decision)).astype(int)
+    # For non_decision events, null out shock values and set grade to C
+    df.loc[is_non_decision, ["shock_raw", "shock_std", "shock_std_peer_scale", "shock_std_legacy_sd", "shock_std_w", "shock_hf_raw", "shock_hf_std", "shock_proxy_raw", "shock_proxy_std"]] = np.nan
+    df.loc[is_non_decision, "shock_grade"] = "C"
+    df.loc[is_non_decision, "shock_measure_type"] = ""
+    df.loc[is_non_decision, "shock_source"] = ""
+
     df["shock_proxy_tenor"] = np.where(df["shock_proxy_std"].notna(), df["regime"].map(PROXY_TENOR).fillna(""), "")
 
-    is_boj_zirp = (df["regime"] == "BoJ") & (pd.to_datetime(df["decision_date"]).dt.date <= dt.date(2024, 3, 18))
-    is_boj_all = (df["regime"] == "BoJ")
-    is_cbr_break = (df["regime"] == "CBR") & (pd.to_datetime(df["decision_date"]).dt.date >= dt.date(2022, 2, 24))
-    is_china = (df["regime"] == "PBoC")
-    is_rba_pre2008_hold = (df["regime"] == "RBA") & (pd.to_datetime(df["decision_date"]).dt.date < dt.date(2008, 2, 1)) & (df["decision"] == "hold")
+    # Baseline pre-registered default: shock_primary = 0 for all BoJ, CBR break, PBoC, pre-2008 unannounced RBA holds, and non_decision
+    is_primary_excluded = is_boj_all | is_cbr_break | is_china | is_rba_pre2008_hold | is_non_decision
 
-    # Baseline pre-registered default: shock_primary = 0 for all BoJ, CBR break, PBoC, and pre-2008 unannounced RBA holds
-    is_primary_excluded = is_boj_all | is_cbr_break | is_china | is_rba_pre2008_hold
-
-    # Tier 2 Design (DECISION-023 pre-registration):
+    # Tier 2 Design (DECISION-026 pre-registration):
     # Tier 1: shock_primary = 1 for all clean decisions (both rate changes and holds). shock_secondary = 0.
     # Tier 2: shock_primary = 1 ONLY for decisions with a rate change (hike/cut). Tier 2 holds become shock_secondary = 1.
     is_rate_change = df["decision"].isin(["hike", "cut"])
@@ -200,7 +211,7 @@ def build(policy: pd.DataFrame, controls: pd.DataFrame) -> pd.DataFrame:
     )
 
     # Labeled sensitivity analysis: shock_primary_rescaled includes 21 post-exit BoJ events
-    df["shock_primary_rescaled"] = ((df["shock_usable"] == 1) & (~(is_boj_zirp | is_cbr_break | is_china | is_rba_pre2008_hold))).astype(int)
+    df["shock_primary_rescaled"] = ((df["shock_usable"] == 1) & (~(is_boj_zirp | is_cbr_break | is_china | is_rba_pre2008_hold | is_non_decision))).astype(int)
 
     df["shock_quality_flag"] = np.where(
         is_rba_pre2008_hold,

@@ -1,0 +1,33 @@
+index_id,country,date,exchange_close_utc,retrieval_utc,status,close_price
+ca_tsx_daily,CA,2026-10-12,20:00 UTC,18:17:08 UTC,DROPPED (Incomplete intraday bar retrieved before 20:00 UTC market close),
+ca_tsx_fin_daily,CA,2026-10-12,20:00 UTC,18:17:08 UTC,DROPPED (Incomplete intraday bar retrieved before 20:00 UTC market close),
+ca_tsx_venture_daily,CA,2026-10-12,20:00 UTC,18:17:08 UTC,DROPPED (Incomplete intraday bar retrieved before 20:00 UTC market close),
+us_bkx,US,2026-10-12,20:00 UTC,18:17:08 UTC,DROPPED (Incomplete intraday bar retrieved before 20:00 UTC market close),
+us_rut,US,2026-10-12,20:00 UTC,18:17:08 UTC,DROPPED (Incomplete intraday bar retrieved before 20:00 UTC market close),
+us_sp500,US,2026-10-12,20:00 UTC,18:17:08 UTC,DROPPED (Incomplete intraday bar retrieved before 20:00 UTC market close),
+au_asx200,AU,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),8783.2
+au_asx200_fin,AU,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),9197.7
+au_small_ords,AU,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),3278.9
+cn_csi300,CN,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),4287.98
+cn_csi300_banks,CN,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),7344.31
+cn_csi500,CN,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),7093.02
+de_dax,DE,2026-10-12,15:30 UTC,18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),25277.68
+de_dax_banks,DE,2026-10-12,15:30 UTC,18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),353.44
+de_mdax,DE,2026-10-12,15:30 UTC,18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),30104.33
+de_stoxx_banks_etf,DE,2026-10-12,15:30 UTC,18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),28.68
+ea_emu_smallcap_etf,EA,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),355.2
+es_ibex35,ES,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),19285.8
+fr_cac40,FR,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),7832.88
+gb_ftse100,GB,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),10656.3
+gb_ftse_smallcap,GB,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),8164.9
+in_nifty50,IN,2026-10-12,10:00 UTC,18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),22363.35
+in_nifty_bank,IN,2026-10-12,10:00 UTC,18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),54918.0
+in_nifty_smallcap100,IN,2026-10-12,10:00 UTC,18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),19425.8
+it_ftsemib,IT,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),50035.0
+kr_banks_etf,KR,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),15225.0
+kr_kosdaq,KR,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),849.19
+kr_kospi,KR,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),6384.24
+mx_ipc,MX,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),66746.78
+ru_imoex,RU,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),2389.04
+ru_moex_fin,RU,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),8500.77
+ru_moex_smid,RU,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),1161.59

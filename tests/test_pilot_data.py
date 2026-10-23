@@ -71,7 +71,7 @@ class TestManifest:
 class TestPolicySchema:
     def test_categories(self, policy):
         assert set(policy.decision) <= {"hike", "cut", "hold", "unclassified"}
-        assert (policy[policy.decision == "unclassified"].regime == "BoJ").all()
+        assert set(policy[policy.decision == "unclassified"].regime) <= {"BoJ", "Fed"}
         assert set(policy.time_quality) <= {"exact", "approximate", "unknown"}
         assert set(policy.regime) == {"Fed", "ECB", "RBI", "BoJ"}
 

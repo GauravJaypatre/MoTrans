@@ -18,11 +18,11 @@ All tables below are computed directly from the underlying pipeline datasets via
 | BoK | 0 | 0 | 0 | 0 | 0.0% (0/60) |
 | CBR | 64 | 11 | 25 | 100 | 92.6% (100/108) |
 | ECB | 245 | 16 | 38 | 299 | 100.0% (299/299) |
-| Fed | 170 | 18 | 39 | 227 | 100.0% (227/227) |
+| Fed | 170 | 18 | 38 | 226 | 99.6% (226/227) |
 | PBoC | 30 | 3 | 7 | 40 | 100.0% (40/40) |
 | RBA | 217 | 23 | 44 | 284 | 99.0% (284/287) |
 | RBI | 0 | 0 | 0 | 0 | 0.0% (0/163) |
-| **Total** | **1568** | **124** | **267** | **1959** | **78.6% (1959/2491)** |
+| **Total** | **1568** | **124** | **266** | **1958** | **78.6% (1958/2491)** |
 
 ## 2. Primary Shocks — Baseline Conservative Pre-Registration (`shock_primary = 0` for all BoJ)
 
@@ -38,11 +38,11 @@ Excludes: all BoJ (zero lower bound peg), CBR post-Feb 2022 (structural break / 
 | BoK | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
 | CBR | 64 | 11 | 1 | 76 | **FLAGGED (< 20)** |
 | ECB | 245 | 16 | 33 | 294 | Sufficient (>= 20) |
-| Fed | 168 | 18 | 23 | 209 | Sufficient (>= 20) |
+| Fed | 169 | 18 | 23 | 210 | Sufficient (>= 20) |
 | PBoC | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
 | RBA | 49 | 3 | 19 | 71 | **FLAGGED (< 20)** |
 | RBI | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
-| **Total** | **721** | **54** | **114** | **889** | — |
+| **Total** | **722** | **54** | **114** | **890** | — |
 
 ## 3. Effective Analysis Sample by Shock Tier (`shock_tier`) and Timing Readiness
 
@@ -53,18 +53,18 @@ Excludes: all BoJ (zero lower bound peg), CBR post-Feb 2022 (structural break / 
 | Tier | Regime | Measure Type | Train (to 2019) | Crisis (2020-21) | Blind Test (2022+) | Total Decisions | Effective Sample (`eff == 1`) | Status / Role |
 |---|---|---|---|---|---|---|---|---|
 | Tier 1 | ECB | `hf_ois` | 245 | 16 | 31 | **292** | **292** | Headline Pre-Registered Test |
-| Tier 1 | Fed | `hf_ois` | 167 | 18 | 16 | **201** | **201** | Headline Pre-Registered Test |
-| **Subtotal Tier 1** | — | — | **412** | **34** | **47** | **493** | **493** | — |
+| Tier 1 | Fed | `hf_ois` | 168 | 18 | 16 | **202** | **202** | Headline Pre-Registered Test |
+| **Subtotal Tier 1** | — | — | **413** | **34** | **47** | **494** | **494** | — |
 | Tier 2 | BCB | `yield_proxy` | 182 | 0 | 0 | **182** | **0** | Secondary Transfer Test |
-| Tier 2 | BoC | `yield_proxy` | 154 | 18 | 38 | **210** | **72** | Secondary Transfer Test |
+| Tier 2 | BoC | `yield_proxy` | 154 | 18 | 38 | **210** | **29** | Secondary Transfer Test |
 | Tier 2 | BoE | `yield_proxy` | 228 | 18 | 38 | **284** | **55** | Secondary Transfer Test |
 | Tier 2 | BoJ | `yield_proxy` | 278 | 17 | 38 | **333** | **0** | BoJ ZIRP Peg (Primary = 0) |
 | Tier 2 | CBR | `yield_proxy` | 64 | 11 | 25 | **100** | **41** | Secondary Transfer Test |
 | Tier 2 | ECB | `yield_proxy` | 0 | 0 | 7 | **7** | **2** | Secondary Transfer Test |
-| Tier 2 | Fed | `yield_proxy` | 3 | 0 | 23 | **26** | **8** | Secondary Transfer Test |
+| Tier 2 | Fed | `yield_proxy` | 2 | 0 | 22 | **24** | **8** | Secondary Transfer Test |
 | Tier 2 | PBoC | `yield_proxy` | 30 | 3 | 7 | **40** | **0** | Secondary Transfer Test |
 | Tier 2 | RBA | `yield_proxy` | 217 | 23 | 44 | **284** | **71** | Secondary Transfer Test |
-| **Subtotal Tier 2** | — | — | **1156** | **90** | **220** | **1466** | **249** | — |
+| **Subtotal Tier 2** | — | — | **1155** | **90** | **219** | **1464** | **206** | — |
 
 ## 4. Policy Decision Overlap and Event Contamination by Window Length
 
@@ -73,8 +73,8 @@ For each event and trading horizon $W \in \{1, 3, 5, 20, 60\}$ days, counts othe
 | Horizon (Trading Days) | Contaminated Events | Total Events | Share Contaminated | Mean Other Decisions | Max Other Decisions |
 |---|---|---|---|---|---|
 | **1 day** (`clr_1`) | 897 | 2,491 | **36.01%** | 0.43 | 3 |
-| **3 days** (`clr_3`) | 1,720 | 2,491 | **69.05%** | 1.23 | 7 |
-| **5 days** (`clr_5`) | 2,107 | 2,491 | **84.58%** | 1.85 | 7 |
+| **3 days** (`clr_3`) | 1,719 | 2,491 | **69.01%** | 1.23 | 7 |
+| **5 days** (`clr_5`) | 2,108 | 2,491 | **84.62%** | 1.85 | 7 |
 | **20 days** (`clr_20`) | 2,484 | 2,491 | **99.72%** | 6.59 | 18 |
 | **60 days** (`clr_60`) | 2,490 | 2,491 | **99.96%** | 20.91 | 39 |
 
@@ -92,7 +92,7 @@ Evaluated separately for Rate Changes (hikes/cuts) and Rate Holds, alongside a p
 | BoJ | 1Y | 1Y JGB Ministry of Finance yield | 0.89 | **19.47** | 12 | **1.42** | 184 | 1.01 | 0.102 | No Excess Signal (Noise-dominated) |
 | BCB | 1Y | 1Y Swap DI x pre 360d (SGS 7806) | 23.60 | **1.07** | 112 | **1.57** | 70 | 0.99 | 0.165 | No Excess Signal (Noise-dominated) |
 | PBoC | 2Y | 2Y ChinaBond sovereign benchmark yield | 8.63 | **1.59** | 28 | — | 0 | — | — | No Holds in Regime |
-| Fed | 1Y | 1Y US Treasury par yield | 4.10 | **3.79** | 74 | **1.00** | 151 | 0.99 | 0.367 | No Excess Signal (Noise-dominated) |
+| Fed | 1Y | 1Y US Treasury par yield | 4.10 | **3.79** | 74 | **0.98** | 150 | 0.99 | 0.390 | No Excess Signal (Noise-dominated) |
 | ECB | 1Y | 1Y Bundesbank Federal securities yield | 3.50 | **2.33** | 59 | **0.77** | 240 | 1.00 | 0.867 | No Excess Signal (Noise-dominated) |
 
 ## 6. Central Bank Meeting Completeness by Year (BoE, BoC, RBA, Fed, ECB)

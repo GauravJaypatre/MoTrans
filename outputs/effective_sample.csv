@@ -1,12 +1,67 @@
-regime,shock_tier,shock_measure_type,total_decisions,primary_train,primary_crisis,primary_blind,total_primary,secondary_train,secondary_crisis,secondary_blind,total_secondary
-ECB,1,hf_ois,292,245,16,31,292,0,0,0,0
-Fed,1,hf_ois,201,167,18,16,201,0,0,0,0
-BCB,2,yield_proxy,182,0,0,0,0,0,0,0,0
-BoC,2,yield_proxy,210,50,3,19,72,104,15,19,138
-BoE,2,yield_proxy,284,33,3,19,55,195,15,19,229
-BoJ,2,yield_proxy,333,0,0,0,0,0,0,0,0
-CBR,2,yield_proxy,100,29,11,1,41,0,0,0,0
-ECB,2,yield_proxy,7,0,0,2,2,0,0,5,5
-Fed,2,yield_proxy,26,1,0,7,8,2,0,16,18
-PBoC,2,yield_proxy,40,0,0,0,0,0,0,0,0
-RBA,2,yield_proxy,284,49,3,19,71,100,20,25,145
+regime,tier,split,shock_primary,shock_secondary,analysis_ready_timing,count,reason
+BCB,Tier 2,train,1,0,0,112,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+BCB,Tier 2,train,0,1,0,70,Included in Tier 2 Secondary: Sovereign yield proxy hold (secondary sensitivity sample)
+BCB,excluded,blind_test,0,0,0,38,Excluded: No daily sovereign yield proxy available for BCB
+BCB,excluded,crisis,0,0,0,16,Excluded: No daily sovereign yield proxy available for BCB
+BCB,excluded,train,0,0,0,2,Excluded: No daily sovereign yield proxy available for BCB
+Banxico,excluded,blind_test,0,0,0,38,Excluded: No daily sovereign yield proxy available for Banxico
+Banxico,excluded,crisis,0,0,0,17,Excluded: No daily sovereign yield proxy available for Banxico
+Banxico,excluded,train,0,0,0,183,Excluded: No daily sovereign yield proxy available for Banxico
+BoC,Tier 2,blind_test,1,0,1,19,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+BoC,Tier 2,blind_test,0,1,1,19,Included in Tier 2 Secondary: Sovereign yield proxy hold (secondary sensitivity sample)
+BoC,Tier 2,crisis,1,0,1,3,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+BoC,Tier 2,crisis,0,1,1,15,Included in Tier 2 Secondary: Sovereign yield proxy hold (secondary sensitivity sample)
+BoC,Tier 2,train,1,0,0,43,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+BoC,Tier 2,train,1,0,1,7,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+BoC,Tier 2,train,0,1,0,55,Included in Tier 2 Secondary: Sovereign yield proxy hold (secondary sensitivity sample)
+BoC,Tier 2,train,0,1,1,49,Included in Tier 2 Secondary: Sovereign yield proxy hold (secondary sensitivity sample)
+BoC,excluded,train,0,0,0,4,Excluded: Pre-inception/missing sovereign yield data for BoC
+BoE,Tier 2,blind_test,1,0,1,19,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+BoE,Tier 2,blind_test,0,1,1,19,Included in Tier 2 Secondary: Sovereign yield proxy hold (secondary sensitivity sample)
+BoE,Tier 2,crisis,1,0,1,3,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+BoE,Tier 2,crisis,0,1,1,15,Included in Tier 2 Secondary: Sovereign yield proxy hold (secondary sensitivity sample)
+BoE,Tier 2,train,1,0,1,33,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+BoE,Tier 2,train,0,1,1,195,Included in Tier 2 Secondary: Sovereign yield proxy hold (secondary sensitivity sample)
+BoJ,Tier 2,blind_test,0,0,0,1,Excluded from Tier 2 Primary/Secondary: Hold with unverified timing or stale yield
+BoJ,Tier 2,blind_test,0,0,1,37,Excluded from Tier 2 Primary/Secondary: Hold with unverified timing or stale yield
+BoJ,Tier 2,crisis,0,0,0,1,Excluded from Tier 2 Primary/Secondary: Hold with unverified timing or stale yield
+BoJ,Tier 2,crisis,0,0,1,16,Excluded from Tier 2 Primary/Secondary: Hold with unverified timing or stale yield
+BoJ,Tier 2,train,0,0,0,22,Excluded from Tier 2 Primary/Secondary: Hold with unverified timing or stale yield
+BoJ,Tier 2,train,0,0,1,256,Excluded from Tier 2 Primary/Secondary: Hold with unverified timing or stale yield
+BoK,excluded,blind_test,0,0,0,14,Excluded: No daily sovereign yield proxy available for BoK
+BoK,excluded,crisis,0,0,0,4,Excluded: No daily sovereign yield proxy available for BoK
+BoK,excluded,train,0,0,0,42,Excluded: No daily sovereign yield proxy available for BoK
+CBR,Tier 2,blind_test,1,0,1,1,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+CBR,Tier 2,blind_test,0,0,0,24,Excluded from Tier 2 Primary/Secondary: Hold with unverified timing or stale yield
+CBR,Tier 2,crisis,1,0,1,11,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+CBR,Tier 2,train,1,0,0,35,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+CBR,Tier 2,train,1,0,1,29,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+CBR,excluded,blind_test,0,0,0,1,Excluded: Pre-inception/missing sovereign yield data for CBR
+CBR,excluded,train,0,0,0,7,Excluded: Pre-inception/missing sovereign yield data for CBR
+ECB,Tier 1,blind_test,1,0,1,31,Included in Tier 1: Consensus high-frequency surprise (Fed Bauer-Swanson MPS / ECB EA-MPD OIS 1Y)
+ECB,Tier 1,crisis,1,0,1,16,Included in Tier 1: Consensus high-frequency surprise (Fed Bauer-Swanson MPS / ECB EA-MPD OIS 1Y)
+ECB,Tier 1,train,1,0,1,245,Included in Tier 1: Consensus high-frequency surprise (Fed Bauer-Swanson MPS / ECB EA-MPD OIS 1Y)
+ECB,Tier 2,blind_test,1,0,1,2,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+ECB,Tier 2,blind_test,0,1,1,5,Included in Tier 2 Secondary: Sovereign yield proxy hold (secondary sensitivity sample)
+Fed,Tier 1,blind_test,1,0,1,16,Included in Tier 1: Consensus high-frequency surprise (Fed Bauer-Swanson MPS / ECB EA-MPD OIS 1Y)
+Fed,Tier 1,crisis,1,0,1,18,Included in Tier 1: Consensus high-frequency surprise (Fed Bauer-Swanson MPS / ECB EA-MPD OIS 1Y)
+Fed,Tier 1,train,1,0,1,168,Included in Tier 1: Consensus high-frequency surprise (Fed Bauer-Swanson MPS / ECB EA-MPD OIS 1Y)
+Fed,Tier 2,blind_test,1,0,1,7,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+Fed,Tier 2,blind_test,0,1,1,15,Included in Tier 2 Secondary: Sovereign yield proxy hold (secondary sensitivity sample)
+Fed,Tier 2,train,1,0,1,1,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+Fed,Tier 2,train,0,1,1,1,Included in Tier 2 Secondary: Sovereign yield proxy hold (secondary sensitivity sample)
+Fed,excluded,blind_test,0,0,0,1,"Excluded: 2025-08-22 notation vote (non_decision, not a market rate decision)"
+PBoC,Tier 2,blind_test,0,0,0,7,Excluded from Tier 2 Primary/Secondary: Hold with unverified timing or stale yield
+PBoC,Tier 2,crisis,0,0,0,3,Excluded from Tier 2 Primary/Secondary: Hold with unverified timing or stale yield
+PBoC,Tier 2,train,0,0,0,30,Excluded from Tier 2 Primary/Secondary: Hold with unverified timing or stale yield
+RBA,Tier 2,blind_test,1,0,1,19,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+RBA,Tier 2,blind_test,0,1,1,25,Included in Tier 2 Secondary: Sovereign yield proxy hold (secondary sensitivity sample)
+RBA,Tier 2,crisis,1,0,1,3,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+RBA,Tier 2,crisis,0,1,1,20,Included in Tier 2 Secondary: Sovereign yield proxy hold (secondary sensitivity sample)
+RBA,Tier 2,train,1,0,1,49,Included in Tier 2 Primary: Sovereign yield proxy rate change (excess volatility confirmed)
+RBA,Tier 2,train,0,1,1,100,Included in Tier 2 Secondary: Sovereign yield proxy hold (secondary sensitivity sample)
+RBA,Tier 2,train,0,0,0,68,Excluded from Tier 2 Primary/Secondary: Hold with unverified timing or stale yield
+RBA,excluded,train,0,0,1,3,Excluded: Pre-inception/missing sovereign yield data for RBA
+RBI,excluded,blind_test,0,0,0,31,Excluded: Cash rate only; no daily sovereign yield proxy; timing unverified
+RBI,excluded,crisis,0,0,0,12,Excluded: Cash rate only; no daily sovereign yield proxy; timing unverified
+RBI,excluded,train,0,0,0,120,Excluded: Cash rate only; no daily sovereign yield proxy; timing unverified

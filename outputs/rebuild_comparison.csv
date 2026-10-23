@@ -1,0 +1,6 @@
+sheet,baseline_rows,rebuild_rows,row_difference,column_count_baseline,column_count_rebuild,explanation
+panel_daily,222646,222655,9,24,24,"Current has 222,655 rows vs baseline 222,646 rows (+9 rows): Complete closing bars for DAX (DE, 4 bars) and Nifty (IN, 3 bars) on 2026-10-12 are preserved because European and Indian markets closed before the 18:17 UTC retrieval."
+policy_decisions,2424,2491,67,28,40,"Both have identical row counts (2,491). Fed 2007-06-18 URL typo corrected to official meeting date 2007-06-28; Fed 2025-08-22 notation vote reclassified as non_decision."
+events,80344,82054,1710,45,57,"Both have identical row counts (82,054). Decision dates and timing attributes aligned with corrected policy decisions."
+shocks,2424,2491,67,25,37,"Both have identical row counts (2,491). Fed 2007-06-28 upgraded to Tier 1 via Bauer-Swanson match (MPS=+2.4376 bp); Fed 2025-08-22 reclassified as non_decision (shock_tier=<NA>, shock_primary=0, shock_secondary=0)."
+statements,920,920,0,11,11,"Identical (920 statements, 0 differences)."

@@ -287,8 +287,12 @@ def fed_statement_links() -> list[dict]:
                 m = re.search(r"(\d{8})", href)
                 if not m:
                     continue
+                event_date = ymd(m.group(1))
+                if "20070618" in href and "June 27-28" in heading:
+                    # Fix Fed URL artifact: scheduled meeting held June 27-28, 2007, statement released June 28, 2007
+                    event_date = dt.date(2007, 6, 28)
                 scheduled = "meeting" in heading.lower() and "unscheduled" not in heading.lower()
-                events.append({"date": ymd(m.group(1)), "url": FED + href if href.startswith("/") else href,
+                events.append({"date": event_date, "url": FED + href if href.startswith("/") else href,
                                "scheduled": scheduled, "heading": heading, "page": url})
 
     url = f"{FED}/monetarypolicy/fomccalendars.htm"
@@ -389,6 +393,16 @@ def harvest_fed(issues: list[str]) -> list[dict]:
         else:
             quality, tsrc = "unknown", f"No release time on statement page ({e['url']})"
         local, utc = localize("Fed", d, hhmm)
+        if d == dt.date(2025, 8, 22):
+            # Jackson Hole notation vote approving Statement on Longer-Run Goals; not a rate decision
+            rows.append(row("Fed", d, event_type="non_decision",
+                            scheduled=False, decision="unclassified", size_bp=0,
+                            new_rate_pct=rate.asof(d), rate_basis=basis,
+                            announce_time_local=None, announce_ts_utc=None, time_quality="unknown",
+                            time_source="Notation vote (no immediate market policy announcement)",
+                            date_source=f"FOMC statement link on {e['page']} ({e['heading']})",
+                            source_url=e["url"]))
+            continue
         rows.append(row("Fed", d, event_type="scheduled_meeting" if e["scheduled"] else "unscheduled_meeting",
                         scheduled=e["scheduled"], decision=classify(size), size_bp=size,
                         new_rate_pct=ch[-1][2] if ch else rate.asof(d), rate_basis=basis,

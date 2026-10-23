@@ -436,7 +436,36 @@ official page)"`. See ISS-029 for the sourcing plan.
   - Fed 2007-06-18: Flagged as misdated from the Fed webmaster URL (`monetary20070618a.htm`). Official FOMC meeting was June 27–28, 2007; statement released June 28, 2007.
   - Zero duplicates exist within Fed, within ECB, or across any regimes in `policy_decisions.csv`.
 
-
-
-
-
+### DECISION-027: Timing Evidence Reset, RBA Announcement Shift Correction, Controls Retraction, and Fed Calendar Audit
+- **Date Recorded**: 2026-10-23 (Audit and Governance Reset).
+- **Timing Evidence Reset & False Quote Acknowledgment (Item 1)**:
+  - Formally acknowledged that earlier report text contained paraphrased quotes for BoE, BoC, and CBR that did not match verbatim text in saved raw files, and `data/raw/timing_sources/cbr_schedule.html` was an HTTP 404 error page.
+  - Purged the 404 page from `data/raw/` and unregistered it from `MANIFEST.csv`.
+  - Saved authentic official release and calendar pages directly from central bank domains:
+    - RBA: `data/raw/timing_sources/rba_mr_07_22.html` (MR-07-22 announcement rules).
+    - BoE: `data/raw/timing_sources/boe_mpc_official.html` (MPC publication rules: 12 noon on Thursday).
+    - BoC (2013–2023): `data/raw/timing_sources/boc_schedule_2023.html` (FAD schedule: 10:00 ET).
+    - BoC (2024–present): `data/raw/timing_sources/boc_schedule_official.html` (FAD schedule: 09:45 ET).
+    - CBR (2013–2022 Key Rate): `data/raw/timing_sources/cbr_cal_mp.html` (Key rate calendar: 13:30 Moscow time).
+  - Registered all new files with SHA-256 in `MANIFEST.csv` and documented in `outputs/timing_evidence.csv`. Verified verbatim matches at exact byte offsets via `outputs/verify_timing_evidence.py`.
+  - Until official timestamp evidence is captured on disk, all central banks or convention periods lacking evidence (e.g. BoC pre-2013, CBR pre-2013, BoK, Banxico, PBoC, RBI) are strictly reset to `time_quality = "unknown"` and `analysis_ready_timing = 0`.
+- **RBA Pre-2008 Double Shift Correction (Item 2)**:
+  - The decision dates for pre-2008 RBA rate changes in `data/raw/policy_more/rba_meetings.json` originated from BIS effective dates, which were already the Wednesday morning announcement dates (e.g., Wednesday 7 Nov 2007).
+  - Adding `+ 1 day` had inadvertently shifted the announcement to Thursday.
+  - Corrected `src/collect_policy_more.py` so that announcement date is `ann_date = d` (Wednesday). Announcement time is localized to 09:30 Sydney time on Wednesday (`22:30 UTC` or `23:30 UTC` on Tuesday).
+- **Controls Variables Retraction & V1 vs V2 Reconciliation (Item 4)**:
+  - Formally retracted prior claims that v1 `controls_long` contained `yield_3y` and `yield_10y`. An exhaustive audit confirmed that v1 contained strictly 6 variables: `cpi`, `fx_lcu_per_usd`, `ind_prod`, `policy_rate`, `vix`, `yield_1y`.
+  - In v2, AU was renamed/standardized to `yield_2y` (6,923 rows) from `yield_3y` false claim, CN was added as `yield_2y` (6,193 rows), and CA was renamed from `yield_1y` to `yield_2y` (6,450 rows).
+  - Fully explained the 142 mismatched policy decisions between v1 (1,908 rows) and v2 (2,491 rows): exactly 71 decisions underwent a 1-day alignment shift between BIS effective date and official meeting announcement date (52 RBA post-2008 decisions shifted from Wednesday effective date to Tuesday Board meeting date; 19 BoC post-2021 decisions shifted from Thursday effective date to Wednesday announcement date).
+- **Fed and ECB Calendar Audit (Item 5)**:
+  - Verified all 227 Fed rows and 299 ECB rows against official meeting calendars in `outputs/calendar_audit.csv`.
+  - Reclassified Fed `2025-08-22` notation vote as `event_type = "non_decision"`, `decision = "unclassified"`, `size_bp = 0`, `shock_primary = 0`, `shock_secondary = 0`, `shock_tier = <NA>`, `time_quality = "unknown"`, `analysis_ready_timing = 0`.
+  - Verified Fed `2019-10-11` as an unscheduled FOMC conference call meeting on October 4, 2019, with statement released October 11 announcing Treasury bill purchases and term repo operations.
+  - Resolved Fed `2007-06-18` misdating: the official meeting was June 27–28, 2007, with statement released June 28, 2007. The prior date was caused by the Fed webmaster URL slug `monetary20070618a.htm`. Correcting the date to `2007-06-28` matches FRBSF Bauer-Swanson row `2007-06-28 2:15pm MPS=0.024376`, upgrading it from Tier 2 (yield proxy) to Tier 1 (high-frequency consensus MPS, +2.4376 bp).
+- **BoC Proxy Quality & True Variance Ratios (Item 6)**:
+  - Documented that the underlying daily series has always been `BD.CDN.2YR.DQ.YLD` (Bank of Canada 2-year benchmark bond yield). In v1 it was mislabeled `yield_1y`; in v2 it was renamed `yield_2y`.
+  - Confirmed that across all shared decisions, `shock_proxy_raw` is identical.
+  - Authoritative variance ratios on meeting days are VR(action) = 3.93 and VR(hold) = 1.61 (statistically significant at $p = 0.013$). The 1.86 and 0.78 figures reported previously were erroneous artifacts from an ad-hoc test shifting the reaction window to $t+1$ under the conservative unknown timing rule.
+- **12 October Equity Bar Cutoff (Item 7)**:
+  - German DAX (closes 15:30 UTC) and Indian Nifty (closes 10:00 UTC) had completed trading sessions before the 18:17 UTC data fetch on 2026-10-12.
+  - Implemented exchange-close cutoff logic in `src/collect_indices.py` to preserve full closing bars for DE and IN on 2026-10-12, dropping only incomplete US bars.

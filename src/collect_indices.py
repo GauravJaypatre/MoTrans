@@ -225,20 +225,47 @@ def raw_b3(code: str, raw_file: str) -> pd.DataFrame:
 READERS = {"niftyindices": raw_niftyindices, "csindex": raw_csindex, "moex": raw_moex, "b3": raw_b3}
 
 
-def retrieval_date(raw_file: str) -> dt.date:
-    """UTC download date of a raw file, from MANIFEST.csv (today if not yet registered)."""
+# Exchange closing times in UTC for cutoff validation (DECISION-020)
+EXCHANGE_CLOSE_UTC = {
+    "IN": dt.time(10, 0),   # NSE closes 15:30 IST = 10:00 UTC
+    "JP": dt.time(6, 0),    # TSE closes 15:00 JST = 06:00 UTC
+    "CN": dt.time(7, 0),    # SSE closes 15:00 CST = 07:00 UTC
+    "KR": dt.time(6, 30),   # KRX closes 15:30 KST = 06:30 UTC
+    "AU": dt.time(5, 0),    # ASX closes 16:00 AEST = 06:00 UTC / 05:00 AEDT
+    "RU": dt.time(16, 0),   # MOEX closes 18:45 MSK = 15:45 UTC
+    "DE": dt.time(16, 30),  # Xetra closes 17:30 CET = 15:30/16:30 UTC
+    "FR": dt.time(16, 30),  # Euronext closes 17:30 CET
+    "IT": dt.time(16, 30),  # Borsa Italiana closes 17:30 CET
+    "ES": dt.time(16, 30),  # BME closes 17:30 CET
+    "EA": dt.time(16, 30),  # Euro area
+    "GB": dt.time(16, 30),  # LSE closes 16:30 London = 15:30/16:30 UTC
+    "BR": dt.time(20, 0),   # B3 closes 17:00 BRT = 20:00 UTC
+    "MX": dt.time(21, 0),   # BMV closes 15:00 CST = 21:00 UTC
+    "US": dt.time(20, 0),   # NYSE/Nasdaq closes 16:00 ET = 20:00 UTC
+}
+
+
+def retrieval_info(raw_file: str) -> tuple[dt.date, dt.time]:
+    """UTC download timestamp of a raw file, from MANIFEST.csv (today if not yet registered)."""
     import csv
     with open(MANIFEST_PATH, encoding="utf-8") as f:
         for r in csv.DictReader(f):
             if r["file_path"] == f"data/raw/{raw_file}":
-                return dt.date.fromisoformat(r["retrieval_utc"][:10])
-    return dt.date.today()
+                ts = r["retrieval_utc"].replace("Z", "+00:00")
+                parsed = dt.datetime.fromisoformat(ts)
+                return parsed.date(), parsed.time()
+    return dt.date.today(), dt.time(0, 0)
 
 
 def build_series(country, index_id, index_class, code, source, is_etf, raw_file) -> pd.DataFrame:
     df = raw_yfinance(code, raw_file, is_etf) if source == "yfinance" else READERS[source](code, raw_file)
-    # A value dated on/after the download day may be an intraday price, not a close.
-    cutoff = min(dt.date.today(), retrieval_date(raw_file))
+    # A value dated on the download day is complete if retrieved after exchange close
+    ret_date, ret_time = retrieval_info(raw_file)
+    close_time = EXCHANGE_CLOSE_UTC.get(country, dt.time(20, 0))
+    if ret_time >= close_time:
+        cutoff = min(dt.date.today() + dt.timedelta(days=1), ret_date + dt.timedelta(days=1))
+    else:
+        cutoff = min(dt.date.today(), ret_date)
     df = df[(df["date"] >= START) & (df["date"] < cutoff) & (df["level_local"] > 0)]
     if source == "yfinance":
         # Yahoo inserts zero-volume placeholder rows on some exchange holidays; they are not prices.

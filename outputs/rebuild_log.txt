@@ -1,58 +1,48 @@
 ================================================================================
-MOTRANS-15 STRICT REBUILD ASSERTION LOG
-Timestamp: 2026-10-22 16:13:15 UTC
-Assertion mode: pandas.testing.assert_frame_equal(..., check_dtype=True, atol=1e-5)
+MoTrans-15 Pipeline Double Rebuild Verification
 ================================================================================
+Timestamp: 2026-10-23T14:50:01.095914+00:00
 
-[1/3] Loading fresh exported workbook: data\final\MoTrans15_v2.xlsx (60.0 MB)...
-Workbook sheets loaded in 22.17s: ['README', 'panel_daily', 'policy_decisions', 'events', 'shocks', 'statements', 'controls_long', 'hand_label_sample']
+--- STARTING REBUILD RUN 1 FROM data/raw ONLY ---
+Run 1 completed successfully.
+  Run 1: events.parquet            -> c76e44369d0402d4254a296a4b9188fdcb72435edbfc641a598b59f13d5dbae7
+  Run 1: hand_label_sample_with_text.csv -> 1591b0d47499d9242a4b4c2355809d3f61d49801cd6ffc3eab426847f4eccc64
+  Run 1: panel_daily.parquet       -> 26a149972615b4bc2f6fd90173ba036768244c05b75e6262a20ea2235f0b79b1
+  Run 1: policy_decisions.csv      -> c51ad639dc2e0fd9ffd284924d0a35ee1e89bcc1690e86222c2db8090290f556
+  Run 1: shocks.parquet            -> e793c6e94a9444bdf9981bb801c0e52a96c00122f6040cb83e5a1d8b73911093
+  Run 1: statements.parquet        -> 975a7f6e1e6924d62d124fcefc596f1ba1da0e1c8cd813e0f79bcd786e1c9271
 
-[2/3] Performing strict assertion per sheet...
+--- STARTING REBUILD RUN 2 FROM data/raw ONLY ---
+Run 2 completed successfully.
+  Run 2: events.parquet            -> c76e44369d0402d4254a296a4b9188fdcb72435edbfc641a598b59f13d5dbae7
+  Run 2: hand_label_sample_with_text.csv -> 1591b0d47499d9242a4b4c2355809d3f61d49801cd6ffc3eab426847f4eccc64
+  Run 2: panel_daily.parquet       -> 26a149972615b4bc2f6fd90173ba036768244c05b75e6262a20ea2235f0b79b1
+  Run 2: policy_decisions.csv      -> c51ad639dc2e0fd9ffd284924d0a35ee1e89bcc1690e86222c2db8090290f556
+  Run 2: shocks.parquet            -> e793c6e94a9444bdf9981bb801c0e52a96c00122f6040cb83e5a1d8b73911093
+  Run 2: statements.parquet        -> 975a7f6e1e6924d62d124fcefc596f1ba1da0e1c8cd813e0f79bcd786e1c9271
 
---- Checking Sheet: 'panel_daily' ---
-Excel shape : (222639, 24)
-Parquet shape: (222639, 24)
--> RESULT: STRICT EQUALITY PASSED in 36.77s (222639 rows x 24 cols)
+--- ASSERTING BIT-FOR-BIT IDENTITY BETWEEN RUN 1 AND RUN 2 ---
+  events.parquet           : Run 1=c76e44369d0402d4... Run 2=c76e44369d0402d4... Match=True
+  hand_label_sample_with_text.csv: Run 1=1591b0d47499d924... Run 2=1591b0d47499d924... Match=True
+  panel_daily.parquet      : Run 1=26a149972615b4bc... Run 2=26a149972615b4bc... Match=True
+  policy_decisions.csv     : Run 1=c51ad639dc2e0fd9... Run 2=c51ad639dc2e0fd9... Match=True
+  shocks.parquet           : Run 1=e793c6e94a9444bd... Run 2=e793c6e94a9444bd... Match=True
+  statements.parquet       : Run 1=975a7f6e1e6924d6... Run 2=975a7f6e1e6924d6... Match=True
+PASSED: Double rebuild outputs from data/raw/ are 100% BIT-FOR-BIT IDENTICAL!
 
---- Checking Sheet: 'policy_decisions' ---
-Excel shape : (2491, 39)
-Parquet shape: (2491, 39)
--> RESULT: STRICT EQUALITY PASSED in 0.76s (2491 rows x 39 cols)
+Exporting fresh data/final/MoTrans15_v2.xlsx...
+Export result: panel_daily: 222,655 rows x 24 columns
+policy_decisions: 2,491 rows x 40 columns
+events: 82,054 rows x 57 columns
+shocks: 2,491 rows x 37 columns
+statements: 920 rows x 11 columns
+controls_long: 341,676 rows x 6 columns
+hand_label_sample: 182 rows x 15 columns
+Saved MoTrans15_v2.xlsx (63.1 MB)
 
---- Checking Sheet: 'events' ---
-Excel shape : (82054, 56)
-Parquet shape: (82054, 56)
--> RESULT: STRICT EQUALITY PASSED in 34.24s (82054 rows x 56 cols)
-
---- Checking Sheet: 'shocks' ---
-Excel shape : (2491, 36)
-Parquet shape: (2491, 36)
--> RESULT: STRICT EQUALITY PASSED in 0.54s (2491 rows x 36 cols)
-
---- Checking Sheet: 'statements' ---
-Excel shape : (920, 11)
-Parquet shape: (920, 11)
--> RESULT: STRICT EQUALITY PASSED in 0.21s (920 rows x 11 cols)
-
---- Checking Sheet: 'controls_long' ---
-Excel shape : (341676, 6)
-Parquet shape: (341676, 6)
--> RESULT: STRICT EQUALITY PASSED in 20.18s (341676 rows x 6 cols)
-
---- Checking Sheet: 'hand_label_sample' ---
-Excel shape : (181, 15)
-Parquet shape: (181, 15)
--> RESULT: STRICT EQUALITY PASSED in 0.08s (181 rows x 15 cols)
-
-================================================================================
-[3/3] SUMMARY OF STRICT REBUILD ASSERTIONS:
-  [PASS] panel_daily         :  222639 rows x 24 cols (36.77s)
-  [PASS] policy_decisions    :    2491 rows x 39 cols (0.76s)
-  [PASS] events              :   82054 rows x 56 cols (34.24s)
-  [PASS] shocks              :    2491 rows x 36 cols (0.54s)
-  [PASS] statements          :     920 rows x 11 cols (0.21s)
-  [PASS] controls_long       :  341676 rows x  6 cols (20.18s)
-  [PASS] hand_label_sample   :     181 rows x 15 cols (0.08s)
-================================================================================
-ALL 7 SHEETS VERIFIED: 100% BITWISE/NUMERICAL REPRODUCIBILITY CONFIRMED!
-================================================================================
+--- COMPARING REBUILD WITH BASELINE WORKBOOK (MoTrans15_v2_baseline.xlsx) ---
+  Sheet: panel_daily        | Baseline=222,646 rows | Rebuild=222,655 rows | Diff=+9
+  Sheet: policy_decisions   | Baseline=2,424 rows | Rebuild=2,491 rows | Diff=+67
+  Sheet: events             | Baseline=80,344 rows | Rebuild=82,054 rows | Diff=+1710
+  Sheet: shocks             | Baseline=2,424 rows | Rebuild=2,491 rows | Diff=+67
+  Sheet: statements         | Baseline=920 rows | Rebuild=920 rows | Diff=+0

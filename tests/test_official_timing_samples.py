@@ -37,16 +37,19 @@ OFFICIAL_SAMPLES = {
         ("2024-08-01", "12:00", "exact", "cut"),
     ],
     "BoC": [
-        ("2001-01-23", "09:00", "exact", "cut"),
-        ("2001-04-17", "09:00", "exact", "cut"),
-        ("2002-04-16", "09:00", "exact", "hike"),
-        ("2007-07-10", "09:00", "exact", "hike"),
-        ("2009-04-21", "09:00", "exact", "cut"),
-        ("2010-06-01", "09:00", "exact", "hike"),
+        # Pre-2013: no verified official schedule file stating exact release time -> unknown
+        ("2001-01-23", None, "unknown", "cut"),
+        ("2001-04-17", None, "unknown", "cut"),
+        ("2002-04-16", None, "unknown", "hike"),
+        ("2007-07-10", None, "unknown", "hike"),
+        ("2009-04-21", None, "unknown", "cut"),
+        ("2010-06-01", None, "unknown", "hike"),
+        # 2013-2023 FAD schedule: 10:00 ET (verified in data/raw/timing_sources/boc_schedule_2023.html)
         ("2015-01-21", "10:00", "exact", "cut"),
         ("2020-03-04", "10:00", "exact", "cut"),
         ("2022-03-02", "10:00", "exact", "hike"),
         ("2023-01-25", "10:00", "exact", "hike"),
+        # 2024+ FAD schedule: 09:45 ET (verified in data/raw/timing_sources/boc_schedule_official.html)
         ("2024-06-05", "09:45", "exact", "cut"),
     ],
     "RBA": [
