@@ -144,7 +144,7 @@ def regime_announcement_time(regime: str, day: dt.date, scheduled: bool, meeting
     if regime == "BoC":
         if day < dt.date(2000, 11, 28):
             return (None, "unknown", "Pre-FAD era: unscheduled announcement")
-        hhmm = "09:00" if day < dt.date(2020, 1, 1) else ("10:00" if day < dt.date(2024, 1, 1) else "09:45")
+        hhmm = "09:00" if day < dt.date(2013, 1, 1) else ("10:00" if day < dt.date(2024, 1, 1) else "09:45")
         return (hhmm, "exact", f"Bank of Canada official Fixed Announcement Date (FAD) convention ({hhmm} ET)")
 
     if regime == "RBA":

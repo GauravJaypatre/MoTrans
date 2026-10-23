@@ -27,6 +27,9 @@ data/final/*
 # ── Outputs (regenerable) ───────────────────────────────────────
 outputs/*
 !outputs/.gitkeep
+!outputs/*.csv
+!outputs/*.txt
+
 
 # ── IDE ──────────────────────────────────────────────────────────
 .vscode/

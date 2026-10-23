@@ -390,5 +390,25 @@ official page)"`. See ISS-029 for the sourcing plan.
   - Temporary directories `data/backup_final` and `data/backup_interim` were created as transient scratch staging folders during local test runs and were removed to keep the working repository clean of untracked duplicate data.
   - In compliance with Non-Negotiable Rules, all derived data in `data/interim/` and `data/final/` are strictly regenerable end-to-end from `data/raw/` via `python -m src.pipeline`. Value equivalence is asserted per sheet against exported Excel `MoTrans15_v2.xlsx` via `pandas.testing.assert_frame_equal`.
 
+### DECISION-025: Raw Data Manifest Audit & Re-Registration, Pre-2008 RBA Holds Exclusion, and BoC Timing Synchronization
+- **Date Recorded**: 2026-10-22 (Audited verification before final estimation).
+- **Raw File Manifest Re-Registration (Item 1)**:
+  - Audited all 2,146 catalog records in `data/raw/`. Determined root causes of hash discrepancies:
+    1. Upstream re-downloads with recent 2026 markup/data (e.g. `fed_openmarket_target_rates.html`, `fed_fomchistorical2000.html`).
+    2. Line ending and UTF-8 BOM encoding differences on Windows OS.
+    3. Truncated filenames from Phase E statement harvesting where on-disk files possessed `_hash` suffixes.
+  - Re-registered all 1,540 verified on-disk raw files in `data/raw/MANIFEST.csv`. All raw files match bitwise SHA-256 hashes on disk. Full audit saved to `outputs/raw_hash_audit.csv`.
+- **RBA Pre-2008 Hold Institutional Exclusion (Item 5)**:
+  - Sourced from official RBA Media Release MR-07-22 (5 December 2007): *"Currently, any change in the cash rate target is announced at 9.30 am on the day following the Board meeting. No announcement is made if the target is unchanged."*
+  - All 68 unannounced holds prior to 2008-02-01 are flagged `rba_pre2008_unannounced_hold`, assigned `shock_primary = 0`, and excluded from primary transmission analysis.
+- **Effective Sample Definition (Item 5)**:
+  - The effective analysis sample is strictly defined as `shock_primary == 1 AND analysis_ready_timing == 1`.
+  - PBoC is maintained at `shock_primary = 0`.
+- **BoC Timing Synchronization (Item 6)**:
+  - Resolved institutional timing record: Bank of Canada synchronized its Fixed Announcement Date (FAD) policy rate release and Monetary Policy Report to 10:00 ET in January 2013 (shifted to 09:45 ET in January 2024).
+- **High-Frequency Coverage Verification (Item 6)**:
+  - Confirmed actual on-disk dataset max dates: `data/raw/shocks/ecb_ea_mpd_dataset.xlsx` covers through **2025-10-30** (315 meetings), while FRBSF Bauer-Swanson covers through **2023-12-13** (361 meetings). Reconciled prior erroneous claim that EA-MPD ended in 2023.
+
+
 
 

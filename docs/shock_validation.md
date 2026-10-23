@@ -35,7 +35,7 @@ Grades: A = public high-frequency surprise; B = 1-year (or 2-year benchmark) yie
 | ECB | 245 | 245 | 16 | 16 | 38 | 38 | 299 | 299 | Sufficient (>= 20) |
 | Fed | 170 | 170 | 18 | 18 | 39 | 39 | 227 | 227 | Sufficient (>= 20) |
 | PBoC | 30 | 0 | 3 | 0 | 7 | 0 | 40 | 0 | **FLAGGED (< 20)** |
-| RBA | 217 | 217 | 23 | 23 | 44 | 44 | 284 | 284 | Sufficient (>= 20) |
+| RBA | 217 | 149 | 23 | 23 | 44 | 44 | 284 | 216 | Sufficient (>= 20) |
 | RBI | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
 
 ## Japan zero-rate proxy review

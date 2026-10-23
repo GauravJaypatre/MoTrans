@@ -1,0 +1,10 @@
+regime,shock_proxy_tenor,series_description,n_non_meeting,sd_non_meeting_bp,n_action,vr_action,n_hold,vr_hold,placebo_mean_vr,placebo_p05,placebo_p50,placebo_p95,pval_hold,hold_signal_verdict
+BoE,1Y,1Y Gilt spot curve (Bank of England),6725,3.77,55,4.64,229,1.08,1.0,0.69,0.97,1.42,0.332,No Excess Signal (Noise-dominated)
+BoC,2Y,2Y GoC benchmark bond yield (Bank of Canada),6239,4.86,72,3.93,138,1.61,1.0,0.67,0.97,1.45,0.013,Statistically Significant (p < 0.05)
+RBA,2Y,2Y ACGB benchmark yield (RBA Table F2),6638,5.43,71,5.78,213,1.0,1.0,0.76,0.98,1.33,0.448,No Excess Signal (Noise-dominated)
+CBR,1Y,1Y OFZ zero-coupon curve (Bank of Russia),5942,19.89,99,7.17,0,,,,,,,No Holds in Regime
+BoJ,1Y,1Y JGB Ministry of Finance yield,6477,0.89,12,19.47,184,1.42,1.02,0.59,0.96,1.71,0.126,No Excess Signal (Noise-dominated)
+BCB,1Y,1Y Swap DI x pre 360d (BCB SGS 7806),4724,23.6,112,1.07,70,1.57,1.0,0.26,0.77,2.49,0.168,No Excess Signal (Noise-dominated)
+PBoC,2Y,2Y ChinaBond sovereign benchmark yield,6164,8.63,28,1.59,0,,,,,,,No Holds in Regime
+Fed,1Y,1Y US Treasury par yield (FRB H.15),6478,4.1,74,3.79,151,1.0,1.01,0.55,0.92,1.81,0.41,No Excess Signal (Noise-dominated)
+ECB,1Y,1Y Bundesbank Federal securities yield,6763,3.5,59,2.33,240,0.77,1.0,0.69,0.96,1.45,0.853,No Excess Signal (Noise-dominated)

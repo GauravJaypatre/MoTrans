@@ -121,6 +121,12 @@ class TestPriorityGroup2Shocks:
             sub = shocks_df[shocks_df["regime"] == reg]
             assert (sub["shock_primary"] == sub["shock_usable"]).all()
 
+        # RBA pre-2008 unannounced holds must have shock_primary == 0 and quality flag
+        rba_pre_holds = shocks_df[(shocks_df["regime"] == "RBA") & (shocks_df["decision_date"].astype(str) < "2008-02-01") & (shocks_df["decision"] == "hold")]
+        assert len(rba_pre_holds) == 68
+        assert (rba_pre_holds["shock_primary"] == 0).all()
+        assert (rba_pre_holds["shock_quality_flag"] == "rba_pre2008_unannounced_hold").all()
+
     def test_shock_measure_type(self, shocks_df):
         """shock_measure_type must be 'hf_ois' for Grade A, 'yield_proxy' for Grade B, '' for Grade C."""
         assert (shocks_df[shocks_df["shock_grade"] == "A"]["shock_measure_type"] == "hf_ois").all()

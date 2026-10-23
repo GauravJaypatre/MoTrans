@@ -1,0 +1,6 @@
+window_days,horizon_label,contaminated_events,total_events,contamination_share_pct,mean_other_decisions,max_other_decisions
+1,clr_1,897,2491,36.01,0.43,3
+3,clr_3,1720,2491,69.05,1.23,7
+5,clr_5,2107,2491,84.58,1.85,7
+20,clr_20,2484,2491,99.72,6.59,18
+60,clr_60,2490,2491,99.96,20.91,39

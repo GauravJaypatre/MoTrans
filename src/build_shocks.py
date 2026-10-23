@@ -178,25 +178,30 @@ def build(policy: pd.DataFrame, controls: pd.DataFrame) -> pd.DataFrame:
     is_boj_all = (df["regime"] == "BoJ")
     is_cbr_break = (df["regime"] == "CBR") & (pd.to_datetime(df["decision_date"]).dt.date >= dt.date(2022, 2, 24))
     is_china = (df["regime"] == "PBoC")
+    is_rba_pre2008_hold = (df["regime"] == "RBA") & (pd.to_datetime(df["decision_date"]).dt.date < dt.date(2008, 2, 1)) & (df["decision"] == "hold")
 
-    # Baseline pre-registered default: shock_primary = 0 for all BoJ
-    is_primary_excluded = is_boj_all | is_cbr_break | is_china
+    # Baseline pre-registered default: shock_primary = 0 for all BoJ, CBR break, PBoC, and pre-2008 unannounced RBA holds
+    is_primary_excluded = is_boj_all | is_cbr_break | is_china | is_rba_pre2008_hold
     df["shock_primary"] = ((df["shock_usable"] == 1) & (~is_primary_excluded)).astype(int)
 
     # Labeled sensitivity analysis: shock_primary_rescaled includes 21 post-exit BoJ events
-    df["shock_primary_rescaled"] = ((df["shock_usable"] == 1) & (~(is_boj_zirp | is_cbr_break | is_china))).astype(int)
+    df["shock_primary_rescaled"] = ((df["shock_usable"] == 1) & (~(is_boj_zirp | is_cbr_break | is_china | is_rba_pre2008_hold))).astype(int)
 
     df["shock_quality_flag"] = np.where(
-        is_boj_zirp,
-        "low_sensitivity_zero_lower_bound",
+        is_rba_pre2008_hold,
+        "rba_pre2008_unannounced_hold",
         np.where(
-            is_cbr_break,
-            "structural_break_ukraine_sanctions",
+            is_boj_zirp,
+            "low_sensitivity_zero_lower_bound",
             np.where(
-                is_china,
-                "tenor_2y_proxy_policy_transmission",
-                np.where(df["shock_grade"] == "A", "high_frequency",
-                         np.where(df["shock_grade"] == "B", "sovereign_yield_proxy", "no_shock"))
+                is_cbr_break,
+                "structural_break_ukraine_sanctions",
+                np.where(
+                    is_china,
+                    "tenor_2y_proxy_policy_transmission",
+                    np.where(df["shock_grade"] == "A", "high_frequency",
+                             np.where(df["shock_grade"] == "B", "sovereign_yield_proxy", "no_shock"))
+                )
             )
         )
     )

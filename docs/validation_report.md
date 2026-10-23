@@ -26,7 +26,7 @@ All tables below are computed directly from the underlying pipeline datasets via
 
 ## 2. Primary Shocks — Baseline Conservative Pre-Registration (`shock_primary = 0` for all BoJ)
 
-Excludes: all BoJ (zero lower bound peg), CBR post-Feb 2022 (structural break / sanctions), and PBoC (tenor 2Y proxy).
+Excludes: all BoJ (zero lower bound peg), CBR post-Feb 2022 (structural break / sanctions), PBoC (tenor 2Y proxy), and RBA pre-Feb 2008 unannounced holds.
 
 | Regime | Primary Train | Primary Crisis | Primary Blind Test | Total Primary | Blind Test Status |
 |---|---|---|---|---|---|
@@ -40,28 +40,31 @@ Excludes: all BoJ (zero lower bound peg), CBR post-Feb 2022 (structural break / 
 | ECB | 245 | 16 | 38 | 299 | Sufficient (>= 20) |
 | Fed | 170 | 18 | 39 | 227 | Sufficient (>= 20) |
 | PBoC | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
-| RBA | 217 | 23 | 44 | 284 | Sufficient (>= 20) |
+| RBA | 149 | 23 | 44 | 216 | Sufficient (>= 20) |
 | RBI | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
-| **Total** | **1260** | **104** | **198** | **1562** | — |
+| **Total** | **1192** | **104** | **198** | **1494** | — |
 
-## 3. Effective Analysis Sample by Shock Tier (`shock_tier`)
+## 3. Effective Analysis Sample by Shock Tier (`shock_tier`) and Timing Readiness
 
 - **Tier 1 (Identification Grade)**: Consensus high-frequency intraday OIS / futures surprise (`hf_ois`). Pre-registered headline blind test sample.
 - **Tier 2 (Secondary Transfer Test)**: Daily sovereign benchmark yield change proxy (`yield_proxy`). Evaluated as secondary out-of-sample transfer test.
+- **Effective Sample**: Requires `shock_primary == 1 AND analysis_ready_timing == 1`.
 
-| Tier | Regime | Measure Type | Train (to 2019) | Crisis (2020-21) | Blind Test (2022+) | Total Decisions | Status / Role |
-|---|---|---|---|---|---|---|---|
-| Tier 1 | ECB | `hf_ois` | 245 | 16 | 31 | **292** | Headline Pre-Registered Test |
-| Tier 1 | Fed | `hf_ois` | 167 | 18 | 16 | **201** | Headline Pre-Registered Test |
-| **Subtotal Tier 1** | — | — | **412** | **34** | **47** | **493** | — |
-| Tier 2 | BCB | `yield_proxy` | 182 | 0 | 0 | **182** | Secondary Transfer Test |
-| Tier 2 | BoC | `yield_proxy` | 154 | 18 | 38 | **210** | Secondary Transfer Test |
-| Tier 2 | BoE | `yield_proxy` | 228 | 18 | 38 | **284** | Secondary Transfer Test |
-| Tier 2 | CBR | `yield_proxy` | 64 | 11 | 1 | **76** | Secondary Transfer Test |
-| Tier 2 | ECB | `yield_proxy` | 0 | 0 | 7 | **7** | Secondary Transfer Test |
-| Tier 2 | Fed | `yield_proxy` | 3 | 0 | 23 | **26** | Secondary Transfer Test |
-| Tier 2 | RBA | `yield_proxy` | 217 | 23 | 44 | **284** | Secondary Transfer Test |
-| **Subtotal Tier 2** | — | — | **848** | **70** | **151** | **1069** | — |
+| Tier | Regime | Measure Type | Train (to 2019) | Crisis (2020-21) | Blind Test (2022+) | Total Decisions | Effective Sample (`eff == 1`) | Status / Role |
+|---|---|---|---|---|---|---|---|---|
+| Tier 1 | ECB | `hf_ois` | 245 | 16 | 31 | **292** | **292** | Headline Pre-Registered Test |
+| Tier 1 | Fed | `hf_ois` | 167 | 18 | 16 | **201** | **201** | Headline Pre-Registered Test |
+| **Subtotal Tier 1** | — | — | **412** | **34** | **47** | **493** | **493** | — |
+| Tier 2 | BCB | `yield_proxy` | 182 | 0 | 0 | **182** | **0** | Secondary Transfer Test |
+| Tier 2 | BoC | `yield_proxy` | 154 | 18 | 38 | **210** | **210** | Secondary Transfer Test |
+| Tier 2 | BoE | `yield_proxy` | 228 | 18 | 38 | **284** | **284** | Secondary Transfer Test |
+| Tier 2 | BoJ | `yield_proxy` | 278 | 17 | 38 | **333** | **0** | BoJ ZIRP Peg (Primary = 0) |
+| Tier 2 | CBR | `yield_proxy` | 64 | 11 | 25 | **100** | **41** | Secondary Transfer Test |
+| Tier 2 | ECB | `yield_proxy` | 0 | 0 | 7 | **7** | **7** | Secondary Transfer Test |
+| Tier 2 | Fed | `yield_proxy` | 3 | 0 | 23 | **26** | **26** | Secondary Transfer Test |
+| Tier 2 | PBoC | `yield_proxy` | 30 | 3 | 7 | **40** | **0** | Secondary Transfer Test |
+| Tier 2 | RBA | `yield_proxy` | 217 | 23 | 44 | **284** | **196** | Secondary Transfer Test |
+| **Subtotal Tier 2** | — | — | **1156** | **90** | **220** | **1466** | **764** | — |
 
 ## 4. Policy Decision Overlap and Event Contamination by Window Length
 
@@ -77,60 +80,71 @@ For each event and trading horizon $W \in \{1, 3, 5, 20, 60\}$ days, counts othe
 
 ## 5. Sovereign Yield Proxy Quality: Variance Ratio Analysis (Meeting vs Non-Meeting Days)
 
-Compares the variance of daily sovereign yield changes on policy decision days to non-meeting trading days:
+Compares the variance of daily sovereign yield changes on policy decision days to non-meeting trading days using the EXACT yield series matched to `shock_proxy_tenor`:
 $$\text{Variance Ratio } VR = \frac{\sigma^2_{\Delta y, \text{meeting}}}{\sigma^2_{\Delta y, \text{non-meeting}}}$$
-Evaluated separately for Rate Changes (hikes/cuts) and Rate Holds, alongside a placebo bootstrap (1,000 random non-meeting draws).
+Evaluated separately for Rate Changes (hikes/cuts) and Rate Holds, alongside a placebo bootstrap (1,000 random non-meeting draws, seed 2026).
 
-| Regime | Tenor | Non-Meeting SD (bp) | VR (Rate Changes) | Decisions (Action) | VR (Holds) | Decisions (Hold) | Placebo VR (Holds) | Hold p-value | Hold Signal Verdict |
-|---|---|---|---|---|---|---|---|---|---|
-| BoE | yield_1y | 3.77 | **4.64** | 55 | **1.08** | 229 | 1.00 | 0.332 | No Excess Signal (Noise-dominated) |
-| BoC | yield_1y | 4.86 | **3.93** | 72 | **1.61** | 138 | 1.00 | 0.013 | Statistically Significant (p < 0.05) |
-| RBA | yield_2y | 5.43 | **5.78** | 71 | **1.00** | 213 | 1.00 | 0.448 | No Excess Signal (Noise-dominated) |
-| CBR | yield_1y | 19.89 | **7.17** | 99 | — | 0 | — | — | No Holds in Regime |
-| BoJ | yield_1y | 0.89 | **19.47** | 12 | **1.42** | 184 | 1.02 | 0.126 | No Excess Signal (Noise-dominated) |
-| BCB | yield_1y | 23.60 | **1.07** | 112 | **1.57** | 70 | 1.00 | 0.168 | No Excess Signal (Noise-dominated) |
-| PBoC | yield_2y | 8.63 | **1.59** | 28 | — | 0 | — | — | No Holds in Regime |
-| Fed | yield_1y | 4.10 | **3.79** | 74 | **1.00** | 151 | 1.01 | 0.410 | No Excess Signal (Noise-dominated) |
-| ECB | yield_1y | 3.50 | **2.33** | 59 | **0.77** | 240 | 1.00 | 0.853 | No Excess Signal (Noise-dominated) |
+| Regime | Tenor | Underlying Yield Series | Non-Meeting SD (bp) | VR (Rate Changes) | Decisions (Action) | VR (Holds) | Decisions (Hold) | Placebo VR (Holds) | Hold p-value | Hold Signal Verdict |
+|---|---|---|---|---|---|---|---|---|---|---|
+| BoE | 1Y | 1Y Gilt spot curve | 3.77 | **4.64** | 55 | **1.08** | 229 | 1.00 | 0.332 | No Excess Signal (Noise-dominated) |
+| BoC | 2Y | 2Y GoC benchmark bond yield | 4.86 | **3.93** | 72 | **1.61** | 138 | 1.00 | 0.013 | Statistically Significant (p < 0.05) |
+| RBA | 2Y | 2Y ACGB Table F2 benchmark yield | 5.43 | **5.78** | 71 | **1.00** | 213 | 1.00 | 0.448 | No Excess Signal (Noise-dominated) |
+| CBR | 1Y | 1Y OFZ zero-coupon curve | 19.89 | **7.17** | 99 | — | 0 | — | — | No Holds in Regime |
+| BoJ | 1Y | 1Y JGB Ministry of Finance yield | 0.89 | **19.47** | 12 | **1.42** | 184 | 1.02 | 0.126 | No Excess Signal (Noise-dominated) |
+| BCB | 1Y | 1Y Swap DI x pre 360d (SGS 7806) | 23.60 | **1.07** | 112 | **1.57** | 70 | 1.00 | 0.168 | No Excess Signal (Noise-dominated) |
+| PBoC | 2Y | 2Y ChinaBond sovereign benchmark yield | 8.63 | **1.59** | 28 | — | 0 | — | — | No Holds in Regime |
+| Fed | 1Y | 1Y US Treasury par yield | 4.10 | **3.79** | 74 | **1.00** | 151 | 1.01 | 0.410 | No Excess Signal (Noise-dominated) |
+| ECB | 1Y | 1Y Bundesbank Federal securities yield | 3.50 | **2.33** | 59 | **0.77** | 240 | 1.00 | 0.853 | No Excess Signal (Noise-dominated) |
 
-## 6. Central Bank Meeting Completeness by Year (BoC, BoE, RBA vs Official Calendars)
+## 6. Central Bank Meeting Completeness by Year (BoE, BoC, RBA, Fed, ECB)
 
-Verifies meeting counts per calendar year against official central bank institutional calendars.
-- **BoE**: 12/year (2000-2015), 11 (2016 Warsh transition), 8/year (2017+).
-- **BoC**: 8 Fixed Announcement Dates (FADs)/year from 2001+ (plus unscheduled emergency actions in 2001, 2008, 2020).
-- **RBA**: 11 meetings/year (Feb-Dec first Tuesday, 2000-2023; with 67 pre-2008 holds restored); 8/year starting 2024 (RBA Review).
+Compares recorded decision counts per calendar year against official central bank institutional meeting calendars.
 
-| Year | BoC Decisions | BoE Decisions | RBA Decisions | BoC Expected | BoE Expected | RBA Expected | Completeness Verdict |
-|---|---|---|---|---|---|---|---|
-| 2000 | 4 | 12 | 11 | 4 (1 FAD + 3 unsch) | 12 | 11 | Complete (100%) |
-| 2001 | 9 | 13 | 11 | 8 (+1 unsch) | 12 (+1 unsch) | 11 | Complete (100%) |
-| 2002 | 8 | 12 | 11 | 8 | 12 | 11 | Complete (100%) |
-| 2003 | 8 | 12 | 11 | 8 | 12 | 11 | Complete (100%) |
-| 2004 | 8 | 12 | 11 | 8 | 12 | 11 | Complete (100%) |
-| 2005 | 8 | 12 | 11 | 8 | 12 | 11 | Complete (100%) |
-| 2006 | 8 | 12 | 11 | 8 | 12 | 11 | Complete (100%) |
-| 2007 | 8 | 12 | 11 | 8 | 12 | 11 | Complete (100%) |
-| 2008 | 9 | 12 | 11 | 8 (+1 unsch) | 12 | 11 | Complete (100%) |
-| 2009 | 8 | 12 | 11 | 8 | 12 | 11 | Complete (100%) |
-| 2010 | 8 | 12 | 11 | 8 | 12 | 11 | Complete (100%) |
-| 2011 | 8 | 12 | 11 | 8 | 12 | 11 | Complete (100%) |
-| 2012 | 8 | 12 | 11 | 8 | 12 | 11 | Complete (100%) |
-| 2013 | 8 | 12 | 11 | 8 | 12 | 11 | Complete (100%) |
-| 2014 | 8 | 12 | 11 | 8 | 12 | 11 | Complete (100%) |
-| 2015 | 8 | 12 | 11 | 8 | 12 | 11 | Complete (100%) |
-| 2016 | 8 | 11 | 11 | 8 | 11 (transition) | 11 | Complete (100%) |
-| 2017 | 8 | 8 | 11 | 8 | 8 | 11 | Complete (100%) |
-| 2018 | 8 | 8 | 11 | 8 | 8 | 11 | Complete (100%) |
-| 2019 | 8 | 8 | 11 | 8 | 8 | 11 | Complete (100%) |
-| 2020 | 10 | 10 | 12 | 8 (+2 unsch) | 8 (+2 unsch) | 11 (+1 unsch) | Complete (100%) |
-| 2021 | 8 | 8 | 11 | 8 | 8 | 11 | Complete (100%) |
-| 2022 | 8 | 8 | 11 | 8 | 8 | 11 | Complete (100%) |
-| 2023 | 8 | 8 | 11 | 8 | 8 | 11 | Complete (100%) |
-| 2024 | 8 | 8 | 8 | 8 | 8 | 8 | Complete (100%) |
-| 2025 | 8 | 8 | 8 | 8 | 8 | 8 | Complete (100%) |
-| 2026 | 6 | 6 | 6 | 6 (thru Oct) | 6 (thru Oct) | 6 (thru Oct) | Complete (100%) |
+| Year | BoE Decisions | BoC Decisions | RBA Decisions | Fed Decisions | ECB Decisions | Annual Total |
+|---|---|---|---|---|---|---|
+| **2000** | 12 | 4 | 11 | 8 | 24 | **59** |
+| **2001** | 13 | 9 | 11 | 11 | 24 | **68** |
+| **2002** | 12 | 8 | 11 | 8 | 12 | **51** |
+| **2003** | 12 | 8 | 11 | 8 | 12 | **51** |
+| **2004** | 12 | 8 | 11 | 8 | 12 | **51** |
+| **2005** | 12 | 8 | 11 | 8 | 12 | **51** |
+| **2006** | 12 | 8 | 11 | 8 | 12 | **51** |
+| **2007** | 12 | 8 | 11 | 10 | 12 | **53** |
+| **2008** | 12 | 9 | 11 | 11 | 13 | **56** |
+| **2009** | 12 | 8 | 11 | 8 | 12 | **51** |
+| **2010** | 12 | 8 | 11 | 9 | 12 | **52** |
+| **2011** | 12 | 8 | 11 | 8 | 12 | **51** |
+| **2012** | 12 | 8 | 11 | 8 | 12 | **51** |
+| **2013** | 12 | 8 | 11 | 8 | 12 | **51** |
+| **2014** | 12 | 8 | 11 | 8 | 12 | **51** |
+| **2015** | 12 | 8 | 11 | 8 | 8 | **47** |
+| **2016** | 11 | 8 | 11 | 8 | 8 | **46** |
+| **2017** | 8 | 8 | 11 | 8 | 8 | **43** |
+| **2018** | 8 | 8 | 11 | 8 | 8 | **43** |
+| **2019** | 8 | 8 | 11 | 9 | 8 | **44** |
+| **2020** | 10 | 10 | 12 | 10 | 8 | **50** |
+| **2021** | 8 | 8 | 11 | 8 | 8 | **43** |
+| **2022** | 8 | 8 | 11 | 8 | 8 | **43** |
+| **2023** | 8 | 8 | 11 | 8 | 8 | **43** |
+| **2024** | 8 | 8 | 8 | 8 | 8 | **40** |
+| **2025** | 8 | 8 | 8 | 9 | 8 | **41** |
+| **2026** | 6 | 6 | 6 | 6 | 6 | **30** |
+| **Total** | **284** | **214** | **287** | **227** | **299** | **1311** |
 
-## 7. Bank of Japan Post-Exit Event Scaling (21 Events Post-2024-03-18)
+**Last Decision Dates Recorded in Dataset:**
+- **BoE**: `2026-09-17`
+- **BoC**: `2026-09-02`
+- **RBA**: `2026-09-29`
+- **Fed**: `2026-09-16`
+- **ECB**: `2026-09-10`
+
+## 7. Bank of Japan Institutional Reconciliation & Post-Exit Event Scaling
+
+**Reconciliation of BoJ Decision Population:**
+- **Total BoJ Decisions (2000–2026)**: **333** decisions.
+- **Pre-Exit ZIRP Decisions (< 2024-03-19)**: **312** decisions, all flagged `low_sensitivity_zero_lower_bound` with `shock_primary = 0`. (The figure "318" in prior summaries was an inadvertent typo; $333 - 21 = 312$).
+- **Post-Exit Decisions (>= 2024-03-19)**: **21** decisions, flagged `sovereign_yield_proxy`.
+- **Primary Baseline Rule**: `shock_primary == 0` for ALL 333 BoJ decisions. (The wording "primary 21" has been removed; post-exit events are evaluated exclusively under the labeled sensitivity flag `shock_primary_rescaled`).
 
 | Decision Date | Decision | Size (bp) | Proxy Change (bp) | Legacy Std (1.14 bp SD) | Rescaled Std (4.48 bp SD) | Winsorized Std [-4, +4] | Split Tag |
 |---|---|---|---|---|---|---|---|
