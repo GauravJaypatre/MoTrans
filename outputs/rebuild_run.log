@@ -1,0 +1,181 @@
+[2026-10-23T05:02:44.376102+00:00] === STARTING FULL REBUILD FROM data/raw ONLY ===
+[2026-10-23T05:02:44.376189+00:00] Deleting contents of data/final and data/interim...
+[2026-10-23T05:02:44.381239+00:00] Cleared directory: data/final
+[2026-10-23T05:02:44.388729+00:00] Cleared directory: data/interim
+[2026-10-23T05:02:44.388783+00:00] Executing python -m src.pipeline...
+[2026-10-23T05:04:15.820831+00:00] [pipeline:stdout] Zero-volume non-session rows dropped: {'de_stoxx_banks_etf': 3, 'jp_nikkei225': 1, 'jp_topix_banks_etf': 21, 'jp_mothers_etf': 21, 'gb_ftse_smallcap': 41, 'it_ftsemib': 34, 'es_ibex35': 1, 'ea_emu_smallcap_etf': 3, 'br_ibov': 1, 'au_asx200': 4}
+[2026-10-23T05:04:15.820894+00:00] [pipeline:stdout] 38 series, 222587 rows -> data/interim/indices_daily.parquet
+[2026-10-23T05:04:15.820903+00:00] [pipeline:stdout] Fed: 227 rows {'hike': 41, 'cut': 34, 'hold': 152}
+[2026-10-23T05:04:15.820911+00:00] [pipeline:stdout] ECB: 299 rows {'hike': 29, 'cut': 30, 'hold': 240}
+[2026-10-23T05:04:15.820917+00:00] [pipeline:stdout] RBI: 163 rows {'hike': 36, 'cut': 38, 'hold': 89}
+[2026-10-23T05:04:15.820923+00:00] [pipeline:stdout] BoJ: 333 rows {'hike': 8, 'cut': 4, 'hold': 184}
+[2026-10-23T05:04:15.820930+00:00] [pipeline:stdout] Saved 1022 rows to pilot_policy_decisions.csv; 27 issues logged.
+[2026-10-23T05:04:15.820936+00:00] [pipeline:stdout] # Phase B1 pilot summary
+[2026-10-23T05:04:15.820942+00:00] [pipeline:stdout] 
+[2026-10-23T05:04:15.820949+00:00] [pipeline:stdout] ## Equity series vs exchange calendars
+[2026-10-23T05:04:15.820955+00:00] [pipeline:stdout] 
+[2026-10-23T05:04:15.820963+00:00] [pipeline:stdout] `missing_days`: exchange sessions with no observation; `extra_days`: observations on non-session days; `stale_days`: ETF days with zero volume.
+[2026-10-23T05:04:15.820969+00:00] [pipeline:stdout] 
+[2026-10-23T05:04:15.820975+00:00] [pipeline:stdout] | series | country | class | ticker | source | first_date | last_date | obs | missing_days | extra_days | zero_return_days | stale_days | exdiv_days | outliers_gt_10pct |
+[2026-10-23T05:04:15.820982+00:00] [pipeline:stdout] |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+[2026-10-23T05:04:15.820989+00:00] [pipeline:stdout] | de_stoxx_banks_etf | DE | banks | EXX1.DE | yfinance | 2008-01-02 | 2026-10-09 | 4764 | 4 | 0 | 47 | 257 | 39 | 13 |
+[2026-10-23T05:04:15.820995+00:00] [pipeline:stdout] | de_dax_banks | DE | banks_robustness | ^CXPBX | yfinance | 2013-03-05 | 2026-10-09 | 3445 | 4 | 0 | 7 | 0 | 0 | 8 |
+[2026-10-23T05:04:15.821001+00:00] [pipeline:stdout] | de_dax | DE | broad | ^GDAXI | yfinance | 2000-01-03 | 2026-10-09 | 6799 | 4 | 0 | 0 | 0 | 0 | 4 |
+[2026-10-23T05:04:15.821007+00:00] [pipeline:stdout] | de_mdax | DE | smallcap | ^MDAXI | yfinance | 2000-01-03 | 2026-10-09 | 6799 | 4 | 0 | 0 | 0 | 0 | 2 |
+[2026-10-23T05:04:15.821013+00:00] [pipeline:stdout] | in_nifty_bank | IN | banks | NIFTY BANK | niftyindices.com | 2000-01-01 | 2026-10-12 | 6659 | 1 | 40 | 0 | 0 | 0 | 7 |
+[2026-10-23T05:04:15.821019+00:00] [pipeline:stdout] | in_nifty50 | IN | broad | NIFTY 50 | niftyindices.com | 2000-01-03 | 2026-10-12 | 6658 | 1 | 39 | 7 | 0 | 0 | 4 |
+[2026-10-23T05:04:15.821025+00:00] [pipeline:stdout] | in_nifty_smallcap100 | IN | smallcap | NIFTY SMALLCAP 100 | niftyindices.com | 2004-01-01 | 2026-10-09 | 5654 | 1 | 35 | 1 | 0 | 0 | 5 |
+[2026-10-23T05:04:15.821031+00:00] [pipeline:stdout] | jp_topix_banks_etf | JP | banks | 1615.T | yfinance | 2008-01-04 | 2026-10-09 | 4585 | 4 | 0 | 594 | 246 | 14 | 10 |
+[2026-10-23T05:04:15.821037+00:00] [pipeline:stdout] | jp_nikkei225 | JP | broad | ^N225 | yfinance | 2000-01-04 | 2026-10-09 | 6555 | 3 | 0 | 0 | 0 | 0 | 6 |
+[2026-10-23T05:04:15.821043+00:00] [pipeline:stdout] | jp_mothers_etf | JP | smallcap | 1563.T | yfinance | 2011-11-25 | 2026-10-09 | 3635 | 1 | 0 | 92 | 3 | 8 | 17 |
+[2026-10-23T05:04:15.821048+00:00] [pipeline:stdout] | us_bkx | US | banks | ^BKX | yfinance | 2000-01-03 | 2026-10-09 | 6731 | 2 | 0 | 26 | 0 | 0 | 42 |
+[2026-10-23T05:04:15.821054+00:00] [pipeline:stdout] | us_sp500 | US | broad | ^GSPC | yfinance | 2000-01-03 | 2026-10-09 | 6733 | 0 | 0 | 3 | 0 | 0 | 3 |
+[2026-10-23T05:04:15.821110+00:00] [pipeline:stdout] | us_rut | US | smallcap | ^RUT | yfinance | 2000-01-03 | 2026-10-09 | 6733 | 0 | 0 | 5 | 0 | 0 | 4 |
+[2026-10-23T05:04:15.821120+00:00] [pipeline:stdout] 
+[2026-10-23T05:04:15.821126+00:00] [pipeline:stdout] ## Policy decisions by regime and event type
+[2026-10-23T05:04:15.821132+00:00] [pipeline:stdout] 
+[2026-10-23T05:04:15.821138+00:00] [pipeline:stdout] | regime | event_type | cut | hike | hold | unclassified |
+[2026-10-23T05:04:15.821143+00:00] [pipeline:stdout] |---|---|---|---|---|---|
+[2026-10-23T05:04:15.821149+00:00] [pipeline:stdout] | BoJ | scheduled_meeting | 4 | 8 | 184 | 137 |
+[2026-10-23T05:04:15.826017+00:00] [pipeline:stdout] | ECB | scheduled_meeting | 30 | 29 | 240 | 0 |
+[2026-10-23T05:04:15.826081+00:00] [pipeline:stdout] | Fed | scheduled_meeting | 27 | 41 | 146 | 0 |
+[2026-10-23T05:04:15.826115+00:00] [pipeline:stdout] | Fed | unscheduled_meeting | 7 | 0 | 6 | 0 |
+[2026-10-23T05:04:15.826187+00:00] [pipeline:stdout] | RBI | scheduled_meeting | 22 | 26 | 85 | 0 |
+[2026-10-23T05:04:15.826206+00:00] [pipeline:stdout] | RBI | unscheduled_meeting | 1 | 2 | 4 | 0 |
+[2026-10-23T05:04:15.826212+00:00] [pipeline:stdout] | RBI | unscheduled_rate_change | 15 | 8 | 0 | 0 |
+[2026-10-23T05:04:15.826219+00:00] [pipeline:stdout] 
+[2026-10-23T05:04:15.826226+00:00] [pipeline:stdout] ## Announcement-time quality
+[2026-10-23T05:04:15.826232+00:00] [pipeline:stdout] 
+[2026-10-23T05:04:15.826238+00:00] [pipeline:stdout] | regime | approximate | exact | unknown |
+[2026-10-23T05:04:15.826244+00:00] [pipeline:stdout] |---|---|---|---|
+[2026-10-23T05:04:15.826251+00:00] [pipeline:stdout] | BoJ | 330 | 0 | 3 |
+[2026-10-23T05:04:15.826258+00:00] [pipeline:stdout] | ECB | 0 | 299 | 0 |
+[2026-10-23T05:04:15.826264+00:00] [pipeline:stdout] | Fed | 1 | 226 | 0 |
+[2026-10-23T05:04:15.826270+00:00] [pipeline:stdout] | RBI | 0 | 0 | 163 |
+[2026-10-23T05:04:15.826275+00:00] [pipeline:stdout] 
+[2026-10-23T05:04:15.826282+00:00] [pipeline:stdout] 1022 events x 13 series = 11290 rows -> C:\Users\HP\OneDrive\المستندات\Projects\MoTrans\data\interim\pilot_events.parquet
+[2026-10-23T05:04:15.826298+00:00] [pipeline:stdout] phase_b_hand_check.xlsx already holds reviewer sign-off; it and the .md copy are not overwritten (delete or rename the workbook to regenerate blank sheets).
+[2026-10-23T05:04:15.826306+00:00] [pipeline:stdout] Hand-check sheet: 10 events, 40 rows
+[2026-10-23T05:04:15.826312+00:00] [pipeline:stdout] BoE: 284 rows {'hike': 27, 'cut': 28, 'hold': 229}
+[2026-10-23T05:04:15.826318+00:00] [pipeline:stdout] PBoC: 40 rows {'hike': 14, 'cut': 26, 'hold': 0}
+[2026-10-23T05:04:15.826323+00:00] [pipeline:stdout] CBR: 108 rows {'hike': 35, 'cut': 73, 'hold': 0}
+[2026-10-23T05:04:15.826329+00:00] [pipeline:stdout] BoC: 214 rows {'hike': 36, 'cut': 39, 'hold': 139}
+[2026-10-23T05:04:15.826335+00:00] [pipeline:stdout] BCB: 238 rows {'hike': 66, 'cut': 84, 'hold': 88}
+[2026-10-23T05:04:15.826340+00:00] [pipeline:stdout] Banxico: 238 rows {'hike': 33, 'cut': 38, 'hold': 89}
+[2026-10-23T05:04:15.826346+00:00] [pipeline:stdout] RBA: 287 rows {'hike': 39, 'cut': 33, 'hold': 215}
+[2026-10-23T05:04:15.826351+00:00] [pipeline:stdout] BoK: 60 rows {'hike': 30, 'cut': 30, 'hold': 0}
+[2026-10-23T05:04:15.826357+00:00] [pipeline:stdout] Saved 1469 rows to policy_decisions_more.csv; 14 issues logged.
+[2026-10-23T05:04:15.826364+00:00] [pipeline:stdout]                                min         max   size
+[2026-10-23T05:04:15.826369+00:00] [pipeline:stdout] country variable                                     
+[2026-10-23T05:04:15.826375+00:00] [pipeline:stdout] AU      cpi             1999-01-01  2026-06-01    330
+[2026-10-23T05:04:15.826381+00:00] [pipeline:stdout]         fx_lcu_per_usd  1999-01-04  2026-10-13   7113
+[2026-10-23T05:04:15.826386+00:00] [pipeline:stdout]         policy_rate     1999-01-04  2026-09-24   7022
+[2026-10-23T05:04:15.826391+00:00] [pipeline:stdout]         yield_2y        1999-01-04  2026-10-14   6923
+[2026-10-23T05:04:15.826425+00:00] [pipeline:stdout] BR      cpi             1999-01-01  2026-08-01    332
+[2026-10-23T05:04:15.826434+00:00] [pipeline:stdout]         fx_lcu_per_usd  1999-01-04  2026-10-13   7106
+[2026-10-23T05:04:15.826439+00:00] [pipeline:stdout]         ind_prod        1999-01-01  2024-03-01    303
+[2026-10-23T05:04:15.826445+00:00] [pipeline:stdout]         policy_rate     1999-01-04  2026-10-06  10120
+[2026-10-23T05:04:15.826451+00:00] [pipeline:stdout]         yield_1y        2000-01-03  2019-09-30   4907
+[2026-10-23T05:04:15.826456+00:00] [pipeline:stdout] CA      cpi             1999-01-01  2026-08-01    332
+[2026-10-23T05:04:15.826462+00:00] [pipeline:stdout]         fx_lcu_per_usd  1999-01-04  2026-10-13   7113
+[2026-10-23T05:04:15.826468+00:00] [pipeline:stdout]         ind_prod        1999-01-01  2024-02-01    302
+[2026-10-23T05:04:15.826474+00:00] [pipeline:stdout]         policy_rate     1999-01-04  2026-10-05   7222
+[2026-10-23T05:04:15.826479+00:00] [pipeline:stdout]         yield_2y        2001-01-02  2026-10-20   6450
+[2026-10-23T05:04:15.826879+00:00] [pipeline:stdout] CN      cpi             1999-01-01  2026-08-01    332
+[2026-10-23T05:04:15.826893+00:00] [pipeline:stdout]         fx_lcu_per_usd  1999-01-04  2026-10-13   7106
+[2026-10-23T05:04:15.826899+00:00] [pipeline:stdout]         policy_rate     1999-01-01  2026-10-06   9868
+[2026-10-23T05:04:15.826904+00:00] [pipeline:stdout]         yield_2y        2002-01-04  2026-10-21   6193
+[2026-10-23T05:04:15.826910+00:00] [pipeline:stdout] DE      cpi             1999-01-01  2026-08-01    332
+[2026-10-23T05:04:15.826915+00:00] [pipeline:stdout]         fx_lcu_per_usd  1999-01-04  2026-10-13   7113
+[2026-10-23T05:04:15.826921+00:00] [pipeline:stdout]         ind_prod        1999-01-01  2024-03-01    303
+[2026-10-23T05:04:15.826926+00:00] [pipeline:stdout]         policy_rate     1999-01-01  2026-10-13  10116
+[2026-10-23T05:04:15.826932+00:00] [pipeline:stdout]         yield_1y        1999-01-04  2026-10-21   7063
+[2026-10-23T05:04:15.826937+00:00] [pipeline:stdout] EA      cpi             1999-01-01  2026-08-01    332
+[2026-10-23T05:04:15.826943+00:00] [pipeline:stdout]         fx_lcu_per_usd  1999-01-04  2026-10-13   7113
+[2026-10-23T05:04:15.826948+00:00] [pipeline:stdout]         ind_prod        1999-01-01  2024-03-01    303
+[2026-10-23T05:04:15.826954+00:00] [pipeline:stdout]         policy_rate     1999-01-01  2026-10-13  10116
+[2026-10-23T05:04:15.826959+00:00] [pipeline:stdout]         yield_1y        2004-09-06  2026-10-20   5656
+[2026-10-23T05:04:15.826965+00:00] [pipeline:stdout] ES      cpi             1999-01-01  2026-08-01    332
+[2026-10-23T05:04:15.826970+00:00] [pipeline:stdout]         fx_lcu_per_usd  1999-01-04  2026-10-13   7113
+[2026-10-23T05:04:15.826976+00:00] [pipeline:stdout]         ind_prod        1999-01-01  2023-12-01    300
+[2026-10-23T05:04:15.826981+00:00] [pipeline:stdout]         policy_rate     1999-01-01  2026-10-13  10116
+[2026-10-23T05:04:15.826987+00:00] [pipeline:stdout]         yield_1y        2004-09-06  2026-10-20   5656
+[2026-10-23T05:04:15.826992+00:00] [pipeline:stdout] FR      cpi             1999-01-01  2026-08-01    332
+[2026-10-23T05:04:15.826998+00:00] [pipeline:stdout]         fx_lcu_per_usd  1999-01-04  2026-10-13   7113
+[2026-10-23T05:04:15.827003+00:00] [pipeline:stdout]         ind_prod        1999-01-01  2024-03-01    303
+[2026-10-23T05:04:15.827009+00:00] [pipeline:stdout]         policy_rate     1999-01-01  2026-10-13  10116
+[2026-10-23T05:04:15.827015+00:00] [pipeline:stdout]         yield_1y        2004-09-06  2026-10-20   5656
+[2026-10-23T05:04:15.827021+00:00] [pipeline:stdout] GB      cpi             1999-01-01  2026-08-01    332
+[2026-10-23T05:04:15.827026+00:00] [pipeline:stdout]         fx_lcu_per_usd  1999-01-04  2026-10-13   7113
+[2026-10-23T05:04:15.827032+00:00] [pipeline:stdout]         ind_prod        1999-01-01  2024-03-01    303
+[2026-10-23T05:04:15.827038+00:00] [pipeline:stdout]         policy_rate     1999-01-04  2026-10-05   7019
+[2026-10-23T05:04:15.827070+00:00] [pipeline:stdout]         yield_1y        1999-01-04  2026-09-30   7010
+[2026-10-23T05:04:15.827077+00:00] [pipeline:stdout] IN      cpi             1999-01-01  2026-07-01    331
+[2026-10-23T05:04:15.827083+00:00] [pipeline:stdout]         fx_lcu_per_usd  1999-01-04  2026-10-13   7106
+[2026-10-23T05:04:15.827088+00:00] [pipeline:stdout]         ind_prod        1999-01-01  2023-01-01    289
+[2026-10-23T05:04:15.827094+00:00] [pipeline:stdout]         policy_rate     1999-01-01  2026-07-23   7632
+[2026-10-23T05:04:15.827099+00:00] [pipeline:stdout] IT      cpi             1999-01-01  2026-08-01    332
+[2026-10-23T05:04:15.827105+00:00] [pipeline:stdout]         fx_lcu_per_usd  1999-01-04  2026-10-13   7113
+[2026-10-23T05:04:15.827110+00:00] [pipeline:stdout]         ind_prod        1999-01-01  2024-03-01    303
+[2026-10-23T05:04:15.827125+00:00] [pipeline:stdout]         policy_rate     1999-01-01  2026-10-13  10116
+[2026-10-23T05:04:15.827131+00:00] [pipeline:stdout]         yield_1y        2004-09-06  2026-10-20   5656
+[2026-10-23T05:04:15.827136+00:00] [pipeline:stdout] JP      cpi             1999-01-01  2026-07-01    331
+[2026-10-23T05:04:15.827142+00:00] [pipeline:stdout]         fx_lcu_per_usd  1999-01-04  2026-10-13   7113
+[2026-10-23T05:04:15.827147+00:00] [pipeline:stdout]         ind_prod        1999-01-01  2024-03-01    303
+[2026-10-23T05:04:15.827153+00:00] [pipeline:stdout]         policy_rate     1999-01-01  2026-10-13   5546
+[2026-10-23T05:04:15.827159+00:00] [pipeline:stdout]         yield_1y        1999-01-04  2026-10-21   6811
+[2026-10-23T05:04:15.827164+00:00] [pipeline:stdout] KR      cpi             1999-01-01  2026-07-01    331
+[2026-10-23T05:04:15.827169+00:00] [pipeline:stdout]         fx_lcu_per_usd  1999-01-04  2026-10-13   7113
+[2026-10-23T05:04:15.827175+00:00] [pipeline:stdout]         ind_prod        1999-01-01  2024-03-01    303
+[2026-10-23T05:04:15.827180+00:00] [pipeline:stdout]         policy_rate     1999-05-06  2026-08-28   6815
+[2026-10-23T05:04:15.827186+00:00] [pipeline:stdout] MX      cpi             1999-01-01  2026-08-01    332
+[2026-10-23T05:04:15.827201+00:00] [pipeline:stdout]         fx_lcu_per_usd  1999-01-04  2026-10-13   7113
+[2026-10-23T05:04:15.827207+00:00] [pipeline:stdout]         ind_prod        1999-01-01  2018-02-01    230
+[2026-10-23T05:04:15.827213+00:00] [pipeline:stdout]         policy_rate     1999-01-04  2026-10-06   9020
+[2026-10-23T05:04:15.827219+00:00] [pipeline:stdout] RU      cpi             2002-01-01  2026-08-01    296
+[2026-10-23T05:04:15.827224+00:00] [pipeline:stdout]         fx_lcu_per_usd  1999-01-04  2026-10-13   7076
+[2026-10-23T05:04:15.827230+00:00] [pipeline:stdout]         ind_prod        1999-01-01  2021-12-01    276
+[2026-10-23T05:04:15.827235+00:00] [pipeline:stdout]         policy_rate     1999-01-01  2026-10-06   6932
+[2026-10-23T05:04:15.827240+00:00] [pipeline:stdout]         yield_1y        2003-01-04  2026-10-21   6042
+[2026-10-23T05:04:15.827246+00:00] [pipeline:stdout] US      cpi             1999-01-01  2026-08-01    331
+[2026-10-23T05:04:15.827252+00:00] [pipeline:stdout]         ind_prod        1999-01-01  2024-04-01    304
+[2026-10-23T05:04:15.827257+00:00] [pipeline:stdout]         policy_rate     1999-01-01  2026-10-13  10147
+[2026-10-23T05:04:15.827263+00:00] [pipeline:stdout]         vix             1999-01-04  2026-10-20   6994
+[2026-10-23T05:04:15.827269+00:00] [pipeline:stdout]         yield_1y        2000-01-03  2026-10-21   6704
+[2026-10-23T05:04:15.827275+00:00] [pipeline:stdout] 341676 control rows; 5 issues -> data/interim/controls_issues.txt
+[2026-10-23T05:04:15.827281+00:00] [pipeline:stdout] panel_daily: 222,639 rows x 24 columns, 38 series
+[2026-10-23T05:04:15.827287+00:00] [pipeline:stdout] events: 2491 events x 38 series = 82,054 rows -> events.parquet
+[2026-10-23T05:04:15.827293+00:00] [pipeline:stdout] Generated docs/validation_report.md successfully!
+[2026-10-23T05:04:15.827300+00:00] [pipeline:stdout] shock_grade    A    B    C
+[2026-10-23T05:04:15.827307+00:00] [pipeline:stdout] regime                    
+[2026-10-23T05:04:15.827314+00:00] [pipeline:stdout] BCB            0  182   56
+[2026-10-23T05:04:15.827320+00:00] [pipeline:stdout] Banxico        0    0  238
+[2026-10-23T05:04:15.827325+00:00] [pipeline:stdout] BoC            0  210    4
+[2026-10-23T05:04:15.827331+00:00] [pipeline:stdout] BoE            0  284    0
+[2026-10-23T05:04:15.827337+00:00] [pipeline:stdout] BoJ            0  333    0
+[2026-10-23T05:04:15.827342+00:00] [pipeline:stdout] BoK            0    0   60
+[2026-10-23T05:04:15.827348+00:00] [pipeline:stdout] CBR            0  100    8
+[2026-10-23T05:04:15.827354+00:00] [pipeline:stdout] ECB          292    7    0
+[2026-10-23T05:04:15.827360+00:00] [pipeline:stdout] Fed          201   26    0
+[2026-10-23T05:04:15.827717+00:00] [pipeline:stdout] PBoC           0   40    0
+[2026-10-23T05:04:15.827731+00:00] [pipeline:stdout] RBA            0  284    3
+[2026-10-23T05:04:15.827737+00:00] [pipeline:stdout] RBI            0    0  163
+[2026-10-23T05:04:15.827742+00:00] [pipeline:stdout] regime
+[2026-10-23T05:04:15.827751+00:00] [pipeline:stdout] BoJ    333
+[2026-10-23T05:04:15.827757+00:00] [pipeline:stdout] ECB    270
+[2026-10-23T05:04:15.827763+00:00] [pipeline:stdout] Fed    227
+[2026-10-23T05:04:15.827769+00:00] [pipeline:stdout] RBI     90
+[2026-10-23T05:04:15.827775+00:00] [pipeline:stdout] statements: 920; hand-label sample: 181 rows -> docs/hand_label_sample.csv
+[2026-10-23T05:04:15.827788+00:00] Pipeline execution completed successfully.
+[2026-10-23T05:04:15.827795+00:00] Executing python -m src.export_excel to export MoTrans15_v2.xlsx...
+[2026-10-23T05:05:29.122974+00:00] [export:stdout] panel_daily: 222,639 rows x 24 columns
+[2026-10-23T05:05:29.123043+00:00] [export:stdout] policy_decisions: 2,491 rows x 40 columns
+[2026-10-23T05:05:29.123052+00:00] [export:stdout] events: 82,054 rows x 57 columns
+[2026-10-23T05:05:29.123061+00:00] [export:stdout] shocks: 2,491 rows x 37 columns
+[2026-10-23T05:05:29.123067+00:00] [export:stdout] statements: 920 rows x 11 columns
+[2026-10-23T05:05:29.123074+00:00] [export:stdout] controls_long: 341,676 rows x 6 columns
+[2026-10-23T05:05:29.123080+00:00] [export:stdout] hand_label_sample: 181 rows x 15 columns
+[2026-10-23T05:05:29.123086+00:00] [export:stdout] Saved MoTrans15_v2.xlsx (63.1 MB)
+[2026-10-23T05:05:29.123093+00:00] Export to data/final/MoTrans15_v2.xlsx completed successfully.
+[2026-10-23T05:05:29.173306+00:00] Restored original MoTrans15_all_records.xlsx (v1) to data/final/ for diffing.
+[2026-10-23T05:05:29.173350+00:00] === FULL REBUILD FINISHED SUCCESSFULLY ===

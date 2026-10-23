@@ -409,6 +409,34 @@ official page)"`. See ISS-029 for the sourcing plan.
 - **High-Frequency Coverage Verification (Item 6)**:
   - Confirmed actual on-disk dataset max dates: `data/raw/shocks/ecb_ea_mpd_dataset.xlsx` covers through **2025-10-30** (315 meetings), while FRBSF Bauer-Swanson covers through **2023-12-13** (361 meetings). Reconciled prior erroneous claim that EA-MPD ended in 2023.
 
+### DECISION-026: Tier 2 Identification Design Pre-Registration, Raw File Provenance Break, RBA Pre-2008 Timing, and Tenor Standardization
+- **Date Recorded**: 2026-10-23 (Formal pre-registration entry prior to outcome estimation).
+- **Raw File Manifest Integrity and Provenance Break (Item 1)**:
+  - Re-registering hashes of re-downloaded files in `MANIFEST.csv` interrupted byte-for-byte provenance tracking for ~454 raw files.
+  - Audit of the ~454 modified raw files (`outputs/raw_hash_audit.csv`):
+    1. 227 files: Windows CRLF line endings (`\r\n` vs `\n`).
+    2. 201 files: PowerShell redirection UTF-8 BOM (`\xef\xbb\xbf`) and CRLF.
+    3. 23 files: Live upstream API/HTML re-downloads containing dynamic timestamps/markup.
+    4. 3 files: Upstream history updates (`fed_openmarket_target_rates.html`, `fed_fomchistorical2000.html`).
+  - Empirical verification (`outputs/v1_vs_v2_diff.csv`): Zero divergence on shared price levels (`level_local`), equity returns (`ret_local`), statement text hashes (0 of 920 changed), and policy decision classifications.
+  - Because raw data files are git-ignored to comply with redistribution licenses, earlier on-disk snapshots were unrecoverable from git history. This break in raw file hash tracking is formally recorded in accordance with project governance.
+- **Tier 2 Primary Identification Design (Pre-Registration, Item 9)**:
+  - Tier 2 (`shock_tier == 2`, sovereign yield proxies: BoE, BoC, RBA, CBR, Fed/ECB proxy fallbacks): `shock_primary = 1` is restricted **strictly to decisions with a rate change** (`decision in ("hike", "cut")`).
+  - Tier 2 holds are assigned `shock_secondary = 1` (`shock_primary = 0`), reserving them as secondary sensitivity tests because daily yield moves on hold days lack excess volatility relative to non-meeting noise ($VR \approx 1.0$).
+  - Tier 1 (`shock_tier == 1`, high-frequency OIS for Fed & ECB) remains strictly **unchanged**: both rate changes and holds carry `shock_primary = 1` (493 total decisions: 201 Fed + 292 ECB).
+- **RBA Pre-2008 Timing Synchronization and Unannounced Holds (Item 7)**:
+  - Per official RBA communication policy (Media Release MR-07-22): prior to February 2008, rate changes were announced at 09:30 Sydney time on the day following the Board meeting (`decision_date + 1 day`).
+  - All 20 pre-2008 RBA rate changes (14 hikes, 6 cuts) are assigned `time_quality = "exact"`, `announce_time_local = "09:30"`, and `announce_ts_utc` localized to 09:30 Sydney on the day following the meeting. Reaction returns are measured from Tuesday close to Wednesday close.
+  - All 68 pre-2008 RBA holds are classified as `event_type = "non_announcement_day"`, `time_quality = "unknown"`, `announce_ts_utc = None`, `analysis_ready_timing = 0`, and `shock_primary = 0`.
+- **Tenor Label Standardization for Bank of Canada (Item 6)**:
+  - BoC 2-year sovereign benchmark yield in `controls_long` is renamed from `yield_1y` to `yield_2y` (6,450 rows), ensuring full consistency with AU and CN 2-year tenors and preventing conflation with 1-year yields.
+- **FOMC Calendar Audit (Item 8)**:
+  - 2019: 9 decisions (8 scheduled meetings + 1 unscheduled repo liquidity operation decision on 2019-10-11).
+  - 2025: 9 decisions (8 scheduled meetings + 1 Jackson Hole Strategy framework revision on 2025-08-22).
+  - Fed 2007-06-18: Flagged as misdated from the Fed webmaster URL (`monetary20070618a.htm`). Official FOMC meeting was June 27–28, 2007; statement released June 28, 2007.
+  - Zero duplicates exist within Fed, within ECB, or across any regimes in `policy_decisions.csv`.
+
+
 
 
 

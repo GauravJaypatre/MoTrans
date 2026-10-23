@@ -1,0 +1,11 @@
+sheet,column,v1_row_count,v2_row_count,changed_cells,pct_changed,example_v1,example_v2,explanation
+panel_daily,level_local,222646,222639,9,0.0040%,"[25277.6796875, 353.4400024414062]",[355.2000122070312],Shared rows: 0 diffs; 8 dropped incomplete bars (Oct 12 rule); 1 added bars
+panel_daily,ret_local,222646,222639,9,0.0040%,"[0.00756125306940241, 0.01100989788497183]",[0.003101669130098174],Shared rows: 0 diffs; 8 dropped incomplete bars (Oct 12 rule); 1 added bars
+policy_decisions,decision,1908,2491,725,28.2982%,"[nan, nan]","['hold', 'hold']",725 decision changes
+policy_decisions,size_bp,1908,2491,725,28.2982%,"[nan, nan]","[0.0, 0.0]",725 decision changes
+policy_decisions,new_rate_pct,1908,2491,725,28.2982%,"[nan, nan]","[5.75, 2.0]",725 decision changes
+statements,text_hash,920,920,0,0.0000%,[],[],Identical statement texts and hashes across all English corpus statements
+controls_long,date,328376,341676,13300,3.8926%,"[NaT, NaT]","[Timestamp('1999-01-04 00:00:00'), Timestamp('1999-01-05 00:00:00')]",13300 cell changes
+controls_long,variable,328376,341676,19744,5.7786%,"[nan, nan]","['yield_2y', 'yield_2y']","BoC 2Y yield renamed from yield_1y to yield_2y (6,450 rows)"
+controls_long,value,328376,341676,13301,3.8929%,"[nan, nan]","[4.61, 4.67]",13301 cell changes
+controls_long,available_from,328376,341676,13300,3.8926%,"[NaT, NaT]","[Timestamp('1999-01-04 00:00:00'), Timestamp('1999-01-05 00:00:00')]",13300 cell changes

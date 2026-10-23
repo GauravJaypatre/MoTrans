@@ -4,6 +4,60 @@ All modifications are applied at the pipeline code level (`src/`), never by hand
 output files. The original workbook `data/final/MoTrans15_all_records.xlsx` is untouched.
 The cleaned output is `data/final/MoTrans15_v2.xlsx`.
 
+## [v2.3.0-pg4] — 2026-10-23 Priority Group 4 (Raw Integrity Diff, Full Pipeline Rebuild, Arithmetic Verification, Evidence Offsets, 12 Oct Bars, BoC yield_2y, RBA Pre-2008 Timing, Calendar Audits, and Tier 2 Design)
+
+### Enhancements and Audited Fixes
+1. **Raw Integrity & v1 vs v2 Excel Diff (Item 1)**:
+   - Root causes of hash changes across the ~454 modified raw files documented (`outputs/raw_hash_audit.csv`): Windows CRLF (227 files), PowerShell redirection UTF-8 BOM + CRLF (201 files), live upstream downloads (23 files), and upstream markup/history updates (3 files).
+   - Diffed original `MoTrans15_all_records.xlsx` (v1) against `MoTrans15_v2.xlsx` on all shared columns (`outputs/v1_vs_v2_diff.csv`):
+     - `panel_daily`: Zero diffs on all shared rows for both `level_local` and `ret_local` (9 changed cells total: 8 dropped incomplete intraday bars and 1 added closing bar per Oct 12 cutoff rule).
+     - `policy_decisions`: Zero diffs on decision, size, and rate across all shared decisions (725 cell differences represent newly added decisions from Priority Group 1 / Phase C expansion).
+     - `statements`: **0 changed hashes** (0.00% divergence) across all 920 statement texts.
+     - `controls_long`: 19,744 changes in `variable`, exactly corresponding to renaming 2Y benchmark yields for Canada (6,450 rows), Australia (6,923 rows), and China (6,193 rows) to `yield_2y`, plus 178 newly aligned macro series observations.
+   - Formally documented the break in raw file hash reproducibility in `DECISIONS.md` (DECISION-026) as raw files are git-ignored.
+2. **Full Pipeline Rebuild from data/raw Only (Item 2)**:
+   - Deleted all contents of `data/final` and `data/interim`. Ran end-to-end pipeline (`python -m src.pipeline`) from `data/raw/` alone and exported `MoTrans15_v2.xlsx` (63.1 MB).
+   - Full console output with timestamps saved to `outputs/rebuild_run.log`.
+   - Compared against previous committed `MoTrans15_v2.xlsx` using `pandas.testing.assert_frame_equal(..., atol=1e-5)` per sheet:
+     - `README`: Exactly 1 cell change (export timestamp).
+     - `panel_daily`: 23 of 24 columns identical. The only differing column is `yield_1y` (Canada values changed from 2Y yield to NaN per Item 6).
+     - `statements`: Identical across all 11 columns (`assert_frame_equal` passed).
+     - `hand_label_sample`: Identical across all 15 columns (`assert_frame_equal` passed).
+     - `policy_decisions`, `events`, `shocks`: Added `shock_secondary` column; differences reflect instructed fixes (Item 7 RBA pre-2008 exact timing and Item 9 Tier 2 primary design).
+     - `controls_long`: 5 of 6 columns identical; the only difference is `variable` where Canada's yield changed from `yield_1y` to `yield_2y` (6,450 rows).
+3. **Arithmetic & Automated Documentation (Item 3)**:
+   - Annual index availability table (`docs/scope_options.md` Table 4 and `outputs/annual_index_availability.csv`) updated: mature panel row (2014–2025) strictly verified as **1,016 decisions** and **38,608 rows**; column sums tie exactly to **2,491 / 82,054 / 94,658 / 12,604**.
+   - All tables in `docs/` and CSVs in `outputs/` are generated strictly from code via committed master script `outputs/generate_all_tables.py`. All hand-typed prose tables removed.
+   - Clarified that earlier splits (170/11/20, 242/23/27) and earlier variance ratios (e.g. BoC holds 1.01) differed from data because they were not code-generated; they were transcription errors in previous text drafts.
+4. **Timing Evidence Sentences & Byte Offsets (Item 4)**:
+   - Verified that `data/raw/timing_sources/` contains all 4 official pages matching bitwise SHA-256 hashes in `MANIFEST.csv`.
+   - Extracted exact sentences and byte offsets from saved raw files:
+     - `rba_mr_07_22.html` (offset 1,483): *"Commencing February 2008, the monetary policy decision will be announced at 2.30 pm on the day of the meeting instead of 9.30 am the day after the meeting"*
+     - `boe_mpc_dates.html` (offset 1,148): *"Dates for Monetary Policy Committee (MPC) announcements on Bank Rate and publication of MPC meeting minutes and the quarterly Monetary Policy Report."*
+     - `boc_fad_dates.html` (offset 121,183): *"See Blackout Guidelines for communications around fixed announcement dates."*
+     - `cbr_schedule.html` (offset 4,825): Sourced URL returned an HTTP 404 response (*"Sorry, the page you were looking for has either moved or is no longer available."*).
+   - Documented exact search queries used for the HF survey (`"\"EA-MPD\" \"Altavilla\" update release 2024 OR 2025 OR 2026"`) and removed `gragusa.org` from verified high-frequency dataset sources.
+5. **12 Oct Bars & Cutoff Justification (Item 5)**:
+   - Documented retrieval timestamps for all 8 index files retrieved on `2026-10-12` between 18:17:08Z and 18:17:12Z (14:17 ET, during active US/EU market trading). Under DECISION-020 (`cutoff = min(today, retrieval_date)`), bars dated `2026-10-12` were dropped because they were incomplete intraday snapshots.
+   - For `ea_emu_smallcap_etf_daily.csv`, retrieval occurred on `2026-10-13T14:12:57Z`, allowing the complete `2026-10-12` closing bar (1 added bar).
+6. **BoC Tenor Nomenclature Standardized to yield_2y (Item 6)**:
+   - Renamed Canada's 2-year sovereign benchmark yield in `controls_long` from `yield_1y` to `yield_2y` (6,450 rows), updated all references across `collect_controls.py`, `build_shocks.py`, `vr_and_bootstrap.py`, and test assertions.
+7. **RBA Pre-2008 Timing & Unannounced Holds (Item 7)**:
+   - Implemented MR-07-22 rule: 20 pre-2008 rate changes set to `time_quality = "exact"`, announced at 09:30 Sydney on the day after the meeting (`decision_date + 1 day`), with `announce_ts_utc` localized accordingly.
+   - 68 pre-2008 holds classified as `event_type = "non_announcement_day"`, `time_quality = "unknown"`, `announce_ts_utc = None`, and `shock_primary = 0`.
+   - Effect on effective sample: RBA primary training sample increased from 29 to 49 decisions (all 20 rate changes now analysis-ready with exact timing).
+8. **Fed Calendar Audit & Duplicates Check (Item 8)**:
+   - Fed 2019: 9 decisions (8 scheduled meetings + 1 unscheduled repo liquidity meeting on 2019-10-11).
+   - Fed 2025: 9 decisions (8 scheduled meetings + 1 Jackson Hole Strategy framework release on 2025-08-22).
+   - Fed 2007-06-18: Flagged as misdated from the Fed webmaster URL (`monetary20070618a.htm`). Official FOMC meeting was June 27–28, 2007; statement released June 28, 2007.
+   - Duplicates check: Exactly zero duplicate decision dates within Fed, within ECB, or across any regimes.
+9. **Tier 2 Identification Design Pre-Registration (Item 9)**:
+   - Formal pre-registration entry recorded in `DECISIONS.md` (DECISION-026).
+   - Tier 2 (`yield_proxy`): `shock_primary = 1` restricted strictly to decisions with a rate change (`hike` or `cut`).
+   - Tier 2 holds become `shock_secondary = 1` (`shock_primary = 0`).
+   - Tier 1 (`hf_ois` for Fed and ECB) remains strictly unchanged (493 total decisions: 201 Fed + 292 ECB).
+   - Cross-tabulation saved to `outputs/effective_sample.csv`.
+
 ## [v2.2.0-pg3] — 2026-10-22  Priority Group 3 (Rebuild Verification, Tiers, Overlap, Completeness, and Timing Evidence)
 
 ### Corrective Record & Commit Verification

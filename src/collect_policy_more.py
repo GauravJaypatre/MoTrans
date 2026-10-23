@@ -186,6 +186,27 @@ def harvest(regime: str, issues: list[str]) -> list[dict]:
         by_meeting, unmatched = attribute_changes(sorted(meetings), changes, max_lag_days=5)
         for d in sorted(meetings):
             ch = by_meeting.get(d, [])
+            if regime == "RBA" and d < dt.date(2008, 2, 1):
+                size = round((ch[-1][2] - ch[0][1]) * 100) if ch else 0
+                dec = classify(size)
+                if dec in ("hike", "cut"):
+                    ann_date = d + dt.timedelta(days=1)
+                    local, utc = localize(regime, ann_date, "09:30")
+                    quality = "exact"
+                    tsrc = "RBA MR-07-22 pre-2008 convention: rate changes announced 09:30 Sydney day after meeting"
+                    rows.append(row(regime, d, event_type="scheduled_meeting", scheduled=True, decision=dec,
+                                    size_bp=size, new_rate_pct=ch[-1][2] if ch else rate.asof(d), rate_basis=basis,
+                                    announce_time_local=local, announce_ts_utc=utc,
+                                    time_quality=quality, time_source=tsrc,
+                                    date_source=meetings[d], source_url=url))
+                else:
+                    rows.append(row(regime, d, event_type="non_announcement_day", scheduled=True, decision="hold",
+                                    size_bp=0, new_rate_pct=rate.asof(d), rate_basis=basis,
+                                    announce_time_local=None, announce_ts_utc=None,
+                                    time_quality="unknown",
+                                    time_source="RBA MR-07-22 pre-2008 convention: unannounced hold",
+                                    date_source=meetings[d], source_url=url))
+                continue
             hhmm, quality, tsrc = regime_announcement_time(regime, d, True, meetings[d])
             local, utc = localize(regime, d, hhmm)
             if d < target_from:

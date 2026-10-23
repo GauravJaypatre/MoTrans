@@ -112,34 +112,23 @@ The total row count of `events.parquet` is **82,054 rows**, rather than the naiv
 The exact difference of **12,604 rows** is fully explained by the staggered historical inception dates of the 38 underlying equity indices and sector ETFs. Per Non-Negotiable Rule 1, rows are never backfilled with interpolated or fabricated prices prior to an index's official base date.
 
 #### Table 4: Annual Policy Decisions, Active Indices, and Event Rows
-| Year | Active Indices | Policy Decisions | Actual `events.parquet` Rows | Theoretical Max ($N \times 38$) | Difference (Missing Pre-Inception) |
+| Period | Active Indices | Policy Decisions | Actual `events.parquet` Rows | Theoretical Max ($N 	imes 38$) | Difference (Missing Pre-Inception) |
 |:---:|:---:|:---:|:---:|:---:|:---:|
 | **2000** | 21 | 105 | 2,045 | 3,990 | 1,945 |
 | **2001** | 22 | 111 | 2,334 | 4,218 | 1,884 |
 | **2002** | 23 | 92 | 2,115 | 3,496 | 1,381 |
 | **2003** | 23 | 101 | 2,323 | 3,838 | 1,515 |
-| **2004** | 29 | 101 | 2,491 | 3,838 | 1,347 |
+| **2004** | 25 | 101 | 2,491 | 3,838 | 1,347 |
 | **2005** | 30 | 96 | 2,819 | 3,648 | 829 |
 | **2006** | 30 | 97 | 2,910 | 3,686 | 776 |
 | **2007** | 31 | 102 | 3,155 | 3,876 | 721 |
-| **2008** | 32 | 118 | 3,894 | 4,484 | 590 |
+| **2008** | 33 | 118 | 3,894 | 4,484 | 590 |
 | **2009** | 34 | 103 | 3,408 | 3,914 | 506 |
 | **2010** | 34 | 103 | 3,502 | 3,914 | 412 |
 | **2011** | 35 | 99 | 3,377 | 3,762 | 385 |
 | **2012** | 36 | 96 | 3,362 | 3,648 | 286 |
 | **2013** | 38 | 91 | 3,431 | 3,458 | 27 |
-| **2014** | 38 | 96 | 3,648 | 3,648 | 0 |
-| **2015** | 38 | 97 | 3,686 | 3,686 | 0 |
-| **2016** | 38 | 80 | 3,040 | 3,040 | 0 |
-| **2017** | 38 | 80 | 3,040 | 3,040 | 0 |
-| **2018** | 38 | 78 | 2,964 | 2,964 | 0 |
-| **2019** | 38 | 83 | 3,154 | 3,154 | 0 |
-| **2020** | 38 | 90 | 3,420 | 3,420 | 0 |
-| **2021** | 38 | 83 | 3,154 | 3,154 | 0 |
-| **2022** | 38 | 91 | 3,458 | 3,458 | 0 |
-| **2023** | 38 | 81 | 3,078 | 3,078 | 0 |
-| **2024** | 38 | 78 | 2,964 | 2,964 | 0 |
-| **2025** | 38 | 79 | 3,002 | 3,002 | 0 |
+| **2014-2025** | 38 | 1,016 | 38,608 | 38,608 | 0 |
 | **2026** | 38 | 60 | 2,280 | 2,280 | 0 |
 | **Total** | — | **2,491** | **82,054** | **94,658** | **12,604** |
 

@@ -50,12 +50,12 @@ OFFICIAL_SAMPLES = {
         ("2024-06-05", "09:45", "exact", "cut"),
     ],
     "RBA": [
-        # Pre-Feb 2008: morning after announcement (changes) or unannounced (holds) -> time_quality == "unknown"
-        ("2000-02-02", None, "unknown", "hike"),
+        # Pre-Feb 2008: morning after announcement (changes, 09:30 exact) or unannounced (holds, unknown)
+        ("2000-02-02", "09:30", "exact", "hike"),
         ("2000-03-07", None, "unknown", "hold"),
-        ("2001-02-07", None, "unknown", "cut"),
-        ("2002-05-08", None, "unknown", "hike"),
-        ("2003-11-05", None, "unknown", "hike"),
+        ("2001-02-07", "09:30", "exact", "cut"),
+        ("2002-05-08", "09:30", "exact", "hike"),
+        ("2003-11-05", "09:30", "exact", "hike"),
         ("2004-02-03", None, "unknown", "hold"),
         # Commencing Feb 2008 (MR-07-22): 14:30 Sydney time -> time_quality == "exact"
         ("2008-02-05", "14:30", "exact", "hike"),
@@ -128,8 +128,16 @@ class TestOfficialTimingSamples:
     def test_rba_pre_2008_never_claims_1430(self, policy_df):
         """RBA 14:30 was established in Feb 2008 (MR-07-22); pre-2008 must never claim 14:30."""
         rba_pre = policy_df[(policy_df["regime"] == "RBA") & (policy_df["decision_date"] < "2008-02-01")]
-        assert (rba_pre["time_quality"] == "unknown").all()
-        assert rba_pre["announce_time_local"].isna().all()
+        assert (rba_pre["announce_time_local"] != "14:30").all()
+        # Holds before Feb 2008 were unannounced
+        holds = rba_pre[rba_pre["decision"] == "hold"]
+        assert (holds["event_type"] == "non_announcement_day").all()
+        assert (holds["time_quality"] == "unknown").all()
+        assert holds["announce_time_local"].isna().all()
+        # Rate changes before Feb 2008 were announced at 09:30 the following day (MR-07-22)
+        changes = rba_pre[rba_pre["decision"].isin(["hike", "cut"])]
+        assert (changes["time_quality"] == "exact").all()
+        assert (changes["announce_time_local"] == "09:30").all()
 
     def test_rba_2008_onward_is_1430_exact(self, policy_df):
         """RBA decisions from Feb 2008 onward must be exact 14:30 Sydney time."""

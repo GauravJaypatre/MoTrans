@@ -116,10 +116,21 @@ class TestPriorityGroup2Shocks:
         pboc = shocks_df[shocks_df["regime"] == "PBoC"]
         assert (pboc["shock_primary"] == 0).all()
 
-        # Clean Fed and ECB must have shock_primary == shock_usable
-        for reg in ["Fed", "ECB"]:
-            sub = shocks_df[shocks_df["regime"] == reg]
-            assert (sub["shock_primary"] == sub["shock_usable"]).all()
+        # Tier 1 Fed and ECB must have shock_primary == shock_usable (Tier 1 unchanged per Item 9)
+        tier1 = shocks_df[shocks_df["shock_tier"] == 1]
+        assert (tier1["shock_primary"] == tier1["shock_usable"]).all()
+        assert (tier1["shock_secondary"] == 0).all()
+
+        # Tier 2 holds become shock_secondary == 1 and shock_primary == 0 (Item 9)
+        tier2 = shocks_df[shocks_df["shock_tier"] == 2]
+        clean_t2_regs = ["BoE", "BoC", "RBA", "Fed", "ECB"]
+        t2_clean = tier2[tier2["regime"].isin(clean_t2_regs)]
+        t2_holds = t2_clean[(t2_clean["decision"] == "hold") & (t2_clean["shock_quality_flag"] != "rba_pre2008_unannounced_hold")]
+        assert (t2_holds["shock_primary"] == 0).all()
+        assert (t2_holds["shock_secondary"] == 1).all()
+        t2_actions = t2_clean[t2_clean["decision"].isin(["hike", "cut"])]
+        assert (t2_actions["shock_primary"] == 1).all()
+        assert (t2_actions["shock_secondary"] == 0).all()
 
         # RBA pre-2008 unannounced holds must have shock_primary == 0 and quality flag
         rba_pre_holds = shocks_df[(shocks_df["regime"] == "RBA") & (shocks_df["decision_date"].astype(str) < "2008-02-01") & (shocks_df["decision"] == "hold")]
@@ -159,12 +170,14 @@ class TestPriorityGroup2Shocks:
             assert tenors[reg] == ["1Y"]
 
     def test_controls_yield_2y(self):
-        """AU and CN yields in controls_long must be labeled yield_2y, not yield_1y."""
+        """AU, CN, and CA yields in controls_long must be labeled yield_2y, not yield_1y."""
         controls = pd.read_parquet(INTERIM / "controls_long.parquet")
         assert (controls[controls["country"] == "AU"]["variable"] == "yield_2y").any()
         assert not (controls[controls["country"] == "AU"]["variable"] == "yield_1y").any()
         assert (controls[controls["country"] == "CN"]["variable"] == "yield_2y").any()
         assert not (controls[controls["country"] == "CN"]["variable"] == "yield_1y").any()
+        assert (controls[controls["country"] == "CA"]["variable"] == "yield_2y").any()
+        assert not (controls[controls["country"] == "CA"]["variable"] == "yield_1y").any()
 
     def test_shock_tier_definition(self, shocks_df):
         """shock_tier must be 1 for hf_ois (Grade A), 2 for yield_proxy (Grade B), and null for Grade C."""

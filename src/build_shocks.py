@@ -182,7 +182,22 @@ def build(policy: pd.DataFrame, controls: pd.DataFrame) -> pd.DataFrame:
 
     # Baseline pre-registered default: shock_primary = 0 for all BoJ, CBR break, PBoC, and pre-2008 unannounced RBA holds
     is_primary_excluded = is_boj_all | is_cbr_break | is_china | is_rba_pre2008_hold
-    df["shock_primary"] = ((df["shock_usable"] == 1) & (~is_primary_excluded)).astype(int)
+
+    # Tier 2 Design (DECISION-023 pre-registration):
+    # Tier 1: shock_primary = 1 for all clean decisions (both rate changes and holds). shock_secondary = 0.
+    # Tier 2: shock_primary = 1 ONLY for decisions with a rate change (hike/cut). Tier 2 holds become shock_secondary = 1.
+    is_rate_change = df["decision"].isin(["hike", "cut"])
+    is_tier1 = (df["shock_tier"] == 1)
+    is_tier2 = (df["shock_tier"] == 2)
+
+    df["shock_primary"] = np.where(
+        (df["shock_usable"] == 1) & (~is_primary_excluded) & (is_tier1 | (is_tier2 & is_rate_change)),
+        1, 0
+    )
+    df["shock_secondary"] = np.where(
+        (df["shock_usable"] == 1) & (~is_primary_excluded) & (is_tier2 & (df["decision"] == "hold")),
+        1, 0
+    )
 
     # Labeled sensitivity analysis: shock_primary_rescaled includes 21 post-exit BoJ events
     df["shock_primary_rescaled"] = ((df["shock_usable"] == 1) & (~(is_boj_zirp | is_cbr_break | is_china | is_rba_pre2008_hold))).astype(int)
@@ -320,32 +335,33 @@ def main() -> pd.DataFrame:
     overlap_cols = [f"overlap_{w}d" for w in (1, 3, 5, 20, 60)] + [f"overlap_count_{w}d" for w in (1, 3, 5, 20, 60)]
     cols = ["event_id", "regime", "decision_date", "announce_ts_utc", "decision", "size_bp", "event_type",
             "shock_raw", "shock_std", "shock_std_peer_scale", "shock_std_legacy_sd", "shock_std_w", "shock_source",
-            "shock_grade", "shock_measure_type", "shock_tier", "shock_usable", "shock_primary", "shock_primary_rescaled",
-            "shock_proxy_tenor", "shock_quality_flag", "shock_hf_raw", "shock_hf_std", "shock_proxy_raw",
-            "shock_proxy_std", "split_tag"] + overlap_cols
+            "shock_grade", "shock_measure_type", "shock_tier", "shock_usable", "shock_primary", "shock_secondary",
+            "shock_primary_rescaled", "shock_proxy_tenor", "shock_quality_flag", "shock_hf_raw", "shock_hf_std",
+            "shock_proxy_raw", "shock_proxy_std", "split_tag"] + overlap_cols
     shocks[cols].to_parquet(FINAL / "shocks.parquet", index=False)
 
     drop_ev_cols = ["shock_std", "shock_std_peer_scale", "shock_std_legacy_sd", "shock_std_w", "shock_source",
-                    "shock_grade", "shock_measure_type", "shock_tier", "shock_usable", "shock_primary", "shock_primary_rescaled",
-                    "shock_proxy_tenor", "shock_quality_flag"] + overlap_cols
+                    "shock_grade", "shock_measure_type", "shock_tier", "shock_usable", "shock_primary", "shock_secondary",
+                    "shock_primary_rescaled", "shock_proxy_tenor", "shock_quality_flag"] + overlap_cols
     events = pd.read_parquet(FINAL / "events.parquet").drop(
         columns=drop_ev_cols,
         errors="ignore"
     )
     merge_ev_cols = ["event_id", "shock_std", "shock_std_peer_scale", "shock_std_legacy_sd", "shock_std_w",
                      "shock_source", "shock_grade", "shock_measure_type", "shock_tier", "shock_usable", "shock_primary",
-                     "shock_primary_rescaled", "shock_proxy_tenor", "shock_quality_flag"] + overlap_cols
+                     "shock_secondary", "shock_primary_rescaled", "shock_proxy_tenor", "shock_quality_flag"] + overlap_cols
     events = events.merge(
         shocks[merge_ev_cols],
         on="event_id", how="left"
     )
     events.to_parquet(FINAL / "events.parquet", index=False)
 
-    drop_pol_cols = ["shock_tier", "shock_usable", "shock_primary", "shock_primary_rescaled", "shock_grade",
-                     "shock_measure_type", "shock_quality_flag", "analysis_ready_timing"] + overlap_cols
+    drop_pol_cols = ["shock_tier", "shock_usable", "shock_primary", "shock_secondary", "shock_primary_rescaled",
+                     "shock_grade", "shock_measure_type", "shock_quality_flag", "analysis_ready_timing"] + overlap_cols
     policy = policy.drop(columns=drop_pol_cols, errors="ignore")
-    shocks_subset = shocks[["event_id", "shock_tier", "shock_usable", "shock_primary", "shock_primary_rescaled",
-                            "shock_grade", "shock_measure_type", "shock_quality_flag"] + overlap_cols].drop_duplicates()
+    shocks_subset = shocks[["event_id", "shock_tier", "shock_usable", "shock_primary", "shock_secondary",
+                            "shock_primary_rescaled", "shock_grade", "shock_measure_type",
+                            "shock_quality_flag"] + overlap_cols].drop_duplicates()
     if "event_id" not in policy.columns:
         policy["event_id"] = policy["regime"].str.lower() + "_" + policy["decision_date"].astype(str)
     policy = policy.merge(shocks_subset, on="event_id", how="left")

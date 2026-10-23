@@ -48,7 +48,7 @@ controls = pd.read_parquet(INTERIM / "controls_long.parquet")
 
 regime_yield_map = {
     "BoE": ("GB", "yield_1y", "1Y", "1Y Gilt spot curve (Bank of England)"),
-    "BoC": ("CA", "yield_1y", "2Y", "2Y GoC benchmark bond yield (Bank of Canada)"),
+    "BoC": ("CA", "yield_2y", "2Y", "2Y GoC benchmark bond yield (Bank of Canada)"),
     "RBA": ("AU", "yield_2y", "2Y", "2Y ACGB benchmark yield (RBA Table F2)"),
     "CBR": ("RU", "yield_1y", "1Y", "1Y OFZ zero-coupon curve (Bank of Russia)"),
     "BoJ": ("JP", "yield_1y", "1Y", "1Y JGB Ministry of Finance yield"),

@@ -25,17 +25,17 @@ Grades: A = public high-frequency surprise; B = 1-year (or 2-year benchmark) yie
 
 | regime | usable train | primary train | usable crisis | primary crisis | usable blind | primary blind | total usable | total primary | primary blind status |
 |---|---|---|---|---|---|---|---|---|---|
-| BCB | 182 | 182 | 0 | 0 | 0 | 0 | 182 | 182 | **FLAGGED (< 20)** |
+| BCB | 182 | 112 | 0 | 0 | 0 | 0 | 182 | 112 | **FLAGGED (< 20)** |
 | Banxico | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
-| BoC | 154 | 154 | 18 | 18 | 38 | 38 | 210 | 210 | Sufficient (>= 20) |
-| BoE | 228 | 228 | 18 | 18 | 38 | 38 | 284 | 284 | Sufficient (>= 20) |
+| BoC | 154 | 50 | 18 | 3 | 38 | 19 | 210 | 72 | **FLAGGED (< 20)** |
+| BoE | 228 | 33 | 18 | 3 | 38 | 19 | 284 | 55 | **FLAGGED (< 20)** |
 | BoJ | 278 | 0 | 17 | 0 | 38 | 0 | 333 | 0 | **FLAGGED (< 20)** |
 | BoK | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
 | CBR | 64 | 64 | 11 | 11 | 25 | 1 | 100 | 76 | **FLAGGED (< 20)** |
-| ECB | 245 | 245 | 16 | 16 | 38 | 38 | 299 | 299 | Sufficient (>= 20) |
-| Fed | 170 | 170 | 18 | 18 | 39 | 39 | 227 | 227 | Sufficient (>= 20) |
+| ECB | 245 | 245 | 16 | 16 | 38 | 33 | 299 | 294 | Sufficient (>= 20) |
+| Fed | 170 | 168 | 18 | 18 | 39 | 23 | 227 | 209 | Sufficient (>= 20) |
 | PBoC | 30 | 0 | 3 | 0 | 7 | 0 | 40 | 0 | **FLAGGED (< 20)** |
-| RBA | 217 | 149 | 23 | 23 | 44 | 44 | 284 | 216 | Sufficient (>= 20) |
+| RBA | 217 | 49 | 23 | 3 | 44 | 19 | 284 | 71 | **FLAGGED (< 20)** |
 | RBI | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | **FLAGGED (< 20)** |
 
 ## Japan zero-rate proxy review
@@ -81,7 +81,7 @@ Expected sign: tightening surprises positive, easing surprises negative. A hike 
 | cbr_2014-12-16 | hike | 650 | B | 1Y yield change, RU (bp) | +7.61 |
 | boe_2026-03-19 | hold | 0 | B | 1Y yield change, GB (bp) | +7.37 |
 | bcb_2001-03-21 | hike | 50 | B | 1Y yield change, BR (bp) | +6.52 |
-| rba_2008-10-07 | cut | -100 | B | 2Y yield change, AU (bp) | -6.08 |
+| rba_2008-10-07 | cut | -100 | B | 2Y yield change, AU (bp) | -6.47 |
 | boe_2023-02-02 | hike | 50 | B | 1Y yield change, GB (bp) | -5.96 |
 | bcb_2002-10-14 | hike | 300 | B | 1Y yield change, BR (bp) | +5.76 |
 | boj_2008-10-31 | cut | -20 | B | 1Y yield change, JP (bp) | -5.02 |

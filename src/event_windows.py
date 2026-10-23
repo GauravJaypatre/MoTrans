@@ -95,7 +95,7 @@ def build(policy: pd.DataFrame, panel: pd.DataFrame) -> pd.DataFrame:
                 "timing_ambiguous": int(a.timing_ambiguous),
                 "analysis_ready_timing": is_clean_timing, **w,
                 "shock_std": np.nan, "shock_std_w": np.nan, "shock_grade": "",
-                "shock_usable": 0, "shock_primary": 0, "shock_proxy_tenor": "", "shock_quality_flag": "",
+                "shock_usable": 0, "shock_primary": 0, "shock_secondary": 0, "shock_proxy_tenor": "", "shock_quality_flag": "",
                 "split_tag": split_tag(dt.date.fromisoformat(ev["decision_date"])),
             })
     return pd.DataFrame(rows)

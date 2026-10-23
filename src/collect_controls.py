@@ -393,7 +393,7 @@ def collect_yields(issues: list[str]) -> list[dict]:
             continue
         if not pts:
             issues.append(f"{country}: yield source returned no observations ({desc}).")
-        var_name = "yield_2y" if country in ("AU", "CN") else "yield_1y"
+        var_name = "yield_2y" if country in ("AU", "CN", "CA") else "yield_1y"
         out += rows(country, var_name, pts, desc)
     return out
 
