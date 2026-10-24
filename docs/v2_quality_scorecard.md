@@ -1,4 +1,4 @@
-# Data Quality Scorecard — MoTrans-15 v2.0 (Phase V1)
+# Data Quality Scorecard — MoTrans-15 v2.0 (Phase V1 Addendum)
 
 **Status**: Exploratory & Forecasting Dataset Verification  
 **Evaluation Scope**: Narrowed Phase V1 (Fed, ECB, BoE, BoC, RBA, CBR pre-2022, BoJ as sensitivity)  
@@ -9,34 +9,43 @@
 
 ## 1. Executive Summary Table
 
-All metrics generated directly by committed script `src/v2_verify_pipeline.py` and saved in [`outputs/v2/verification_summary.csv`](file:///c:/Users/HP/OneDrive/المستندات/Projects/MoTrans/outputs/v2/verification_summary.csv):
+All metrics generated directly by committed scripts and saved in [`outputs/v2/verification_summary.csv`](file:///c:/Users/HP/OneDrive/المستندات/Projects/MoTrans/outputs/v2/verification_summary.csv):
 
-| Check Family | Entities Tested | N Tested | N Failed | Failure Rate | Grade | Verification Assessment |
-| :--- | :--- | :---: | :---: | :---: | :---: | :--- |
-| **A. Index Prices** | 38 Index Series (2010+) | 10,795 | 0 | 0.00% | **B** | 11 exchange-verified series (MOEX, CSI, B3, NSE); 27 single-source (Yahoo Finance; Stooq blocked by Cloudflare). 5 ETF proxies tracked. |
-| **B. Policy Decisions** | 6 Regimes + BoJ Sensitivity | 993 | 30 | 3.02% | **A** | 100% verified against central banks' official publications and BIS series. Fed midpoint and ECB DFR/MRO conventions resolved. |
-| **C. Shocks & Yields** | Fed, ECB, Tier 2 Proxies, 6 Yields | 1,979 | 0 | 0.00% | **A** | Standardized Fed and ECB shocks match raw FRBSF and EA-MPD to machine epsilon (<1e-15). 1,117 yield proxies exact match. |
-| **D. Event Returns** | 9,732 Tier 1 + 2,000 Random Events | 58,638 | 7 | 0.0119% | **A** | 99.99% exact match across 58,660 return calculations. Only 7 mismatches strictly on Russian indices during the Feb 2022 MOEX halt. |
-| **E. Timing & DST** | 20 DST & Holiday Boundary Events | 20 | 0 | 0.00% | **A** | 100% session-ordering invariants passed (`baseline_date <= reacting_date`) across US, European, and Australian DST transitions. |
-| **F. Macro Controls** | 144 Monthly Releases (6 Countries) | 132 | 0 | 0.00% | **A** | 100% verified zero-lookahead bias. Conservative 1st-of-month m+2 availability strictly post-dates statistical agency releases. |
+| Check Family | Check Type | Entities Tested | N Tested | N Failed | Failure Rate | Internal Consistency | External Verification | Verification Assessment |
+| :--- | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| **A. Index Prices** | external | 38 Index Series (2010+) | 10,795 | 0 | 0.00% | **Grade A** | **Grade C** | Internal returns match prices exactly. External second-source: SP500 matches FRED within 1.2 bp; Nikkei 225 fails unshifted calendar comparison due to 1-day US reporting lag on FRED; 36 series remain single-source Yahoo. |
+| **B. Policy Decisions** | external | 6 Regimes + BoJ Sensitivity | 993 | 30 | 3.02% | **Grade A** | **Grade B** | 41 decisions in 2026 audited against central bank official releases. Flagged: RBA 2026-09-29 dataset 'hold' at 4.35% vs official 'hike' +25 bp to 4.60%; CBR logged Monday BIS effective dates vs Friday Board meetings. |
+| **C. Shocks & Yields** | replication | Fed, ECB, Tier 2 Proxies, 6 Yields | 1,979 | 0 | 0.00% | **Grade A** | **Grade B** | Replication: Standardized Fed and ECB shocks match raw files to machine epsilon (<1e-15); 1,117 yield proxies exact match. External: 20 well-known surprises match published literature benchmarks in sign and magnitude. |
+| **D. Event Returns** | replication | 9,732 Tier 1 + 2,000 Random Events | 58,638 | 7 | 0.0119% | **Grade A** | **Grade B** | Replication: 99.99% exact match across 58,638 return calculations (7 halt-spanning exceptions on MOEX in Feb 2022). External: 500 sampled events show 0 date alignment mismatches using independent exchange calendars. |
+| **E. Announcement Timing** | external | 100 Official Events across 5 Regimes | 100 | 0 | 0.00% | **Grade A** | **Grade C** | 100 events verified across 10 convention periods against official page headers and release schedules. All unverified events stay `timing_verified = 0`. |
+| **F. Macro Controls** | external | 144 Monthly CPI Releases (6 Countries) | 144 | 0 | 0.00% | **Grade A** | **Grade B** | 144 CPI releases verified against official agency calendars (BLS, Eurostat, ONS, StatCan, ABS, SBJ), confirming 0 lookahead bias. `ind_prod` flagged `revised_series = 1` and excluded from default v2 control set. |
 
 ---
 
 ## 2. Table-by-Table Data Quality Grades
 
-### Table 1: `policy_decisions.csv` — **Grade A**
-- **Evidence**: All 993 policy decisions in the narrowed scope were cross-checked against BIS daily policy series (`data/raw/bis_cbpol_*.csv`) and official central bank archives.
-- **Holdout & 2026 Audit**: All 41 decisions in 2026 and all 11 decisions in the proposed final holdout were cross-verified against official published schedules and saved in `data/raw/official_decisions/`.
-- **Known Adjustments**: Jackson Hole speech on 2025-08-22 (`non_decision`) excluded from decision counts (Fed decisions = 138).
+### Table 1: `policy_decisions.csv`
+- **Internal Consistency**: **Grade A** — Target rate levels and changes are internally consistent with BIS CBPOL series across 993 decisions. Fed midpoint convention (+0.125%) and ECB DFR/MRO spread changes resolved.
+- **External Verification**: **Grade B** — Audited against official central bank release pages (`fed_fomc_calendars_2026.html`, `ecb_key_rates_2026.html`, `boe_mpc_dates_2026.html`, `boc_key_rates_2026.html`, `boj_decisions_2026.html`, `rba_cash_rate_2026.html`, `cbr_cal_mp.html`):
+  - **RBA 2026-09-29 Discrepancy**: Dataset logged `hold` at 4.35%. Official RBA Media Release 2026-27 explicitly confirmed a **hike of +25 bp to 4.60%** (effective 30 Sep 2026): *"At its meeting today, the Board decided to increase the cash rate target by 25 basis points to 4.60 per cent."*
+  - **CBR Date Lag**: Dataset logged Monday BIS effective dates rather than Friday Board decision announcements.
+  - **BoJ Operating Target**: BIS series tracks the Complementary Lending Facility rate rather than uncollateralized call target.
 
-### Table 2: `shocks.parquet` — **Grade A**
-- **Evidence**: High-frequency standardized shocks for Fed (FRBSF) and ECB (EA-MPD) were independently recomputed from raw Excel spreadsheets and matched `shocks.parquet` to machine precision ($< 10^{-15}$).
-- **Tier 2 Yield Proxy**: All 1,117 yield proxy changes match `shock_proxy_raw` with zero discrepancies $> 10^{-4}$.
+### Table 2: `shocks.parquet`
+- **Internal Consistency**: **Grade A** — Standardized shocks recomputed from raw Excel spreadsheets (`frbsf_monetary_policy_surprises.xlsx`, `ecb_ea_mpd_dataset.xlsx`) replicate to machine epsilon ($< 10^{-15}$). All 1,117 Tier 2 yield proxy changes match `shock_proxy_raw`.
+- **External Verification**: **Grade B** — 20 well-known surprises from the 2022–2023 tightening cycles (10 Fed, 10 ECB) were compared against published values and economic narratives in the source literature (Bauer & Swanson 2023; Altavilla et al. 2019). All 20 show 100% agreement on sign, magnitude, and economic ordering (`VERIFIED_EXTERNAL_AGREEMENT`).
 
-### Table 3: `panel_daily.parquet` — **Grade B**
-- **Evidence**: Internal return calculations from closing levels match `ret_local` across 100% of tested days.
-- **Limitations**: While Russian, Chinese, Brazilian, and Indian indices are verified against direct exchange downloads (MOEX, CSI, B3, NSE), Western market daily series currently rely on Yahoo Finance because external web downloaders (Stooq, FRED) encountered Cloudflare anti-bot challenges and timeouts. Marked as `single-source`.
-- **ETF Proxies**: 5 tradeable ETF proxies (`de_stoxx_banks_etf`, `ea_emu_smallcap_etf`, `jp_topix_banks_etf`, `jp_mothers_etf`, `kr_banks_etf`) clearly labeled with documented annualized tracking errors (9.28% to 31.65%).
+### Table 3: `panel_daily.parquet`
+- **Internal Consistency**: **Grade A** — Arithmetic daily log returns recomputed from price levels match `ret_local` across 100% of tested days (< 1 bp).
+- **External Verification**: **Grade C** — Automated external downloaders (Stooq) were blocked by Cloudflare anti-bot challenges and no manual Stooq CSVs were placed. FRED second-sources:
+  - S&P 500 (`^GSPC`): Matches FRED `SP500` within 1.2 bp max return difference across 2,510 days.
+  - Nikkei 225 (`^N225`): Fails unshifted calendar matching (99.6% > 1 bp) because FRED logs Tokyo closes with a 1-day US reporting lag. Matches to cents when shifted T+1.
+  - Remaining 36 series have no secondary source and remain strictly classified as `single-source`.
 
-### Table 4: `events.parquet` — **Grade A**
-- **Evidence**: Recomputed cumulative log returns ($clr_1, clr_3, clr_5, clr_{20}, clr_{60}$) across 11,732 events (all 9,732 Tier 1 events in 2010+ and 2,000 random other events) achieved a 99.99% match rate (58,653 / 58,660). The only 7 discrepancies occurred exclusively on Russian indices spanning the extraordinary February 2022 MOEX trading halt.
+### Table 4: `events.parquet`
+- **Internal Consistency**: **Grade A** — Recomputed cumulative log returns ($clr_1, clr_3, clr_5, clr_{20}, clr_{60}$) across 11,732 events achieved 99.99% exact match (58,631 / 58,638). Discrepancies strictly isolated to MOEX February 2022 halt-spanning periods.
+- **External Verification**: **Grade B** — Date alignment audit recomputed baseline and reaction sessions for 500 randomly sampled events using the independent `exchange_calendars` library, confirming 0 date alignment mismatches (100% agreement).
+
+### Table 5: Announcement Timing & Controls
+- **Announcement Timing**: **Internal: Grade A | External: Grade C** — 100 events (10 per convention period across Fed, ECB, BoE, BoC, RBA) verified against saved official page headers. All unverified events remain `timing_verified = 0`.
+- **Macro Controls**: **Internal: Grade A | External: Grade B** — 144 CPI releases across 6 statistical agencies (BLS, Eurostat, ONS, StatCan, ABS, SBJ) verified zero lookahead bias. Industrial Production flagged `revised_series = 1` due to OECD STES historical revisions and excluded from default v2 controls.

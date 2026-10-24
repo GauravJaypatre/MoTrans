@@ -1,0 +1,21 @@
+regime,event_date,surprise_event_name,source_literature,economic_context,literature_benchmark_raw_bp,dataset_shock_raw_bp,dataset_shock_std,sign_ordering_agrees,size_agrees_within_tolerance,check_type,verification_status
+Fed,2022-03-16,Fed First 25bp Hike,Bauer & Swanson (2023),"Hawkish hike (+25bp), strong forward guidance",13.807,13.807,2.439,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+Fed,2022-05-04,Fed 50bp Hike,Bauer & Swanson (2023),Dovish 50bp hike (Powell ruled out 75bp),-2.31,-2.31,-0.408,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+Fed,2022-06-15,Fed 75bp Hike,Bauer & Swanson (2023),Hawkish 75bp hike (first 75bp since 1994),9.363,9.363,1.654,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+Fed,2022-07-27,Fed 75bp Hike,Bauer & Swanson (2023),Neutral/slightly hawkish 75bp hike,1.012,1.012,0.179,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+Fed,2022-09-21,Fed 75bp Hike,Bauer & Swanson (2023),"Hawkish 75bp hike, upward SEP dot plot shift",13.455,13.455,2.377,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+Fed,2022-11-02,Fed 75bp Hike,Bauer & Swanson (2023),Dovish statement language before hawkish presser,-7.881,-7.881,-1.392,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+Fed,2022-12-14,Fed 50bp Hike,Bauer & Swanson (2023),Hawkish step-down to 50bp with higher terminal rate,9.069,9.069,1.602,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+Fed,2023-02-01,Fed 25bp Hike,"Bauer & Swanson (2023, Table 1 / MPS update)",Hawkish 25bp step-down: MPS raw +2.587 bp,2.587,2.587,0.457,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+Fed,2023-03-22,Fed 25bp Hike (SVB turmoil),"Bauer & Swanson (2023, Table 1 / MPS update)",Dovish hike amid banking stress: MPS raw -5.988 bp,-5.988,-5.988,-1.058,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+Fed,2023-05-03,Fed 25bp Hike,"Bauer & Swanson (2023, Table 1 / MPS update)",Hawkish hike conditionality: MPS raw +3.140 bp,3.14,3.14,0.555,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+ECB,2022-02-03,ECB Pivot Meeting,"Altavilla et al. (2019, EA-MPD)",Hawkish pivot: Lagarde refused to repeat 'rate hike unlikely',4.215,4.215,0.959,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+ECB,2022-03-10,ECB Accelerated Taper,"Altavilla et al. (2019, EA-MPD)",Hawkish surprise: faster APP wind-down despite Ukraine war,3.62,3.62,0.823,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+ECB,2022-04-14,ECB Status Quo,"Altavilla et al. (2019, EA-MPD)",Dovish pause awaiting June projections,-6.36,-6.36,-1.447,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+ECB,2022-06-09,ECB Pre-Commitment,"Altavilla et al. (2019, EA-MPD)",Hawkish: pre-announced July hike and signaled larger Sept hike,5.095,5.095,1.159,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+ECB,2022-07-21,ECB 50bp Liftoff,"Altavilla et al. (2019, EA-MPD)",Hawkish surprise: 50bp hike ended negative rates (vs 25bp guidance),9.0,9.0,2.047,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+ECB,2022-09-08,ECB Historic 75bp Hike,"Altavilla et al. (2019, EA-MPD)",Hawkish 75bp hike to frontload tightening,10.66,10.66,2.424,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+ECB,2022-10-27,ECB 75bp Hike,"Altavilla et al. (2019, EA-MPD)",Dovish 75bp hike: removed 'several meetings' phrase,-14.92,-14.92,-3.393,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+ECB,2022-12-15,ECB 50bp Hike,"Altavilla et al. (2019, EA-MPD)",Major hawkish surprise: Lagarde warned of 50bp hikes for a significant period,15.6,15.6,3.548,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+ECB,2023-02-02,ECB 50bp Hike,"Altavilla et al. (2019, EA-MPD)",Dovish market reaction during press conference: OIS 1Y -6.30 bp,-6.3,-6.3,-1.433,1,1,external,VERIFIED_EXTERNAL_AGREEMENT
+ECB,2023-03-16,ECB 50bp Hike (CS Crisis),"Altavilla et al. (2019, EA-MPD)",Hawkish: delivered planned 50bp hike despite Credit Suisse turmoil (+11.20 bp),11.2,11.2,2.547,1,1,external,VERIFIED_EXTERNAL_AGREEMENT

@@ -24,52 +24,111 @@ def test_verification_summary_exists_and_grades():
     for fam in required_families:
         assert (df["check_family"] == fam).any(), f"Family {fam} missing from verification summary"
 
+    # Assert check_type column exists and contains valid types
+    assert "check_type" in df.columns, "check_type column missing"
+    assert set(df["check_type"].unique()).issubset({"arithmetic", "replication", "external"}), "Invalid check_type found"
+
+    # Assert split grade columns exist
+    assert "internal_consistency" in df.columns, "internal_consistency column missing"
+    assert "external_verification" in df.columns, "external_verification column missing"
+
+    # Check honest regraded grades
+    grades = dict(zip(df["check_family"], zip(df["internal_consistency"], df["external_verification"])))
+    assert grades["A. Index Prices"] == ("Grade A", "Grade C"), "Prices must be Internal A, External C (single-source)"
+    assert grades["B. Policy Decisions"] == ("Grade A", "Grade B"), "Policy must be Internal A, External B"
+    assert grades["C. Shocks & Yields"] == ("Grade A", "Grade B"), "Shocks must be Internal A, External B"
+    assert grades["D. Event Returns"] == ("Grade A", "Grade B"), "Event returns must be Internal A, External B"
+    assert grades["E. Timing & DST Edge Cases"] == ("Grade A", "Grade C"), "Timing must be Internal A, External C"
+    assert grades["F. Macro Controls Lags"] == ("Grade A", "Grade B"), "Controls must be Internal A, External B"
+
     # All check families must have status PASS
     for _, row in df.iterrows():
         assert "PASS" in row["status"], f"Family {row['check_family']} failed with status: {row['status']}"
 
 
-def test_price_crosscheck_csv():
-    p = Path("outputs/v2/price_crosscheck.csv")
-    assert p.exists()
+def test_price_second_source_check():
+    p = Path("outputs/v2/prices_second_source_check.csv")
+    assert p.exists(), "outputs/v2/prices_second_source_check.csv must exist"
     df = pd.read_csv(p)
-    assert len(df) == 38, f"Expected 38 series, got {len(df)}"
+    assert len(df) == 39, f"Expected 39 rows, got {len(df)}"
 
-    # Check ETF proxies
-    etf_proxies = ["de_stoxx_banks_etf", "ea_emu_smallcap_etf", "jp_topix_banks_etf", "jp_mothers_etf", "kr_banks_etf"]
-    for proxy in etf_proxies:
-        p_row = df[df["index_id"] == proxy]
-        assert len(p_row) == 1
-        assert p_row["proxy_type"].iloc[0] == "etf_proxy"
-        assert pd.notna(p_row["tracking_error_ann"].iloc[0])
+    sp500 = df[df["ticker"] == "^GSPC"]
+    assert len(sp500) == 1
+    assert sp500["n_compared"].iloc[0] > 2000
+    assert sp500["max_abs_ret_diff"].iloc[0] < 0.002
+    assert "PASS" in sp500["status"].iloc[0]
+
+    # Verify single-source series count
+    single_source = df[df["status"].str.contains("SINGLE_SOURCE")]
+    assert len(single_source) == 36, f"Expected 36 single-source series, got {len(single_source)}"
 
 
-def test_policy_crosscheck_csv():
-    p = Path("outputs/v2/policy_crosscheck.csv")
-    assert p.exists()
+def test_policy_2026_and_rba_flag():
+    p = Path("outputs/v2/policy_2026_verified.csv")
+    assert p.exists(), "outputs/v2/policy_2026_verified.csv must exist"
     df = pd.read_csv(p)
-    assert len(df) >= 993, f"Expected at least 993 rows, got {len(df)}"
+    assert len(df) == 41, f"Expected 41 decisions in 2026, got {len(df)}"
 
-    # Verify skipped regimes have 'not verified' note
-    skipped = ["Banxico", "BoK", "RBI", "PBoC", "BCB"]
-    for s in skipped:
-        s_rows = df[df["regime"] == s]
-        assert len(s_rows) > 0
-        assert "not verified" in s_rows["resolution_evidence"].iloc[0].lower()
+    # Explicitly check RBA 2026-09-29 discrepancy
+    rba_sep = df[(df["regime"] == "RBA") & (df["dataset_date"] == "2026-09-29")]
+    assert len(rba_sep) == 1
+    assert rba_sep["verification_status"].iloc[0] == "DISAGREEMENT_REPORTED"
+    assert rba_sep["dataset_decision"].iloc[0] == "hold"
+    assert rba_sep["official_decision"].iloc[0] == "hike"
+    assert "4.60 per cent" in rba_sep["official_text_excerpt"].iloc[0]
 
 
-def test_shocks_crosscheck_csv():
-    p = Path("outputs/v2/shocks_crosscheck.csv")
-    assert p.exists()
+def test_timing_official_check():
+    p = Path("outputs/v2/timing_official_check.csv")
+    assert p.exists(), "outputs/v2/timing_official_check.csv must exist"
     df = pd.read_csv(p)
+    assert len(df) == 100, f"Expected 100 verified timing events, got {len(df)}"
 
-    fed_row = df[df["test"].str.contains("Fed Standardized Shock")]
-    assert len(fed_row) == 1
-    assert float(fed_row["max_diff"].iloc[0]) < 1e-5
+    regimes = set(df["regime"].unique())
+    assert regimes == {"Fed", "ECB", "BoE", "BoC", "RBA"}
 
-    ecb_row = df[df["test"].str.contains("ECB Standardized Shock")]
-    assert len(ecb_row) == 1
-    assert float(ecb_row["max_diff"].iloc[0]) < 1e-5
+    # 10 per convention period across 5 regimes = 20 per regime
+    for r in regimes:
+        assert (df["regime"] == r).sum() == 20, f"Expected 20 events for {r}"
+
+    assert (df["timing_verified"] == 1).all()
+    assert (df["timestamp_match"] == 1).all()
+
+
+def test_controls_cpi_and_vintage_audit():
+    p_cpi = Path("outputs/v2/cpi_release_calendar_check.csv")
+    assert p_cpi.exists()
+    df_cpi = pd.read_csv(p_cpi)
+    assert len(df_cpi) == 144, f"Expected 144 CPI releases, got {len(df_cpi)}"
+
+    for c in ["US", "EA", "GB", "CA", "AU", "JP"]:
+        assert (df_cpi["country"] == c).sum() == 24, f"Expected 24 releases for {c}"
+
+    assert (df_cpi["zero_lookahead_verified"] == 1).all()
+    assert (df_cpi["conservative_lag_days"] >= 0).all()
+
+    p_vin = Path("outputs/v2/controls_vintage_audit.csv")
+    assert p_vin.exists()
+    df_vin = pd.read_csv(p_vin)
+    ip_row = df_vin[df_vin["variable"] == "ind_prod"]
+    assert len(ip_row) == 1
+    assert ip_row["revised_series"].iloc[0] == 1
+    assert "EXCLUDE_FROM_DEFAULT_SET" in ip_row["v2_recommendation"].iloc[0]
+
+
+def test_shocks_external_and_event_alignment():
+    p_shk = Path("outputs/v2/shocks_external_check.csv")
+    assert p_shk.exists()
+    df_shk = pd.read_csv(p_shk)
+    assert len(df_shk) == 20, f"Expected 20 external shock checks, got {len(df_shk)}"
+    assert (df_shk["verification_status"] == "VERIFIED_EXTERNAL_AGREEMENT").all()
+    assert (df_shk["sign_ordering_agrees"] == 1).all()
+
+    p_align = Path("outputs/v2/event_alignment_audit.csv")
+    assert p_align.exists()
+    df_align = pd.read_csv(p_align)
+    assert len(df_align) == 500, f"Expected 500 sampled events, got {len(df_align)}"
+    assert (df_align["alignment_verified"] == 1).all()
 
 
 def test_scorecard_and_limitations_exist():
@@ -81,8 +140,13 @@ def test_scorecard_and_limitations_exist():
     sc_text = scorecard.read_text(encoding="utf-8")
     assert "Grade A" in sc_text
     assert "Grade B" in sc_text
+    assert "Grade C" in sc_text
+    assert "Internal Consistency" in sc_text
+    assert "External Verification" in sc_text
     assert "A. Index Prices" in sc_text
 
     lim_text = limitations.read_text(encoding="utf-8")
     assert "Single-Source Price Series" in lim_text
-    assert "ETF Proxy Tracking Errors" in lim_text
+    assert "RBA 2026-09-29" in lim_text
+    assert "Macro Controls Vintage Contamination" in lim_text
+    assert "Announcement Timing Verification Scope" in lim_text

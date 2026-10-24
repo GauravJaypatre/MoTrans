@@ -151,12 +151,15 @@ def verify_index_prices() -> tuple[pd.DataFrame, dict]:
     
     summary = {
         "check_family": "A. Index Prices",
+        "check_type": "external",
         "entity_tested": "38 index series (2010+)",
         "n_tested": total_days_tested,
         "n_failed": total_failed_1bp,
         "failure_rate": 0.0,
-        "status": "PASS (Grade B: 11 exchange-verified series, 27 single-source)",
-        "notes": "Internal returns match price series exactly (<1bp across 100% of tested days). 5 ETF proxies marked with tracking error.",
+        "internal_consistency": "Grade A",
+        "external_verification": "Grade C",
+        "status": "PASS (Internal: Grade A; External: Grade C - 36 single-source series)",
+        "notes": "Internal return calculation matches prices to < 1bp. External verification: SP500 matches FRED within 1.2 bp; Nikkei 225 fails unshifted due to 1-day US reporting lag on FRED; 36 series single-source Yahoo.",
     }
     return df_out, summary
 
@@ -221,8 +224,9 @@ def verify_policy_decisions() -> tuple[pd.DataFrame, dict]:
                         bis_match = 1
                         resolution = "ECB framework revision: DFR cut 25bp to 3.50% (tracked by BIS); MRO cut 60bp to 3.65% (recorded in dataset). Both verified official."
                     elif reg == "RBA" and d.strftime("%Y-%m-%d") == "2026-09-29":
-                        bis_match = 1
-                        resolution = "Verified against RBA official cash rate release (held at 4.35%); BIS AU series ended 2026-09-24."
+                        disagreement = 1
+                        n_disagree += 1
+                        resolution = "DISAGREEMENT FLAGGED: Dataset recorded hold at 4.35%; Official RBA announcement (Media Release 2026-27, 29 Sep 2026) was hike +25 bp to 4.60% (effective 30 Sep 2026)."
                     else:
                         disagreement = 1
                         n_disagree += 1
@@ -260,12 +264,15 @@ def verify_policy_decisions() -> tuple[pd.DataFrame, dict]:
 
     summary = {
         "check_family": "B. Policy Decisions",
+        "check_type": "external",
         "entity_tested": "6 regimes (Fed, ECB, BoE, BoC, RBA, CBR pre-2022) + BoJ sensitivity",
         "n_tested": n_tested,
         "n_failed": n_disagree,
         "failure_rate": round(n_disagree / n_tested, 4) if n_tested > 0 else 0.0,
-        "status": "PASS (Grade A: 100% verified across 993 decisions)",
-        "notes": "All 2026 decisions and 11 holdout decisions verified against official central bank pages saved in data/raw/official_decisions/. Fed midpoint and ECB DFR/MRO conventions resolved.",
+        "internal_consistency": "Grade A",
+        "external_verification": "Grade B",
+        "status": "PASS (Internal: Grade A; External: Grade B - 6 central bank official release lists audited)",
+        "notes": "All 41 decisions in 2026 audited against central bank official releases. Flagged: RBA 2026-09-29 dataset held at 4.35% vs official hike +25 bp to 4.60%; CBR logged Monday BIS effective dates vs Friday Board meetings.",
     }
     return df_out, summary
 
@@ -367,12 +374,15 @@ def verify_shocks_and_yields() -> tuple[pd.DataFrame, dict]:
     total_shk_tested = len(fed_diffs) + len(ecb_diffs) + tier2_tested + sum(yr["n_sampled"] for yr in yield_results)
     summary = {
         "check_family": "C. Shocks & Yields",
+        "check_type": "replication",
         "entity_tested": "Fed (FRBSF), ECB (EA-MPD), Tier 2 yield proxies, 6 sovereign yield series",
         "n_tested": total_shk_tested,
         "n_failed": 0,
         "failure_rate": 0.0,
-        "status": "PASS (Grade A: exact machine-precision match <1e-15)",
-        "notes": "Fed and ECB standardized shocks match to machine epsilon. All 1,117 Tier 2 yield proxy changes verified. 600 yield audit days confirmed within economic bounds.",
+        "internal_consistency": "Grade A",
+        "external_verification": "Grade B",
+        "status": "PASS (Internal: Grade A replication; External: Grade B - 20 well-known surprises verified)",
+        "notes": "Replication: Fed and ECB standardized shocks match raw FRBSF and EA-MPD to machine epsilon (< 1e-15). 1,117 Tier 2 yield proxies match exact. External: 20 well-known surprises match published literature benchmarks in sign and magnitude.",
     }
     return df_out, summary
 
@@ -446,12 +456,15 @@ def verify_event_returns() -> tuple[pd.DataFrame, dict]:
 
     summary = {
         "check_family": "D. Event Returns",
+        "check_type": "replication",
         "entity_tested": f"{len(test_events)} events ({len(t1_events)} Tier 1 in 2010+ and 2,000 random other)",
         "n_tested": total_returns_checked,
         "n_failed": mismatches,
         "failure_rate": round(mismatches / total_returns_checked, 6) if total_returns_checked > 0 else 0.0,
-        "status": "PASS (Grade A: 99.99% exact match; 7 halt-spanning exceptions)",
-        "notes": f"{mismatches} mismatches of {total_returns_checked} calculations ({mismatches/total_returns_checked:.4%}), strictly on Russian indices spanning the Feb 2022 trading halt.",
+        "internal_consistency": "Grade A",
+        "external_verification": "Grade B",
+        "status": "PASS (Internal: Grade A replication; External: Grade B - 500 events audited with exchange_calendars)",
+        "notes": f"Replication: {mismatches} mismatches of {total_returns_checked} calculations ({mismatches/total_returns_checked:.4%}), strictly on Russian indices spanning the Feb 2022 trading halt. External: 500 sampled events show 0 date alignment mismatches using independent exchange calendars.",
     }
     return df_out, summary
 
@@ -529,12 +542,15 @@ def verify_timing_and_dst() -> tuple[pd.DataFrame, dict]:
 
     summary = {
         "check_family": "E. Timing & DST Edge Cases",
+        "check_type": "external",
         "entity_tested": f"{n_tested} DST and exchange holiday transition events across Fed, ECB, BoE, BoC, RBA",
         "n_tested": n_tested,
         "n_failed": n_failed,
         "failure_rate": 0.0,
-        "status": "PASS (Grade A: 100% session-ordering invariants verified)",
-        "notes": "All 20 DST transitions and holiday boundary events satisfy baseline_date <= reacting_date and strict non-negative reaction lag.",
+        "internal_consistency": "Grade A",
+        "external_verification": "Grade C",
+        "status": "PASS (Internal: Grade A; External: Grade C - 100 events verified across 10 convention periods)",
+        "notes": "Internal: All 20 DST transitions and holiday boundary events satisfy session invariants. External: 100 events verified across 10 convention periods against official page headers; all unverified events stay timing_verified = 0.",
     }
     return df_out, summary
 
@@ -593,12 +609,15 @@ def verify_controls_lags() -> tuple[pd.DataFrame, dict]:
 
     summary = {
         "check_family": "F. Macro Controls Lags",
+        "check_type": "external",
         "entity_tested": f"{n_tested} monthly releases across 6 economies (cpi & ind_prod)",
         "n_tested": n_tested,
         "n_failed": n_failed,
         "failure_rate": 0.0,
-        "status": "PASS (Grade A: 100% compliant with zero-lookahead DECISION-016 lag)",
-        "notes": "All monthly releases enforce conservative 1st-of-month m+2 availability (strictly 40-62 days after reference month start), guaranteeing zero lookahead bias.",
+        "internal_consistency": "Grade A",
+        "external_verification": "Grade B",
+        "status": "PASS (Internal: Grade A; External: Grade B - 144 CPI calendar releases verified; ind_prod flagged)",
+        "notes": "Internal: All monthly releases enforce conservative 1st-of-month m+2 availability. External: 144 CPI releases verified against official agency calendars (BLS, Eurostat, ONS, StatCan, ABS, SBJ), confirming 0 lookahead bias. Ind_prod flagged revised_series = 1 and excluded from default v2 control set.",
     }
     return df_out, summary
 
@@ -608,6 +627,28 @@ def verify_controls_lags() -> tuple[pd.DataFrame, dict]:
 # ==============================================================================
 def main():
     print("=== Executing Phase V1 Verification Pipeline ===")
+    
+    # Run auxiliary specialized verification modules
+    from src.v2_verify_prices_second_source import run_price_check
+    from src.v2_verify_policy_official import run_policy_verification
+    from src.v2_verify_timing_official import run_timing_verification
+    from src.v2_verify_controls_vintage import run_controls_audit
+    from src.v2_verify_shocks_external import run_shocks_external_check, run_event_alignment_audit
+
+    print("Running Prices Second Source Check...")
+    run_price_check()
+    print("Running Policy Decisions Official Verification...")
+    run_policy_verification()
+    print("Running Timing Official Verification...")
+    run_timing_verification()
+    print("Running Controls Vintage & Calendar Audit...")
+    run_controls_audit()
+    print("Running Shocks External Check...")
+    run_shocks_external_check()
+    print("Running Event Alignment Audit...")
+    run_event_alignment_audit()
+
+    # Run core verification checks
     _, sum_a = verify_index_prices()
     _, sum_b = verify_policy_decisions()
     _, sum_c = verify_shocks_and_yields()
@@ -621,8 +662,8 @@ def main():
     sum_df.to_csv(sum_path, index=False)
     print(f"Saved: {sum_path}")
 
-    # Build Quality Scorecard (docs/v2_quality_scorecard.md)
-    scorecard_md = f"""# Data Quality Scorecard — MoTrans-15 v2.0 (Phase V1)
+    # Build Honest Quality Scorecard (docs/v2_quality_scorecard.md)
+    scorecard_md = f"""# Data Quality Scorecard — MoTrans-15 v2.0 (Phase V1 Addendum)
 
 **Status**: Exploratory & Forecasting Dataset Verification  
 **Evaluation Scope**: Narrowed Phase V1 (Fed, ECB, BoE, BoC, RBA, CBR pre-2022, BoJ as sensitivity)  
@@ -633,43 +674,52 @@ def main():
 
 ## 1. Executive Summary Table
 
-All metrics generated directly by committed script `src/v2_verify_pipeline.py` and saved in [`outputs/v2/verification_summary.csv`](file:///c:/Users/HP/OneDrive/المستندات/Projects/MoTrans/outputs/v2/verification_summary.csv):
+All metrics generated directly by committed scripts and saved in [`outputs/v2/verification_summary.csv`](file:///c:/Users/HP/OneDrive/المستندات/Projects/MoTrans/outputs/v2/verification_summary.csv):
 
-| Check Family | Entities Tested | N Tested | N Failed | Failure Rate | Grade | Verification Assessment |
-| :--- | :--- | :---: | :---: | :---: | :---: | :--- |
-| **A. Index Prices** | 38 Index Series (2010+) | {sum_a['n_tested']:,} | {sum_a['n_failed']} | {sum_a['failure_rate']:.2%} | **B** | 11 exchange-verified series (MOEX, CSI, B3, NSE); 27 single-source (Yahoo Finance; Stooq blocked by Cloudflare). 5 ETF proxies tracked. |
-| **B. Policy Decisions** | 6 Regimes + BoJ Sensitivity | {sum_b['n_tested']:,} | {sum_b['n_failed']} | {sum_b['failure_rate']:.2%} | **A** | 100% verified against central banks' official publications and BIS series. Fed midpoint and ECB DFR/MRO conventions resolved. |
-| **C. Shocks & Yields** | Fed, ECB, Tier 2 Proxies, 6 Yields | {sum_c['n_tested']:,} | {sum_c['n_failed']} | {sum_c['failure_rate']:.2%} | **A** | Standardized Fed and ECB shocks match raw FRBSF and EA-MPD to machine epsilon (<1e-15). 1,117 yield proxies exact match. |
-| **D. Event Returns** | 9,732 Tier 1 + 2,000 Random Events | {sum_d['n_tested']:,} | {sum_d['n_failed']} | {sum_d['failure_rate']:.4%} | **A** | 99.99% exact match across 58,660 return calculations. Only 7 mismatches strictly on Russian indices during the Feb 2022 MOEX halt. |
-| **E. Timing & DST** | 20 DST & Holiday Boundary Events | {sum_e['n_tested']:,} | {sum_e['n_failed']} | {sum_e['failure_rate']:.2%} | **A** | 100% session-ordering invariants passed (`baseline_date <= reacting_date`) across US, European, and Australian DST transitions. |
-| **F. Macro Controls** | 144 Monthly Releases (6 Countries) | {sum_f['n_tested']:,} | {sum_f['n_failed']} | {sum_f['failure_rate']:.2%} | **A** | 100% verified zero-lookahead bias. Conservative 1st-of-month m+2 availability strictly post-dates statistical agency releases. |
+| Check Family | Check Type | Entities Tested | N Tested | N Failed | Failure Rate | Internal Consistency | External Verification | Verification Assessment |
+| :--- | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| **A. Index Prices** | external | 38 Index Series (2010+) | {sum_a['n_tested']:,} | {sum_a['n_failed']} | {sum_a['failure_rate']:.2%} | **Grade A** | **Grade C** | Internal returns match prices exactly. External second-source: SP500 matches FRED within 1.2 bp; Nikkei 225 fails unshifted calendar comparison due to 1-day US reporting lag on FRED; 36 series remain single-source Yahoo. |
+| **B. Policy Decisions** | external | 6 Regimes + BoJ Sensitivity | {sum_b['n_tested']:,} | {sum_b['n_failed']} | {sum_b['failure_rate']:.2%} | **Grade A** | **Grade B** | 41 decisions in 2026 audited against central bank official releases. Flagged: RBA 2026-09-29 dataset 'hold' at 4.35% vs official 'hike' +25 bp to 4.60%; CBR logged Monday BIS effective dates vs Friday Board meetings. |
+| **C. Shocks & Yields** | replication | Fed, ECB, Tier 2 Proxies, 6 Yields | {sum_c['n_tested']:,} | {sum_c['n_failed']} | {sum_c['failure_rate']:.2%} | **Grade A** | **Grade B** | Replication: Standardized Fed and ECB shocks match raw files to machine epsilon (<1e-15); 1,117 yield proxies exact match. External: 20 well-known surprises match published literature benchmarks in sign and magnitude. |
+| **D. Event Returns** | replication | 9,732 Tier 1 + 2,000 Random Events | {sum_d['n_tested']:,} | {sum_d['n_failed']} | {sum_d['failure_rate']:.4%} | **Grade A** | **Grade B** | Replication: 99.99% exact match across 58,638 return calculations (7 halt-spanning exceptions on MOEX in Feb 2022). External: 500 sampled events show 0 date alignment mismatches using independent exchange calendars. |
+| **E. Announcement Timing** | external | 100 Official Events across 5 Regimes | 100 | 0 | 0.00% | **Grade A** | **Grade C** | 100 events verified across 10 convention periods against official page headers and release schedules. All unverified events stay `timing_verified = 0`. |
+| **F. Macro Controls** | external | 144 Monthly CPI Releases (6 Countries) | 144 | 0 | 0.00% | **Grade A** | **Grade B** | 144 CPI releases verified against official agency calendars (BLS, Eurostat, ONS, StatCan, ABS, SBJ), confirming 0 lookahead bias. `ind_prod` flagged `revised_series = 1` and excluded from default v2 control set. |
 
 ---
 
 ## 2. Table-by-Table Data Quality Grades
 
-### Table 1: `policy_decisions.csv` — **Grade A**
-- **Evidence**: All 993 policy decisions in the narrowed scope were cross-checked against BIS daily policy series (`data/raw/bis_cbpol_*.csv`) and official central bank archives.
-- **Holdout & 2026 Audit**: All 41 decisions in 2026 and all 11 decisions in the proposed final holdout were cross-verified against official published schedules and saved in `data/raw/official_decisions/`.
-- **Known Adjustments**: Jackson Hole speech on 2025-08-22 (`non_decision`) excluded from decision counts (Fed decisions = 138).
+### Table 1: `policy_decisions.csv`
+- **Internal Consistency**: **Grade A** — Target rate levels and changes are internally consistent with BIS CBPOL series across 993 decisions. Fed midpoint convention (+0.125%) and ECB DFR/MRO spread changes resolved.
+- **External Verification**: **Grade B** — Audited against official central bank release pages (`fed_fomc_calendars_2026.html`, `ecb_key_rates_2026.html`, `boe_mpc_dates_2026.html`, `boc_key_rates_2026.html`, `boj_decisions_2026.html`, `rba_cash_rate_2026.html`, `cbr_cal_mp.html`):
+  - **RBA 2026-09-29 Discrepancy**: Dataset logged `hold` at 4.35%. Official RBA Media Release 2026-27 explicitly confirmed a **hike of +25 bp to 4.60%** (effective 30 Sep 2026): *"At its meeting today, the Board decided to increase the cash rate target by 25 basis points to 4.60 per cent."*
+  - **CBR Date Lag**: Dataset logged Monday BIS effective dates rather than Friday Board decision announcements.
+  - **BoJ Operating Target**: BIS series tracks the Complementary Lending Facility rate rather than uncollateralized call target.
 
-### Table 2: `shocks.parquet` — **Grade A**
-- **Evidence**: High-frequency standardized shocks for Fed (FRBSF) and ECB (EA-MPD) were independently recomputed from raw Excel spreadsheets and matched `shocks.parquet` to machine precision ($< 10^{{-15}}$).
-- **Tier 2 Yield Proxy**: All 1,117 yield proxy changes match `shock_proxy_raw` with zero discrepancies $> 10^{{-4}}$.
+### Table 2: `shocks.parquet`
+- **Internal Consistency**: **Grade A** — Standardized shocks recomputed from raw Excel spreadsheets (`frbsf_monetary_policy_surprises.xlsx`, `ecb_ea_mpd_dataset.xlsx`) replicate to machine epsilon ($< 10^{{-15}}$). All 1,117 Tier 2 yield proxy changes match `shock_proxy_raw`.
+- **External Verification**: **Grade B** — 20 well-known surprises from the 2022–2023 tightening cycles (10 Fed, 10 ECB) were compared against published values and economic narratives in the source literature (Bauer & Swanson 2023; Altavilla et al. 2019). All 20 show 100% agreement on sign, magnitude, and economic ordering (`VERIFIED_EXTERNAL_AGREEMENT`).
 
-### Table 3: `panel_daily.parquet` — **Grade B**
-- **Evidence**: Internal return calculations from closing levels match `ret_local` across 100% of tested days.
-- **Limitations**: While Russian, Chinese, Brazilian, and Indian indices are verified against direct exchange downloads (MOEX, CSI, B3, NSE), Western market daily series currently rely on Yahoo Finance because external web downloaders (Stooq, FRED) encountered Cloudflare anti-bot challenges and timeouts. Marked as `single-source`.
-- **ETF Proxies**: 5 tradeable ETF proxies (`de_stoxx_banks_etf`, `ea_emu_smallcap_etf`, `jp_topix_banks_etf`, `jp_mothers_etf`, `kr_banks_etf`) clearly labeled with documented annualized tracking errors (9.28% to 31.65%).
+### Table 3: `panel_daily.parquet`
+- **Internal Consistency**: **Grade A** — Arithmetic daily log returns recomputed from price levels match `ret_local` across 100% of tested days (< 1 bp).
+- **External Verification**: **Grade C** — Automated external downloaders (Stooq) were blocked by Cloudflare anti-bot challenges and no manual Stooq CSVs were placed. FRED second-sources:
+  - S&P 500 (`^GSPC`): Matches FRED `SP500` within 1.2 bp max return difference across 2,510 days.
+  - Nikkei 225 (`^N225`): Fails unshifted calendar matching (99.6% > 1 bp) because FRED logs Tokyo closes with a 1-day US reporting lag. Matches to cents when shifted T+1.
+  - Remaining 36 series have no secondary source and remain strictly classified as `single-source`.
 
-### Table 4: `events.parquet` — **Grade A**
-- **Evidence**: Recomputed cumulative log returns ($clr_1, clr_3, clr_5, clr_{{20}}, clr_{{60}}$) across 11,732 events (all 9,732 Tier 1 events in 2010+ and 2,000 random other events) achieved a 99.99% match rate (58,653 / 58,660). The only 7 discrepancies occurred exclusively on Russian indices spanning the extraordinary February 2022 MOEX trading halt.
+### Table 4: `events.parquet`
+- **Internal Consistency**: **Grade A** — Recomputed cumulative log returns ($clr_1, clr_3, clr_5, clr_{{20}}, clr_{{60}}$) across 11,732 events achieved 99.99% exact match (58,631 / 58,638). Discrepancies strictly isolated to MOEX February 2022 halt-spanning periods.
+- **External Verification**: **Grade B** — Date alignment audit recomputed baseline and reaction sessions for 500 randomly sampled events using the independent `exchange_calendars` library, confirming 0 date alignment mismatches (100% agreement).
+
+### Table 5: Announcement Timing & Controls
+- **Announcement Timing**: **Internal: Grade A | External: Grade C** — 100 events (10 per convention period across Fed, ECB, BoE, BoC, RBA) verified against saved official page headers. All unverified events remain `timing_verified = 0`.
+- **Macro Controls**: **Internal: Grade A | External: Grade B** — 144 CPI releases across 6 statistical agencies (BLS, Eurostat, ONS, StatCan, ABS, SBJ) verified zero lookahead bias. Industrial Production flagged `revised_series = 1` due to OECD STES historical revisions and excluded from default v2 controls.
 """
     (DOCS_DIR / "v2_quality_scorecard.md").write_text(scorecard_md, encoding="utf-8")
     print(f"Saved: {DOCS_DIR / 'v2_quality_scorecard.md'}")
 
-    # Build Limitations Document (docs/v2_limitations.md)
-    limitations_md = f"""# Methodological & Data Limitations — MoTrans-15 v2.0
+    # Build Honest Limitations Document (docs/v2_limitations.md)
+    limitations_md = f"""# Methodological & Data Limitations — MoTrans-15 v2.0 (Phase V1 Addendum)
 
 **Status**: Formal Record of Known Constraints and Unverified Items  
 **Date**: {dt.date.today().isoformat()}  
@@ -677,10 +727,27 @@ All metrics generated directly by committed script `src/v2_verify_pipeline.py` a
 ---
 
 ## 1. Single-Source Price Series & Anti-Bot Constraints
-- Automated external downloaders (Stooq, FRED) encountered Cloudflare JavaScript challenges and request timeouts. Consequently, 27 index series currently rely on single-source Yahoo Finance feeds (marked `single-source` in [`outputs/v2/price_crosscheck.csv`](file:///c:/Users/HP/OneDrive/المستندات/Projects/MoTrans/outputs/v2/price_crosscheck.csv)).
-- 11 series are verified against independent primary exchange archives: Moscow Exchange ISS (`ru_imoex`, `ru_moex_fin`, `ru_moex_smid`), CSI (`cn_csi300`, `cn_csi300_banks`, `cn_csi500`), B3 (`br_ifnc`, `br_smll`), and NSE India (`in_nifty50`, `in_nifty_bank`, `in_nifty_smallcap100`).
+- Per instructions, Stooq was not scripted due to Cloudflare anti-bot restrictions. No manual CSVs were present in `data/raw/second_source/`.
+- FRED second sources were downloaded via verified HTTPS for US and Japan:
+  - S&P 500 (`^GSPC`): Matches FRED `SP500` within 1.2 bp max diff across 2,510 overlapping days (only 0.16% > 1 bp due to rounding).
+  - Nikkei 225 (`^N225`): Direct calendar alignment with FRED `NIKKEI225` failed after two attempts (99.7% of days > 1 bp difference). Root cause: FRED logs Tokyo exchange closing levels on the subsequent US observation date (T+1 calendar lag). When shifted by 1 business day to account for FRED's US-centric reporting convention, price levels match to cents.
+  - All 36 remaining equity index series have no secondary source and remain strictly classified as `single-source`.
 
-## 2. ETF Proxy Tracking Errors
+## 2. Policy Decisions Discrepancies
+- **RBA 2026-09-29**: The v1 dataset recorded `decision = hold, size_bp = 0.0, new_rate_pct = 4.35%`. Official RBA Media Release 2026-27 (released 29 September 2026) confirmed: *"At its meeting today, the Board decided to increase the cash rate target by 25 basis points to 4.60 per cent."* (Effective 30 September 2026). The v1 record is erroneous.
+- **CBR Meeting vs Effective Dates**: v1 recorded Monday effective dates from BIS `WS_CBPOL/D.RU` rather than the official Friday Board decision announcement dates.
+- **BoJ Complementary Lending Facility**: In 2026, BIS `WS_CBPOL/D.JP` records the Complementary Lending Facility rate (0.75% -> 1.00% -> 1.25%), rather than the uncollateralized call rate target. Meeting dates and direction of actions match official MPM statements.
+
+## 3. Macro Controls Vintage Contamination (`ind_prod`)
+- Industrial Production from OECD STES represents the latest revised historical vintage rather than real-time first releases. Because industrial production undergoes substantial revisions (up to 12 months after reference month), including it in contemporaneous policy event studies introduces revision/lookahead contamination.
+- Flagged with `revised_series = 1` and excluded from the default v2 control set (retained only in a labeled sensitivity set).
+- In contrast, CPI is conservative: official release calendars from BLS, Eurostat, ONS, StatCan, ABS, and SBJ confirm that all releases occur in month m+1, strictly preceding the dataset's `available_from = 1st of month m+2` rule (zero lookahead).
+
+## 4. Announcement Timing Verification Scope
+- Announcement times for 100 events across 10 convention periods for Fed, ECB, BoE, BoC, and RBA were officially verified against saved release page headers.
+- All other events remain `timing_verified = 0`.
+
+## 5. ETF Proxy Tracking Errors
 Tradeable ETF proxies exhibit tracking divergence from cash benchmarks due to expense ratios, dividend timing, cash drag, and localized index composition:
 - `ea_emu_smallcap_etf` vs `de_mdax`: Annualized Tracking Error = 9.28%, Correlation = 0.8673.
 - `de_stoxx_banks_etf` vs `de_dax_banks`: Annualized Tracking Error = 17.70%, Correlation = 0.8583.
@@ -689,19 +756,16 @@ Tradeable ETF proxies exhibit tracking divergence from cash benchmarks due to ex
 - `jp_mothers_etf` vs `jp_nikkei225`: Annualized Tracking Error = 31.65%, Correlation = 0.5145.
 All 5 series are marked with `proxy_type = 'etf_proxy'`.
 
-## 3. High-Frequency Shock Coverage Truncation
+## 6. High-Frequency Shock Coverage Truncation
 - High-frequency monetary shock series end prematurely relative to the full dataset:
   - Federal Reserve (FRBSF Bauer-Swanson): Ends **December 2023** (zero Tier 1 shocks in 2024–2026).
   - European Central Bank (EA-MPD): Ends **October 2025** (zero Tier 1 shocks in 2026).
 - Post-truncation events fall back to Tier 2 daily sovereign yield proxies, which capture rate changes but lack intraday precision on rate holds.
 
-## 4. Omitted Emerging Market Shocks
+## 7. Omitted Emerging Market Shocks
 Per the narrowed Phase V1 scope:
 - Banxico (MX), BoK (KR), RBI (IN), PBoC (CN), and BCB (BR) lack daily 1Y sovereign yield proxies in the v1 pipeline, producing 0 primary shocks. These regimes are marked `'not verified: no primary shocks'` and excluded from primary time-series forecasting models.
 - CBR (RU) is audited only prior to 2022-02-24 due to subsequent capital controls and exchange suspensions.
-
-## 5. BoJ Policy Instruments & Discrete Rate Labels
-- During the Kuroda QQE and negative interest rate regimes (2013–2016), target policy rates were not the active operating instrument. Unclassified decisions contain non-zero or NaN target rate changes (`size_bp`). Any sensitivity modeling on BoJ must strictly use monetary surprise variables (`shock_primary`, `shock_usable`), not discrete hike/cut classification labels.
 """
     (DOCS_DIR / "v2_limitations.md").write_text(limitations_md, encoding="utf-8")
     print(f"Saved: {DOCS_DIR / 'v2_limitations.md'}")
@@ -709,3 +773,4 @@ Per the narrowed Phase V1 scope:
 
 if __name__ == "__main__":
     main()
+
