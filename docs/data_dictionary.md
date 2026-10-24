@@ -130,6 +130,82 @@ One row per **central-bank statement** (920 rows). Built in Phase E (DECISION-01
 
 ---
 
+## `data/final/analysis_tier1.parquet`
+
+One row per **(Tier 1 decision × reacting index)**.
+This table represents the primary headline analysis sample for high-frequency monetary policy shocks (Fed consensus MPS from Bauer-Swanson 2023, and ECB EA-MPD 1-year OIS monetary surprise from Altavilla et al. 2019). All macroeconomic and financial controls are merged strictly where `available_from <= decision_date` with no look-ahead.
+
+Total rows: **15,805** across 494 decisions (ECB: 292 decisions, 9,177 rows; Fed: 202 decisions, 6,628 rows).
+
+| Column | Type | Unit | Definition |
+|---|---|---|---|
+| `event_id` | `str` | — | Unique identifier for the event-index observation (e.g. `Fed_2008-01-22_us_sp500`) |
+| `regime` | `str` | — | Central bank regime: `Fed` or `ECB` |
+| `decision_date` | `str` | ISO date | Official announcement date (`YYYY-MM-DD`) |
+| `event_type` | `str` | — | Meeting type: `scheduled_meeting`, `unscheduled_meeting` |
+| `scheduled` | `bool` | — | `True` for scheduled calendar meetings; `False` for unscheduled/emergency actions |
+| `decision` | `str` | — | Policy action: `hike`, `cut`, or `hold` |
+| `size_bp` | `float64` | basis points | Policy rate change in basis points |
+| `new_rate_pct` | `float64` | percent | Target policy rate level following announcement |
+| `country` | `str` | — | ISO 2-letter country code of the reacting equity index |
+| `index_id` | `str` | — | Identifier of reacting equity index (e.g. `us_sp500`, `de_dax`) |
+| `index_class` | `str` | — | Equity asset class: `broad`, `banks`, or `smallcap` |
+| `home_market` | `int8` | flag | 1 if equity index is in the home economy of the central bank; 0 if cross-border |
+| `time_quality` | `str` | — | Quality of announcement timestamp: `exact`, `approximate`, `unknown` |
+| `announce_ts_utc` | `datetime64[ns, UTC]` | UTC | Exact UTC timestamp of monetary policy announcement |
+| `baseline_date` | `date` | — | Date of pre-announcement baseline closing price |
+| `reacting_session_date` | `date` | — | Date of first exchange trading session reacting to announcement |
+| `announce_in_session` | `int8` | flag | 1 if announcement occurred during exchange trading hours; 0 otherwise |
+| `timing_ambiguous` | `int8` | flag | 1 if uncertainty in release window shifts reacting trading session |
+| `analysis_ready_timing` | `int8` | flag | 1 if announcement timing is verified for event-study use; 0 otherwise |
+| `shock_std` | `float64` | standard deviations | High-frequency monetary surprise standardized by train-period standard deviation |
+| `shock_std_w` | `float64` | standard deviations | Standardized surprise winsorized at ±4.0 standard deviations |
+| `shock_measure_type` | `str` | — | Type of shock measure: `mps_consensus_hf` (Fed) or `ois_1y_monetary_hf` (ECB) |
+| `shock_tier` | `int64` | — | Shock quality tier: 1 (Consensus high-frequency intraday surprise) |
+| `shock_grade` | `str` | — | Shock quality grade: `A` |
+| `shock_source` | `str` | — | Source of high-frequency series (FRBSF Bauer-Swanson or EA-MPD Altavilla et al.) |
+| `shock_usable` | `int8` | flag | 1 if shock is non-null and verified usable for econometric estimation |
+| `shock_primary` | `int8` | flag | 1 for primary baseline specification |
+| `shock_secondary` | `int8` | flag | 1 for secondary sensitivity specification (0 for Tier 1) |
+| `shock_primary_rescaled` | `int8` | flag | 1 for extended primary sample |
+| `shock_proxy_tenor` | `str` | — | Empty for Tier 1 (HFI shocks use intraday futures/OIS) |
+| `split_tag` | `str` | — | Sample split: `train` (≤2019-12-31), `crisis` (2020-2021), `blind_test` (≥2022-01-01) |
+| `clr_1` | `float64` | log return | 1-day cumulative log return from baseline to reacting session close |
+| `clr_3` | `float64` | log return | 3-day cumulative log return across reacting window |
+| `clr_5` | `float64` | log return | 5-day cumulative log return across reacting window |
+| `clr_20` | `float64` | log return | 20-day cumulative log return across reacting window |
+| `clr_60` | `float64` | log return | 60-day cumulative log return across reacting window |
+| `overlap_1d` ... `overlap_60d` | `int8` | flag | 1 if another central bank policy decision occurs within forward [t, t+W-1] window |
+| `overlap_count_1d` ... `overlap_count_60d` | `int64` | count | Total count of overlapping foreign/domestic central bank decisions in forward window |
+| `ctrl_cpi` | `float64` | index level | Most recently published monthly CPI for country where `available_from <= decision_date` (max age 62 days) |
+| `ctrl_ind_prod` | `float64` | index level | Most recently published Industrial Production index where `available_from <= decision_date` (max age 62 days) |
+| `ctrl_policy_rate` | `float64` | percent | Local central bank policy rate as-of decision date (max age 7 days) |
+| `ctrl_fx_lcu_per_usd` | `float64` | local per USD | Local currency exchange rate per USD as-of decision date (US = 1.0; max age 7 days) |
+| `ctrl_yield_1y` | `float64` | percent | Local 1-year benchmark sovereign yield as-of decision date (max age 7 days) |
+| `ctrl_yield_2y` | `float64` | percent | Local 2-year benchmark sovereign yield as-of decision date (AU, CA, CN; max age 7 days) |
+| `ctrl_yield_short` | `float64` | percent | Composite short benchmark sovereign yield (1Y where available, else 2Y) |
+| `ctrl_vix` | `float64` | index points | Global CBOE VIX close as-of decision date (max age 7 days) |
+
+---
+
+## `data/final/analysis_tier2_primary.parquet`
+
+One row per **(Tier 2 rate-change decision × reacting index)** where `analysis_ready_timing == 1` and `shock_primary == 1`.
+This table represents the primary out-of-sample transfer evaluation sample evaluating whether sovereign yield changes proxy monetary surprises on rate-change days. Rate changes carry strong, verified policy signal ($VR = 3.8\text{ to }7.2$). Holds are excluded from the primary sample because daily yield variance on hold days is indistinguishable from non-meeting noise ($VR \approx 1.0$). Central banks without timing evidence or under pegs (BoJ ZIRP/YCC, PBoC, pre-2016 BoE, pre-2013 BoC/CBR) are excluded.
+
+Total rows: **6,297** across 176 rate-change decisions (RBA: 71, CBR: 41, BoC: 29, BoE: 25, Fed: 8, ECB: 2).
+
+Columns match `analysis_tier1.parquet` exactly, with:
+- `shock_tier`: 2
+- `shock_grade`: `B`
+- `shock_measure_type`: `yield_proxy`
+- `shock_proxy_tenor`: Tenor of sovereign benchmark used (`1Y` for BoE, CBR, Fed, ECB; `2Y` for BoC, RBA).
+- `shock_primary`: Strictly 1
+- `decision`: Restricted strictly to `hike` or `cut`
+- `analysis_ready_timing`: Strictly 1
+
+---
+
 ## Interim (Phase B1): `data/interim/pilot_policy_decisions.csv`
 
 One row per policy event for the pilot regimes (Fed, ECB, RBI, BoJ), 2000 to latest.

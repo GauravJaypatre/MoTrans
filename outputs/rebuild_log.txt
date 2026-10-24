@@ -1,31 +1,37 @@
 ================================================================================
 MoTrans-15 Pipeline Double Rebuild Verification
 ================================================================================
-Timestamp: 2026-10-23T14:50:01.095914+00:00
+Timestamp: 2026-10-24T13:34:26.799688+00:00
 
 --- STARTING REBUILD RUN 1 FROM data/raw ONLY ---
 Run 1 completed successfully.
-  Run 1: events.parquet            -> c76e44369d0402d4254a296a4b9188fdcb72435edbfc641a598b59f13d5dbae7
+  Run 1: analysis_tier1.parquet    -> beaa4563023f6b6a22d0ed0131ca0a4049f4728494101607a3f3c89a003d5bae
+  Run 1: analysis_tier2_primary.parquet -> 83f3c53736ff588423a94acdd5ab88377265d967df6bde00a0a3e2e7a9f70628
+  Run 1: events.parquet            -> 1097551c08cd5cfcfa6c061aba20ee4e607b5a7848493e2aecb3622e321a5b54
   Run 1: hand_label_sample_with_text.csv -> 1591b0d47499d9242a4b4c2355809d3f61d49801cd6ffc3eab426847f4eccc64
   Run 1: panel_daily.parquet       -> 26a149972615b4bc2f6fd90173ba036768244c05b75e6262a20ea2235f0b79b1
-  Run 1: policy_decisions.csv      -> c51ad639dc2e0fd9ffd284924d0a35ee1e89bcc1690e86222c2db8090290f556
+  Run 1: policy_decisions.csv      -> 4df411b05cb066efab17d6e6b0393638cd4112db6f7a377ec84a099512cd58d1
   Run 1: shocks.parquet            -> e793c6e94a9444bdf9981bb801c0e52a96c00122f6040cb83e5a1d8b73911093
   Run 1: statements.parquet        -> 975a7f6e1e6924d62d124fcefc596f1ba1da0e1c8cd813e0f79bcd786e1c9271
 
 --- STARTING REBUILD RUN 2 FROM data/raw ONLY ---
 Run 2 completed successfully.
-  Run 2: events.parquet            -> c76e44369d0402d4254a296a4b9188fdcb72435edbfc641a598b59f13d5dbae7
+  Run 2: analysis_tier1.parquet    -> beaa4563023f6b6a22d0ed0131ca0a4049f4728494101607a3f3c89a003d5bae
+  Run 2: analysis_tier2_primary.parquet -> 83f3c53736ff588423a94acdd5ab88377265d967df6bde00a0a3e2e7a9f70628
+  Run 2: events.parquet            -> 1097551c08cd5cfcfa6c061aba20ee4e607b5a7848493e2aecb3622e321a5b54
   Run 2: hand_label_sample_with_text.csv -> 1591b0d47499d9242a4b4c2355809d3f61d49801cd6ffc3eab426847f4eccc64
   Run 2: panel_daily.parquet       -> 26a149972615b4bc2f6fd90173ba036768244c05b75e6262a20ea2235f0b79b1
-  Run 2: policy_decisions.csv      -> c51ad639dc2e0fd9ffd284924d0a35ee1e89bcc1690e86222c2db8090290f556
+  Run 2: policy_decisions.csv      -> 4df411b05cb066efab17d6e6b0393638cd4112db6f7a377ec84a099512cd58d1
   Run 2: shocks.parquet            -> e793c6e94a9444bdf9981bb801c0e52a96c00122f6040cb83e5a1d8b73911093
   Run 2: statements.parquet        -> 975a7f6e1e6924d62d124fcefc596f1ba1da0e1c8cd813e0f79bcd786e1c9271
 
 --- ASSERTING BIT-FOR-BIT IDENTITY BETWEEN RUN 1 AND RUN 2 ---
-  events.parquet           : Run 1=c76e44369d0402d4... Run 2=c76e44369d0402d4... Match=True
+  analysis_tier1.parquet   : Run 1=beaa4563023f6b6a... Run 2=beaa4563023f6b6a... Match=True
+  analysis_tier2_primary.parquet: Run 1=83f3c53736ff5884... Run 2=83f3c53736ff5884... Match=True
+  events.parquet           : Run 1=1097551c08cd5cfc... Run 2=1097551c08cd5cfc... Match=True
   hand_label_sample_with_text.csv: Run 1=1591b0d47499d924... Run 2=1591b0d47499d924... Match=True
   panel_daily.parquet      : Run 1=26a149972615b4bc... Run 2=26a149972615b4bc... Match=True
-  policy_decisions.csv     : Run 1=c51ad639dc2e0fd9... Run 2=c51ad639dc2e0fd9... Match=True
+  policy_decisions.csv     : Run 1=4df411b05cb066ef... Run 2=4df411b05cb066ef... Match=True
   shocks.parquet           : Run 1=e793c6e94a9444bd... Run 2=e793c6e94a9444bd... Match=True
   statements.parquet       : Run 1=975a7f6e1e6924d6... Run 2=975a7f6e1e6924d6... Match=True
 PASSED: Double rebuild outputs from data/raw/ are 100% BIT-FOR-BIT IDENTICAL!

@@ -23,19 +23,22 @@ needs_data = pytest.mark.skipif(not (FINAL / "policy_decisions.csv").exists(), r
 OFFICIAL_SAMPLES = {
     "BoE": [
         # (date, expected_time_local, expected_time_quality, expected_decision)
-        ("2000-01-13", "12:00", "exact", "hike"),
-        ("2000-02-10", "12:00", "exact", "hike"),
-        ("2001-02-08", "12:00", "exact", "cut"),
-        ("2003-07-10", "12:00", "exact", "cut"),
-        ("2007-07-05", "12:00", "exact", "hike"),
-        ("2008-11-06", "12:00", "exact", "cut"),
-        ("2009-03-05", "12:00", "exact", "cut"),
+        # Pre-2016: assumed 12:00 convention, approximate quality; analysis_ready_timing = 0
+        ("2000-01-13", "12:00", "approximate", "hike"),
+        ("2000-02-10", "12:00", "approximate", "hike"),
+        ("2001-02-08", "12:00", "approximate", "cut"),
+        ("2003-07-10", "12:00", "approximate", "cut"),
+        ("2007-07-05", "12:00", "approximate", "hike"),
+        ("2008-11-06", "12:00", "approximate", "cut"),
+        ("2009-03-05", "12:00", "approximate", "cut"),
+        # 2016+: official MPC publication convention, exact quality (boe_mpc_official.html)
         ("2016-08-04", "12:00", "exact", "cut"),
         ("2020-03-11", "12:00", "exact", "cut"),
         ("2022-02-03", "12:00", "exact", "hike"),
         ("2023-08-03", "12:00", "exact", "hike"),
         ("2024-08-01", "12:00", "exact", "cut"),
     ],
+
     "BoC": [
         # Pre-2013: no verified official schedule file stating exact release time -> unknown
         ("2001-01-23", None, "unknown", "cut"),

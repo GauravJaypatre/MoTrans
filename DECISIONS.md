@@ -469,3 +469,37 @@ official page)"`. See ISS-029 for the sourcing plan.
 - **12 October Equity Bar Cutoff (Item 7)**:
   - German DAX (closes 15:30 UTC) and Indian Nifty (closes 10:00 UTC) had completed trading sessions before the 18:17 UTC data fetch on 2026-10-12.
   - Implemented exchange-close cutoff logic in `src/collect_indices.py` to preserve full closing bars for DE and IN on 2026-10-12, dropping only incomplete US bars.
+
+---
+
+## 2026-10-24 — Final Wrap-Up & Dataset Freeze (v1.0-data-freeze)
+
+### DECISION-028: Dataset Freeze, Final Script-Generated Corrections, Analysis Tables, and Pre-Registration Lock
+- **Date Recorded**: 2026-10-24 (Final Dataset Freeze).
+- **True Policy Additions in V1 vs V2 (`outputs/v1_vs_v2_diff.csv`)**:
+  - Rebuilt policy decisions comparison strictly from data: v2 contains exactly 583 net additional policy decisions relative to v1 (2,491 vs 1,908).
+  - True additions by regime: BoE +229 (holds), RBA +215 (holds: 147 post-2008 + 68 pre-2008), BoC +139 (FAD holds). All other 9 regimes have identical decision counts.
+  - Exactly 71 shared decisions had 1-day alignment shifts between BIS effective dates and official announcement dates (52 RBA Wednesday -> Tuesday; 19 BoC Thursday -> Wednesday).
+  - Erroneous explanations listing BoJ, Banxico, and BoK as additions were completely deleted.
+- **Dynamic 12 October Equity Bar Reconstruction (`outputs/oct12_bars.csv`)**:
+  - Regenerated dynamically from `data/raw/MANIFEST.csv` retrieval timestamps and actual panel observations. Real `index_id`s used for all 38 indices: 26 retained, 9 exchange holidays, 3 US incomplete bars dropped.
+- **BoE Pre-2016 Timing Approximation & Effective Sample Impact**:
+  - Because on-disk official documentation (`boe_mpc_official.html`) only verifies the 12:00 noon Thursday publication convention for the 2016–present period, all BoE decisions prior to 2016-01-01 are conservatively assigned `time_quality = "approximate"` and `analysis_ready_timing = 0`.
+  - Effect: drops 30 pre-2016 BoE rate changes from the effective analysis sample. Total effective sample is strictly 670 decisions (was 700). Blind test remains 100% intact (19 BoE blind test decisions, 47 Tier 1 blind test decisions).
+- **Analysis-Ready Tables Construction**:
+  - Created `data/final/analysis_tier1.parquet` (15,805 rows across 494 decisions: 292 ECB, 202 Fed) with cumulative log returns, overlap flags/counts, and macro/financial controls merged strictly where `available_from <= decision_date`.
+  - Created `data/final/analysis_tier2_primary.parquet` (6,297 rows across 176 rate-change decisions: RBA 71, CBR 41, BoC 29, BoE 25, Fed 8, ECB 2) with `analysis_ready_timing == 1` and `shock_primary == 1`.
+  - Added comprehensive schemas to `docs/data_dictionary.md`.
+- **Pre-Registration Lock (`docs/preregistration.md`)**:
+  - Formally locked research design and documented all post-draft amendments with dates and pre-outcome status. Confirmed zero outcome models have been run.
+- **Limitations Disclosure (`docs/limitations.md`)**:
+  - Documented effective sample sizes, HFI end dates, regimes without shocks, hold-day noise ($VR \approx 1.0$), timing gaps, raw data manifest break handling, redistribution restrictions, and overlapping event window contamination.
+- **Statement Annotation Kit (`docs/labelling_guide.md` & `src/label_agreement.py`)**:
+  - Established annotation guidelines, 5-point and 4-point scales, and inter-annotator agreement evaluation tools. Label columns in datasets remain strictly blank.
+- **Release Package (`release/`)**:
+  - Assembled clean public release excluding licensed price levels (`level_local` in `panel_daily`) and raw equity files.
+- **Double Rebuild & Test Suite Verification**:
+  - Pipeline verified end-to-end: double rebuild from `data/raw/` achieved 100% bit-for-bit SHA-256 identity across all final parquet and CSV files.
+  - Test suite: 140 passed out of 140 tests with zero skips and zero failures.
+- **Dataset Frozen**: All modifications to `data/final/` are strictly halted under tag `v1.0-data-freeze`.
+

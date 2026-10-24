@@ -1,6 +1,6 @@
 # MoTrans-15 Data Validation, Tiers, Overlap, and Completeness Report
 
-*Generated automatically from `shocks.parquet`, `policy_decisions.csv`, `events.parquet`, and `controls_long.parquet` on 2026-10-23.*
+*Generated automatically from `shocks.parquet`, `policy_decisions.csv`, `events.parquet`, and `controls_long.parquet` on 2026-10-24.*
 
 All tables below are computed directly from the underlying pipeline datasets via code (never typed by hand).
 
@@ -57,14 +57,14 @@ Excludes: all BoJ (zero lower bound peg), CBR post-Feb 2022 (structural break / 
 | **Subtotal Tier 1** | — | — | **413** | **34** | **47** | **494** | **494** | — |
 | Tier 2 | BCB | `yield_proxy` | 182 | 0 | 0 | **182** | **0** | Secondary Transfer Test |
 | Tier 2 | BoC | `yield_proxy` | 154 | 18 | 38 | **210** | **29** | Secondary Transfer Test |
-| Tier 2 | BoE | `yield_proxy` | 228 | 18 | 38 | **284** | **55** | Secondary Transfer Test |
+| Tier 2 | BoE | `yield_proxy` | 228 | 18 | 38 | **284** | **25** | Secondary Transfer Test |
 | Tier 2 | BoJ | `yield_proxy` | 278 | 17 | 38 | **333** | **0** | BoJ ZIRP Peg (Primary = 0) |
 | Tier 2 | CBR | `yield_proxy` | 64 | 11 | 25 | **100** | **41** | Secondary Transfer Test |
 | Tier 2 | ECB | `yield_proxy` | 0 | 0 | 7 | **7** | **2** | Secondary Transfer Test |
 | Tier 2 | Fed | `yield_proxy` | 2 | 0 | 22 | **24** | **8** | Secondary Transfer Test |
 | Tier 2 | PBoC | `yield_proxy` | 30 | 3 | 7 | **40** | **0** | Secondary Transfer Test |
 | Tier 2 | RBA | `yield_proxy` | 217 | 23 | 44 | **284** | **71** | Secondary Transfer Test |
-| **Subtotal Tier 2** | — | — | **1155** | **90** | **219** | **1464** | **206** | — |
+| **Subtotal Tier 2** | — | — | **1155** | **90** | **219** | **1464** | **176** | — |
 
 ## 4. Policy Decision Overlap and Event Contamination by Window Length
 

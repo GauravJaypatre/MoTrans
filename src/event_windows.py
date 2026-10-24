@@ -80,12 +80,15 @@ def build(policy: pd.DataFrame, panel: pd.DataFrame) -> pd.DataFrame:
             w = window_returns(s, a.baseline_date, a.reacting_date)
             if w is None:
                 continue
+            is_boe_pre2016 = (ev.get("regime") == "BoE") and (dt.date.fromisoformat(ev["decision_date"]) < dt.date(2016, 1, 1))
             is_clean_timing = int(
                 (not a.timing_ambiguous) and
+                (not is_boe_pre2016) and
                 (ev.get("time_quality") in ("exact", "approximate")) and
                 (a.reacting_date is not None) and
                 (str(a.reacting_date) >= str(ev["decision_date"]))
             )
+
             rows.append({
                 "event_id": event_id, **{k: ev[k] for k in KEEP},
                 "country": country, "index_id": sid, "index_class": s["index_class"],

@@ -4,6 +4,31 @@ All modifications are applied at the pipeline code level (`src/`), never by hand
 output files. The original workbook `data/final/MoTrans15_all_records.xlsx` is untouched.
 The cleaned output is `data/final/MoTrans15_v2.xlsx`.
 
+## [v1.0-data-freeze] — 2026-10-24 Final Dataset Freeze, Corrections, Analysis Tables, and Pre-Registration Lock
+
+### Final Release Milestones
+1. **Script-Generated Corrections**:
+   - Rebuilt `outputs/v1_vs_v2_diff.csv` policy decisions section strictly from data: exactly 583 net additional policy decisions in v2 (2,491 vs 1,908), consisting of BoE (+229 holds), RBA (+215 holds), and BoC (+139 FAD holds). Purged erroneous claims of BoJ/Banxico/BoK additions.
+   - Regenerated `outputs/oct12_bars.csv` dynamically from `data/raw/MANIFEST.csv` retrieval timestamps and actual panel observations across all 38 indices.
+   - Reconciled `outputs/rebuild_comparison.csv` row counts and explanations across all sheets.
+   - Reclassified pre-2016 Bank of England decisions to `time_quality = "approximate"` and `analysis_ready_timing = 0` (reducing effective sample by 30 decisions to strictly 670).
+2. **Analysis-Ready Export Tables**:
+   - Constructed `data/final/analysis_tier1.parquet` (15,805 rows, 494 decisions: 292 ECB, 202 Fed) with high-frequency surprises, cumulative log returns, forward overlap contamination indicators, and macro/financial controls merged with zero look-ahead.
+   - Constructed `data/final/analysis_tier2_primary.parquet` (6,297 rows, 176 rate-change decisions: RBA 71, CBR 41, BoC 29, BoE 25, Fed 8, ECB 2) with verified timing and primary sovereign yield proxies.
+   - Documented full schemas in `docs/data_dictionary.md`.
+3. **Pre-Registration Lock & Limitations Disclosure**:
+   - Created and locked `docs/preregistration.md` with complete pre-analysis protocol, sample splits, and dated pre-specified amendments. Zero outcome models have been run.
+   - Authored plain-language disclosure in `docs/limitations.md` detailing effective sample constraints, HFI coverage boundaries, hold-day variance noise, timing archive gaps, manifest break handling, and redistribution restrictions.
+4. **Statement Annotation Kit**:
+   - Authored `docs/labelling_guide.md` providing standard 5-point and 4-point rubrics and benchmark examples.
+   - Created `src/label_agreement.py` for evaluating Cohen's kappa and Spearman/Pearson rank correlations. All label columns in datasets remain blank.
+5. **Clean Public Release Subset (`release/`)**:
+   - Assembled release directory containing full source code, test suite, documentation, and derived analysis tables, while strictly redacting proprietary closing price levels (`level_local` in `panel_daily`) and raw index files.
+6. **Data Freeze & Bit-for-Bit Determinism**:
+   - Executed clean double rebuild from `data/raw/` alone: verified 100% bitwise SHA-256 equivalence across all output parquets and CSVs.
+   - Executed full test suite: 140 passed out of 140 tests (0 failed, 0 skipped).
+   - Documented all artifact hashes and environment specifications in `docs/DATA_FREEZE.md`. Tagged commit `v1.0-data-freeze`.
+
 ## [v2.3.0-pg4] — 2026-10-23 Priority Group 4 (Raw Integrity Diff, Full Pipeline Rebuild, Arithmetic Verification, Evidence Offsets, 12 Oct Bars, BoC yield_2y, RBA Pre-2008 Timing, Calendar Audits, and Tier 2 Design)
 
 ### Enhancements and Audited Fixes

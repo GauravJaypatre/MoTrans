@@ -1,33 +1,39 @@
-index_id,country,date,exchange_close_utc,retrieval_utc,status,close_price
-ca_tsx_daily,CA,2026-10-12,20:00 UTC,18:17:08 UTC,DROPPED (Incomplete intraday bar retrieved before 20:00 UTC market close),
-ca_tsx_fin_daily,CA,2026-10-12,20:00 UTC,18:17:08 UTC,DROPPED (Incomplete intraday bar retrieved before 20:00 UTC market close),
-ca_tsx_venture_daily,CA,2026-10-12,20:00 UTC,18:17:08 UTC,DROPPED (Incomplete intraday bar retrieved before 20:00 UTC market close),
-us_bkx,US,2026-10-12,20:00 UTC,18:17:08 UTC,DROPPED (Incomplete intraday bar retrieved before 20:00 UTC market close),
-us_rut,US,2026-10-12,20:00 UTC,18:17:08 UTC,DROPPED (Incomplete intraday bar retrieved before 20:00 UTC market close),
-us_sp500,US,2026-10-12,20:00 UTC,18:17:08 UTC,DROPPED (Incomplete intraday bar retrieved before 20:00 UTC market close),
-au_asx200,AU,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),8783.2
-au_asx200_fin,AU,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),9197.7
-au_small_ords,AU,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),3278.9
-cn_csi300,CN,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),4287.98
-cn_csi300_banks,CN,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),7344.31
-cn_csi500,CN,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),7093.02
-de_dax,DE,2026-10-12,15:30 UTC,18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),25277.68
-de_dax_banks,DE,2026-10-12,15:30 UTC,18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),353.44
-de_mdax,DE,2026-10-12,15:30 UTC,18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),30104.33
-de_stoxx_banks_etf,DE,2026-10-12,15:30 UTC,18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),28.68
-ea_emu_smallcap_etf,EA,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),355.2
-es_ibex35,ES,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),19285.8
-fr_cac40,FR,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),7832.88
-gb_ftse100,GB,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),10656.3
-gb_ftse_smallcap,GB,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),8164.9
-in_nifty50,IN,2026-10-12,10:00 UTC,18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),22363.35
-in_nifty_bank,IN,2026-10-12,10:00 UTC,18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),54918.0
-in_nifty_smallcap100,IN,2026-10-12,10:00 UTC,18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),19425.8
-it_ftsemib,IT,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),50035.0
-kr_banks_etf,KR,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),15225.0
-kr_kosdaq,KR,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),849.19
-kr_kospi,KR,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),6384.24
-mx_ipc,MX,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),66746.78
-ru_imoex,RU,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),2389.04
-ru_moex_fin,RU,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),8500.77
-ru_moex_smid,RU,2026-10-12,Varies (< 18:17 UTC),18:17:08 UTC,RETAINED (Complete closing bar before 18:17 UTC retrieval),1161.59
+index_id,country,date,raw_file,retrieval_utc,status,level_local
+au_asx200,AU,2026-10-12,data/raw/indices/au_asx200_daily.csv,2026-10-13T14:18:41Z,RETAINED (Complete session bar before retrieval),8783.2001953125
+au_asx200_fin,AU,2026-10-12,data/raw/indices/au_asx200_fin_daily.csv,2026-10-13T14:18:42Z,RETAINED (Complete session bar before retrieval),9197.7001953125
+au_small_ords,AU,2026-10-12,data/raw/indices/au_small_ords_daily.csv,2026-10-13T14:18:42Z,RETAINED (Complete session bar before retrieval),3278.89990234375
+br_ibov,BR,2026-10-12,data/raw/indices/br_ibov_daily.csv,2026-10-13T14:17:44Z,HOLIDAY (Exchange closed on 2026-10-12),
+br_ifnc,BR,2026-10-12,data/raw/indices/br_ifnc_b3.json,2026-10-13T14:18:12Z,HOLIDAY (Exchange closed on 2026-10-12),
+br_smll,BR,2026-10-12,data/raw/indices/br_smll_b3.json,2026-10-13T14:18:39Z,HOLIDAY (Exchange closed on 2026-10-12),
+ca_tsx,CA,2026-10-12,data/raw/indices/ca_tsx_daily.csv,2026-10-13T14:17:42Z,HOLIDAY (Exchange closed on 2026-10-12),
+ca_tsx_fin,CA,2026-10-12,data/raw/indices/ca_tsx_fin_daily.csv,2026-10-13T14:17:43Z,HOLIDAY (Exchange closed on 2026-10-12),
+ca_tsx_venture,CA,2026-10-12,data/raw/indices/ca_tsx_venture_daily.csv,2026-10-13T14:17:44Z,HOLIDAY (Exchange closed on 2026-10-12),
+cn_csi300,CN,2026-10-12,data/raw/indices/cn_csi300_banks_csindex.json,2026-10-13T14:12:14Z,RETAINED (Complete session bar before retrieval),4287.98
+cn_csi300_banks,CN,2026-10-12,data/raw/indices/cn_csi300_banks_csindex.json,2026-10-13T14:12:14Z,RETAINED (Complete session bar before retrieval),7344.31
+cn_csi500,CN,2026-10-12,data/raw/indices/cn_csi500_csindex.json,2026-10-13T14:12:50Z,RETAINED (Complete session bar before retrieval),7093.02
+de_dax,DE,2026-10-12,data/raw/de_dax_banks_daily.csv,2026-10-12T18:17:10Z,RETAINED (Complete session bar before retrieval),25277.6796875
+de_dax_banks,DE,2026-10-12,data/raw/de_dax_banks_daily.csv,2026-10-12T18:17:10Z,RETAINED (Complete session bar before retrieval),353.44000244140625
+de_mdax,DE,2026-10-12,data/raw/de_mdax_daily.csv,2026-10-12T18:17:11Z,RETAINED (Complete session bar before retrieval),30104.330078125
+de_stoxx_banks_etf,DE,2026-10-12,data/raw/de_stoxx_banks_etf_daily.csv,2026-10-12T18:17:10Z,RETAINED (Complete session bar before retrieval),28.68000030517578
+ea_emu_smallcap_etf,EA,2026-10-12,data/raw/indices/ea_emu_smallcap_etf_daily.csv,2026-10-13T14:12:57Z,RETAINED (Complete session bar before retrieval),355.20001220703125
+es_ibex35,ES,2026-10-12,data/raw/indices/es_ibex35_daily.csv,2026-10-13T14:12:56Z,RETAINED (Complete session bar before retrieval),19285.80078125
+fr_cac40,FR,2026-10-12,data/raw/indices/fr_cac40_daily.csv,2026-10-13T14:12:54Z,RETAINED (Complete session bar before retrieval),7832.8798828125
+gb_ftse100,GB,2026-10-12,data/raw/indices/gb_ftse100_daily.csv,2026-10-13T14:12:52Z,RETAINED (Complete session bar before retrieval),10656.2998046875
+gb_ftse_smallcap,GB,2026-10-12,data/raw/indices/gb_ftse_smallcap_daily.csv,2026-10-13T14:12:53Z,RETAINED (Complete session bar before retrieval),8164.89990234375
+in_nifty50,IN,2026-10-12,data/raw/in_nifty50_niftyindices.json,2026-10-13T12:18:57Z,RETAINED (Complete session bar before retrieval),22363.35
+in_nifty_bank,IN,2026-10-12,data/raw/in_nifty_bank_niftyindices.json,2026-10-13T12:18:57Z,RETAINED (Complete session bar before retrieval),54918.0
+in_nifty_smallcap100,IN,2026-10-12,data/raw/in_nifty_smallcap100_daily.json,2026-10-12T18:17:12Z,RETAINED (Complete session bar before retrieval),19425.8
+it_ftsemib,IT,2026-10-12,data/raw/indices/it_ftsemib_daily.csv,2026-10-13T14:12:55Z,RETAINED (Complete session bar before retrieval),50035.0
+jp_mothers_etf,JP,2026-10-12,data/raw/jp_mothers_etf_daily.csv,2026-10-12T18:17:15Z,HOLIDAY (Exchange closed on 2026-10-12),
+jp_nikkei225,JP,2026-10-12,data/raw/jp_nikkei225_daily.csv,2026-10-12T18:17:13Z,HOLIDAY (Exchange closed on 2026-10-12),
+jp_topix_banks_etf,JP,2026-10-12,data/raw/jp_topix_banks_etf_daily.csv,2026-10-12T18:17:14Z,HOLIDAY (Exchange closed on 2026-10-12),
+kr_banks_etf,KR,2026-10-12,data/raw/indices/kr_banks_etf_daily.csv,2026-10-13T14:18:45Z,RETAINED (Complete session bar before retrieval),15225.0
+kr_kosdaq,KR,2026-10-12,data/raw/indices/kr_kosdaq_daily.csv,2026-10-13T14:18:46Z,RETAINED (Complete session bar before retrieval),849.1900024414062
+kr_kospi,KR,2026-10-12,data/raw/indices/kr_kospi_daily.csv,2026-10-13T14:18:43Z,RETAINED (Complete session bar before retrieval),6384.240234375
+mx_ipc,MX,2026-10-12,data/raw/indices/mx_ipc_daily.csv,2026-10-13T14:18:40Z,RETAINED (Complete session bar before retrieval),66746.78125
+ru_imoex,RU,2026-10-12,data/raw/indices/ru_imoex_moex.json,2026-10-13T14:14:57Z,RETAINED (Complete session bar before retrieval),2389.04
+ru_moex_fin,RU,2026-10-12,data/raw/indices/ru_moex_fin_moex.json,2026-10-13T14:16:38Z,RETAINED (Complete session bar before retrieval),8500.77
+ru_moex_smid,RU,2026-10-12,data/raw/indices/ru_moex_smid_moex.json,2026-10-13T14:17:42Z,RETAINED (Complete session bar before retrieval),1161.59
+us_bkx,US,2026-10-12,data/raw/us_bkx_daily.csv,2026-10-12T18:17:08Z,DROPPED (Incomplete intraday bar retrieved before 20:00 UTC close),
+us_rut,US,2026-10-12,data/raw/us_rut_daily.csv,2026-10-12T18:17:09Z,DROPPED (Incomplete intraday bar retrieved before 20:00 UTC close),
+us_sp500,US,2026-10-12,data/raw/us_sp500_daily.csv,2026-10-12T18:17:08Z,DROPPED (Incomplete intraday bar retrieved before 20:00 UTC close),

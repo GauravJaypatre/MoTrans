@@ -12,11 +12,13 @@ Checks that:
 
 from __future__ import annotations
 
+import datetime as dt
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import pytest
+
 
 from src.alignment import _ts, sessions
 
@@ -113,10 +115,12 @@ class TestPriorityGroup1Timing:
             )
 
     def test_analysis_ready_timing_flag_integrity(self, events_df):
-        """analysis_ready_timing must equal 1 iff timing is clean (unambiguous, non-unknown, valid reaction)."""
+        """analysis_ready_timing must equal 1 iff timing is clean (unambiguous, non-unknown, valid reaction, excluding BoE pre-2016)."""
+        is_boe_pre2016 = (events_df["regime"] == "BoE") & (pd.to_datetime(events_df["decision_date"]).dt.date < dt.date(2016, 1, 1))
         clean_condition = (
             (events_df["timing_ambiguous"] == 0) &
             (events_df["time_quality"].isin(["exact", "approximate"])) &
+            (~is_boe_pre2016) &
             (events_df["reacting_session_date"].notna()) &
             (events_df["reacting_session_date"].astype(str) >= events_df["decision_date"].astype(str))
         )
@@ -143,19 +147,22 @@ class TestPriorityGroup1Timing:
 
     @pytest.mark.parametrize("regime", list(SOURCED_REGIMES))
     def test_sourced_regimes_home_market_is_analysis_ready(self, policy_df, events_df, regime):
-        """For sourced regimes, unambiguous home-market rows must be >=90% analysis_ready_timing=1."""
+        """For sourced regimes, unambiguous home-market rows must be >=90% analysis_ready_timing=1 (for BoE, evaluated 2016+)."""
         home_ev = events_df[
             (events_df.regime == regime) &
             (events_df.home_market == 1) &
             (events_df.timing_ambiguous == 0) &
             (events_df.time_quality.isin(["exact", "approximate"]))
         ]
+        if regime == "BoE":
+            home_ev = home_ev[pd.to_datetime(home_ev.decision_date).dt.date >= dt.date(2016, 1, 1)]
         if len(home_ev) == 0:
             return
         ready_share = home_ev["analysis_ready_timing"].mean()
         assert ready_share >= 0.90, (
             f"{regime} home-market unambiguous rows: only {ready_share:.1%} are analysis_ready_timing=1"
         )
+
 
 
 # --- provenance of announcement times (ISS-029) -----------------------------------

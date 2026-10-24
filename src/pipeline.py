@@ -13,6 +13,7 @@ if sys.platform == "win32":
 
 from src import (
     audit_pilot,
+    build_analysis_tables,
     build_panel,
     build_shocks,
     collect_controls,
@@ -41,6 +42,8 @@ def main() -> None:
     build_shocks.main()         # data/final/shocks.parquet, shock columns in events, docs/shock_validation.md
     # Phase E statement corpus
     collect_statements.main()   # data/final/statements.parquet, coverage, hand-label sample
+    # Analysis tables
+    build_analysis_tables.main() # data/final/analysis_tier1.parquet, analysis_tier2_primary.parquet
 
 
 if __name__ == "__main__":

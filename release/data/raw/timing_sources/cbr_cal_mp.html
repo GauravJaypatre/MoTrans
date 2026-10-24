@@ -1,0 +1,2991 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="zoom:lang" content="en" />
+    <meta name="zoom:last-modified" content="Fri, 23 Oct 2026 12:39:46 GMT" />
+<title>Calendar of key rate decisions | Bank of Russia</title>
+
+
+
+    <meta property="og:image" content="/common/images/share-1.jpg" />
+
+    
+
+
+            <link rel="stylesheet" type="text/css" href="/common/libs/jquery-ui/jquery-ui.min.css?v=v478607061" media="all">
+
+            <!--[if IE 9]><link rel="stylesheet" type="text/css" href="/common/style/main-ie9.css?v=v1337212920" media="all"><![endif]-->
+
+            <!--[if gt IE 9]><!--><link rel="stylesheet" type="text/css" href="/common/style/main.min.css?v=v1337212920" media="all"><!--<![endif]-->
+
+
+        <script type="text/javascript" src="/common/libs/jquery-3.7.1.min.js?v=v735956814"></script>
+
+
+
+        <script type="text/javascript" src="/common/libs/jquery-ui/jquery-ui.min.js?v=v478607061"></script>
+
+        <script type="text/javascript" src="/common/libs/jquery.inputmask.min.js?v=v478607061"></script>
+
+
+        <script type="text/javascript" src="/common/scripts/vendor.js?v=v4270970564"></script>
+
+        <script type="text/javascript" src="/common/libs/jquery.floatThead.min.js?v=v478607061"></script>
+
+
+
+
+
+
+
+
+        <script type="text/javascript" src="/common/libs/popper.js?v=v478607061"></script>
+
+        <script type="text/javascript" src="/common/libs/tippy.js?v=v478607061"></script>
+
+        <script type="text/javascript" src="/common/scripts/main.min.js?v=v1337212920"></script>
+
+
+        <script type="text/javascript" src="/common/libs/localization-en.js?v=v955241707"></script>
+
+        <script type="text/javascript" src="/js/jquery.cookie.min.js?v=v4260771145"></script>
+
+        <script type="text/javascript" src="/js/site.js?v=v2848633841"></script>
+
+
+
+
+
+    <script type="text/javascript">
+        $(function () {
+            var $menu = $('[data-menu]'),
+                $menuItemBtn = $menu.find('[data-menu-item-btn]'),
+                $menuShow = $('[data-menu-show]'),
+                $menuClose = $('[data-menu-close]');
+            var config = $menu.data('config');
+
+            $menuShow.on('click.cms_loadwholesite mouseenter.cms_loadwholesite', function (event) {
+                loadWholeSite();
+            });
+
+            var xhr = null;
+            function loadWholeSite() {
+                if (xhr === null) {
+                    $('.menu_wrap .networks-circle').html($('.networks-circle.footer_networks').html());
+                    $('.menu_wrap .header_search').html($('.header .offsetMenu .header_search').html());
+
+                    $('[data-cms-wholesite-placeholder]').addClass('with-centered-loader').empty();
+                    xhr = $.ajax(config.url, {
+                        dataType: "html",
+                        method: "get",
+                        success: function (html) {
+                            $('[data-cms-wholesite-placeholder]').replaceWith(html);
+
+                            $menu.find('.menu_tab[data-tabs-tab]').each(function () {
+                                var tab = $(this).data('tabs-tab');
+                                $(this).toggle($menu.find('[data-tabs-content="' + tab + '"]').length != 0);
+                            });
+
+                            $menu.trigger('new-html');
+
+                            for (var i in config.catalogPath) {
+                                $menu.find('li[data-catalog-id="' + config.catalogPath[i] + '"]')
+                                    .addClass("_active");
+                                $menu.find('li[data-catalog-id="' + config.catalogPath[i] + '"]')
+                                    .closest('[data-tabs-content]')
+                                    .trigger('open-anchor');
+                            }
+
+                            $menuShow.off('click.cms_loadwholesite mouseenter.cms_loadwholesite');
+                        },
+                        error: function () {
+                            $('[data-cms-wholesite-placeholder]').removeClass('with-centered-loader')
+                                .append('<div class="menu_content offset-md-1">' +
+                                    '<span class="group-error field-validation-error">Error loading site map. <a href="#">Please try again.</a></span>' +
+                                    '</div>')
+                                .find('a')
+                                .on('click', function () { loadWholeSite(); });
+                        },
+                        complete: function () {
+                            xhr = null;
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+
+
+<script>
+    if (window.localStorage) {
+        if (localStorage.getItem('vision-impaired'))
+            document.getElementsByTagName('html')[0].className += ' vision-impaired';
+    }
+</script>
+<script>
+    document.documentElement.style.setProperty('--scrollbar-width', '17px');
+    setTimeout(function () {
+        
+        var div = document.createElement('div');
+
+        div.style.overflowY = 'scroll';
+        div.style.width = '50px';
+        div.style.height = '50px';
+
+        
+        div.style.visibility = 'hidden';
+
+        document.body.appendChild(div);
+        var scrollWidth = Math.max(div.offsetWidth - div.clientWidth, 0.15); 
+        document.body.removeChild(div);
+        
+        document.documentElement.style.setProperty('--scrollbar-width', scrollWidth + 'px');
+    }, 0);
+</script>
+
+
+
+
+    
+</head>
+<body class="page-v3 page-v3-inside">
+
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();
+    for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(5774506, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+    });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/5774506" style="position:absolute; left:-9999px;" alt="" /></div></noscript>    
+<!-- /Yandex.Metrika counter -->
+        
+    
+
+    <div class="header-print">
+    <div class="offsetMenu">
+        <div class="header-print_inner">
+            <img class="header-print_logo" alt="cbr" src="/common/images/logo.svg">
+            <ul class="header-print_contacts">
+<li>12&nbsp;Neglinnaya Street, Moscow, 107016 Russia</li>
+
+<li><nobr class="phone">8 800 300-30-00</nobr></li>
+<li>www.cbr.ru</li>
+</ul>
+
+        </div>
+    </div>
+</div>
+
+    <header class="header" id="header">
+        <div class="top-line" data-top-line="">
+            <div class="header_burger-big"></div>
+            <div class="offsetMenu">
+                <div class="col-md-23 header_margin-left">
+                    <div class="top-line_inner header_inner">
+                        
+
+<div class="row">
+    <div class="col-xl-4 col-md-6">
+        <div class="header_left pr-0">
+                <div class="header_menu" data-menu-show=""></div>
+            <a class="header_logo_eng" href="/eng/"></a>
+                <a class="header_search_btn d-flex d-md-none" href="#" data-search-form-show="" aria-label="Search"><div class="header_search_icon"></div></a>
+            <a class="d-flex d-md-none" href="#" data-tooltip="" data-tooltip-content="Mode for visually impaired" data-tooltip-class="mobile-hide"><div class="header_visual-impaired_item"></div></a>
+        </div>
+    </div>
+    <div class="col-xl-17 col-md-13 offset-md-1 header_block">
+        <div class="d-none d-md-block">
+            <div class="header_right">
+                
+                <div class="networks header_networks header_visual-impaired header_visual-impaired_inner"><a href="#" data-tooltip="" data-tooltip-content="Mode for visually impaired" data-tooltip-class="mobile-hide" aria-label="Mode for visually impaired"><div class="header_visual-impaired_item"></div></a></div>
+                <div class="header_lang header_lang_inner header_networks">
+    <a href="/Localization/SwitchLanguage?url=%2Feng%2Fdkp%2Fcal_mp%2F&amp;from=en-CB&amp;to=ru-RU"><!--noindex-->RU<!--/noindex--></a>
+</div>
+                    <div class="header_networks header_search header_search_inner">
+                        <a class="header_search_btn" href="#" data-search-form-show="" aria-label="Search"><div class="header_search_icon"></div><span aria-hidden="true">Search</span></a>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="offsetMenu">
+            <div class="col-md-23 offset-md-1 header_margin-left">
+                <div class="header_inner">
+                    
+<div class="row">
+    <div class="col-xl-5 col-md-6">
+        <div class="header_left pr-0">
+            <div class="header_menu" data-menu-show=""></div>
+            <a class="header_logo_eng" href="/eng/"></a>
+            <a class="header_search_btn d-flex d-md-none" href="#" data-search-form-show="" aria-label="Search">
+                <div class="header_search_icon"></div>
+            </a>
+            <a class="d-flex d-md-none" href="#" data-tooltip data-tooltip-content="Mode for visually impaired" data-tooltip-class="mobile-hide">
+                <div class="header_visual-impaired_item"></div>
+            </a>
+        </div>
+    </div>
+    <div class="col-xl-17 col-md-13 offset-md-1 header_block justify-content-end">
+        <div class="d-none d-md-block">
+            <div class="header_right">
+                
+                <div class="networks header_networks header_visual-impaired header_visual-impaired_inner">
+                    <a href="#" data-tooltip data-tooltip-content="Mode for visually impaired" data-tooltip-class="mobile-hide" aria-label="Mode for visually impaired">
+                        <div class="header_visual-impaired_item"></div>
+                    </a>
+                </div>
+                <div class="header_lang header_lang_inner header_networks">
+    <a href="/Localization/SwitchLanguage?url=%2Feng%2Fdkp%2Fcal_mp%2F&amp;from=en-CB&amp;to=ru-RU"><!--noindex-->RU<!--/noindex--></a>
+</div>
+                <div class="header_networks header_search header_search_inner">
+                    <a class="header_search_btn" href="#" data-search-form-show="" aria-label="Search">
+                        <div class="header_search_icon"></div><span aria-hidden="true">Search</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <form action="/eng/search/" method="get" class="search-form" data-search-form=""
+      data-api-url="/Content/SearchSuggest/Suggest"
+      data-api-top-url="">
+    <div class="offsetMenu">
+        <div class="col-md-23 offset-md-1">
+            <div class="search-form_inner">
+                <div class="search-form_title">What do you want to find?<img class="search-form_title-close" src="/common/images/icons/menu-close-dark-grey.svg"></div>
+                <div class="search-form_content">
+                    <div class="search-form_block">
+                        <div class="search-form_icon"></div>
+                        <div class="search-form_field">
+                            <input name="text" type="text" autocomplete="off" placeholder="Start typing" data-search-form-input="" />
+                        </div>
+                    </div>
+                    <div class="search-form_clear" data-search-form-clear-btn=""><img src="/common/images/icons/menu-close-gray.svg"></div>
+                    <div class="search-form_btn">
+                        <button class="b-btn _blue" data-search-form-btn="">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div class="menu_wrap" data-menu="" data-config="{&quot;catalogPath&quot;:[21233,19298],&quot;url&quot;:&quot;/Catalog/SiteMap/GetWholeSiteHtml?blockId=59192&quot;}">
+    <div class="offsetMenu">
+        <div class="header_menu _close menu_close d-none d-md-block" data-menu-close=""></div>
+        <div class="header_inner top-line_inner d-block d-md-none">
+            <div class="row">
+                <div class="col-xl-5 col-md-9">
+                    <div class="header_left pr-0">
+                        <div class="header_menu _close" role="button" tabindex="0" aria-label="Close menu" data-menu-close=""></div>
+                        <a class="header_logo" href="/eng/"></a>
+                        <a class="header_search_btn" href="#" data-search-form-show="data-search-form-show" aria-label="Search"><div class="header_search_icon"></div></a>
+                        <a href="#" data-tooltip="data-tooltip" data-tooltip-content="Mode for visually impaired" data-tooltip-class="mobile-hide"><div class="header_visual-impaired_item"></div></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="menu row" data-tabs="data-tabs">
+            <div class="menu_quick col-md-7">
+                <div role="tablist" class="menu_quick_tabs">
+    <a role="tab" id="menu_tab_Activity" aria-controls="menu_content_Activity" aria-selected="true" class="menu_tab _active" href="#" data-tabs-tab="Activity">Activity</a>
+    <a role="tab" id="menu_tab_FinancialMarkets" aria-controls="menu_content_FinancialMarkets" aria-selected="false" class="menu_tab" href="#" data-tabs-tab="FinancialMarkets">Financial markets</a>
+    <a role="tab" id="menu_tab_Documents" aria-controls="menu_content_Documents" aria-selected="false" class="menu_tab" href="#" data-tabs-tab="Documents">Documents and data</a>
+    <a role="tab" id="menu_tab_AboutBank" aria-controls="menu_content_AboutBank" aria-selected="false" class="menu_tab" href="#" data-tabs-tab="AboutBank">About Bank of Russia</a>
+    <a role="tab" id="menu_tab_Services" aria-controls="menu_content_Services" aria-selected="false" class="menu_tab" href="#" data-tabs-tab="Services">Services</a>
+</div>
+<div class="menu_quick_links">
+    <div class="phones">
+  <a class="menu_phone_val" href="tel:+74993003000">
+  <div class="plus">+</div>7 499 300-30-00</a>
+  <a class="menu_phone_val" href="tel:88003003000">8 800 300-30-00</a>
+</div>
+<div class="inner_links">
+  <a href="/eng/news/" title="Events">Events</a>
+  <a href="/eng/contacts/" title="Contacts">Contacts</a>
+  <a href="/eng/sitemap" title="site map ">Site map</a>
+  <a href="/eng/about/" title="About the Site ">About the Site </a>
+</div>
+<div class="networks-circle">
+  <a class="networks-circle_item _yt" href="https://www.youtube.com/user/BankofRussia" title="Youtube"></a>
+  <a class="networks-circle_item _tg" href="https://telegram.me/centralbank_russia" title="Telegram"></a>
+</div>
+
+</div>
+            </div>
+            <div class="d-md-none link-above">
+                <div class="header_right">
+                    <div class="header_link"><a href="/eng/about_br/">About Bank of Russia</a></div>
+                    <div class="header_lang">
+            <div class="header_lang_item"><a href="/Localization/SwitchLanguage?url=%2Feng%2Fdkp%2Fcal_mp%2F&amp;from=en-CB&amp;to=ru-RU"><!--noindex-->RU<!--/noindex--></a></div>
+            <div class="header_lang_item _active"><span><!--noindex-->EN<!--/noindex--></span></div>
+</div>
+                </div>
+            </div>
+            <div class="menu_content_container col-md" data-cms-wholesite-placeholder="">
+            </div>
+        </div>
+    </div>
+</div>
+
+    <main id="content">
+        <div class="offsetMenu ">
+            <div class="container-fluid">
+                <div class="col-md-23 offset-md-1">
+                    <div class="breadcrumbs">
+    <div class="breadcrumbs_item"><a class="breadcrumbs_home" href="/eng/"></a></div>
+        <div class="breadcrumbs_item">
+            <a href="/eng/dkp/"><!--noindex-->Monetary Policy<!--/noindex--></a>
+        </div>
+    </div>
+
+                    <!--index-->
+<h1><span class="referenceable">Calendar of&#160;key&#160;rate decisions</span>
+</h1>
+                                        
+
+
+
+
+
+
+                                                                                
+
+
+
+
+<div id="tab" class="tabs_wrap " data-tabs="">
+    <div role="tablist" class="tabs">
+
+    <a role="tab" id="tab_tab_t14" aria-controls="tab_content_t14" aria-selected="false" 
+       class="tab" href="#t14" data-text="2027"
+       
+
+  data-tabs-tab="t14"   >
+        2027
+    </a>
+    <a role="tab" id="tab_tab_t13" aria-controls="tab_content_t13" aria-selected="true" 
+       class="tab _active" href="#t13" data-text="2026"
+       
+
+  data-tabs-tab="t13"   >
+        2026
+    </a>
+    <a role="tab" id="tab_tab_t12" aria-controls="tab_content_t12" aria-selected="false" 
+       class="tab" href="#t12" data-text="2025"
+       
+
+  data-tabs-tab="t12"   >
+        2025
+    </a>
+    <a role="tab" id="tab_tab_t11" aria-controls="tab_content_t11" aria-selected="false" 
+       class="tab" href="#t11" data-text="2024"
+       
+
+  data-tabs-tab="t11"   >
+        2024
+    </a>
+    <a role="tab" id="tab_tab_t10" aria-controls="tab_content_t10" aria-selected="false" 
+       class="tab" href="#t10" data-text="2023"
+       
+
+  data-tabs-tab="t10"   >
+        2023
+    </a>
+    <a role="tab" id="tab_tab_t9" aria-controls="tab_content_t9" aria-selected="false" 
+       class="tab" href="#t9" data-text="2022"
+       
+
+  data-tabs-tab="t9"   >
+        2022
+    </a>
+                    <div class="tab tab_rest " data-tabs-rest="">
+                <button class="tab_rest_title" data-tabs-rest-title="" aria-expanded="false">More</button>
+                <div class="tab_rest_items">
+    <a role="tab" id="tab_tab_t1" aria-controls="tab_content_t1" aria-selected="false" 
+       class="tab" href="#t1" data-text="2021"
+       
+
+  data-tabs-tab="t1"   >
+        2021
+    </a>
+    <a role="tab" id="tab_tab_t2" aria-controls="tab_content_t2" aria-selected="false" 
+       class="tab" href="#t2" data-text="2020"
+       
+
+  data-tabs-tab="t2"   >
+        2020
+    </a>
+    <a role="tab" id="tab_tab_t3" aria-controls="tab_content_t3" aria-selected="false" 
+       class="tab" href="#t3" data-text="2019"
+       
+
+  data-tabs-tab="t3"   >
+        2019
+    </a>
+    <a role="tab" id="tab_tab_t4" aria-controls="tab_content_t4" aria-selected="false" 
+       class="tab" href="#t4" data-text="2018"
+       
+
+  data-tabs-tab="t4"   >
+        2018
+    </a>
+    <a role="tab" id="tab_tab_t5" aria-controls="tab_content_t5" aria-selected="false" 
+       class="tab" href="#t5" data-text="2017"
+       
+
+  data-tabs-tab="t5"   >
+        2017
+    </a>
+    <a role="tab" id="tab_tab_t6" aria-controls="tab_content_t6" aria-selected="false" 
+       class="tab" href="#t6" data-text="2016"
+       
+
+  data-tabs-tab="t6"   >
+        2016
+    </a>
+    <a role="tab" id="tab_tab_t7" aria-controls="tab_content_t7" aria-selected="false" 
+       class="tab" href="#t7" data-text="2015"
+       
+
+  data-tabs-tab="t7"   >
+        2015
+    </a>
+    <a role="tab" id="tab_tab_t8" aria-controls="tab_content_t8" aria-selected="false" 
+       class="tab" href="#t8" data-text="2014"
+       
+
+  data-tabs-tab="t8"   >
+        2014
+    </a>
+                </div>
+            </div>
+    </div>
+
+                    <div role="tabpanel" id="tab_content_t14" aria-labelledby="tab_tab_t14" data-tabs-content="t14" class="hide">
+                        <table class="data">
+<tbody>
+<tr>
+<td style="border:none">Press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time</td>
+</tr>
+<tr>
+<td style="border:none">Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time</td>
+</tr>
+</tbody>
+</table><div class="calendar-main-events">
+<div class="main-events_day">
+<div class="date col-md-5">12&nbsp;February 2027</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15">Press release on&nbsp;the&nbsp;key&nbsp;rate <br />Medium-term forecast <br /><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">25&nbsp;February 2027</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion <br />Commentary on&nbsp;the&nbsp;Medium-term Forecast</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">19&nbsp;March 2027</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">Press release on&nbsp;the&nbsp;key&nbsp;rate <br /><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">31&nbsp;March 2027</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion <br />
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">30&nbsp;April 2027</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15">Press release on&nbsp;the&nbsp;key&nbsp;rate <br />Medium-term forecast <br /><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">14&nbsp;May 2027</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion <br />Commentary on&nbsp;the&nbsp;Medium-term Forecast</span>
+<div class="icon_wrapper offset-md-1 col-md-1"></div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">11&nbsp;June 2027</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">Press release on&nbsp;the&nbsp;key&nbsp;rate<br /><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">24&nbsp;June 2027</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">30&nbsp;July 2027</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15">Press release on&nbsp;the&nbsp;key&nbsp;rate <br />Medium-term forecast <br /><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">11&nbsp;August 2027</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion <br />Commentary on&nbsp;the&nbsp;Medium-term Forecast</span><a href="/eng/dkp/mp_dec/decision_key_rate/comment_05082026/" target="_blank" rel="noopener"> </a> <br />
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">10&nbsp;September 2027</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">Press release on&nbsp;the&nbsp;key&nbsp;rate<br /><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">22&nbsp;September 2027</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">22&nbsp;October 2027</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15">Press release on&nbsp;the&nbsp;key&nbsp;rate <br />Medium-term forecast <br /><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">3&nbsp;November 2027</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion<br />Commentary on&nbsp;the&nbsp;Medium-term Forecast</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">17&nbsp;December 2027</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">Press release on&nbsp;the&nbsp;key&nbsp;rate<br /><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">29&nbsp;December 2027</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+</div>
+                    </div>
+                    <div role="tabpanel" id="tab_content_t13" aria-labelledby="tab_tab_t13" data-tabs-content="t13">
+                        <table class="data">
+<tbody>
+<tr>
+<td style="border:none">Press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time</td>
+</tr>
+<tr>
+<td style="border:none">Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time</td>
+</tr>
+</tbody>
+</table><div class="calendar-main-events">
+<div class="main-events_day">
+<div class="date col-md-5">13&nbsp;February 2026</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=13022026_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate <br /><a href="/Content/Document/File/187085/forecast_260213_e.pdf">Medium-term forecast</a> <br /><a href="/eng/press/event/?id=28304"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">26&nbsp;February 2026</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_26022026/" target="_blank" rel="noopener">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</a> <br /><a href="/Content/Document/File/187089/eng_comment_26022026.pdf" target="_blank" rel="noopener">Commentary on&nbsp;the&nbsp;Medium-term Forecast</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">20&nbsp;March 2026</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=20032026_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate <br /><a href="/eng/press/event/?id=28411"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">1&nbsp;April 2026</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_01042026/" target="_blank" rel="noopener">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</a> <br />
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">24&nbsp;April 2026</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=24042026_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate <br /><a href="/Content/Document/File/189840/forecast_260424_e.pdf">Medium-term forecast</a> <br /><a href="/eng/press/event/?id=28508"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">7&nbsp;May&nbsp;2026</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_07052026/" target="_blank" rel="noopener">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</a> <br /><a href="/eng/dkp/mp_dec/decision_key_rate/comment_07052026/" target="_blank" rel="noopener">Commentary on&nbsp;the&nbsp;Medium-term Forecast</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1"></div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">19&nbsp;June 2026</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=19062026_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate<br /><a href="/eng/press/event/?id=32635"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">1&nbsp;July 2026</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_01072026/" target="_blank" rel="noopener"><span class="col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">24&nbsp;July 2026</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=24072026_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate <br /><a href="/Content/Document/File/194313/forecast_260724_e.pdf">Medium-term forecast</a> <br /><a href="/eng/press/event/?id=32727"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">5&nbsp;August 2026</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_05082026/" target="_blank" rel="noopener">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</a> <br /><a href="/eng/dkp/mp_dec/decision_key_rate/comment_05082026/" target="_blank" rel="noopener">Commentary on&nbsp;the&nbsp;Medium-term Forecast</a></span><a href="/eng/dkp/mp_dec/decision_key_rate/comment_05082026/" target="_blank" rel="noopener"> </a> <br />
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">11&nbsp;September 2026</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=11092026_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate<br /><a href="/eng/press/event/?id=32833"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">23&nbsp;September 2026</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_23092026/"><span class="col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">23&nbsp;October 2026</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=23102026_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate <br /><a href="/Content/Document/File/198952/forecast_261023_e.pdf">Medium-term forecast</a> <br /><a href="/eng/press/event/?id=32930"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">5&nbsp;November 2026</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion<br />Commentary on&nbsp;the&nbsp;Medium-term Forecast</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">18&nbsp;December 2026</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">Press release on&nbsp;the&nbsp;key&nbsp;rate<br /><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">30&nbsp;December 2026</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+</div>
+                    </div>
+                    <div role="tabpanel" id="tab_content_t12" aria-labelledby="tab_tab_t12" data-tabs-content="t12" class="hide">
+                        <table class="data">
+<tbody>
+<tr>
+<td style="border:none">Press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time</td>
+</tr>
+<tr>
+<td style="border:none">Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time</td>
+</tr>
+</tbody>
+</table><div class="calendar-main-events">
+<div class="main-events_day">
+<div class="date col-md-5">14&nbsp;February 2025</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=14022025_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate <br /><a href="/Content/Document/File/172575/forecast_250214_e.pdf">Medium-term forecast</a> <br /><a href="/eng/press/event/?id=23378"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">26&nbsp;February 2025</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_26022025/" target="_blank" rel="noopener">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</a> <br /><a href="/Content/Document/File/172879/eng_comment_26022025.pdf" target="_blank" rel="noopener">Commentary on&nbsp;the&nbsp;Medium-term Forecast</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">21&nbsp;March 2025</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=21032025_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate <br /><a href="/eng/press/event/?id=23474"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">2&nbsp;April 2025</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_02042025/" target="_blank" rel="noopener">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</a> <br />
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">25&nbsp;April 2025</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=25042025_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate <br /><a href="/Content/Document/File/175436/forecast_250425_e.pdf">Medium-term forecast</a> <br /><a href="/eng/press/event/?id=23577"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">12&nbsp;May&nbsp;2025</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_12052025/" target="_blank" rel="noopener">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</a> <br /><a href="/Content/Document/File/175440/eng_comment_12052025.pdf" target="_blank" rel="noopener">Commentary on&nbsp;the&nbsp;Medium-term Forecast</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1"></div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">6&nbsp;June 2025</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=06062025_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate<br /><a href="/eng/press/event/?id=24686"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">20&nbsp;June 2025</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_20062025/"><span class="col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">25&nbsp;July 2025</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=25072025_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate <br /><a href="/Content/Document/File/180021/forecast_250725_e.pdf" target="_blank" rel="noopener">Medium-term forecast</a> <br /><a href="/eng/press/event/?id=26809"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">6&nbsp;August 2025</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_06082025/" target="_blank" rel="noopener">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</a> <br /><a href="/Content/Document/File/180025/eng_comment_06082025.pdf" target="_blank" rel="noopener">Commentary on&nbsp;the&nbsp;Medium-term Forecast</a></span> <br />
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">12&nbsp;September 2025</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=12092025_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate<br /><a href="/eng/press/event/?id=26933"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">24&nbsp;September 2025</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_24092025/" target="_blank" rel="noopener"><span class="col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">24&nbsp;October 2025</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=24102025_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate <br /><a href="/Content/Document/File/184590/forecast_251024_e.pdf">Medium-term forecast</a> <br /><a href="/eng/press/event/?id=28052"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">6&nbsp;November 2025</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_06112025/" target="_blank" rel="noopener">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</a> <br /><a href="/Content/Document/File/184594/eng_comment_06112025.pdf">Commentary on&nbsp;the&nbsp;Medium-term Forecast</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">19&nbsp;December 2025</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=19122025_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate<br /><a href="/eng/press/event/?id=28199"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">29&nbsp;December 2025</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_29122025/" target="_blank" rel="noopener"><span class="col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+</div>
+                    </div>
+                    <div role="tabpanel" id="tab_content_t11" aria-labelledby="tab_tab_t11" data-tabs-content="t11" class="hide">
+                        <table class="data">
+<tbody>
+<tr>
+<td style="border:none">Press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time</td>
+</tr>
+<tr>
+<td style="border:none">Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time</td>
+</tr>
+</tbody>
+</table><div class="calendar-main-events">
+<div class="main-events_day">
+<div class="date col-md-5">16&nbsp;February 2024</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=16022024_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate <br /><a href="/Collection/Collection/File/48892/forecast_240216_e.pdf">Medium-term forecast</a> <br /><a href="/eng/press/event/?id=18424"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">27&nbsp;February 2024</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_27022024/">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</a> <br /><a href="/Content/Document/File/159546/eng_comment_27022024.pdf">Commentary on&nbsp;the&nbsp;Medium-term Forecast</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">22&nbsp;March 2024</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=22032024_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate<br /><a href="/eng/press/event/?id=18537"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">1&nbsp;April 2024</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_01042024/" target="_blank" rel="noopener">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</a> <br />
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">26&nbsp;April 2024</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=26042024_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate <br /><a href="/Content/Document/File/160822/forecast_240426_e.pdf">Medium-term forecast</a> <br /><a href="/eng/press/event/?id=18648"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">13&nbsp;May&nbsp;2024</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_13052024/">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</a> <br /><a href="/Content/Document/File/160823/eng_comment_13052024.pdf">Commentary on&nbsp;the&nbsp;Medium-term Forecast</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1"></div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">7&nbsp;June 2024</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=07062024_133000Key_eng.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate<br /><a href="/eng/press/event/?id=18754"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">20&nbsp;June 2024</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_20062024/"><span class="col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">26&nbsp;July 2024</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=26072024_133000Key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate <br /><a href="/Content/Document/File/162286/forecast_240726_e.pdf">Medium-term forecast</a> <br /><a href="/eng/press/event/?id=18870"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">7&nbsp;August 2024</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_07082024/">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</a> <br /><a href="/Content/Document/File/164644/eng_comment_07082024.pdf">Commentary on&nbsp;the&nbsp;Medium-term Forecast</a></span> <br />
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">13&nbsp;September 2024</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=13092024_133000Key_eng.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate<br /><a href="/eng/press/event/?id=20995"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">25&nbsp;September 2024</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_25092024/"><span class="col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">25&nbsp;October 2024</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=25102024_133000Key_eng.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate <br /><a href="/Content/Document/File/166625/forecast_241025_e.pdf">Medium-term forecast</a> <br /><a href="/eng/press/event/?id=21112"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">6&nbsp;November 2024</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><span class="col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_06112024/">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</a> <br /><a href="/Content/Document/File/166629/comment_06112024.pdf">Commentary on&nbsp;the&nbsp;Medium-term Forecast</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">20&nbsp;December 2024</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=20122024_133000key_eng.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate<br /><a href="/eng/press/event/?id=23250"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">28&nbsp;December 2024</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="info col-md-15"><a href="/eng/dkp/mp_dec/decision_key_rate/summary_key_rate_28122024/"><span class="col-md-15">Summary of&nbsp;the&nbsp;Key&nbsp;Rate Discussion</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+</div>
+                    </div>
+                    <div role="tabpanel" id="tab_content_t10" aria-labelledby="tab_tab_t10" data-tabs-content="t10" class="hide">
+                        <div class="calendar-main-events">
+<div class="main-events_day">
+<div class="date col-md-5">10&nbsp;February 2023</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?id=38293">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate with <a href="/Collection/Collection/File/43748/forecast_230210_e.pdf">the&nbsp;medium-term forecast</a> <br />(press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><a href="/eng/press/event/?id=14539"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">20&nbsp;February 2023</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><a href="/eng/about_br/publ/ddkp/longread_1_41/" target="_blank" rel="noopener"><span class="col-md-15">Monetary Policy Report</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">17&nbsp;March 2023</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=17032023_133000Key_Eng.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate<br />(press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><a href="/eng/press/event/?id=14630"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">28&nbsp;April 2023</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=28042023_133000Key_eng.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate with <a href="/Collection/Collection/File/43932/forecast_230428_e.pdf" target="_blank" rel="noopener">the&nbsp;medium-term forecast</a> <br />(press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><a href="/eng/press/event/?id=14742"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">11&nbsp;May&nbsp;2023</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><a href="/eng/about_br/publ/ddkp/longread_2_42/" target="_blank" rel="noopener"><span class="col-md-15">Monetary Policy Report</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1"></div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">9&nbsp;June 2023</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=09062023_133024Key_eng.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate<br />(press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><a href="/eng/press/event/?id=15827"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">21&nbsp;July 2023</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=21072023_133000Key_eng.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate with <a href="/Collection/Collection/File/45149/forecast_230721_e.pdf">the&nbsp;medium-term forecast</a> <br />(press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><a href="/eng/press/event/?id=16940"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">31&nbsp;July 2023</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><a href="/eng/about_br/publ/ddkp/longread_3_43/" target="_blank" rel="noopener">Monetary Policy Report</a> <br />
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">15&nbsp;August 2023</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting (unscheduled)</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=15082023_103000Key_eng.htm">Press release on&nbsp;the&nbsp;key&nbsp;rate</a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">15&nbsp;September 2023</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=15092023_133000Key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate with the&nbsp;<a href="/Collection/Collection/File/46329/forecast_230915_e.pdf">medium-term forecast</a> <br />(press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><a href="/eng/press/event/?id=17071"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">27&nbsp;October 2023</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=27102023_133000key_eng.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate with <a href="/Collection/Collection/File/46536/forecast_231027_e.pdf">the&nbsp;medium-term forecast</a> <br />(press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><a href="/eng/press/event/?id=17159"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">7&nbsp;November 2023</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><a href="/eng/about_br/publ/ddkp/longread_4_44/"><span class="col-md-15">Monetary Policy Report</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">15&nbsp;December 2023</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=15122023_133000key_e.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate<br />(press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><a href="/eng/press/event/?id=17292"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+</div>
+                    </div>
+                    <div role="tabpanel" id="tab_content_t9" aria-labelledby="tab_tab_t9" data-tabs-content="t9" class="hide">
+                        <div class="calendar-main-events">
+<div class="main-events_day">
+<div class="date col-md-5">11&nbsp;February 2022</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=11022022_133000Key_eng.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate with the&nbsp;<a href="/Collection/Collection/File/39792/forecast_220211_e.pdf">medium-term forecast</a> <br />(press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/press/event/?id=12678">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">21&nbsp;February 2022</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/about_br/publ/ddkp/longread_1_37/">Monetary Policy Report</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">28&nbsp;February 2022</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting (unscheduled)</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=28022022_094500Key_eng.htm">Press release on&nbsp;the&nbsp;key&nbsp;rate</a></div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/press/event/?id=12730">Statement by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</a></span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">18&nbsp;March 2022</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=18032022_133000key_eng.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate<br />(press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/press/event/?id=12765">Statement by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(start at&nbsp;15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">8&nbsp;April 2022</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting (unscheduled)</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=08042022_114000key_eng.htm">Press release on&nbsp;the&nbsp;key&nbsp;rate</a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">29&nbsp;April 2022</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=29042022_133000Key_eng.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate with the&nbsp;<a href="/Collection/Collection/File/40965/forecast_220429_e.pdf">medium-term forecast</a> <br />(press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/press/event/?id=12858">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">11&nbsp;May&nbsp;2022</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/Collection/Collection/File/40976/2022_02_ddcp_e.pdf">Monetary Policy Report</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1"></div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">26&nbsp;May&nbsp;2022</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting (unscheduled)</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=26052022_103000key_eng.htm">Press release on&nbsp;the&nbsp;key&nbsp;rate</a></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">10&nbsp;June 2022</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=10062022_133000Key_eng.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate<br />(press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/press/event/?id=12934">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">22&nbsp;July 2022</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=22072022_133000Key_eng.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate with the&nbsp;<a href="/Collection/Collection/File/42181/forecast_220722_e.pdf">medium-term forecast</a> <br />(press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><a href="/eng/press/event/?id=14034"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">1&nbsp;August 2022</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><a href="/Collection/Collection/File/42215/2022_03_ddcp_e.pdf">Monetary Policy Report</a> <br />
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">16&nbsp;September 2022</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=16092022_133000Key_eng.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate<br />(press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><a href="/eng/press/event/?id=14172"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">28&nbsp;October 2022</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=28102022_133000Key_eng.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate with the&nbsp;<a href="/Collection/Collection/File/43431/forecast_221028_e.pdf">medium-term forecast</a> <br />(press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><a href="/eng/press/event/?id=14273"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">8&nbsp;November 2022</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><a href="/eng/about_br/publ/ddkp/longread_4_40/" target="_blank" rel="noopener"><span class="col-md-15">Monetary Policy Report</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">16&nbsp;December 2022</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; key&nbsp;rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=16122022_133000Key_eng.htm">Press release</a> on&nbsp;the&nbsp;key&nbsp;rate<br />(press release is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><a href="/eng/press/event/?id=14405"><span class="col-md-15">Press conference by&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+</div>
+                    </div>
+                    <div role="tabpanel" id="tab_content_t1" aria-labelledby="tab_tab_t1" data-tabs-content="t1" class="hide">
+                        <div class="calendar-main-events">
+<div class="main-events_day">
+<div class="date col-md-5">12 February 2021</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of Russia Board of Directors&rsquo; key rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=12022021_133000Key_eng.htm">Press release</a> on the key rate with the <a href="/Collection/Collection/File/31979/forecast_210212_e.pdf">medium-term forecast</a><br /> (press release is to be published at 13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/press/event/?id=9579">Press conference by the Governor of the Bank of Russia</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is to start at 15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">20 February 2021</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><a href="/eng/about_br/publ/ddkp/longread_5_33/page/"><span class="col-md-15">Monetary Policy Report</span></a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">19 March 2021</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of Russia Board of Directors&rsquo; key rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=19032021_133000key_eng.htm">Press release</a> on the key rate<br />(press release is to be published at 13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/press/event/?id=9665">Press conference by the Governor of the Bank of Russia</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is to start at 15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">23 April 2021</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of Russia Board of Directors&rsquo; key rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=23042021_133000key_eng.htm">Press release</a> on the key rate with the <a href="/Collection/Collection/File/32223/forecast_210423_e.pdf">medium-term forecast</a><br />(press release is to be published at 13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/press/event/?id=9790">Press conference by the Governor of the Bank of Russia</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is to start at 15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">4 May 2021</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/about_br/publ/ddkp/longread_2_34/">Monetary Policy Report</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1"></div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">11 June 2021</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of Russia Board of Directors&rsquo; key rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=11062021_133000Key_eng.htm">Press release</a> on the key rate<br />(press release is to be published at 13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/press/event/?id=10945">Press conference by the Governor of the Bank of Russia</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is to start at 15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">23 July 2021</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of Russia Board of Directors&rsquo; key rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=23072021_133000Key_eng.htm">Press release</a> on the key rate with the <a href="/Collection/Collection/File/35489/forecast_210723_e.pdf">medium-term forecast</a><br />(press release is to be published at 13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/press/event/?id=11077">Press conference by the Governor of the Bank of Russia</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is to start at 15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">2 August 2021</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><a href="/eng/about_br/publ/ddkp/longread_3_35/page/">Monetary Policy Report</a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">10 September 2021</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Bank of Russia Board of Directors&rsquo; key rate meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=10092021_133000Key_eng.htm">Press release</a> on the key rate<br />(press release is to be published at 13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/press/event/?id=12202">Press conference by the Governor of the Bank of Russia</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is to start at 15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">22 October 2021</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of Russia Board of Directors&rsquo; key rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=22102021_133000Key_eng.htm">Press release</a> on the key rate with the <a href="/Collection/Collection/File/38987/forecast_211022_e.pdf">medium-term forecast</a><br />(press release is to be published at 13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/press/event/?id=12362">Press conference by the Governor of the Bank of Russia</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is to start at 15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">1 November 2021</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/about_br/publ/ddkp/longread_4_36/">Monetary Policy Report</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">17 December 2021</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Bank of Russia Board of Directors&rsquo; key rate meeting </span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><a href="/eng/press/pr/?file=17122021_133000Key_eng.htm">Press release</a> on the key rate<br />(press release is to be published at 13:30 Moscow time)</div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/press/event/?id=12543">Press conference by the Governor of the Bank of Russia</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15">(press conference is to start at 15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+</div>
+                    </div>
+                    <div role="tabpanel" id="tab_content_t2" aria-labelledby="tab_tab_t2" data-tabs-content="t2" class="hide">
+                        <div class="calendar-main-events">
+<div class="main-events_day">
+<div class="date col-md-5">7&nbsp;February 2020</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; monetary policy meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><span><a href="/eng/press/PR/?file=07022020_133000Key_eng.htm">Press release on&nbsp;the&nbsp;key&nbsp;rate</a> <br /><a href="/Collection/Collection/File/27652/forecast_200207_e.pdf">Medium-term forecast</a> <br /> (Press release and&nbsp;medium-term forecast to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</span></div>
+</div>
+<div class="main-event">
+<div class="title"><a href="/eng/Press/event/?id=6359">Press conference of&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</a></div>
+<div class="info col-md-15"><span>(Press conference to&nbsp;start at&nbsp;15:00 Moscow time)</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">17&nbsp;February 2020</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><a href="/Collection/Collection/File/27651/2020_01_ddcp_e.pdf">Release of&nbsp;the&nbsp;Monetary Policy Report</a> <br />
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span></span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">20&nbsp;March 2020</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; monetary policy meeting</span></div>
+<div class="info col-md-15"><span><a href="/eng/press/PR/?file=20032020_133000Key_eng.htm">Press release on&nbsp;the&nbsp;key&nbsp;rate</a> <br /> (Press release to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</span></div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/Press/event/?id=6529">Press conference of&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia </a></span></div>
+<div class="info col-md-15">(Press conference to&nbsp;start at&nbsp;15:00 Moscow time)</div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">24&nbsp;April 2020</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; monetary policy meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><span><a href="/eng/press/pr/?file=24042020_133000Key-eng.htm">Press release on&nbsp;the&nbsp;key&nbsp;rate</a> <br /><a href="/Collection/Collection/File/27834/forecast_200424_e.pdf">Medium-term forecast</a> <br /> (Press release and&nbsp;medium-term forecast to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</span></div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/press/event/?id=6676">Press conference of&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</a></span></div>
+<div class="info col-md-15"><span>(Press conference to&nbsp;start at&nbsp;15:00 Moscow time)</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">6&nbsp;May&nbsp;2020</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Release of&nbsp;the&nbsp;<a href="/Collection/Collection/File/27863/2020_02_ddcp_e.pdf">Monetary Policy Report</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span></span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">19&nbsp;June 2020</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; monetary policy meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span><a href="/eng/press/pr/?file=19062020_133000Key_eng.htm">Press release on&nbsp;the&nbsp;key&nbsp;rate</a> <br /> (Press release to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</span></div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/press/event/?id=6852">Press conference of&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span>(Press conference to&nbsp;start at&nbsp;15:00 Moscow time)</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">24&nbsp;July 2020</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; monetary policy meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><span><a href="/eng/press/pr/?file=24072020_133000Key_eng.htm">Press release on&nbsp;the&nbsp;key&nbsp;rate</a> <br /><a href="/Collection/Collection/File/28035/forecast_200724_e.pdf">Medium-term forecast</a> <br /> (Press release and&nbsp;medium-term forecast to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</span></div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/press/event/?id=7950">Press conference of&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span>(Press conference to&nbsp;start at&nbsp;15:00 Moscow time)</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">3&nbsp;August 2020</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/about_br/publ/ddkp/longread_3_31/page/">Release of&nbsp;the&nbsp;Monetary Policy Report</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span></span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">18&nbsp;September 2020</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; monetary policy meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span><a href="/press/pr/?file=18092020_133351key_eng_18092020.htm">Press release on&nbsp;the&nbsp;key&nbsp;rate</a> <br /> (Press release to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</span></div>
+</div>
+<div class="main-event">
+<div class="title"><a href="/eng/press/event/?id=8123">Press conference of&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</a></div>
+<div class="info col-md-15"><span>(Press conference to&nbsp;start at&nbsp;15:00 Moscow time)</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">23&nbsp;October 2020</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; monetary policy meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><span><a href="/eng/press/pr/?file=23102020_133000key_e.htm">Press release on&nbsp;the&nbsp;key&nbsp;rate</a> <br /><a href="/Collection/Collection/File/29375/forecast_201023_e.pdf">Medium-term forecast</a> <br /> (Press release and&nbsp;medium-term forecast to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</span></div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/press/event/?id=8221">Press conference of&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span>(Press conference to&nbsp;start at&nbsp;15:00 Moscow time)</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">2&nbsp;November 2020</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/eng/about_br/publ/ddkp/longread_4_32/">Release of&nbsp;the&nbsp;Monetary Policy Report</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span></span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">18&nbsp;December 2020</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Bank of&nbsp;Russia Board of&nbsp;Directors&rsquo; monetary policy meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span><a href="/eng/press/pr/?file=18122020_133000Key_eng.htm">Press release on&nbsp;the&nbsp;key&nbsp;rate</a> <br />(Press release to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</span></div>
+</div>
+<div class="main-event">
+<div class="title"><a href="/eng/press/event/?id=8394">Press conference of&nbsp;the&nbsp;Governor of&nbsp;the&nbsp;Bank of&nbsp;Russia</a></div>
+<div class="info col-md-15"><span>(Press conference to&nbsp;start at&nbsp;15:00 Moscow time)</span></div>
+</div>
+</div>
+</div>
+</div>
+                    </div>
+                    <div role="tabpanel" id="tab_content_t3" aria-labelledby="tab_tab_t3" data-tabs-content="t3" class="hide">
+                        <div class="calendar-main-events">
+<div class="main-events_day">
+<div class="date col-md-5">8&nbsp;February</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Board of&nbsp;Directors&rsquo; monetary policy meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span><a href="/eng/press/PR/?file=08022019_133000Key_eng.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">22&nbsp;March</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Board of&nbsp;Directors&rsquo; monetary policy meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><span><a href="/eng/press/PR/?file=22032019_133000Key_eng.htm">Press release</a> and&nbsp;<a href="/Collection/Collection/File/16779/forecast_190322_e.pdf">medium-term forecast</a> are&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</span></div>
+</div>
+<div class="main-event">
+<div class="title"><a class="col-md-15" href="/eng/press/event/?id=2512">Press conference</a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span>Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">1&nbsp;April</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><a class="col-md-15" href="/Collection/Collection/File/18970/2019_01_ddcp_e.pdf">Release of&nbsp;the&nbsp;Monetary Policy Report</a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span></span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">26&nbsp;April</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Board of&nbsp;Directors&rsquo; monetary policy meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span><a href="/eng/press/PR/?file=26042019_133000Key_eng.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">14&nbsp;June</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Board of&nbsp;Directors&rsquo; monetary policy meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><span><a href="/eng/press/PR/?file=14062019_133000Key_eng.htm">Press release</a> and&nbsp;<a href="/Collection/Collection/File/19823/forecast_190614_e.pdf">medium-term forecast</a> are&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time</span></div>
+</div>
+<div class="main-event">
+<div class="title"><a class="col-md-15" href="/eng/press/event/?id=2683">Press conference</a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span>Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">24&nbsp;June</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><a class="col-md-15" href="/Collection/Collection/File/19994/2019_02_ddcp_e.pdf">Release of&nbsp;the&nbsp;Monetary Policy Report</a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span></span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">26&nbsp;July</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Board of&nbsp;Directors&rsquo; monetary policy meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span><a href="/eng/press/PR/?file=26072019_133000Key_eng.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">6&nbsp;September</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Board of&nbsp;Directors&rsquo; monetary policy meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><span><a href="/eng/press/PR/?file=06092019_133000Key_E.htm">Press release</a> and&nbsp;<a href="/Collection/Collection/File/22613/forecast_190906_e.pdf">medium-term forecast</a> are&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</span></div>
+</div>
+<div class="main-event">
+<div class="title"><a class="col-md-15" href="/eng/press/event/?id=2848">Press conference</a>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span>Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">16&nbsp;September</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15"><a href="/Collection/Collection/File/23679/2019_03_ddcp_e.pdf">Release of&nbsp;the&nbsp;Monetary Policy Report</a></span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span></span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">25&nbsp;October</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Board of&nbsp;Directors&rsquo; monetary policy meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span><a href="/eng/press/PR/?file=25102019_133000Key_eng.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">13&nbsp;December</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Board of&nbsp;Directors&rsquo; monetary policy meeting</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div class="icon-important"></div>
+</div>
+</div>
+<div class="info col-md-15"><span>Press release and&nbsp;medium-term forecast are&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time</span></div>
+</div>
+<div class="main-event">
+<div class="title"><span class="col-md-15"> Press conference</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span>Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</span></div>
+</div>
+</div>
+</div>
+<div class="main-events_day">
+<div class="date col-md-5">23&nbsp;December</div>
+<div class="main-events offset-md-1 col-md-17">
+<div class="main-event">
+<div class="title"><span class="col-md-15">Release of&nbsp;the&nbsp;Monetary Policy Report</span>
+<div class="icon_wrapper offset-md-1 col-md-1">
+<div></div>
+</div>
+</div>
+<div class="info col-md-15"><span></span></div>
+</div>
+</div>
+</div>
+</div>
+                    </div>
+                    <div role="tabpanel" id="tab_content_t4" aria-labelledby="tab_tab_t4" data-tabs-content="t4" class="hide">
+                        <div class="table-wrapper">
+<div class="table">
+<table class="data">
+<tbody>
+<tr>
+<th width="10%">Date</th>
+<th nowrap="nowrap">Event</th>
+</tr>
+<tr>
+<td>9&nbsp;February</td>
+<td nowrap="nowrap">Board of&nbsp;Directors&rsquo; monetary policy meeting<br /><a href="/eng/press/PR/?file=09022018_133037eng_dkp2018-02-09T13_29_43.htm">(Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td rowspan="3"><b>23&nbsp;March</b></td>
+<td nowrap="nowrap"><b>Board of&nbsp;Directors&rsquo; monetary policy meeting<br /> </b>(<a href="/eng/press/PR/?file=23032018_133000eng_keyrate2018-03-23T13_20_48.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="/eng/Press/event/?id=1723">Press conference</a> <br /> (Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap">Release of&nbsp;the&nbsp;<a href="/Collection/Collection/File/8336/2018_01_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+<tr>
+<td>27&nbsp;April</td>
+<td nowrap="nowrap">Board of&nbsp;Directors&rsquo; monetary policy meeting<br /> (<a href="/eng/press/PR/?file=27042018_133000key_e.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td rowspan="3"><b>15&nbsp;June</b></td>
+<td nowrap="nowrap"><b>Board of&nbsp;Directors&rsquo; monetary policy meeting<br /> </b>(<a href="/eng/press/PR/?file=15062018_133000key_en.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="/eng/Press/event/?id=1894">Press conference</a> <br /> (Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap">Release of&nbsp;the&nbsp;<a href="/Collection/Collection/File/8335/2018_02_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+<tr>
+<td>27&nbsp;July</td>
+<td nowrap="nowrap">Board of&nbsp;Directors&rsquo; monetary policy meeting<br /> (<a href="/eng/press/PR/?file=27072018_133000key_en.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td rowspan="3"><b>14&nbsp;September</b></td>
+<td nowrap="nowrap"><b>Board of&nbsp;Directors&rsquo; monetary policy meeting<br /> </b>(<a href="/eng/press/PR/?file=14092018_133000Key_eng.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="/eng/Press/event/?id=2089">Press conference</a> <br /> (Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap">Release of&nbsp;the&nbsp;<a href="/Collection/Collection/File/8334/2018_03_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+<tr>
+<td>26&nbsp;October</td>
+<td nowrap="nowrap">Board of&nbsp;Directors&rsquo; monetary policy meeting<br /> (<a href="/eng/press/pr/?file=26102018_133000Key_eng.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td rowspan="3"><b>14&nbsp;December</b></td>
+<td nowrap="nowrap"><b>Board of&nbsp;Directors&rsquo; monetary policy meeting<br /> </b>(<a href="/eng/press/PR/?file=14122018_133000Key_eng.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="/eng/press/event/?id=2306">Press conference</a> <br /> (Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap">Release of&nbsp;the&nbsp;<a href="/Collection/Collection/File/14170/2018_04_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                    </div>
+                    <div role="tabpanel" id="tab_content_t5" aria-labelledby="tab_tab_t5" data-tabs-content="t5" class="hide">
+                        <div class="table-wrapper">
+<div class="table">
+<table class="data">
+<tbody>
+<tr>
+<th width="10%">Date</th>
+<th nowrap="nowrap">Event</th>
+</tr>
+<tr>
+<td>February 3</td>
+<td>The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> (<a href="/eng/press/PR/?file=03022017_133002eng_keyrate2017-02-03T13_18_14.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td rowspan="3"><b>March 24</b></td>
+<td><b>The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues</b> <br /> (<a target="_blank" href="/eng/press/PR/?file=24032017_133019eng_keyrate2017-03-24T13_29_51.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td><a target="_blank" href="/eng/press/event/?id=980">Press-conference</a> <br /> (Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="/Collection/Collection/File/8343/2017_01_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+<tr>
+<td>April 28</td>
+<td>The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> (<a href="/eng/press/PR/?file=28042017_132959eng_keyrate2017-04-28T13_23_43.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td rowspan="3"><b>June 16</b></td>
+<td><b>The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues</b> <br /> (<a href="/press/PR/?file=16062017_133001eng_keyrate2017-06-16T13_21_58.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td><a href="/eng/press/event/?id=1159">Press-conference</a> <br /> (Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="/Collection/Collection/File/8342/2017_02_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+<tr>
+<td>July 28</td>
+<td>The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> (<a href="/eng/press/PR/?file=28072017_133024eng_keyrate2017-07-28T13_23_50.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td rowspan="3"><b>September 15</b></td>
+<td><b>The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues</b> <br /> (<a href="/eng/press/PR/?file=15092017_133017eng_keyrate2017-09-15T13_25_58.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td><a href="/eng/Press/event/?id=1340">Press-conference</a> <br /> (Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="/Collection/Collection/File/8341/2017_03_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+<tr>
+<td>October 27</td>
+<td>The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> (<a href="/eng/press/PR/?file=27102017_133006keyrate2017-10-27T13_18_42.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td rowspan="3"><b>December 15</b></td>
+<td><b>The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues</b> <br /> (<a href="/eng/press/PR/?file=15122017_133000eng_keyrate2017-12-15T13_28_59.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td><a href="/eng/press/event/?id=1557">Press-conference</a> <br /> (Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="/Collection/Collection/File/8340/2017_04_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                    </div>
+                    <div role="tabpanel" id="tab_content_t6" aria-labelledby="tab_tab_t6" data-tabs-content="t6" class="hide">
+                        <div class="table-wrapper">
+<div class="table">
+<table class="data">
+<tbody>
+<tr>
+<th width="10%">Date</th>
+<th nowrap="nowrap">Event</th>
+</tr>
+<tr>
+<td>January 29</td>
+<td nowrap="nowrap">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> (<a href="/eng/press/PR/?file=29012016_133000eng_keyrate2016-01-29T13_06_52.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td rowspan="3"><b>March 18</b></td>
+<td nowrap="nowrap"><b>The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> </b>(<a href="/eng/press/PR/?file=18032016_133000eng_keyrate2016-03-18T13_23_09.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap">Press-conference</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="/Collection/Collection/File/8351/2016_01_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+<tr>
+<td>April 29</td>
+<td nowrap="nowrap">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> (<a href="/press/PR/?file=29042016_133001eng_dkp2016-04-29T13_07_53.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td rowspan="3"><b>June 10</b></td>
+<td nowrap="nowrap"><b>The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> </b>(<a href="/eng/press/PR/?file=10062016_133019eng_dkp2016-06-10T13_25_40.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap">Press-conference</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="/Collection/Collection/File/8350/2016_02_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+<tr>
+<td>July 29</td>
+<td nowrap="nowrap">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> (<a href="/eng/press/PR/?file=29072016_133004eng_keyrate2016-07-29T13_26_27.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td rowspan="3"><b>September</b><b>&nbsp;</b><b>16 </b></td>
+<td nowrap="nowrap"><b>The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> </b>(<a href="/eng/press/PR/?file=16092016_132949eng_keyrate2016-09-16T12_57_49.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap">Press-conference <br /> (Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="/Collection/Collection/File/8349/2016_03_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+<tr>
+<td>October 28</td>
+<td nowrap="nowrap">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> (<a href="/eng/press/PR/?file=28102016_133004eng_keyrate2016-10-28T13_17_18.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td rowspan="3"><b>December 16</b></td>
+<td nowrap="nowrap"><b>The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> </b>(<a href="/eng/press/PR/?file=16122016_133003eng_keyrate2016-12-16T13_22_22.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap">Press-conference <br /> (Press conference is&nbsp;to&nbsp;start at&nbsp;15:00 Moscow time)</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="/Collection/Collection/File/8348/2016_04_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                    </div>
+                    <div role="tabpanel" id="tab_content_t7" aria-labelledby="tab_tab_t7" data-tabs-content="t7" class="hide">
+                        <div class="table-wrapper">
+<div class="table">
+<table class="data" id="table1">
+<tbody>
+<tr>
+<th width="10%">Date</th>
+<th nowrap="nowrap">Event</th>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap" width="10%"><span id="ctl00_PressSRC_SRC_Text">January&nbsp;30</span></td>
+<td valign="top" nowrap="nowrap" width="90%">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> <i>(<a target="_blank" href="/eng/press/PR/?file=30012015_133126eng_dkp2015-01-30T13_22_34.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</i></td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap" width="10%">&nbsp;</td>
+<td valign="top" nowrap="nowrap" width="90%">&nbsp;</td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap" width="10%" rowspan="3"><span id="ctl00_PressSRC_SRC_Text0">March&nbsp;13</span></td>
+<td valign="top">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> <i>(<a target="_blank" href="/eng/press/PR/?file=13032015_133033eng_dkp2015-03-13T13_21_10.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</i></td>
+</tr>
+<tr>
+<td valign="top">Press-conference</td>
+</tr>
+<tr>
+<td valign="top"><a target="_blank" href="/Collection/Collection/File/8359/2015_01_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap" width="10%">&nbsp;</td>
+<td valign="top" nowrap="nowrap" width="90%">&nbsp;</td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap" width="10%"><span id="ctl00_PressSRC_SRC_Text1">April&nbsp;30</span></td>
+<td valign="top" nowrap="nowrap" width="90%">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> <i>(<a target="_blank" href="/eng/press/PR/?file=30042015_133105eng_dkp2015-04-30T13_10_54.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</i></td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap" width="10%">&nbsp;</td>
+<td valign="top" nowrap="nowrap" width="90%">&nbsp;</td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap" width="10%" rowspan="3"><span id="ctl00_PressSRC_SRC_Text2">June&nbsp;15</span></td>
+<td valign="top">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> <i>(<a target="_blank" href="/eng/press/PR/?file=15062015_133026eng_keyrate2015-06-15T13_26_45.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</i></td>
+</tr>
+<tr>
+<td valign="top">Press-conference</td>
+</tr>
+<tr>
+<td valign="top"><a target="_blank" href="/Collection/Collection/File/8358/2015_02_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap" width="10%">&nbsp;</td>
+<td valign="top" nowrap="nowrap" width="90%">&nbsp;</td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap" width="10%"><span id="ctl00_PressSRC_SRC_Text3">July&nbsp;31</span></td>
+<td valign="top" nowrap="nowrap" width="90%">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> <i>(<a target="_blank" href="/eng/press/PR/?file=31072015_133023eng_keyrate2015-07-31T13_05_20.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</i></td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap" width="10%">&nbsp;</td>
+<td valign="top" nowrap="nowrap" width="90%">&nbsp;</td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap" width="10%" rowspan="3"><span id="ctl00_PressSRC_SRC_Text4">September&nbsp;11</span></td>
+<td valign="top">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> <i>(<a target="_blank" href="/eng/press/PR/?file=11092015_133009eng_keyrate2015-09-11T13_05_22.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</i></td>
+</tr>
+<tr>
+<td valign="top">Press-conference</td>
+</tr>
+<tr>
+<td valign="top"><a target="_blank" href="/Collection/Collection/File/8357/2015_03_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap" width="10%">&nbsp;</td>
+<td valign="top" nowrap="nowrap" width="90%">&nbsp;</td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap" width="10%"><span id="ctl00_PressSRC_SRC_Text5">October&nbsp;30</span></td>
+<td valign="top" nowrap="nowrap" width="90%">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> <i>(<a target="_blank" href="/eng/press/PR/?file=30102015_133001eng_keyrate2015-10-30T13_20_55.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</i></td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap" width="10%">&nbsp;</td>
+<td valign="top" nowrap="nowrap" width="90%">&nbsp;</td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap" width="10%" rowspan="3"><span id="ctl00_PressSRC_SRC_Text6">December&nbsp;11</span></td>
+<td valign="top">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> <i>(<a target="_blank" href="/eng/press/PR/?file=11122015_133000eng_keyrate2015-12-11T13_19_22.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</i></td>
+</tr>
+<tr>
+<td valign="top">Press-conference</td>
+</tr>
+<tr>
+<td valign="top"><a target="_blank" href="/Collection/Collection/File/8356/2015_04_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                    </div>
+                    <div role="tabpanel" id="tab_content_t8" aria-labelledby="tab_tab_t8" data-tabs-content="t8" class="hide">
+                        <div class="table-wrapper">
+<div class="table">
+<table class="data">
+<tbody>
+<tr>
+<th width="10%">Date</th>
+<th nowrap="nowrap">Event</th>
+</tr>
+<tr>
+<td valign="top" rowspan="2" nowrap="nowrap">February 14</td>
+<td valign="top">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> <i>(<a href="/eng/press/PR/?file=14022014_140726eng_t-14.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</i></td>
+</tr>
+<tr>
+<td valign="top">Press-conference</td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap">February 18</td>
+<td valign="top"><a href="/Collection/Collection/File/8365/2014_01_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap">March 3</td>
+<td valign="top">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors unscheduled meeting on&nbsp;monetary policy issues<br /> <i>(<a href="/eng/press/PR/?file=03032014_111150eng.htm">Press release</a>)</i></td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap">March 14</td>
+<td valign="top">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> <i>(<a href="/eng/press/PR/?file=14032014_133014eng.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</i></td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap">April 25</td>
+<td valign="top">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> <i>(<a href="/eng/press/PR/?file=25042014_1335371.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</i></td>
+</tr>
+<tr>
+<td valign="top" rowspan="2" nowrap="nowrap">June 16</td>
+<td valign="top">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> <i>(<a href="/eng/press/PR/?file=16062014_133016eng_dkp2014-06-16T13_22_21.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</i></td>
+</tr>
+<tr>
+<td valign="top">Press-conference</td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap">June 18</td>
+<td valign="top"><a href="/Collection/Collection/File/8364/2014_02_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap">July 25</td>
+<td valign="top">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> <i>(<a href="/eng/press/PR/?file=25072014_133012eng_dkp2014-07-25T13_19_44.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</i></td>
+</tr>
+<tr>
+<td valign="top" rowspan="2" nowrap="nowrap">September 12</td>
+<td valign="top">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> <i>(<a href="/eng/press/PR/?file=12092014_133319eng_dkp2014-09-12T13_29_04.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</i></td>
+</tr>
+<tr>
+<td valign="top">Press-conference</td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap">September 16</td>
+<td valign="top"><a href="/Collection/Collection/File/8363/2014_03_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap">October 31</td>
+<td valign="top">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> <i>(<a href="/eng/press/PR/?file=31102014_133031eng_dkp2014-10-31T13_16_57.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</i></td>
+</tr>
+<tr>
+<td valign="top" rowspan="2" nowrap="nowrap">December 11</td>
+<td valign="top">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors meeting on&nbsp;monetary policy issues<br /> <i>(<a href="/eng/press/PR/?file=11122014_133017eng_dkp2014-12-11T13_26_54.htm">Press release</a> is&nbsp;to&nbsp;be&nbsp;published at&nbsp;13:30 Moscow time)</i></td>
+</tr>
+<tr>
+<td valign="top">Press-conference</td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap" rowspan="2">December 15</td>
+<td valign="top">The&nbsp;Bank of&nbsp;Russia Board of&nbsp;Directors unscheduled meeting on&nbsp;monetary policy issues<br /> <i>(<a href="/eng/press/PR/?file=16122014_010920eng_dkp2014-12-16T01_04_09.htm">Press release</a>)</i></td>
+</tr>
+<tr>
+<td valign="top"><a href="/Collection/Collection/File/8362/2014_04_ddcp_e.pdf">Monetary Policy Report</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                    </div>
+</div>
+
+<div class="responsible-unit">
+<div class="responsible-unit_text">Department responsible for&nbsp;publication: 
+<a href="/eng/about_br/bankstructute/ddkp/">Monetary Policy Department</a></div>
+</div>
+                    
+                    <!--/index-->
+
+    <div class="page-info">
+        <!--noindex-->
+        
+
+
+<div class="page-info_helpful"
+     data-page-feedback=""
+     data-feedback-url="/Content/PageInfo/RegisterFeedback">
+    <!--noindex-->
+    <div class="helpful" data-helpful="">
+        Was this page useful?
+        <div class="helpful_btns">
+            <button class="helpful_btn _yes" data-helpful-btn="yes"><i class="helpful_icon"></i><span>Yes</span></button>
+            <button class="helpful_btn _no" data-helpful-btn="no"><i class="helpful_icon"></i><span>No</span></button>
+        </div>
+    </div>
+    <!--/noindex-->
+</div>
+
+            <div class="page-info_last-update">Last updated on: 23.10.2026</div>
+        <!--/noindex-->
+    </div>
+                </div>
+            </div>
+    </main>
+
+    <footer class="footer" id="footer">
+    <div class="offsetMenu footer_margin-left">
+        <div class="footer_main">
+            <div class="col-md-23 col-xl-22 offset-md-1 offset-xl-2 footer-size">
+                <div class="footer_top">
+                    <a class="footer_logo_eng" href="/eng/"></a>
+                    <div class="footer_up gotoUp">
+                        <div class="footer_up_title">Up</div>
+                        <div class="footer_up_icon"></div>
+                    </div>
+                </div>
+                
+<div class="footer_contacts">
+<div class="footer_address">Bldg V, 12&nbsp;Neglinnaya Street, Bank of&nbsp;Russia, Moscow, 107016 Russia</div>
+<div class="footer_phones">
+
+<div class="footer_phone"><nobr class="phone"><a class="footer_phone_val" href="tel:88003003000">8 800 300-30-00</a></nobr></div>
+
+<div class="footer_phone"><nobr class="phone"><a class="footer_phone_val" href="tel:+74993003000">+7 499 300-30-00</a></nobr></div>
+
+</div>
+</div>
+<div class="footer_main_block">
+<div class="footer_left-menu">
+
+<div class="footer_left-menu_item"><a href="/eng/about_br/irp/">Investor Relations</a></div>
+<div class="footer_left-menu_item"><a href="/eng/other/holidays/">Public Holidays in&nbsp;Russia</a></div>
+
+</div>
+<div class="networks-circle footer_networks">
+<a class="networks-circle_item _yt" href="https://www.youtube.com/user/BankofRussia"></a>
+<a class="networks-circle_item _tg" href="https://telegram.me/centralbank_russia" title="Telegram"></a></div>
+</div>
+<div class="footer_menu">
+<div class="footer_menu_items">
+<div class="footer_menu_item"><a href="/eng/about/">About the&nbsp;Site</a></div>
+<div class="footer_menu_item"><a href="/eng/contacts/">Contacts</a></div>
+<div class="footer_menu_item"><a href="/eng/development/">Technical resources</a></div>
+
+<!--<div class="footer_menu_item"><a href="/eng/development/">Links</a></div>-->
+</div>
+<a class="footer_menu_item _visually-impaired" href="#" title="Mode for visually impaired">
+	<div class="footer_visually-impaired-icon"></div>
+	<div><span class="visually-impaired-on">Mode for&nbsp;visually impaired</span><span class="visually-impaired-off">Regular version</span></div>
+</a>
+</div>
+
+            </div>
+        </div>
+        <div class="footer_bottom">
+            <div class="col-md-23 col-xl-23 offset-md-1 offset-xl-2 row footer_bottom-container">
+                <div class="footer_bottom_text col-md-11 col-xl-11">&#169; Bank of Russia, 2000–2026.</div>
+<div class="footer_bottom_aic col-md-12 col-xl-11">Design by <a href="https://aic.ru" target="_blank"><img src="/common/images/icons/aic-logo.svg" /></a></div>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+
+        <div class="popup-cookies" data-popup-cookies>
+            <div class="popup-cookies_title">
+                The Bank of Russia website uses cookies
+            </div>
+            <div class="popup-cookies_subtitle">
+                By using <a href="/eng/">www.cbr.ru</a>, you accept
+                the  <a href="/eng/user_agreement/">User Agreement.</a>
+            </div>
+            <button class="btn _medium _blue " data-popup-cookies-btn>
+                Accept
+            </button>
+        </div>
+
+    
+<!--[if IE 9]><script>$('body').addClass('ie9')</script><![endif]-->
+<script src="/Modules/Content/Scripts/PageInfo.js?v=v3116962712" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            Content_PageInfo.init($('[data-page-feedback]'));
+        });
+    </script>
+
+
+
+</body>
+</html>

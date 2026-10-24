@@ -139,7 +139,10 @@ def regime_announcement_time(regime: str, day: dt.date, scheduled: bool, meeting
         return (None, "unknown", "Not yet sourced (pending official page)")
 
     if regime == "BoE":
+        if day < dt.date(2016, 1, 1):
+            return ("12:00", "approximate", "Bank of England MPC decision: assumed 12:00 convention before 2016-01-01 (approximate; pending historical schedule)")
         return ("12:00", "exact", "Bank of England official MPC announcement convention (12:00 London time, verified by boe_mpc_official.html)")
+
 
     if regime == "BoC":
         if day < dt.date(2013, 1, 1):
@@ -266,7 +269,11 @@ def main() -> list[str]:
             unique.append(r)
     for r in unique:
         r["window_start_utc"], r["window_end_utc"] = announcement_window(r)
-        r["analysis_ready_timing"] = 1 if r["time_quality"] in ("exact", "approximate") else 0
+        ready = 1 if r["time_quality"] in ("exact", "approximate") else 0
+        if r["regime"] == "BoE" and dt.date.fromisoformat(r["decision_date"]) < dt.date(2016, 1, 1):
+            ready = 0
+        r["analysis_ready_timing"] = ready
+
     with open(OUT_CSV, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=FIELDS)
         w.writeheader()
