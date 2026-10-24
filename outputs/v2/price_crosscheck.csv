@@ -1,0 +1,39 @@
+index_id,country,proxy_type,total_return_index,secondary_provider,n_compared,n_extreme_days,max_abs_ret_diff,share_over_1bp,tracking_error_ann,benchmark_correlation,notes
+au_asx200,AU,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),260,10,0.005032,0.130769,,,Price index
+au_asx200_fin,AU,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),268,18,0.006659,0.205224,,,Price index
+au_small_ords,AU,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),260,10,0.004451,0.165385,,,Price index
+br_ibov,BR,direct_index,1,B3 S.A. Official Index Statistics,271,21,0.012133,0.276753,,,Total return index (dividends reinvested)
+br_ifnc,BR,direct_index,1,B3 S.A. Official Index Statistics,296,46,0.009688,0.435811,,,Total return index (dividends reinvested)
+br_smll,BR,direct_index,1,B3 S.A. Official Index Statistics,275,25,0.015635,0.269091,,,Total return index (dividends reinvested)
+ca_tsx,CA,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),259,9,0.008311,0.123552,,,Price index
+ca_tsx_fin,CA,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),262,12,0.010168,0.160305,,,Price index
+ca_tsx_venture,CA,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),274,24,0.005966,0.240876,,,Price index
+cn_csi300,CN,direct_index,0,China Securities Index Co. (CSI official direct),284,34,0.004065,0.306338,,,Price index
+cn_csi300_banks,CN,direct_index,0,China Securities Index Co. (CSI official direct),291,41,0.005326,0.305842,,,Price index
+cn_csi500,CN,direct_index,0,China Securities Index Co. (CSI official direct),307,57,0.00507,0.400651,,,Price index
+de_dax,DE,direct_index,1,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),270,20,0.008162,0.218519,,,Total return index (dividends reinvested)
+de_dax_banks,DE,direct_index,1,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),358,108,0.019428,0.567039,,,Total return index (dividends reinvested)
+de_mdax,DE,direct_index,1,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),267,17,0.006424,0.247191,,,Total return index (dividends reinvested)
+de_stoxx_banks_etf,DE,etf_proxy,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),343,93,0.01907,0.516035,0.177,0.8583,Tracking error 17.70%
+ea_emu_smallcap_etf,EA,etf_proxy,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),266,16,0.007929,0.161654,0.0928,0.8673,Tracking error 9.28%
+es_ibex35,ES,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),275,25,0.01092,0.272727,,,Price index
+fr_cac40,FR,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),269,19,0.008216,0.241636,,,Price index
+gb_ftse100,GB,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),256,6,0.006379,0.113281,,,Price index
+gb_ftse_smallcap,GB,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),258,8,0.005472,0.050388,,,Price index
+in_nifty50,IN,direct_index,0,NSE India / niftyindices.com,262,12,0.009233,0.167939,,,Price index
+in_nifty_bank,IN,direct_index,0,NSE India / niftyindices.com,280,30,0.01579,0.289286,,,Price index
+in_nifty_smallcap100,IN,direct_index,0,NSE India / niftyindices.com,269,19,0.009554,0.241636,,,Price index
+it_ftsemib,IT,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),281,31,0.016182,0.341637,,,Price index
+jp_mothers_etf,JP,etf_proxy,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),391,141,0.017258,0.601023,0.3165,0.5145,Tracking error 31.65%
+jp_nikkei225,JP,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),278,28,0.008383,0.327338,,,Price index
+jp_topix_banks_etf,JP,etf_proxy,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),293,43,0.020634,0.375427,0.2052,0.6676,Tracking error 20.52%
+kr_banks_etf,KR,etf_proxy,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),302,52,0.005741,0.423841,0.2244,0.5546,Tracking error 22.44%
+kr_kosdaq,KR,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),308,58,0.01082,0.350649,,,Price index
+kr_kospi,KR,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),299,49,0.014351,0.287625,,,Price index
+mx_ipc,MX,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),256,6,0.002155,0.175781,,,Price index
+ru_imoex,RU,direct_index,0,Moscow Exchange ISS (independent exchange download),279,29,0.071868,0.308244,,,Price index
+ru_moex_fin,RU,direct_index,0,Moscow Exchange ISS (independent exchange download),293,43,0.085547,0.354949,,,Price index
+ru_moex_smid,RU,direct_index,0,Moscow Exchange ISS (independent exchange download),270,20,0.04804,0.222222,,,Price index
+us_bkx,US,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),318,68,0.014745,0.455975,,,Price index
+us_rut,US,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),282,32,0.011271,0.287234,,,Price index
+us_sp500,US,direct_index,0,single-source (Yahoo Finance primary; Stooq blocked by Cloudflare anti-bot challenge),265,15,0.007812,0.158491,,,Price index

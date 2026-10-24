@@ -1,0 +1,8 @@
+event_id,index_id,horizon,recomputed_clr,actual_clr,diff,cause
+ecb_2022-02-03,ru_imoex,clr_60,-0.40098,-0.38957,0.01141,Russian index spanning Feb 2022 MOEX trading halt (ret_spans_halt=1)
+ecb_2022-02-03,ru_moex_fin,clr_60,-0.64228,-0.67887,0.03658,Russian index spanning Feb 2022 MOEX trading halt (ret_spans_halt=1)
+ecb_2022-02-03,ru_moex_smid,clr_60,-0.28384,-0.31375,0.02991,Russian index spanning Feb 2022 MOEX trading halt (ret_spans_halt=1)
+fed_2022-01-26,ru_imoex,clr_60,-0.42907,-0.37753,0.05154,Russian index spanning Feb 2022 MOEX trading halt (ret_spans_halt=1)
+fed_2022-01-26,ru_moex_fin,clr_60,-0.70093,-0.62641,0.07452,Russian index spanning Feb 2022 MOEX trading halt (ret_spans_halt=1)
+fed_2022-01-26,ru_moex_smid,clr_60,-0.27752,-0.28589,0.00837,Russian index spanning Feb 2022 MOEX trading halt (ret_spans_halt=1)
+boc_2022-01-26,ru_imoex,clr_60,-0.37834,-0.31708,0.06126,Russian index spanning Feb 2022 MOEX trading halt (ret_spans_halt=1)

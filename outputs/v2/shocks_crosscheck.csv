@@ -1,0 +1,10 @@
+test,n_tested,max_diff,tolerance,status
+Fed Standardized Shock Recomputation,115,8.881784197001252e-16,1e-5,EXACT_MATCH
+ECB Standardized Shock Recomputation,147,8.881784197001252e-16,1e-5,EXACT_MATCH
+Tier 2 Yield Proxy 1-Day Change Recomputation,1117,0.0,1e-4,EXACT_MATCH
+Yield Series 100-Day Audit (US),100,0.0,"Bounds [-1.5%, 20.0%]",PASS
+Yield Series 100-Day Audit (DE),100,0.0,"Bounds [-1.5%, 20.0%]",PASS
+Yield Series 100-Day Audit (GB),100,0.0,"Bounds [-1.5%, 20.0%]",PASS
+Yield Series 100-Day Audit (CA),100,0.0,"Bounds [-1.5%, 20.0%]",PASS
+Yield Series 100-Day Audit (AU),100,0.0,"Bounds [-1.5%, 20.0%]",PASS
+Yield Series 100-Day Audit (JP),100,0.0,"Bounds [-1.5%, 20.0%]",PASS
