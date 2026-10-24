@@ -1,0 +1,128 @@
+regime,year,decisions,hikes,cuts,holds,nonzero_changes,shock_tier,shock_measure_type,shock_primary,analysis_ready_timing,effective_decisions,notes
+Fed,2010,9,0,0,9,0,"Tier 1, Tier 2","hf_ois, yield_proxy",8,9,8,
+Fed,2011,8,0,0,8,0,Tier 1,hf_ois,8,8,8,
+Fed,2012,8,0,0,8,0,Tier 1,hf_ois,8,8,8,
+Fed,2013,8,0,0,8,0,Tier 1,hf_ois,8,8,8,
+Fed,2014,8,0,0,8,0,Tier 1,hf_ois,8,8,8,
+Fed,2015,8,1,0,7,1,Tier 1,hf_ois,8,8,8,
+Fed,2016,8,1,0,7,1,Tier 1,hf_ois,8,8,8,
+Fed,2017,8,3,0,5,3,Tier 1,hf_ois,8,8,8,
+Fed,2018,8,4,0,4,4,Tier 1,hf_ois,8,8,8,
+Fed,2019,9,0,3,6,3,Tier 1,hf_ois,9,9,9,
+Fed,2020,10,0,2,8,2,Tier 1,hf_ois,10,10,10,
+Fed,2021,8,0,0,8,0,Tier 1,hf_ois,8,8,8,
+Fed,2022,8,7,0,1,7,Tier 1,hf_ois,8,8,8,
+Fed,2023,8,4,0,4,4,Tier 1,hf_ois,8,8,8,
+Fed,2024,8,0,3,5,3,Tier 2,yield_proxy,3,8,3,Post-HF transition to Tier 2 yield proxy (3 primary rate changes)
+Fed,2025,9,0,3,5,3,Tier 2,yield_proxy,3,8,3,Post-HF transition to Tier 2 yield proxy (3 primary rate changes)
+Fed,2026,6,1,0,5,1,Tier 2,yield_proxy,1,6,1,Post-HF transition to Tier 2 yield proxy (1 primary rate changes)
+Fed,Total,139,21,11,106,32,"Tier 1, Tier 2","hf_ois, yield_proxy",122,138,122,
+ECB,2010,12,0,0,12,0,Tier 1,hf_ois,12,12,12,
+ECB,2011,12,2,2,8,4,Tier 1,hf_ois,12,12,12,
+ECB,2012,12,0,1,11,1,Tier 1,hf_ois,12,12,12,
+ECB,2013,12,0,2,10,2,Tier 1,hf_ois,12,12,12,
+ECB,2014,12,0,2,10,2,Tier 1,hf_ois,12,12,12,
+ECB,2015,8,0,0,8,0,Tier 1,hf_ois,8,8,8,
+ECB,2016,8,0,1,7,1,Tier 1,hf_ois,8,8,8,
+ECB,2017,8,0,0,8,0,Tier 1,hf_ois,8,8,8,
+ECB,2018,8,0,0,8,0,Tier 1,hf_ois,8,8,8,
+ECB,2019,8,0,0,8,0,Tier 1,hf_ois,8,8,8,
+ECB,2020,8,0,0,8,0,Tier 1,hf_ois,8,8,8,
+ECB,2021,8,0,0,8,0,Tier 1,hf_ois,8,8,8,
+ECB,2022,8,4,0,4,4,Tier 1,hf_ois,8,8,8,
+ECB,2023,8,6,0,2,6,Tier 1,hf_ois,8,8,8,
+ECB,2024,8,0,4,4,4,Tier 1,hf_ois,8,8,8,
+ECB,2025,8,0,4,4,4,"Tier 1, Tier 2","hf_ois, yield_proxy",7,8,7,
+ECB,2026,6,2,0,4,2,Tier 2,yield_proxy,2,6,2,Post-HF transition to Tier 2 yield proxy (2 primary rate changes)
+ECB,Total,154,14,16,124,30,"Tier 1, Tier 2","hf_ois, yield_proxy",149,154,149,
+BoE,2010,12,0,0,12,0,Tier 2,yield_proxy,0,0,0,Prolonged hold at 0.50%; timing approximate
+BoE,2011,12,0,0,12,0,Tier 2,yield_proxy,0,0,0,Prolonged hold at 0.50%; timing approximate
+BoE,2012,12,0,0,12,0,Tier 2,yield_proxy,0,0,0,Prolonged hold at 0.50%; timing approximate
+BoE,2013,12,0,0,12,0,Tier 2,yield_proxy,0,0,0,Prolonged hold at 0.50%; timing approximate
+BoE,2014,12,0,0,12,0,Tier 2,yield_proxy,0,0,0,Prolonged hold at 0.50%; timing approximate
+BoE,2015,12,0,0,12,0,Tier 2,yield_proxy,0,0,0,Prolonged hold at 0.50%; timing approximate
+BoE,2016,11,0,1,10,1,Tier 2,yield_proxy,1,11,1,
+BoE,2017,8,1,0,7,1,Tier 2,yield_proxy,1,8,1,
+BoE,2018,8,1,0,7,1,Tier 2,yield_proxy,1,8,1,
+BoE,2019,8,0,0,8,0,Tier 2,yield_proxy,0,8,0,
+BoE,2020,10,0,2,8,2,Tier 2,yield_proxy,2,10,2,
+BoE,2021,8,1,0,7,1,Tier 2,yield_proxy,1,8,1,
+BoE,2022,8,8,0,0,8,Tier 2,yield_proxy,8,8,8,
+BoE,2023,8,5,0,3,5,Tier 2,yield_proxy,5,8,5,
+BoE,2024,8,0,2,6,2,Tier 2,yield_proxy,2,8,2,
+BoE,2025,8,0,4,4,4,Tier 2,yield_proxy,4,8,4,
+BoE,2026,6,0,0,6,0,Tier 2,yield_proxy,0,6,0,
+BoE,Total,163,16,9,138,25,Tier 2,yield_proxy,25,91,25,
+BoC,2010,8,3,0,5,3,Tier 2,yield_proxy,3,0,0,Timing unverified pre-2013 (3 primary vs 0 timing-ready)
+BoC,2011,8,0,0,8,0,Tier 2,yield_proxy,0,0,0,Timing unverified pre-2013 (0 primary vs 0 timing-ready)
+BoC,2012,8,0,0,8,0,Tier 2,yield_proxy,0,0,0,Timing unverified pre-2013 (0 primary vs 0 timing-ready)
+BoC,2013,8,0,0,8,0,Tier 2,yield_proxy,0,8,0,
+BoC,2014,8,0,0,8,0,Tier 2,yield_proxy,0,8,0,
+BoC,2015,8,0,2,6,2,Tier 2,yield_proxy,2,8,2,
+BoC,2016,8,0,0,8,0,Tier 2,yield_proxy,0,8,0,
+BoC,2017,8,2,0,6,2,Tier 2,yield_proxy,2,8,2,
+BoC,2018,8,3,0,5,3,Tier 2,yield_proxy,3,8,3,
+BoC,2019,8,0,0,8,0,Tier 2,yield_proxy,0,8,0,
+BoC,2020,10,0,3,7,3,Tier 2,yield_proxy,3,10,3,
+BoC,2021,8,0,0,8,0,Tier 2,yield_proxy,0,8,0,
+BoC,2022,8,7,0,1,7,Tier 2,yield_proxy,7,8,7,
+BoC,2023,8,3,0,5,3,Tier 2,yield_proxy,3,8,3,
+BoC,2024,8,0,5,3,5,Tier 2,yield_proxy,5,8,5,
+BoC,2025,8,0,4,4,4,Tier 2,yield_proxy,4,8,4,
+BoC,2026,6,0,0,6,0,Tier 2,yield_proxy,0,6,0,
+BoC,Total,136,18,14,104,32,Tier 2,yield_proxy,32,112,29,BoC has 32 primary shocks but 3 in 2010 had unverified timing; effective = 29
+RBA,2010,11,4,0,7,4,Tier 2,yield_proxy,4,11,4,
+RBA,2011,11,0,2,9,2,Tier 2,yield_proxy,2,11,2,
+RBA,2012,11,0,4,7,4,Tier 2,yield_proxy,4,11,4,
+RBA,2013,11,0,2,9,2,Tier 2,yield_proxy,1,11,1,
+RBA,2014,11,0,0,11,0,Tier 2,yield_proxy,0,11,0,
+RBA,2015,11,0,2,9,2,Tier 2,yield_proxy,2,11,2,
+RBA,2016,11,0,2,9,2,Tier 2,yield_proxy,2,11,2,
+RBA,2017,11,0,0,11,0,Tier 2,yield_proxy,0,11,0,
+RBA,2018,11,0,0,11,0,Tier 2,yield_proxy,0,11,0,
+RBA,2019,11,0,3,8,3,Tier 2,yield_proxy,3,11,3,
+RBA,2020,12,0,3,9,3,Tier 2,yield_proxy,3,12,3,
+RBA,2021,11,0,0,11,0,Tier 2,yield_proxy,0,11,0,
+RBA,2022,11,8,0,3,8,Tier 2,yield_proxy,8,11,8,
+RBA,2023,11,5,0,6,5,Tier 2,yield_proxy,5,11,5,
+RBA,2024,8,0,0,8,0,Tier 2,yield_proxy,0,8,0,
+RBA,2025,8,0,3,5,3,Tier 2,yield_proxy,3,8,3,
+RBA,2026,6,3,0,3,3,Tier 2,yield_proxy,3,6,3,
+RBA,Total,177,20,21,136,41,Tier 2,yield_proxy,40,177,40,
+CBR,2010,4,0,4,0,4,Tier 2,yield_proxy,4,0,0,Pre-Key Rate era: 4 primary shocks vs 0 timing-ready
+CBR,2011,3,2,1,0,3,Tier 2,yield_proxy,3,0,0,Pre-Key Rate era: 3 primary shocks vs 0 timing-ready
+CBR,2012,3,2,1,0,3,Tier 2,yield_proxy,3,0,0,Pre-Key Rate era: 3 primary shocks vs 0 timing-ready
+CBR,2013,1,0,1,0,1,Tier 2,yield_proxy,1,1,1,Pre-Key Rate era: 1 primary shocks vs 1 timing-ready
+CBR,2014,6,6,0,0,6,Tier 2,yield_proxy,6,6,6,
+CBR,2015,5,0,5,0,5,Tier 2,yield_proxy,5,5,5,
+CBR,2016,2,0,2,0,2,Tier 2,yield_proxy,2,2,2,
+CBR,2017,6,0,6,0,6,Tier 2,yield_proxy,6,6,6,
+CBR,2018,4,2,2,0,4,Tier 2,yield_proxy,4,4,4,
+CBR,2019,5,0,5,0,5,Tier 2,yield_proxy,5,5,5,
+CBR,2020,4,0,4,0,4,Tier 2,yield_proxy,4,4,4,
+CBR,2021,7,7,0,0,7,Tier 2,yield_proxy,7,7,7,
+CBR,2022,8,2,6,0,8,Tier 2,yield_proxy,1,1,1,
+CBR,2023,5,5,0,0,5,Tier 2,yield_proxy,0,0,0,
+CBR,2024,3,3,0,0,3,Tier 2,yield_proxy,0,0,0,
+CBR,2025,5,0,5,0,5,Tier 2,yield_proxy,0,0,0,
+CBR,2026,5,0,5,0,5,Tier 2,yield_proxy,0,0,0,
+CBR,Total,76,29,47,0,76,Tier 2,yield_proxy,51,41,41,CBR has 51 primary shocks but only 41 timing-ready decisions in 2010+; effective = 41
+BoJ,2010,16,0,1,15,1,Tier 2,yield_proxy,0,16,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
+BoJ,2011,15,0,0,15,0,Tier 2,yield_proxy,0,15,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
+BoJ,2012,14,0,0,14,0,Tier 2,yield_proxy,0,14,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
+BoJ,2013,14,0,0,3,11,Tier 2,yield_proxy,0,14,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
+BoJ,2014,14,0,0,0,14,Tier 2,yield_proxy,0,14,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
+BoJ,2015,14,0,0,0,14,Tier 2,yield_proxy,0,14,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
+BoJ,2016,8,0,0,2,6,Tier 2,yield_proxy,0,8,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
+BoJ,2017,8,0,0,8,0,Tier 2,yield_proxy,0,8,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
+BoJ,2018,8,0,0,8,0,Tier 2,yield_proxy,0,8,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
+BoJ,2019,8,0,0,8,0,Tier 2,yield_proxy,0,8,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
+BoJ,2020,9,0,0,9,0,Tier 2,yield_proxy,0,9,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
+BoJ,2021,8,0,0,8,0,Tier 2,yield_proxy,0,8,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
+BoJ,2022,8,0,0,8,0,Tier 2,yield_proxy,0,8,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
+BoJ,2023,8,0,0,8,0,Tier 2,yield_proxy,0,8,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
+BoJ,2024,8,2,0,6,2,Tier 2,yield_proxy,0,8,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
+BoJ,2025,8,2,0,6,2,Tier 2,yield_proxy,0,8,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
+BoJ,2026,6,2,0,4,2,Tier 2,yield_proxy,0,5,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
+BoJ,Total,174,6,1,122,52,Tier 2,yield_proxy,0,173,0,BoJ excluded from primary (0 effective)
+All Regimes,Grand Total,1019,124,119,730,288,"Tier 1, Tier 2",Various,419,886,406,Effective decisions require both shock_primary==1 AND analysis_ready_timing==1

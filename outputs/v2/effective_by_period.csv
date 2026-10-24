@@ -1,0 +1,19 @@
+period,tier,hikes,cuts,holds,total_effective
+2010-2014,Tier 1,2,7,91,100
+2010-2014,Tier 2,10,8,0,18
+2010-2014,All Tiers,12,15,91,118
+2015-2019,Tier 1,9,4,68,81
+2015-2019,Tier 2,9,30,0,39
+2015-2019,All Tiers,18,34,68,120
+2020-2021,Tier 1,0,2,32,34
+2020-2021,Tier 2,8,12,0,20
+2020-2021,All Tiers,8,14,32,54
+2022-2025 (pre-holdout),Tier 1,21,8,17,46
+2022-2025 (pre-holdout),Tier 2,37,20,0,57
+2022-2025 (pre-holdout),All Tiers,58,28,17,103
+final_holdout (2025-10-14 to 2026-10-13),Tier 1,0,0,1,1
+final_holdout (2025-10-14 to 2026-10-13),Tier 2,6,4,0,10
+final_holdout (2025-10-14 to 2026-10-13),All Tiers,6,4,1,11
+Total (2010 to 2026-10-13),Tier 1,32,21,209,262
+Total (2010 to 2026-10-13),Tier 2,70,74,0,144
+Total (2010 to 2026-10-13),All Tiers,102,95,209,406

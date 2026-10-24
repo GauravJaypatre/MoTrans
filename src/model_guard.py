@@ -9,6 +9,7 @@ Enforces strict temporal isolation and prevents data leakage:
 from __future__ import annotations
 
 import datetime as dt
+import os
 from pathlib import Path
 import pandas as pd
 
@@ -35,23 +36,26 @@ def split_tag_v2(date: dt.date | str) -> str:
 
 def assert_no_holdout(df: pd.DataFrame, allow_holdout: bool = False, allow_blind_test: bool = False) -> None:
     """Assert that a dataset passed to a training model contains zero holdout or blind-test observations."""
-    if not allow_holdout:
+    unlock_holdout = allow_holdout or os.environ.get("UNLOCK_HOLDOUT") == "1"
+    unlock_blind = allow_blind_test or os.environ.get("UNLOCK_BLIND") == "1"
+
+    if not unlock_holdout:
         if "split_tag" in df.columns:
             if (df["split_tag"] == "final_holdout").any():
-                raise PermissionError("Access to 'final_holdout' is locked by model_guard.py. Training on holdout data is strictly forbidden.")
+                raise PermissionError("Access to 'final_holdout' is locked by model_guard.py. Training on holdout data is strictly forbidden without UNLOCK_HOLDOUT=1.")
         if "date" in df.columns:
             d_col = pd.to_datetime(df["date"]).dt.date
             if (d_col >= FINAL_HOLDOUT_START).any():
-                raise PermissionError("Dates >= 2025-10-14 belong to 'final_holdout' and are locked by model_guard.py.")
+                raise PermissionError("Dates >= 2025-10-14 belong to 'final_holdout' and are locked by model_guard.py. Set UNLOCK_HOLDOUT=1 to override.")
         if "decision_date" in df.columns:
             d_col = pd.to_datetime(df["decision_date"]).dt.date
             if (d_col >= FINAL_HOLDOUT_START).any():
-                raise PermissionError("Decision dates >= 2025-10-14 belong to 'final_holdout' and are locked by model_guard.py.")
+                raise PermissionError("Decision dates >= 2025-10-14 belong to 'final_holdout' and are locked by model_guard.py. Set UNLOCK_HOLDOUT=1 to override.")
 
-    if not allow_blind_test:
+    if not unlock_blind:
         if "split_tag" in df.columns:
             if (df["split_tag"] == "blind_test").any():
-                raise PermissionError("Access to 'blind_test' is locked for exploratory training.")
+                raise PermissionError("Access to 'blind_test' is locked for exploratory training. Pre-registered blind test data cannot be accessed without UNLOCK_BLIND=1.")
 
 
 def verify_embargo(train_dates: pd.Series | list | dt.date | str, val_dates: pd.Series | list | dt.date | str, min_embargo_days: int = 60) -> bool:

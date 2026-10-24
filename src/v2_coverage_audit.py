@@ -197,7 +197,7 @@ def audit_indices(panel_path: Path) -> pd.DataFrame:
             reasons.append(f"High missing sessions ({n_miss} missing of {n_cal})")
 
         if row["stale_flags"] > 5:
-            reasons.append(f"Stale trading volume ({row['stale_flags']} stale days)")
+            reasons.append(f"Stale price ({row['stale_flags']} stale days)")
 
         if row["outlier_flags"] > 5:
             reasons.append(f"Outlier anomalies ({row['outlier_flags']} outlier flags)")

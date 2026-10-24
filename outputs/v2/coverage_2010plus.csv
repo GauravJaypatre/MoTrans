@@ -475,13 +475,13 @@ index,de_stoxx_banks_etf,2023,DE,,,,,,255.0,255.0,0.0,3.0,0.0,0,Full coverage
 index,de_stoxx_banks_etf,2024,DE,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
 index,de_stoxx_banks_etf,2025,DE,,,,,,252.0,253.0,1.0,0.0,0.0,0,Full coverage
 index,de_stoxx_banks_etf,2026,DE,,,,,,199.0,200.0,1.0,0.0,0.0,0,Full coverage
-index,ea_emu_smallcap_etf,2010,EA,,,,,,217.0,258.0,41.0,191.0,0.0,1,High missing sessions (41 missing of 258); Stale trading volume (191 stale days)
-index,ea_emu_smallcap_etf,2011,EA,,,,,,221.0,257.0,36.0,167.0,0.0,1,High missing sessions (36 missing of 257); Stale trading volume (167 stale days)
-index,ea_emu_smallcap_etf,2012,EA,,,,,,253.0,256.0,3.0,210.0,0.0,1,Stale trading volume (210 stale days)
-index,ea_emu_smallcap_etf,2013,EA,,,,,,252.0,255.0,3.0,140.0,0.0,1,Stale trading volume (140 stale days)
-index,ea_emu_smallcap_etf,2014,EA,,,,,,252.0,255.0,3.0,7.0,0.0,1,Stale trading volume (7 stale days)
+index,ea_emu_smallcap_etf,2010,EA,,,,,,217.0,258.0,41.0,191.0,0.0,1,High missing sessions (41 missing of 258); Stale price (191 stale days)
+index,ea_emu_smallcap_etf,2011,EA,,,,,,221.0,257.0,36.0,167.0,0.0,1,High missing sessions (36 missing of 257); Stale price (167 stale days)
+index,ea_emu_smallcap_etf,2012,EA,,,,,,253.0,256.0,3.0,210.0,0.0,1,Stale price (210 stale days)
+index,ea_emu_smallcap_etf,2013,EA,,,,,,252.0,255.0,3.0,140.0,0.0,1,Stale price (140 stale days)
+index,ea_emu_smallcap_etf,2014,EA,,,,,,252.0,255.0,3.0,7.0,0.0,1,Stale price (7 stale days)
 index,ea_emu_smallcap_etf,2015,EA,,,,,,253.0,256.0,3.0,4.0,0.0,0,Full coverage
-index,ea_emu_smallcap_etf,2016,EA,,,,,,255.0,257.0,2.0,6.0,0.0,1,Stale trading volume (6 stale days)
+index,ea_emu_smallcap_etf,2016,EA,,,,,,255.0,257.0,2.0,6.0,0.0,1,Stale price (6 stale days)
 index,ea_emu_smallcap_etf,2017,EA,,,,,,252.0,255.0,3.0,0.0,0.0,0,Full coverage
 index,ea_emu_smallcap_etf,2018,EA,,,,,,251.0,255.0,4.0,0.0,0.0,0,Full coverage
 index,ea_emu_smallcap_etf,2019,EA,,,,,,251.0,255.0,4.0,0.0,0.0,0,Full coverage
