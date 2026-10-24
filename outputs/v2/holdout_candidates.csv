@@ -1,0 +1,44 @@
+section,boundary,regime,total_effective_after,tier_1_count,tier_2_count,hikes,cuts,holds,decision_date,decision,size_bp,shock_tier
+boundary_summary,2022-01-01,Fed,23,16,7,12,6,5,,,,
+boundary_summary,2022-01-01,ECB,33,31,2,12,8,13,,,,
+boundary_summary,2022-01-01,BoE,19,0,19,13,6,0,,,,
+boundary_summary,2022-01-01,BoC,19,0,19,10,9,0,,,,
+boundary_summary,2022-01-01,RBA,19,0,19,16,3,0,,,,
+boundary_summary,2022-01-01,CBR,1,0,1,1,0,0,,,,
+boundary_summary,2022-01-01,BoJ,0,0,0,0,0,0,,,,
+boundary_summary,2022-01-01,All Regimes,114,47,67,64,32,18,,,,
+boundary_summary,2024-01-01,Fed,7,0,7,1,6,0,,,,
+boundary_summary,2024-01-01,ECB,17,15,2,2,8,7,,,,
+boundary_summary,2024-01-01,BoE,6,0,6,0,6,0,,,,
+boundary_summary,2024-01-01,BoC,9,0,9,0,9,0,,,,
+boundary_summary,2024-01-01,RBA,6,0,6,3,3,0,,,,
+boundary_summary,2024-01-01,CBR,0,0,0,0,0,0,,,,
+boundary_summary,2024-01-01,BoJ,0,0,0,0,0,0,,,,
+boundary_summary,2024-01-01,All Regimes,45,15,30,6,32,7,,,,
+boundary_summary,2025-01-01,Fed,4,0,4,1,3,0,,,,
+boundary_summary,2025-01-01,ECB,9,7,2,2,4,3,,,,
+boundary_summary,2025-01-01,BoE,4,0,4,0,4,0,,,,
+boundary_summary,2025-01-01,BoC,4,0,4,0,4,0,,,,
+boundary_summary,2025-01-01,RBA,6,0,6,3,3,0,,,,
+boundary_summary,2025-01-01,CBR,0,0,0,0,0,0,,,,
+boundary_summary,2025-01-01,BoJ,0,0,0,0,0,0,,,,
+boundary_summary,2025-01-01,All Regimes,27,7,20,6,18,3,,,,
+boundary_summary,2025-10-14,Fed,3,0,3,1,2,0,,,,
+boundary_summary,2025-10-14,ECB,3,1,2,2,0,1,,,,
+boundary_summary,2025-10-14,BoE,1,0,1,0,1,0,,,,
+boundary_summary,2025-10-14,BoC,1,0,1,0,1,0,,,,
+boundary_summary,2025-10-14,RBA,3,0,3,3,0,0,,,,
+boundary_summary,2025-10-14,CBR,0,0,0,0,0,0,,,,
+boundary_summary,2025-10-14,BoJ,0,0,0,0,0,0,,,,
+boundary_summary,2025-10-14,All Regimes,11,1,10,6,4,1,,,,
+final_holdout_decisions,2025-10-14 to 2026-10-13,BoC,,,,,,,2025-10-29,cut,-25.0,Tier 2
+final_holdout_decisions,2025-10-14 to 2026-10-13,Fed,,,,,,,2025-10-29,cut,-25.0,Tier 2
+final_holdout_decisions,2025-10-14 to 2026-10-13,ECB,,,,,,,2025-10-30,hold,0.0,Tier 1
+final_holdout_decisions,2025-10-14 to 2026-10-13,Fed,,,,,,,2025-12-10,cut,-25.0,Tier 2
+final_holdout_decisions,2025-10-14 to 2026-10-13,BoE,,,,,,,2025-12-18,cut,-25.0,Tier 2
+final_holdout_decisions,2025-10-14 to 2026-10-13,RBA,,,,,,,2026-02-03,hike,25.0,Tier 2
+final_holdout_decisions,2025-10-14 to 2026-10-13,RBA,,,,,,,2026-03-17,hike,25.0,Tier 2
+final_holdout_decisions,2025-10-14 to 2026-10-13,RBA,,,,,,,2026-05-05,hike,25.0,Tier 2
+final_holdout_decisions,2025-10-14 to 2026-10-13,ECB,,,,,,,2026-06-11,hike,25.0,Tier 2
+final_holdout_decisions,2025-10-14 to 2026-10-13,ECB,,,,,,,2026-09-10,hike,25.0,Tier 2
+final_holdout_decisions,2025-10-14 to 2026-10-13,Fed,,,,,,,2026-09-16,hike,25.0,Tier 2

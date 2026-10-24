@@ -42,10 +42,19 @@ Random cross-validation ($k$-fold) and random shuffling are **strictly prohibite
    - **Rolling Origin**: Fixed lookback window rolled forward in time.
 2. **Mandatory Embargo**:
    - An embargo period equal to the longest outcome horizon ($\ge 60$ trading days) must be enforced between training folds and validation folds to eliminate information leakage from overlapping return windows ($clr_{60}$).
-3. **Untouched Final Holdout (`final_holdout`)**:
-   - The final **12 months of available data** (`2025-10-14` to `2026-10-13`) are designated as `split_tag = "final_holdout"`.
-   - This period is reserved exclusively for pseudo-out-of-sample forecast evaluation.
-   - Guarded by `src/model_guard.py`: attempts to train or select features on rows with `split_tag == "final_holdout"` will trigger a hard exception.
+3. **Holdout Design & Candidate Analysis**:
+   - Current baseline reserves the final 12 months (`2025-10-14` to `2026-10-13`) as `split_tag = "final_holdout"`, locked by `src/model_guard.py`.
+   - *Status Note*: The final holdout design is pending a decision based on `outputs/v2/holdout_candidates.csv` (evaluating origins 2022-01-01, 2024-01-01, 2025-01-01, and 2025-10-14). Neither Alternative A (tier-specific holdout) nor Alternative B (decision-count holdout) will be implemented because both leak across regimes since monetary shocks cross international financial markets.
+   - A *rolling-origin evaluation* architecture (origins 2016, 2018, 2020, 2022, 2024 with a 60-day embargo) is being actively considered to ensure robust temporal validation across market cycles.
+4. **v2 Sample Partitioning & Blind Test Isolation**:
+   - v2 tables must **not** reuse `'blind_test'` or `'train'` tags from v1.
+   - In v2 tables, `v1_split_tag` stores a copy of the v1 tag for provenance reference only, while v2 split assignments are time-ordered and assigned dynamically by modeling code.
+   - v2 results are strictly exploratory and cannot be reported as confirmatory evidence for the v1 blind test.
+   - v2 modelling must not start before the pre-registered v1 blind test (Milestone M3) is run, or, if it does, the v1 analysis plan hash in `docs/analysis_plan.md` (`384c0d71a1debb054798272965f42f0d36f2e7c6f96461770a6291004739c040`) must be recorded first.
+   - A unit test enforces that no v2 table contains the tag `'blind_test'`.
+5. **BoJ Policy Instruments & Sensitivity Note**:
+   - For BoJ, unclassified decisions can have nonzero or NaN target rate changes (`size_bp`) during the Kuroda QQE and negative interest rate regimes (2013–2016).
+   - Sensitivity work must use monetary policy surprise variables (`shock_primary`, `shock_usable`), not discrete hike/cut classification labels.
 
 ---
 

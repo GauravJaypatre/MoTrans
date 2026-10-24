@@ -150,7 +150,7 @@ Fed,2021,US,8,Tier 1,hf_ois,8,8,8,0,Full coverage
 Fed,2022,US,8,Tier 1,hf_ois,8,8,8,0,Full coverage
 Fed,2023,US,8,Tier 1,hf_ois,8,8,8,0,Full coverage
 Fed,2024,US,8,Tier 2,yield_proxy,8,3,8,1,Low primary shocks (3/8)
-Fed,2025,US,9,Tier 2,yield_proxy,8,3,8,1,Low primary shocks (3/9); Incomplete timing verification (8/9)
+Fed,2025,US,8,Tier 2,yield_proxy,8,3,8,1,Low primary shocks (3/8)
 Fed,2026,US,6,Tier 2,yield_proxy,6,1,6,1,Low decisions count (6/yr); Low primary shocks (1/6)
 PBoC,2010,CN,2,Tier 2,yield_proxy,0,0,2,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
 PBoC,2011,CN,3,Tier 2,yield_proxy,0,0,3,1,Low decisions count (3/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)

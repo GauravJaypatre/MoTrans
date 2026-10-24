@@ -37,6 +37,7 @@ def fmt_types(s: pd.Series) -> str:
 
 
 def build_effective_by_year(df_pol: pd.DataFrame) -> pd.DataFrame:
+    df_pol = df_pol[df_pol["event_type"] != "non_decision"].copy()
     df_pol["decision_date"] = pd.to_datetime(df_pol["decision_date"])
     df2010 = df_pol[(df_pol["decision_date"] >= "2010-01-01") & (df_pol["regime"].isin(REGIMES))].copy()
     df2010["year"] = df2010["decision_date"].dt.year
@@ -102,7 +103,9 @@ def build_effective_by_year(df_pol: pd.DataFrame) -> pd.DataFrame:
         elif reg == "BoC":
             reg_notes = "BoC has 32 primary shocks but 3 in 2010 had unverified timing; effective = 29"
         elif reg == "BoJ":
-            reg_notes = "BoJ excluded from primary (0 effective)"
+            reg_notes = "BoJ excluded from primary (0 effective); unclassified decisions can have nonzero size_bp, sensitivity must use shock variables"
+        elif reg == "Fed":
+            reg_notes = "Fed has 138 policy decisions (excluding 2025-08-22 Jackson Hole non_decision); effective = 122"
 
         rows.append({
             "regime": reg,
@@ -134,13 +137,14 @@ def build_effective_by_year(df_pol: pd.DataFrame) -> pd.DataFrame:
         "shock_primary": int(df2010["shock_primary"].sum()),
         "analysis_ready_timing": int(df2010["analysis_ready_timing"].sum()),
         "effective_decisions": int(df2010["effective"].sum()),
-        "notes": "Effective decisions require both shock_primary==1 AND analysis_ready_timing==1",
+        "notes": "Effective decisions require both shock_primary==1 AND analysis_ready_timing==1; non_decision rows excluded",
     })
 
     return pd.DataFrame(rows)
 
 
 def build_effective_by_period(df_pol: pd.DataFrame) -> pd.DataFrame:
+    df_pol = df_pol[df_pol["event_type"] != "non_decision"].copy()
     df_pol["decision_date"] = pd.to_datetime(df_pol["decision_date"])
     df2010 = df_pol[(df_pol["decision_date"] >= "2010-01-01") & (df_pol["regime"].isin(REGIMES))].copy()
     eff = df2010[(df2010["shock_primary"] == 1) & (df2010["analysis_ready_timing"] == 1)].copy()

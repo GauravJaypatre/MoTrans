@@ -75,6 +75,7 @@ def fmt_types(s: pd.Series) -> str:
 
 def audit_regimes(policy_path: Path) -> pd.DataFrame:
     df_pol = pd.read_csv(policy_path)
+    df_pol = df_pol[df_pol["event_type"] != "non_decision"].copy()
     df_pol["decision_date"] = pd.to_datetime(df_pol["decision_date"])
     df_pol_2010 = df_pol[df_pol["decision_date"] >= "2010-01-01"].copy()
     df_pol_2010["year"] = df_pol_2010["decision_date"].dt.year

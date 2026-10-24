@@ -114,7 +114,7 @@ regime,CBR,2025,RU,5.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (5/
 regime,CBR,2026,RU,5.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (5/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
 regime,ECB,2026,EA,6.0,Tier 2,yield_proxy,6.0,2.0,,,,,,1,Low decisions count (6/yr); Low primary shocks (2/6)
 regime,Fed,2024,US,8.0,Tier 2,yield_proxy,8.0,3.0,,,,,,1,Low primary shocks (3/8)
-regime,Fed,2025,US,9.0,Tier 2,yield_proxy,8.0,3.0,,,,,,1,Low primary shocks (3/9); Incomplete timing verification (8/9)
+regime,Fed,2025,US,8.0,Tier 2,yield_proxy,8.0,3.0,,,,,,1,Low primary shocks (3/8)
 regime,Fed,2026,US,6.0,Tier 2,yield_proxy,6.0,1.0,,,,,,1,Low decisions count (6/yr); Low primary shocks (1/6)
 regime,PBoC,2010,CN,2.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
 regime,PBoC,2011,CN,3.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (3/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)

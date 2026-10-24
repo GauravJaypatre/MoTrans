@@ -14,9 +14,9 @@ Fed,2021,8,0,0,8,0,Tier 1,hf_ois,8,8,8,
 Fed,2022,8,7,0,1,7,Tier 1,hf_ois,8,8,8,
 Fed,2023,8,4,0,4,4,Tier 1,hf_ois,8,8,8,
 Fed,2024,8,0,3,5,3,Tier 2,yield_proxy,3,8,3,Post-HF transition to Tier 2 yield proxy (3 primary rate changes)
-Fed,2025,9,0,3,5,3,Tier 2,yield_proxy,3,8,3,Post-HF transition to Tier 2 yield proxy (3 primary rate changes)
+Fed,2025,8,0,3,5,3,Tier 2,yield_proxy,3,8,3,Post-HF transition to Tier 2 yield proxy (3 primary rate changes)
 Fed,2026,6,1,0,5,1,Tier 2,yield_proxy,1,6,1,Post-HF transition to Tier 2 yield proxy (1 primary rate changes)
-Fed,Total,139,21,11,106,32,"Tier 1, Tier 2","hf_ois, yield_proxy",122,138,122,
+Fed,Total,138,21,11,106,32,"Tier 1, Tier 2","hf_ois, yield_proxy",122,138,122,Fed has 138 policy decisions (excluding 2025-08-22 Jackson Hole non_decision); effective = 122
 ECB,2010,12,0,0,12,0,Tier 1,hf_ois,12,12,12,
 ECB,2011,12,2,2,8,4,Tier 1,hf_ois,12,12,12,
 ECB,2012,12,0,1,11,1,Tier 1,hf_ois,12,12,12,
@@ -124,5 +124,5 @@ BoJ,2023,8,0,0,8,0,Tier 2,yield_proxy,0,8,0,Excluded from primary due to ZIRP/YC
 BoJ,2024,8,2,0,6,2,Tier 2,yield_proxy,0,8,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
 BoJ,2025,8,2,0,6,2,Tier 2,yield_proxy,0,8,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
 BoJ,2026,6,2,0,4,2,Tier 2,yield_proxy,0,5,0,Excluded from primary due to ZIRP/YCC peg (0 primary)
-BoJ,Total,174,6,1,122,52,Tier 2,yield_proxy,0,173,0,BoJ excluded from primary (0 effective)
-All Regimes,Grand Total,1019,124,119,730,288,"Tier 1, Tier 2",Various,419,886,406,Effective decisions require both shock_primary==1 AND analysis_ready_timing==1
+BoJ,Total,174,6,1,122,52,Tier 2,yield_proxy,0,173,0,"BoJ excluded from primary (0 effective); unclassified decisions can have nonzero size_bp, sensitivity must use shock variables"
+All Regimes,Grand Total,1018,124,119,730,288,"Tier 1, Tier 2",Various,419,886,406,Effective decisions require both shock_primary==1 AND analysis_ready_timing==1; non_decision rows excluded

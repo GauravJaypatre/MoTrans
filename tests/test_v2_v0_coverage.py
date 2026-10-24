@@ -186,3 +186,47 @@ def test_effective_sample_csvs():
 
     holdout_t2 = df_p[(df_p["period"].str.startswith("final_holdout")) & (df_p["tier"] == "Tier 2")]
     assert int(holdout_t2["total_effective"].iloc[0]) == 10
+
+    # Fed non_decision exclusion check
+    fed_tot = df_y[(df_y["regime"] == "Fed") & (df_y["year"] == "Total")]
+    assert int(fed_tot["decisions"].iloc[0]) == 138
+
+
+def test_holdout_candidates_csv():
+    hc_path = Path("outputs/v2/holdout_candidates.csv")
+    assert hc_path.exists()
+    df_hc = pd.read_csv(hc_path)
+
+    # Check that candidate boundaries exist
+    boundaries = ["2022-01-01", "2024-01-01", "2025-01-01", "2025-10-14"]
+    b_rows = df_hc[(df_hc["section"] == "boundary_summary") & (df_hc["regime"] == "All Regimes")]
+    assert set(b_rows["boundary"]) == set(boundaries)
+
+    # Check 11 holdout decisions
+    ho_rows = df_hc[df_hc["section"] == "final_holdout_decisions"]
+    assert len(ho_rows) == 11
+    assert (ho_rows["shock_tier"] == "Tier 1").sum() == 1
+    assert (ho_rows["shock_tier"] == "Tier 2").sum() == 10
+
+
+def test_v2_tables_no_blind_test_tag():
+    """Verify that split_tag_v2 never returns 'blind_test' and v2 tables forbid 'blind_test'."""
+    test_dates = [
+        dt.date(2010, 1, 1),
+        dt.date(2022, 1, 1),
+        dt.date(2023, 6, 15),
+        dt.date(2024, 1, 1),
+        dt.date(2025, 10, 14),
+        dt.date(2026, 10, 13),
+    ]
+    for d in test_dates:
+        tag = split_tag_v2(d)
+        assert tag != "blind_test", f"split_tag_v2 returned forbidden tag 'blind_test' for {d}"
+
+    # Also check if any file in data/v2 has split_tag == 'blind_test'
+    v2_dir = Path("data/v2")
+    if v2_dir.exists():
+        for p in v2_dir.glob("*.parquet"):
+            df = pd.read_parquet(p)
+            if "split_tag" in df.columns:
+                assert not (df["split_tag"] == "blind_test").any(), f"File {p.name} contains forbidden tag 'blind_test'!"
