@@ -31,6 +31,8 @@ outputs/*
 !outputs/*.txt
 !outputs/*.py
 !outputs/*.md
+!outputs/v2/
+!outputs/v2/**
 
 
 

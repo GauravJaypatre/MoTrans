@@ -1,0 +1,851 @@
+entity_type,entity_id,year,country,decisions,tier,shock_measure_type,analysis_ready_timing,shock_primary,trading_days,calendar_days,missing_days,stale_flags,outlier_flags,weak_coverage,weak_reasons
+regime,BCB,2010,BR,8.0,Tier 2,yield_proxy,0.0,3.0,,,,,,1,Low primary shocks (3/8); Unverified announcement timing (0 ready)
+regime,BCB,2011,BR,8.0,Tier 2,yield_proxy,0.0,8.0,,,,,,1,Unverified announcement timing (0 ready)
+regime,BCB,2012,BR,8.0,Tier 2,yield_proxy,0.0,7.0,,,,,,1,Unverified announcement timing (0 ready)
+regime,BCB,2013,BR,8.0,Tier 2,yield_proxy,0.0,6.0,,,,,,1,Unverified announcement timing (0 ready)
+regime,BCB,2014,BR,8.0,Tier 2,yield_proxy,0.0,5.0,,,,,,1,Unverified announcement timing (0 ready)
+regime,BCB,2015,BR,8.0,Tier 2,yield_proxy,0.0,5.0,,,,,,1,Unverified announcement timing (0 ready)
+regime,BCB,2016,BR,8.0,Tier 2,yield_proxy,0.0,2.0,,,,,,1,Low primary shocks (2/8); Unverified announcement timing (0 ready)
+regime,BCB,2017,BR,8.0,Tier 2,yield_proxy,0.0,8.0,,,,,,1,Unverified announcement timing (0 ready)
+regime,BCB,2018,BR,8.0,Tier 2,yield_proxy,0.0,2.0,,,,,,1,Low primary shocks (2/8); Unverified announcement timing (0 ready)
+regime,BCB,2019,BR,8.0,Tier 2,yield_proxy,0.0,2.0,,,,,,1,Low primary shocks (2/8); Unverified announcement timing (0 ready)
+regime,BCB,2020,BR,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BCB,2021,BR,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BCB,2022,BR,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BCB,2023,BR,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BCB,2024,BR,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BCB,2025,BR,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BCB,2026,BR,6.0,None,None,0.0,0.0,,,,,,1,Low decisions count (6/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,Banxico,2010,MX,11.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,Banxico,2011,MX,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,Banxico,2012,MX,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,Banxico,2013,MX,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,Banxico,2014,MX,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,Banxico,2015,MX,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,Banxico,2016,MX,9.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,Banxico,2017,MX,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,Banxico,2018,MX,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,Banxico,2019,MX,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,Banxico,2020,MX,9.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,Banxico,2021,MX,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,Banxico,2022,MX,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,Banxico,2023,MX,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,Banxico,2024,MX,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,Banxico,2025,MX,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,Banxico,2026,MX,6.0,None,None,0.0,0.0,,,,,,1,Low decisions count (6/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoC,2010,CA,8.0,Tier 2,yield_proxy,0.0,3.0,,,,,,1,Low primary shocks (3/8); Unverified announcement timing (0 ready)
+regime,BoC,2011,CA,8.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoC,2012,CA,8.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoC,2013,CA,8.0,Tier 2,yield_proxy,8.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoC,2014,CA,8.0,Tier 2,yield_proxy,8.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoC,2015,CA,8.0,Tier 2,yield_proxy,8.0,2.0,,,,,,1,Low primary shocks (2/8)
+regime,BoC,2016,CA,8.0,Tier 2,yield_proxy,8.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoC,2017,CA,8.0,Tier 2,yield_proxy,8.0,2.0,,,,,,1,Low primary shocks (2/8)
+regime,BoC,2018,CA,8.0,Tier 2,yield_proxy,8.0,3.0,,,,,,1,Low primary shocks (3/8)
+regime,BoC,2019,CA,8.0,Tier 2,yield_proxy,8.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoC,2020,CA,10.0,Tier 2,yield_proxy,10.0,3.0,,,,,,1,Low primary shocks (3/10)
+regime,BoC,2021,CA,8.0,Tier 2,yield_proxy,8.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoC,2022,CA,8.0,Tier 2,yield_proxy,8.0,7.0,,,,,,0,Full coverage
+regime,BoC,2023,CA,8.0,Tier 2,yield_proxy,8.0,3.0,,,,,,1,Low primary shocks (3/8)
+regime,BoC,2024,CA,8.0,Tier 2,yield_proxy,8.0,5.0,,,,,,0,Full coverage
+regime,BoC,2025,CA,8.0,Tier 2,yield_proxy,8.0,4.0,,,,,,0,Full coverage
+regime,BoC,2026,CA,6.0,Tier 2,yield_proxy,6.0,0.0,,,,,,1,Low decisions count (6/yr); Zero primary shocks (missing proxy/pegged/hold)
+regime,BoE,2010,GB,12.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoE,2011,GB,12.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoE,2012,GB,12.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoE,2013,GB,12.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoE,2014,GB,12.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoE,2015,GB,12.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoE,2016,GB,11.0,Tier 2,yield_proxy,11.0,1.0,,,,,,1,Low primary shocks (1/11)
+regime,BoE,2017,GB,8.0,Tier 2,yield_proxy,8.0,1.0,,,,,,1,Low primary shocks (1/8)
+regime,BoE,2018,GB,8.0,Tier 2,yield_proxy,8.0,1.0,,,,,,1,Low primary shocks (1/8)
+regime,BoE,2019,GB,8.0,Tier 2,yield_proxy,8.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoE,2020,GB,10.0,Tier 2,yield_proxy,10.0,2.0,,,,,,1,Low primary shocks (2/10)
+regime,BoE,2021,GB,8.0,Tier 2,yield_proxy,8.0,1.0,,,,,,1,Low primary shocks (1/8)
+regime,BoE,2022,GB,8.0,Tier 2,yield_proxy,8.0,8.0,,,,,,0,Full coverage
+regime,BoE,2023,GB,8.0,Tier 2,yield_proxy,8.0,5.0,,,,,,0,Full coverage
+regime,BoE,2024,GB,8.0,Tier 2,yield_proxy,8.0,2.0,,,,,,1,Low primary shocks (2/8)
+regime,BoE,2025,GB,8.0,Tier 2,yield_proxy,8.0,4.0,,,,,,0,Full coverage
+regime,BoE,2026,GB,6.0,Tier 2,yield_proxy,6.0,0.0,,,,,,1,Low decisions count (6/yr); Zero primary shocks (missing proxy/pegged/hold)
+regime,BoJ,2010,JP,16.0,Tier 2,yield_proxy,16.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoJ,2011,JP,15.0,Tier 2,yield_proxy,15.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoJ,2012,JP,14.0,Tier 2,yield_proxy,14.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoJ,2013,JP,14.0,Tier 2,yield_proxy,14.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoJ,2014,JP,14.0,Tier 2,yield_proxy,14.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoJ,2015,JP,14.0,Tier 2,yield_proxy,14.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoJ,2016,JP,8.0,Tier 2,yield_proxy,8.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoJ,2017,JP,8.0,Tier 2,yield_proxy,8.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoJ,2018,JP,8.0,Tier 2,yield_proxy,8.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoJ,2019,JP,8.0,Tier 2,yield_proxy,8.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoJ,2020,JP,9.0,Tier 2,yield_proxy,9.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoJ,2021,JP,8.0,Tier 2,yield_proxy,8.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoJ,2022,JP,8.0,Tier 2,yield_proxy,8.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoJ,2023,JP,8.0,Tier 2,yield_proxy,8.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoJ,2024,JP,8.0,Tier 2,yield_proxy,8.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoJ,2025,JP,8.0,Tier 2,yield_proxy,8.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,BoJ,2026,JP,6.0,Tier 2,yield_proxy,5.0,0.0,,,,,,1,Low decisions count (6/yr); Zero primary shocks (missing proxy/pegged/hold); Incomplete timing verification (5/6)
+regime,BoK,2010,KR,2.0,None,None,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoK,2011,KR,3.0,None,None,0.0,0.0,,,,,,1,Low decisions count (3/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoK,2012,KR,2.0,None,None,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoK,2013,KR,1.0,None,None,0.0,0.0,,,,,,1,Low decisions count (1/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoK,2014,KR,2.0,None,None,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoK,2015,KR,2.0,None,None,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoK,2016,KR,1.0,None,None,0.0,0.0,,,,,,1,Low decisions count (1/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoK,2017,KR,1.0,None,None,0.0,0.0,,,,,,1,Low decisions count (1/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoK,2018,KR,1.0,None,None,0.0,0.0,,,,,,1,Low decisions count (1/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoK,2019,KR,2.0,None,None,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoK,2020,KR,2.0,None,None,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoK,2021,KR,2.0,None,None,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoK,2022,KR,7.0,None,None,0.0,0.0,,,,,,1,Low decisions count (7/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoK,2023,KR,1.0,None,None,0.0,0.0,,,,,,1,Low decisions count (1/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoK,2024,KR,2.0,None,None,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoK,2025,KR,2.0,None,None,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,BoK,2026,KR,2.0,None,None,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,CBR,2010,RU,4.0,Tier 2,yield_proxy,0.0,4.0,,,,,,1,Low decisions count (4/yr); Unverified announcement timing (0 ready)
+regime,CBR,2011,RU,3.0,Tier 2,yield_proxy,0.0,3.0,,,,,,1,Low decisions count (3/yr); Unverified announcement timing (0 ready)
+regime,CBR,2012,RU,3.0,Tier 2,yield_proxy,0.0,3.0,,,,,,1,Low decisions count (3/yr); Unverified announcement timing (0 ready)
+regime,CBR,2013,RU,1.0,Tier 2,yield_proxy,1.0,1.0,,,,,,1,Low decisions count (1/yr)
+regime,CBR,2014,RU,6.0,Tier 2,yield_proxy,6.0,6.0,,,,,,1,Low decisions count (6/yr)
+regime,CBR,2015,RU,5.0,Tier 2,yield_proxy,5.0,5.0,,,,,,1,Low decisions count (5/yr)
+regime,CBR,2016,RU,2.0,Tier 2,yield_proxy,2.0,2.0,,,,,,1,Low decisions count (2/yr)
+regime,CBR,2017,RU,6.0,Tier 2,yield_proxy,6.0,6.0,,,,,,1,Low decisions count (6/yr)
+regime,CBR,2018,RU,4.0,Tier 2,yield_proxy,4.0,4.0,,,,,,1,Low decisions count (4/yr)
+regime,CBR,2019,RU,5.0,Tier 2,yield_proxy,5.0,5.0,,,,,,1,Low decisions count (5/yr)
+regime,CBR,2020,RU,4.0,Tier 2,yield_proxy,4.0,4.0,,,,,,1,Low decisions count (4/yr)
+regime,CBR,2021,RU,7.0,Tier 2,yield_proxy,7.0,7.0,,,,,,1,Low decisions count (7/yr)
+regime,CBR,2022,RU,8.0,Tier 2,yield_proxy,1.0,1.0,,,,,,1,Low primary shocks (1/8); Incomplete timing verification (1/8)
+regime,CBR,2023,RU,5.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (5/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,CBR,2024,RU,3.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (3/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,CBR,2025,RU,5.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (5/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,CBR,2026,RU,5.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (5/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,ECB,2010,EA,12.0,Tier 1,hf_ois,12.0,12.0,,,,,,0,Full coverage
+regime,ECB,2011,EA,12.0,Tier 1,hf_ois,12.0,12.0,,,,,,0,Full coverage
+regime,ECB,2012,EA,12.0,Tier 1,hf_ois,12.0,12.0,,,,,,0,Full coverage
+regime,ECB,2013,EA,12.0,Tier 1,hf_ois,12.0,12.0,,,,,,0,Full coverage
+regime,ECB,2014,EA,12.0,Tier 1,hf_ois,12.0,12.0,,,,,,0,Full coverage
+regime,ECB,2015,EA,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,ECB,2016,EA,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,ECB,2017,EA,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,ECB,2018,EA,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,ECB,2019,EA,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,ECB,2020,EA,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,ECB,2021,EA,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,ECB,2022,EA,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,ECB,2023,EA,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,ECB,2024,EA,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,ECB,2025,EA,8.0,"Tier 1, Tier 2","hf_ois, yield_proxy",8.0,7.0,,,,,,0,Full coverage
+regime,ECB,2026,EA,6.0,Tier 2,yield_proxy,6.0,2.0,,,,,,1,Low decisions count (6/yr); Low primary shocks (2/6)
+regime,Fed,2010,US,9.0,"Tier 1, Tier 2","hf_ois, yield_proxy",9.0,8.0,,,,,,0,Full coverage
+regime,Fed,2011,US,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,Fed,2012,US,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,Fed,2013,US,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,Fed,2014,US,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,Fed,2015,US,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,Fed,2016,US,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,Fed,2017,US,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,Fed,2018,US,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,Fed,2019,US,9.0,Tier 1,hf_ois,9.0,9.0,,,,,,0,Full coverage
+regime,Fed,2020,US,10.0,Tier 1,hf_ois,10.0,10.0,,,,,,0,Full coverage
+regime,Fed,2021,US,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,Fed,2022,US,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,Fed,2023,US,8.0,Tier 1,hf_ois,8.0,8.0,,,,,,0,Full coverage
+regime,Fed,2024,US,8.0,Tier 2,yield_proxy,8.0,3.0,,,,,,1,Low primary shocks (3/8)
+regime,Fed,2025,US,9.0,Tier 2,yield_proxy,8.0,3.0,,,,,,1,Low primary shocks (3/9); Incomplete timing verification (8/9)
+regime,Fed,2026,US,6.0,Tier 2,yield_proxy,6.0,1.0,,,,,,1,Low decisions count (6/yr); Low primary shocks (1/6)
+regime,PBoC,2010,CN,2.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,PBoC,2011,CN,3.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (3/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,PBoC,2012,CN,2.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,PBoC,2013,CN,0.0,None,None,0.0,0.0,,,,,,1,Zero decisions recorded; Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,PBoC,2014,CN,1.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (1/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,PBoC,2015,CN,5.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (5/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,PBoC,2016,CN,0.0,None,None,0.0,0.0,,,,,,1,Zero decisions recorded; Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,PBoC,2017,CN,0.0,None,None,0.0,0.0,,,,,,1,Zero decisions recorded; Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,PBoC,2018,CN,0.0,None,None,0.0,0.0,,,,,,1,Zero decisions recorded; Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,PBoC,2019,CN,2.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,PBoC,2020,CN,2.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,PBoC,2021,CN,1.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (1/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,PBoC,2022,CN,2.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,PBoC,2023,CN,2.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,PBoC,2024,CN,2.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (2/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,PBoC,2025,CN,1.0,Tier 2,yield_proxy,0.0,0.0,,,,,,1,Low decisions count (1/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,PBoC,2026,CN,0.0,None,None,0.0,0.0,,,,,,1,Zero decisions recorded; Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,RBA,2010,AU,11.0,Tier 2,yield_proxy,11.0,4.0,,,,,,1,Low primary shocks (4/11)
+regime,RBA,2011,AU,11.0,Tier 2,yield_proxy,11.0,2.0,,,,,,1,Low primary shocks (2/11)
+regime,RBA,2012,AU,11.0,Tier 2,yield_proxy,11.0,4.0,,,,,,1,Low primary shocks (4/11)
+regime,RBA,2013,AU,11.0,Tier 2,yield_proxy,11.0,1.0,,,,,,1,Low primary shocks (1/11)
+regime,RBA,2014,AU,11.0,Tier 2,yield_proxy,11.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,RBA,2015,AU,11.0,Tier 2,yield_proxy,11.0,2.0,,,,,,1,Low primary shocks (2/11)
+regime,RBA,2016,AU,11.0,Tier 2,yield_proxy,11.0,2.0,,,,,,1,Low primary shocks (2/11)
+regime,RBA,2017,AU,11.0,Tier 2,yield_proxy,11.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,RBA,2018,AU,11.0,Tier 2,yield_proxy,11.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,RBA,2019,AU,11.0,Tier 2,yield_proxy,11.0,3.0,,,,,,1,Low primary shocks (3/11)
+regime,RBA,2020,AU,12.0,Tier 2,yield_proxy,12.0,3.0,,,,,,1,Low primary shocks (3/12)
+regime,RBA,2021,AU,11.0,Tier 2,yield_proxy,11.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,RBA,2022,AU,11.0,Tier 2,yield_proxy,11.0,8.0,,,,,,0,Full coverage
+regime,RBA,2023,AU,11.0,Tier 2,yield_proxy,11.0,5.0,,,,,,1,Low primary shocks (5/11)
+regime,RBA,2024,AU,8.0,Tier 2,yield_proxy,8.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold)
+regime,RBA,2025,AU,8.0,Tier 2,yield_proxy,8.0,3.0,,,,,,1,Low primary shocks (3/8)
+regime,RBA,2026,AU,6.0,Tier 2,yield_proxy,6.0,3.0,,,,,,1,Low decisions count (6/yr)
+regime,RBI,2010,IN,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,RBI,2011,IN,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,RBI,2012,IN,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,RBI,2013,IN,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,RBI,2014,IN,6.0,None,None,0.0,0.0,,,,,,1,Low decisions count (6/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,RBI,2015,IN,8.0,None,None,0.0,0.0,,,,,,1,Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,RBI,2016,IN,6.0,None,None,0.0,0.0,,,,,,1,Low decisions count (6/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,RBI,2017,IN,6.0,None,None,0.0,0.0,,,,,,1,Low decisions count (6/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,RBI,2018,IN,6.0,None,None,0.0,0.0,,,,,,1,Low decisions count (6/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,RBI,2019,IN,6.0,None,None,0.0,0.0,,,,,,1,Low decisions count (6/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,RBI,2020,IN,6.0,None,None,0.0,0.0,,,,,,1,Low decisions count (6/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,RBI,2021,IN,6.0,None,None,0.0,0.0,,,,,,1,Low decisions count (6/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,RBI,2022,IN,7.0,None,None,0.0,0.0,,,,,,1,Low decisions count (7/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,RBI,2023,IN,6.0,None,None,0.0,0.0,,,,,,1,Low decisions count (6/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,RBI,2024,IN,7.0,None,None,0.0,0.0,,,,,,1,Low decisions count (7/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,RBI,2025,IN,6.0,None,None,0.0,0.0,,,,,,1,Low decisions count (6/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+regime,RBI,2026,IN,5.0,None,None,0.0,0.0,,,,,,1,Low decisions count (5/yr); Zero primary shocks (missing proxy/pegged/hold); Unverified announcement timing (0 ready)
+index,au_asx200,2010,AU,,,,,,252.0,253.0,1.0,0.0,0.0,0,Full coverage
+index,au_asx200,2011,AU,,,,,,247.0,252.0,5.0,0.0,0.0,0,Full coverage
+index,au_asx200,2012,AU,,,,,,251.0,253.0,2.0,0.0,0.0,0,Full coverage
+index,au_asx200,2013,AU,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200,2014,AU,,,,,,252.0,253.0,1.0,0.0,0.0,0,Full coverage
+index,au_asx200,2015,AU,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200,2016,AU,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200,2017,AU,,,,,,251.0,252.0,1.0,0.0,0.0,0,Full coverage
+index,au_asx200,2018,AU,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200,2019,AU,,,,,,252.0,253.0,1.0,0.0,0.0,0,Full coverage
+index,au_asx200,2020,AU,,,,,,255.0,255.0,0.0,0.0,1.0,0,Full coverage
+index,au_asx200,2021,AU,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200,2022,AU,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200,2023,AU,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200,2024,AU,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200,2025,AU,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200,2026,AU,,,,,,199.0,199.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200_fin,2010,AU,,,,,,0.0,253.0,253.0,0.0,0.0,1,Zero trading days (pre-inception/inactive)
+index,au_asx200_fin,2011,AU,,,,,,0.0,252.0,252.0,0.0,0.0,1,Zero trading days (pre-inception/inactive)
+index,au_asx200_fin,2012,AU,,,,,,0.0,253.0,253.0,0.0,0.0,1,Zero trading days (pre-inception/inactive)
+index,au_asx200_fin,2013,AU,,,,,,135.0,253.0,118.0,0.0,0.0,1,High missing sessions (118 missing of 253)
+index,au_asx200_fin,2014,AU,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200_fin,2015,AU,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200_fin,2016,AU,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200_fin,2017,AU,,,,,,251.0,252.0,1.0,0.0,0.0,0,Full coverage
+index,au_asx200_fin,2018,AU,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200_fin,2019,AU,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200_fin,2020,AU,,,,,,255.0,255.0,0.0,0.0,2.0,0,Full coverage
+index,au_asx200_fin,2021,AU,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200_fin,2022,AU,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200_fin,2023,AU,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200_fin,2024,AU,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200_fin,2025,AU,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,au_asx200_fin,2026,AU,,,,,,199.0,199.0,0.0,0.0,0.0,0,Full coverage
+index,au_small_ords,2010,AU,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,au_small_ords,2011,AU,,,,,,248.0,252.0,4.0,0.0,0.0,0,Full coverage
+index,au_small_ords,2012,AU,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,au_small_ords,2013,AU,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,au_small_ords,2014,AU,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,au_small_ords,2015,AU,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,au_small_ords,2016,AU,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,au_small_ords,2017,AU,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,au_small_ords,2018,AU,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,au_small_ords,2019,AU,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,au_small_ords,2020,AU,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,au_small_ords,2021,AU,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,au_small_ords,2022,AU,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,au_small_ords,2023,AU,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,au_small_ords,2024,AU,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,au_small_ords,2025,AU,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,au_small_ords,2026,AU,,,,,,199.0,199.0,0.0,0.0,0.0,0,Full coverage
+index,br_ibov,2010,BR,,,,,,247.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,br_ibov,2011,BR,,,,,,249.0,249.0,0.0,0.0,0.0,0,Full coverage
+index,br_ibov,2012,BR,,,,,,244.0,246.0,2.0,0.0,0.0,0,Full coverage
+index,br_ibov,2013,BR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,br_ibov,2014,BR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,br_ibov,2015,BR,,,,,,246.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,br_ibov,2016,BR,,,,,,249.0,249.0,0.0,0.0,0.0,0,Full coverage
+index,br_ibov,2017,BR,,,,,,246.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,br_ibov,2018,BR,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,br_ibov,2019,BR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,br_ibov,2020,BR,,,,,,248.0,249.0,1.0,0.0,5.0,0,Full coverage
+index,br_ibov,2021,BR,,,,,,247.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,br_ibov,2022,BR,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,br_ibov,2023,BR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,br_ibov,2024,BR,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,br_ibov,2025,BR,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,br_ibov,2026,BR,,,,,,194.0,195.0,1.0,0.0,0.0,0,Full coverage
+index,br_ifnc,2010,BR,,,,,,247.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,br_ifnc,2011,BR,,,,,,249.0,249.0,0.0,0.0,0.0,0,Full coverage
+index,br_ifnc,2012,BR,,,,,,246.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,br_ifnc,2013,BR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,br_ifnc,2014,BR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,br_ifnc,2015,BR,,,,,,246.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,br_ifnc,2016,BR,,,,,,249.0,249.0,0.0,0.0,0.0,0,Full coverage
+index,br_ifnc,2017,BR,,,,,,246.0,246.0,0.0,0.0,1.0,0,Full coverage
+index,br_ifnc,2018,BR,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,br_ifnc,2019,BR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,br_ifnc,2020,BR,,,,,,249.0,249.0,0.0,0.0,5.0,0,Full coverage
+index,br_ifnc,2021,BR,,,,,,247.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,br_ifnc,2022,BR,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,br_ifnc,2023,BR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,br_ifnc,2024,BR,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,br_ifnc,2025,BR,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,br_ifnc,2026,BR,,,,,,194.0,195.0,1.0,0.0,1.0,0,Full coverage
+index,br_smll,2010,BR,,,,,,247.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,br_smll,2011,BR,,,,,,249.0,249.0,0.0,0.0,0.0,0,Full coverage
+index,br_smll,2012,BR,,,,,,246.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,br_smll,2013,BR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,br_smll,2014,BR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,br_smll,2015,BR,,,,,,246.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,br_smll,2016,BR,,,,,,249.0,249.0,0.0,0.0,0.0,0,Full coverage
+index,br_smll,2017,BR,,,,,,246.0,246.0,0.0,0.0,1.0,0,Full coverage
+index,br_smll,2018,BR,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,br_smll,2019,BR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,br_smll,2020,BR,,,,,,249.0,249.0,0.0,0.0,5.0,0,Full coverage
+index,br_smll,2021,BR,,,,,,247.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,br_smll,2022,BR,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,br_smll,2023,BR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,br_smll,2024,BR,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,br_smll,2025,BR,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,br_smll,2026,BR,,,,,,194.0,195.0,1.0,0.0,0.0,0,Full coverage
+index,ca_tsx,2010,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx,2011,CA,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx,2012,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx,2013,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx,2014,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx,2015,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx,2016,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx,2017,CA,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx,2018,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx,2019,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx,2020,CA,,,,,,252.0,252.0,0.0,0.0,4.0,0,Full coverage
+index,ca_tsx,2021,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx,2022,CA,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx,2023,CA,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx,2024,CA,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx,2025,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx,2026,CA,,,,,,195.0,196.0,1.0,0.0,0.0,0,Full coverage
+index,ca_tsx_fin,2010,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_fin,2011,CA,,,,,,249.0,250.0,1.0,0.0,0.0,0,Full coverage
+index,ca_tsx_fin,2012,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_fin,2013,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_fin,2014,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_fin,2015,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_fin,2016,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_fin,2017,CA,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_fin,2018,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_fin,2019,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_fin,2020,CA,,,,,,252.0,252.0,0.0,0.0,5.0,0,Full coverage
+index,ca_tsx_fin,2021,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_fin,2022,CA,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_fin,2023,CA,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_fin,2024,CA,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_fin,2025,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_fin,2026,CA,,,,,,195.0,196.0,1.0,0.0,0.0,0,Full coverage
+index,ca_tsx_venture,2010,CA,,,,,,250.0,251.0,1.0,0.0,0.0,0,Full coverage
+index,ca_tsx_venture,2011,CA,,,,,,248.0,250.0,2.0,0.0,0.0,0,Full coverage
+index,ca_tsx_venture,2012,CA,,,,,,246.0,251.0,5.0,0.0,0.0,0,Full coverage
+index,ca_tsx_venture,2013,CA,,,,,,249.0,251.0,2.0,0.0,0.0,0,Full coverage
+index,ca_tsx_venture,2014,CA,,,,,,247.0,251.0,4.0,0.0,0.0,0,Full coverage
+index,ca_tsx_venture,2015,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_venture,2016,CA,,,,,,250.0,251.0,1.0,0.0,0.0,0,Full coverage
+index,ca_tsx_venture,2017,CA,,,,,,249.0,250.0,1.0,0.0,0.0,0,Full coverage
+index,ca_tsx_venture,2018,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_venture,2019,CA,,,,,,250.0,251.0,1.0,0.0,0.0,0,Full coverage
+index,ca_tsx_venture,2020,CA,,,,,,251.0,252.0,1.0,0.0,2.0,0,Full coverage
+index,ca_tsx_venture,2021,CA,,,,,,250.0,251.0,1.0,0.0,0.0,0,Full coverage
+index,ca_tsx_venture,2022,CA,,,,,,249.0,250.0,1.0,0.0,0.0,0,Full coverage
+index,ca_tsx_venture,2023,CA,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_venture,2024,CA,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_venture,2025,CA,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ca_tsx_venture,2026,CA,,,,,,195.0,196.0,1.0,0.0,0.0,0,Full coverage
+index,cn_csi300,2010,CN,,,,,,242.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300,2011,CN,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300,2012,CN,,,,,,243.0,243.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300,2013,CN,,,,,,238.0,238.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300,2014,CN,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300,2015,CN,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300,2016,CN,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300,2017,CN,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300,2018,CN,,,,,,243.0,243.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300,2019,CN,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300,2020,CN,,,,,,243.0,243.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300,2021,CN,,,,,,243.0,243.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300,2022,CN,,,,,,242.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300,2023,CN,,,,,,242.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300,2024,CN,,,,,,242.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300,2025,CN,,,,,,243.0,243.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300,2026,CN,,,,,,185.0,185.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300_banks,2010,CN,,,,,,242.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300_banks,2011,CN,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300_banks,2012,CN,,,,,,243.0,243.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300_banks,2013,CN,,,,,,238.0,238.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300_banks,2014,CN,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300_banks,2015,CN,,,,,,244.0,244.0,0.0,0.0,1.0,0,Full coverage
+index,cn_csi300_banks,2016,CN,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300_banks,2017,CN,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300_banks,2018,CN,,,,,,244.0,243.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300_banks,2019,CN,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300_banks,2020,CN,,,,,,243.0,243.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300_banks,2021,CN,,,,,,243.0,243.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300_banks,2022,CN,,,,,,242.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300_banks,2023,CN,,,,,,242.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300_banks,2024,CN,,,,,,242.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300_banks,2025,CN,,,,,,243.0,243.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi300_banks,2026,CN,,,,,,185.0,185.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi500,2010,CN,,,,,,242.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi500,2011,CN,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi500,2012,CN,,,,,,243.0,243.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi500,2013,CN,,,,,,238.0,238.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi500,2014,CN,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi500,2015,CN,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi500,2016,CN,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi500,2017,CN,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi500,2018,CN,,,,,,244.0,243.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi500,2019,CN,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi500,2020,CN,,,,,,243.0,243.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi500,2021,CN,,,,,,243.0,243.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi500,2022,CN,,,,,,242.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi500,2023,CN,,,,,,242.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi500,2024,CN,,,,,,242.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,cn_csi500,2025,CN,,,,,,243.0,243.0,0.0,0.0,1.0,0,Full coverage
+index,cn_csi500,2026,CN,,,,,,185.0,185.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax,2010,DE,,,,,,256.0,256.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax,2011,DE,,,,,,256.0,257.0,1.0,0.0,0.0,0,Full coverage
+index,de_dax,2012,DE,,,,,,253.0,254.0,1.0,0.0,0.0,0,Full coverage
+index,de_dax,2013,DE,,,,,,252.0,253.0,1.0,0.0,0.0,0,Full coverage
+index,de_dax,2014,DE,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax,2015,DE,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax,2016,DE,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax,2017,DE,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax,2018,DE,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax,2019,DE,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax,2020,DE,,,,,,254.0,254.0,0.0,0.0,2.0,0,Full coverage
+index,de_dax,2021,DE,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax,2022,DE,,,,,,257.0,257.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax,2023,DE,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax,2024,DE,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax,2025,DE,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax,2026,DE,,,,,,199.0,200.0,1.0,0.0,0.0,0,Full coverage
+index,de_dax_banks,2010,DE,,,,,,0.0,256.0,256.0,0.0,0.0,1,Zero trading days (pre-inception/inactive)
+index,de_dax_banks,2011,DE,,,,,,0.0,257.0,257.0,0.0,0.0,1,Zero trading days (pre-inception/inactive)
+index,de_dax_banks,2012,DE,,,,,,0.0,254.0,254.0,0.0,0.0,1,Zero trading days (pre-inception/inactive)
+index,de_dax_banks,2013,DE,,,,,,208.0,253.0,45.0,0.0,0.0,1,High missing sessions (45 missing of 253)
+index,de_dax_banks,2014,DE,,,,,,251.0,252.0,1.0,0.0,0.0,0,Full coverage
+index,de_dax_banks,2015,DE,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax_banks,2016,DE,,,,,,255.0,255.0,0.0,0.0,2.0,0,Full coverage
+index,de_dax_banks,2017,DE,,,,,,250.0,252.0,2.0,0.0,0.0,0,Full coverage
+index,de_dax_banks,2018,DE,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax_banks,2019,DE,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax_banks,2020,DE,,,,,,254.0,254.0,0.0,0.0,3.0,0,Full coverage
+index,de_dax_banks,2021,DE,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax_banks,2022,DE,,,,,,257.0,257.0,0.0,0.0,2.0,0,Full coverage
+index,de_dax_banks,2023,DE,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax_banks,2024,DE,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,de_dax_banks,2025,DE,,,,,,253.0,253.0,0.0,0.0,1.0,0,Full coverage
+index,de_dax_banks,2026,DE,,,,,,199.0,200.0,1.0,0.0,0.0,0,Full coverage
+index,de_mdax,2010,DE,,,,,,256.0,256.0,0.0,0.0,0.0,0,Full coverage
+index,de_mdax,2011,DE,,,,,,256.0,257.0,1.0,0.0,0.0,0,Full coverage
+index,de_mdax,2012,DE,,,,,,253.0,254.0,1.0,0.0,0.0,0,Full coverage
+index,de_mdax,2013,DE,,,,,,252.0,253.0,1.0,0.0,0.0,0,Full coverage
+index,de_mdax,2014,DE,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,de_mdax,2015,DE,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,de_mdax,2016,DE,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,de_mdax,2017,DE,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,de_mdax,2018,DE,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,de_mdax,2019,DE,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,de_mdax,2020,DE,,,,,,254.0,254.0,0.0,0.0,1.0,0,Full coverage
+index,de_mdax,2021,DE,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,de_mdax,2022,DE,,,,,,257.0,257.0,0.0,0.0,0.0,0,Full coverage
+index,de_mdax,2023,DE,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,de_mdax,2024,DE,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,de_mdax,2025,DE,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,de_mdax,2026,DE,,,,,,199.0,200.0,1.0,0.0,0.0,0,Full coverage
+index,de_stoxx_banks_etf,2010,DE,,,,,,256.0,256.0,0.0,0.0,1.0,0,Full coverage
+index,de_stoxx_banks_etf,2011,DE,,,,,,256.0,257.0,1.0,0.0,1.0,0,Full coverage
+index,de_stoxx_banks_etf,2012,DE,,,,,,253.0,254.0,1.0,0.0,0.0,0,Full coverage
+index,de_stoxx_banks_etf,2013,DE,,,,,,252.0,253.0,1.0,0.0,0.0,0,Full coverage
+index,de_stoxx_banks_etf,2014,DE,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,de_stoxx_banks_etf,2015,DE,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,de_stoxx_banks_etf,2016,DE,,,,,,255.0,255.0,0.0,0.0,1.0,0,Full coverage
+index,de_stoxx_banks_etf,2017,DE,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,de_stoxx_banks_etf,2018,DE,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,de_stoxx_banks_etf,2019,DE,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,de_stoxx_banks_etf,2020,DE,,,,,,254.0,254.0,0.0,0.0,5.0,0,Full coverage
+index,de_stoxx_banks_etf,2021,DE,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,de_stoxx_banks_etf,2022,DE,,,,,,257.0,257.0,0.0,0.0,0.0,0,Full coverage
+index,de_stoxx_banks_etf,2023,DE,,,,,,255.0,255.0,0.0,3.0,0.0,0,Full coverage
+index,de_stoxx_banks_etf,2024,DE,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,de_stoxx_banks_etf,2025,DE,,,,,,252.0,253.0,1.0,0.0,0.0,0,Full coverage
+index,de_stoxx_banks_etf,2026,DE,,,,,,199.0,200.0,1.0,0.0,0.0,0,Full coverage
+index,ea_emu_smallcap_etf,2010,EA,,,,,,217.0,258.0,41.0,191.0,0.0,1,High missing sessions (41 missing of 258); Stale trading volume (191 stale days)
+index,ea_emu_smallcap_etf,2011,EA,,,,,,221.0,257.0,36.0,167.0,0.0,1,High missing sessions (36 missing of 257); Stale trading volume (167 stale days)
+index,ea_emu_smallcap_etf,2012,EA,,,,,,253.0,256.0,3.0,210.0,0.0,1,Stale trading volume (210 stale days)
+index,ea_emu_smallcap_etf,2013,EA,,,,,,252.0,255.0,3.0,140.0,0.0,1,Stale trading volume (140 stale days)
+index,ea_emu_smallcap_etf,2014,EA,,,,,,252.0,255.0,3.0,7.0,0.0,1,Stale trading volume (7 stale days)
+index,ea_emu_smallcap_etf,2015,EA,,,,,,253.0,256.0,3.0,4.0,0.0,0,Full coverage
+index,ea_emu_smallcap_etf,2016,EA,,,,,,255.0,257.0,2.0,6.0,0.0,1,Stale trading volume (6 stale days)
+index,ea_emu_smallcap_etf,2017,EA,,,,,,252.0,255.0,3.0,0.0,0.0,0,Full coverage
+index,ea_emu_smallcap_etf,2018,EA,,,,,,251.0,255.0,4.0,0.0,0.0,0,Full coverage
+index,ea_emu_smallcap_etf,2019,EA,,,,,,251.0,255.0,4.0,0.0,0.0,0,Full coverage
+index,ea_emu_smallcap_etf,2020,EA,,,,,,254.0,257.0,3.0,0.0,1.0,0,Full coverage
+index,ea_emu_smallcap_etf,2021,EA,,,,,,255.0,258.0,3.0,0.0,0.0,0,Full coverage
+index,ea_emu_smallcap_etf,2022,EA,,,,,,257.0,257.0,0.0,0.0,0.0,0,Full coverage
+index,ea_emu_smallcap_etf,2023,EA,,,,,,255.0,255.0,0.0,3.0,0.0,0,Full coverage
+index,ea_emu_smallcap_etf,2024,EA,,,,,,254.0,256.0,2.0,0.0,0.0,0,Full coverage
+index,ea_emu_smallcap_etf,2025,EA,,,,,,252.0,255.0,3.0,0.0,0.0,0,Full coverage
+index,ea_emu_smallcap_etf,2026,EA,,,,,,198.0,200.0,2.0,0.0,0.0,0,Full coverage
+index,es_ibex35,2010,ES,,,,,,256.0,256.0,0.0,0.0,1.0,0,Full coverage
+index,es_ibex35,2011,ES,,,,,,257.0,257.0,0.0,0.0,0.0,0,Full coverage
+index,es_ibex35,2012,ES,,,,,,255.0,256.0,1.0,0.0,0.0,0,Full coverage
+index,es_ibex35,2013,ES,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,es_ibex35,2014,ES,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,es_ibex35,2015,ES,,,,,,256.0,256.0,0.0,0.0,0.0,0,Full coverage
+index,es_ibex35,2016,ES,,,,,,257.0,257.0,0.0,0.0,1.0,0,Full coverage
+index,es_ibex35,2017,ES,,,,,,254.0,255.0,1.0,0.0,0.0,0,Full coverage
+index,es_ibex35,2018,ES,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,es_ibex35,2019,ES,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,es_ibex35,2020,ES,,,,,,257.0,257.0,0.0,0.0,1.0,0,Full coverage
+index,es_ibex35,2021,ES,,,,,,256.0,256.0,0.0,0.0,0.0,0,Full coverage
+index,es_ibex35,2022,ES,,,,,,257.0,257.0,0.0,0.0,0.0,0,Full coverage
+index,es_ibex35,2023,ES,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,es_ibex35,2024,ES,,,,,,256.0,256.0,0.0,0.0,0.0,0,Full coverage
+index,es_ibex35,2025,ES,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,es_ibex35,2026,ES,,,,,,199.0,200.0,1.0,0.0,0.0,0,Full coverage
+index,fr_cac40,2010,FR,,,,,,256.0,258.0,2.0,0.0,0.0,0,Full coverage
+index,fr_cac40,2011,FR,,,,,,257.0,257.0,0.0,0.0,0.0,0,Full coverage
+index,fr_cac40,2012,FR,,,,,,253.0,256.0,3.0,0.0,0.0,0,Full coverage
+index,fr_cac40,2013,FR,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,fr_cac40,2014,FR,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,fr_cac40,2015,FR,,,,,,255.0,256.0,1.0,0.0,0.0,0,Full coverage
+index,fr_cac40,2016,FR,,,,,,257.0,257.0,0.0,0.0,0.0,0,Full coverage
+index,fr_cac40,2017,FR,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,fr_cac40,2018,FR,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,fr_cac40,2019,FR,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,fr_cac40,2020,FR,,,,,,257.0,257.0,0.0,0.0,1.0,0,Full coverage
+index,fr_cac40,2021,FR,,,,,,258.0,258.0,0.0,0.0,0.0,0,Full coverage
+index,fr_cac40,2022,FR,,,,,,257.0,257.0,0.0,0.0,0.0,0,Full coverage
+index,fr_cac40,2023,FR,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,fr_cac40,2024,FR,,,,,,256.0,256.0,0.0,0.0,0.0,0,Full coverage
+index,fr_cac40,2025,FR,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,fr_cac40,2026,FR,,,,,,199.0,200.0,1.0,0.0,0.0,0,Full coverage
+index,gb_ftse100,2010,GB,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse100,2011,GB,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse100,2012,GB,,,,,,251.0,252.0,1.0,0.0,0.0,0,Full coverage
+index,gb_ftse100,2013,GB,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse100,2014,GB,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse100,2015,GB,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse100,2016,GB,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse100,2017,GB,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse100,2018,GB,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse100,2019,GB,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse100,2020,GB,,,,,,253.0,254.0,1.0,0.0,1.0,0,Full coverage
+index,gb_ftse100,2021,GB,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse100,2022,GB,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse100,2023,GB,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse100,2024,GB,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse100,2025,GB,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse100,2026,GB,,,,,,197.0,198.0,1.0,0.0,0.0,0,Full coverage
+index,gb_ftse_smallcap,2010,GB,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse_smallcap,2011,GB,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse_smallcap,2012,GB,,,,,,251.0,252.0,1.0,0.0,0.0,0,Full coverage
+index,gb_ftse_smallcap,2013,GB,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse_smallcap,2014,GB,,,,,,251.0,253.0,2.0,0.0,0.0,0,Full coverage
+index,gb_ftse_smallcap,2015,GB,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse_smallcap,2016,GB,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse_smallcap,2017,GB,,,,,,251.0,252.0,1.0,0.0,0.0,0,Full coverage
+index,gb_ftse_smallcap,2018,GB,,,,,,226.0,253.0,27.0,0.0,0.0,1,High missing sessions (27 missing of 253)
+index,gb_ftse_smallcap,2019,GB,,,,,,228.0,253.0,25.0,0.0,0.0,1,High missing sessions (25 missing of 253)
+index,gb_ftse_smallcap,2020,GB,,,,,,243.0,254.0,11.0,0.0,1.0,0,Full coverage
+index,gb_ftse_smallcap,2021,GB,,,,,,239.0,253.0,14.0,0.0,0.0,0,Full coverage
+index,gb_ftse_smallcap,2022,GB,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse_smallcap,2023,GB,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse_smallcap,2024,GB,,,,,,253.0,254.0,1.0,0.0,0.0,0,Full coverage
+index,gb_ftse_smallcap,2025,GB,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,gb_ftse_smallcap,2026,GB,,,,,,197.0,198.0,1.0,0.0,0.0,0,Full coverage
+index,in_nifty50,2010,IN,,,,,,252.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty50,2011,IN,,,,,,247.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty50,2012,IN,,,,,,251.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty50,2013,IN,,,,,,250.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty50,2014,IN,,,,,,244.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty50,2015,IN,,,,,,248.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty50,2016,IN,,,,,,247.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty50,2017,IN,,,,,,248.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty50,2018,IN,,,,,,246.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty50,2019,IN,,,,,,245.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty50,2020,IN,,,,,,252.0,250.0,0.0,0.0,1.0,0,Full coverage
+index,in_nifty50,2021,IN,,,,,,248.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty50,2022,IN,,,,,,248.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty50,2023,IN,,,,,,246.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty50,2024,IN,,,,,,249.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty50,2025,IN,,,,,,249.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty50,2026,IN,,,,,,193.0,192.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_bank,2010,IN,,,,,,252.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_bank,2011,IN,,,,,,247.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_bank,2012,IN,,,,,,251.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_bank,2013,IN,,,,,,250.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_bank,2014,IN,,,,,,244.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_bank,2015,IN,,,,,,248.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_bank,2016,IN,,,,,,247.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_bank,2017,IN,,,,,,248.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_bank,2018,IN,,,,,,246.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_bank,2019,IN,,,,,,245.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_bank,2020,IN,,,,,,252.0,250.0,0.0,0.0,1.0,0,Full coverage
+index,in_nifty_bank,2021,IN,,,,,,248.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_bank,2022,IN,,,,,,248.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_bank,2023,IN,,,,,,246.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_bank,2024,IN,,,,,,249.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_bank,2025,IN,,,,,,249.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_bank,2026,IN,,,,,,193.0,192.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_smallcap100,2010,IN,,,,,,252.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_smallcap100,2011,IN,,,,,,247.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_smallcap100,2012,IN,,,,,,251.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_smallcap100,2013,IN,,,,,,250.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_smallcap100,2014,IN,,,,,,244.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_smallcap100,2015,IN,,,,,,248.0,246.0,0.0,0.0,1.0,0,Full coverage
+index,in_nifty_smallcap100,2016,IN,,,,,,247.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_smallcap100,2017,IN,,,,,,248.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_smallcap100,2018,IN,,,,,,246.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_smallcap100,2019,IN,,,,,,245.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_smallcap100,2020,IN,,,,,,252.0,250.0,0.0,0.0,2.0,0,Full coverage
+index,in_nifty_smallcap100,2021,IN,,,,,,248.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_smallcap100,2022,IN,,,,,,248.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_smallcap100,2023,IN,,,,,,246.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_smallcap100,2024,IN,,,,,,249.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_smallcap100,2025,IN,,,,,,249.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,in_nifty_smallcap100,2026,IN,,,,,,192.0,192.0,0.0,0.0,0.0,0,Full coverage
+index,it_ftsemib,2010,IT,,,,,,256.0,256.0,0.0,0.0,1.0,0,Full coverage
+index,it_ftsemib,2011,IT,,,,,,256.0,256.0,0.0,0.0,0.0,0,Full coverage
+index,it_ftsemib,2012,IT,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,it_ftsemib,2013,IT,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,it_ftsemib,2014,IT,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,it_ftsemib,2015,IT,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,it_ftsemib,2016,IT,,,,,,256.0,256.0,0.0,0.0,1.0,0,Full coverage
+index,it_ftsemib,2017,IT,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,it_ftsemib,2018,IT,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,it_ftsemib,2019,IT,,,,,,251.0,252.0,1.0,0.0,0.0,0,Full coverage
+index,it_ftsemib,2020,IT,,,,,,255.0,255.0,0.0,0.0,2.0,0,Full coverage
+index,it_ftsemib,2021,IT,,,,,,256.0,256.0,0.0,0.0,0.0,0,Full coverage
+index,it_ftsemib,2022,IT,,,,,,256.0,256.0,0.0,0.0,0.0,0,Full coverage
+index,it_ftsemib,2023,IT,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,it_ftsemib,2024,IT,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,it_ftsemib,2025,IT,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,it_ftsemib,2026,IT,,,,,,199.0,200.0,1.0,0.0,0.0,0,Full coverage
+index,jp_mothers_etf,2010,JP,,,,,,0.0,245.0,245.0,0.0,0.0,1,Zero trading days (pre-inception/inactive)
+index,jp_mothers_etf,2011,JP,,,,,,25.0,245.0,220.0,2.0,0.0,1,High missing sessions (220 missing of 245)
+index,jp_mothers_etf,2012,JP,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,jp_mothers_etf,2013,JP,,,,,,245.0,245.0,0.0,1.0,8.0,1,Outlier anomalies (8 outlier flags)
+index,jp_mothers_etf,2014,JP,,,,,,244.0,244.0,0.0,0.0,3.0,0,Full coverage
+index,jp_mothers_etf,2015,JP,,,,,,244.0,244.0,0.0,0.0,1.0,0,Full coverage
+index,jp_mothers_etf,2016,JP,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,jp_mothers_etf,2017,JP,,,,,,247.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,jp_mothers_etf,2018,JP,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,jp_mothers_etf,2019,JP,,,,,,241.0,241.0,0.0,0.0,0.0,0,Full coverage
+index,jp_mothers_etf,2020,JP,,,,,,242.0,242.0,0.0,0.0,1.0,0,Full coverage
+index,jp_mothers_etf,2021,JP,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,jp_mothers_etf,2022,JP,,,,,,244.0,244.0,0.0,0.0,2.0,0,Full coverage
+index,jp_mothers_etf,2023,JP,,,,,,246.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,jp_mothers_etf,2024,JP,,,,,,245.0,245.0,0.0,0.0,2.0,0,Full coverage
+index,jp_mothers_etf,2025,JP,,,,,,242.0,243.0,1.0,0.0,0.0,0,Full coverage
+index,jp_mothers_etf,2026,JP,,,,,,187.0,188.0,1.0,0.0,0.0,0,Full coverage
+index,jp_nikkei225,2010,JP,,,,,,243.0,245.0,2.0,0.0,0.0,0,Full coverage
+index,jp_nikkei225,2011,JP,,,,,,245.0,245.0,0.0,0.0,1.0,0,Full coverage
+index,jp_nikkei225,2012,JP,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,jp_nikkei225,2013,JP,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,jp_nikkei225,2014,JP,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,jp_nikkei225,2015,JP,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,jp_nikkei225,2016,JP,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,jp_nikkei225,2017,JP,,,,,,247.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,jp_nikkei225,2018,JP,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,jp_nikkei225,2019,JP,,,,,,241.0,241.0,0.0,0.0,0.0,0,Full coverage
+index,jp_nikkei225,2020,JP,,,,,,242.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,jp_nikkei225,2021,JP,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,jp_nikkei225,2022,JP,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,jp_nikkei225,2023,JP,,,,,,246.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,jp_nikkei225,2024,JP,,,,,,245.0,245.0,0.0,0.0,1.0,0,Full coverage
+index,jp_nikkei225,2025,JP,,,,,,243.0,243.0,0.0,0.0,0.0,0,Full coverage
+index,jp_nikkei225,2026,JP,,,,,,187.0,188.0,1.0,0.0,0.0,0,Full coverage
+index,jp_topix_banks_etf,2010,JP,,,,,,243.0,245.0,2.0,0.0,0.0,0,Full coverage
+index,jp_topix_banks_etf,2011,JP,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,jp_topix_banks_etf,2012,JP,,,,,,248.0,248.0,0.0,1.0,0.0,0,Full coverage
+index,jp_topix_banks_etf,2013,JP,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,jp_topix_banks_etf,2014,JP,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,jp_topix_banks_etf,2015,JP,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,jp_topix_banks_etf,2016,JP,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,jp_topix_banks_etf,2017,JP,,,,,,247.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,jp_topix_banks_etf,2018,JP,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,jp_topix_banks_etf,2019,JP,,,,,,241.0,241.0,0.0,0.0,0.0,0,Full coverage
+index,jp_topix_banks_etf,2020,JP,,,,,,242.0,242.0,0.0,0.0,1.0,0,Full coverage
+index,jp_topix_banks_etf,2021,JP,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,jp_topix_banks_etf,2022,JP,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,jp_topix_banks_etf,2023,JP,,,,,,246.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,jp_topix_banks_etf,2024,JP,,,,,,245.0,245.0,0.0,0.0,2.0,0,Full coverage
+index,jp_topix_banks_etf,2025,JP,,,,,,242.0,243.0,1.0,0.0,2.0,0,Full coverage
+index,jp_topix_banks_etf,2026,JP,,,,,,187.0,188.0,1.0,0.0,0.0,0,Full coverage
+index,kr_banks_etf,2010,KR,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,kr_banks_etf,2011,KR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,kr_banks_etf,2012,KR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,kr_banks_etf,2013,KR,,,,,,247.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,kr_banks_etf,2014,KR,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,kr_banks_etf,2015,KR,,,,,,247.0,248.0,1.0,0.0,0.0,0,Full coverage
+index,kr_banks_etf,2016,KR,,,,,,246.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,kr_banks_etf,2017,KR,,,,,,241.0,243.0,2.0,0.0,0.0,0,Full coverage
+index,kr_banks_etf,2018,KR,,,,,,241.0,244.0,3.0,0.0,0.0,0,Full coverage
+index,kr_banks_etf,2019,KR,,,,,,245.0,246.0,1.0,0.0,0.0,0,Full coverage
+index,kr_banks_etf,2020,KR,,,,,,246.0,248.0,2.0,0.0,1.0,0,Full coverage
+index,kr_banks_etf,2021,KR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,kr_banks_etf,2022,KR,,,,,,242.0,246.0,4.0,0.0,0.0,0,Full coverage
+index,kr_banks_etf,2023,KR,,,,,,230.0,245.0,15.0,0.0,0.0,0,Full coverage
+index,kr_banks_etf,2024,KR,,,,,,240.0,244.0,4.0,0.0,0.0,0,Full coverage
+index,kr_banks_etf,2025,KR,,,,,,242.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,kr_banks_etf,2026,KR,,,,,,189.0,191.0,2.0,0.0,1.0,0,Full coverage
+index,kr_kosdaq,2010,KR,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kosdaq,2011,KR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kosdaq,2012,KR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kosdaq,2013,KR,,,,,,247.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kosdaq,2014,KR,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kosdaq,2015,KR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kosdaq,2016,KR,,,,,,246.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kosdaq,2017,KR,,,,,,241.0,243.0,2.0,0.0,0.0,0,Full coverage
+index,kr_kosdaq,2018,KR,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kosdaq,2019,KR,,,,,,246.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kosdaq,2020,KR,,,,,,248.0,248.0,0.0,0.0,1.0,0,Full coverage
+index,kr_kosdaq,2021,KR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kosdaq,2022,KR,,,,,,244.0,246.0,2.0,0.0,0.0,0,Full coverage
+index,kr_kosdaq,2023,KR,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kosdaq,2024,KR,,,,,,244.0,244.0,0.0,0.0,1.0,0,Full coverage
+index,kr_kosdaq,2025,KR,,,,,,242.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kosdaq,2026,KR,,,,,,189.0,191.0,2.0,0.0,3.0,0,Full coverage
+index,kr_kospi,2010,KR,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kospi,2011,KR,,,,,,247.0,248.0,1.0,0.0,0.0,0,Full coverage
+index,kr_kospi,2012,KR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kospi,2013,KR,,,,,,247.0,247.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kospi,2014,KR,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kospi,2015,KR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kospi,2016,KR,,,,,,246.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kospi,2017,KR,,,,,,241.0,243.0,2.0,0.0,0.0,0,Full coverage
+index,kr_kospi,2018,KR,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kospi,2019,KR,,,,,,246.0,246.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kospi,2020,KR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kospi,2021,KR,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kospi,2022,KR,,,,,,244.0,246.0,2.0,0.0,0.0,0,Full coverage
+index,kr_kospi,2023,KR,,,,,,245.0,245.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kospi,2024,KR,,,,,,244.0,244.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kospi,2025,KR,,,,,,242.0,242.0,0.0,0.0,0.0,0,Full coverage
+index,kr_kospi,2026,KR,,,,,,189.0,191.0,2.0,0.0,4.0,0,Full coverage
+index,mx_ipc,2010,MX,,,,,,249.0,252.0,3.0,0.0,0.0,0,Full coverage
+index,mx_ipc,2011,MX,,,,,,251.0,252.0,1.0,0.0,0.0,0,Full coverage
+index,mx_ipc,2012,MX,,,,,,247.0,252.0,5.0,0.0,0.0,0,Full coverage
+index,mx_ipc,2013,MX,,,,,,249.0,251.0,2.0,0.0,0.0,0,Full coverage
+index,mx_ipc,2014,MX,,,,,,250.0,251.0,1.0,0.0,0.0,0,Full coverage
+index,mx_ipc,2015,MX,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,mx_ipc,2016,MX,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,mx_ipc,2017,MX,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,mx_ipc,2018,MX,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,mx_ipc,2019,MX,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,mx_ipc,2020,MX,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,mx_ipc,2021,MX,,,,,,253.0,253.0,0.0,0.0,0.0,0,Full coverage
+index,mx_ipc,2022,MX,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,mx_ipc,2023,MX,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,mx_ipc,2024,MX,,,,,,251.0,252.0,1.0,0.0,0.0,0,Full coverage
+index,mx_ipc,2025,MX,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,mx_ipc,2026,MX,,,,,,196.0,197.0,1.0,0.0,0.0,0,Full coverage
+index,ru_imoex,2010,RU,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,ru_imoex,2011,RU,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,ru_imoex,2012,RU,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,ru_imoex,2013,RU,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,ru_imoex,2014,RU,,,,,,250.0,250.0,0.0,0.0,1.0,0,Full coverage
+index,ru_imoex,2015,RU,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,ru_imoex,2016,RU,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,ru_imoex,2017,RU,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,ru_imoex,2018,RU,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,ru_imoex,2019,RU,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,ru_imoex,2020,RU,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,ru_imoex,2021,RU,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,ru_imoex,2022,RU,,,,,,251.0,250.0,0.0,0.0,3.0,0,Full coverage
+index,ru_imoex,2023,RU,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,ru_imoex,2024,RU,,,,,,256.0,256.0,0.0,0.0,0.0,0,Full coverage
+index,ru_imoex,2025,RU,,,,,,254.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ru_imoex,2026,RU,,,,,,197.0,196.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_fin,2010,RU,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_fin,2011,RU,,,,,,248.0,248.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_fin,2012,RU,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_fin,2013,RU,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_fin,2014,RU,,,,,,250.0,250.0,0.0,0.0,2.0,0,Full coverage
+index,ru_moex_fin,2015,RU,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_fin,2016,RU,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_fin,2017,RU,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_fin,2018,RU,,,,,,254.0,254.0,0.0,0.0,1.0,0,Full coverage
+index,ru_moex_fin,2019,RU,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_fin,2020,RU,,,,,,250.0,250.0,0.0,0.0,1.0,0,Full coverage
+index,ru_moex_fin,2021,RU,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_fin,2022,RU,,,,,,250.0,250.0,0.0,0.0,3.0,0,Full coverage
+index,ru_moex_fin,2023,RU,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_fin,2024,RU,,,,,,256.0,256.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_fin,2025,RU,,,,,,254.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_fin,2026,RU,,,,,,197.0,196.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_smid,2010,RU,,,,,,0.0,248.0,248.0,0.0,0.0,1,Zero trading days (pre-inception/inactive)
+index,ru_moex_smid,2011,RU,,,,,,0.0,248.0,248.0,0.0,0.0,1,Zero trading days (pre-inception/inactive)
+index,ru_moex_smid,2012,RU,,,,,,10.0,255.0,245.0,0.0,0.0,1,High missing sessions (245 missing of 255)
+index,ru_moex_smid,2013,RU,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_smid,2014,RU,,,,,,250.0,250.0,0.0,0.0,1.0,0,Full coverage
+index,ru_moex_smid,2015,RU,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_smid,2016,RU,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_smid,2017,RU,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_smid,2018,RU,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_smid,2019,RU,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_smid,2020,RU,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_smid,2021,RU,,,,,,255.0,255.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_smid,2022,RU,,,,,,250.0,250.0,0.0,0.0,3.0,0,Full coverage
+index,ru_moex_smid,2023,RU,,,,,,254.0,254.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_smid,2024,RU,,,,,,256.0,256.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_smid,2025,RU,,,,,,254.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,ru_moex_smid,2026,RU,,,,,,197.0,196.0,0.0,0.0,0.0,0,Full coverage
+index,us_bkx,2010,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_bkx,2011,US,,,,,,252.0,252.0,0.0,0.0,1.0,0,Full coverage
+index,us_bkx,2012,US,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,us_bkx,2013,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_bkx,2014,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_bkx,2015,US,,,,,,251.0,252.0,1.0,0.0,0.0,0,Full coverage
+index,us_bkx,2016,US,,,,,,251.0,252.0,1.0,0.0,0.0,0,Full coverage
+index,us_bkx,2017,US,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,us_bkx,2018,US,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,us_bkx,2019,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_bkx,2020,US,,,,,,253.0,253.0,0.0,0.0,6.0,1,Outlier anomalies (6 outlier flags)
+index,us_bkx,2021,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_bkx,2022,US,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,us_bkx,2023,US,,,,,,250.0,250.0,0.0,0.0,1.0,0,Full coverage
+index,us_bkx,2024,US,,,,,,252.0,252.0,0.0,0.0,1.0,0,Full coverage
+index,us_bkx,2025,US,,,,,,250.0,250.0,0.0,0.0,1.0,0,Full coverage
+index,us_bkx,2026,US,,,,,,194.0,196.0,2.0,0.0,0.0,0,Full coverage
+index,us_rut,2010,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_rut,2011,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_rut,2012,US,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,us_rut,2013,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_rut,2014,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_rut,2015,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_rut,2016,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_rut,2017,US,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,us_rut,2018,US,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,us_rut,2019,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_rut,2020,US,,,,,,253.0,253.0,0.0,0.0,3.0,0,Full coverage
+index,us_rut,2021,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_rut,2022,US,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,us_rut,2023,US,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,us_rut,2024,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_rut,2025,US,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,us_rut,2026,US,,,,,,194.0,196.0,2.0,0.0,0.0,0,Full coverage
+index,us_sp500,2010,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_sp500,2011,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_sp500,2012,US,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,us_sp500,2013,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_sp500,2014,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_sp500,2015,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_sp500,2016,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_sp500,2017,US,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,us_sp500,2018,US,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,us_sp500,2019,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_sp500,2020,US,,,,,,253.0,253.0,0.0,0.0,1.0,0,Full coverage
+index,us_sp500,2021,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_sp500,2022,US,,,,,,251.0,251.0,0.0,0.0,0.0,0,Full coverage
+index,us_sp500,2023,US,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,us_sp500,2024,US,,,,,,252.0,252.0,0.0,0.0,0.0,0,Full coverage
+index,us_sp500,2025,US,,,,,,250.0,250.0,0.0,0.0,0.0,0,Full coverage
+index,us_sp500,2026,US,,,,,,194.0,196.0,2.0,0.0,0.0,0,Full coverage
