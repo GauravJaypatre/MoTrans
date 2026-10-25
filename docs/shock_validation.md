@@ -78,7 +78,6 @@ Expected sign: tightening surprises positive, easing surprises negative. A hike 
 | fed_2001-09-17 | cut | -50 | B | 1Y yield change, US (bp) | -8.34 |
 | boj_2024-07-31 | hike | 20 | B | 1Y yield change, JP (bp) | +8.01 |
 | boj_2016-07-29 | unclassified | nan | B | 1Y yield change, JP (bp) | +7.66 |
-| cbr_2014-12-16 | hike | 650 | B | 1Y yield change, RU (bp) | +7.61 |
 | boe_2026-03-19 | hold | 0 | B | 1Y yield change, GB (bp) | +7.37 |
 | bcb_2001-03-21 | hike | 50 | B | 1Y yield change, BR (bp) | +6.52 |
 | rba_2008-10-07 | cut | -100 | B | 2Y yield change, AU (bp) | -6.34 |
@@ -90,5 +89,6 @@ Expected sign: tightening surprises positive, easing surprises negative. A hike 
 | boe_2003-02-06 | cut | -25 | B | 1Y yield change, GB (bp) | -4.76 |
 | boe_2023-03-23 | hike | 25 | B | 1Y yield change, GB (bp) | -4.69 |
 | ecb_2008-06-05 | hold | 0 | A | EA-MPD OIS 1Y, monetary event window (bp) | +4.62 |
+| boe_2008-10-08 | cut | -50 | B | 1Y yield change, GB (bp) | -4.50 |
 
 Plots per regime: outputs/shocks_<regime>.png (regenerate with `python -m src.build_shocks`).

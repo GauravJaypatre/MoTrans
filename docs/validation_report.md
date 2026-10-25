@@ -1,6 +1,6 @@
 # MoTrans-15 Data Validation, Tiers, Overlap, and Completeness Report
 
-*Generated automatically from `shocks.parquet`, `policy_decisions.csv`, `events.parquet`, and `controls_long.parquet` on 2026-10-24.*
+*Generated automatically from `shocks.parquet`, `policy_decisions.csv`, `events.parquet`, and `controls_long.parquet` on 2026-10-25.*
 
 All tables below are computed directly from the underlying pipeline datasets via code (never typed by hand).
 
@@ -73,8 +73,8 @@ For each event and trading horizon $W \in \{1, 3, 5, 20, 60\}$ days, counts othe
 | Horizon (Trading Days) | Contaminated Events | Total Events | Share Contaminated | Mean Other Decisions | Max Other Decisions |
 |---|---|---|---|---|---|
 | **1 day** (`clr_1`) | 897 | 2,491 | **36.01%** | 0.43 | 3 |
-| **3 days** (`clr_3`) | 1,719 | 2,491 | **69.01%** | 1.23 | 7 |
-| **5 days** (`clr_5`) | 2,108 | 2,491 | **84.62%** | 1.85 | 7 |
+| **3 days** (`clr_3`) | 1,712 | 2,491 | **68.73%** | 1.24 | 7 |
+| **5 days** (`clr_5`) | 2,107 | 2,491 | **84.58%** | 1.85 | 7 |
 | **20 days** (`clr_20`) | 2,484 | 2,491 | **99.72%** | 6.59 | 18 |
 | **60 days** (`clr_60`) | 2,490 | 2,491 | **99.96%** | 20.91 | 39 |
 
@@ -88,7 +88,7 @@ Evaluated separately for Rate Changes (hikes/cuts) and Rate Holds, alongside a p
 |---|---|---|---|---|---|---|---|---|---|---|
 | BoE | 1Y | 1Y Gilt spot curve | 3.77 | **4.64** | 55 | **1.08** | 229 | 1.00 | 0.332 | No Excess Signal (Noise-dominated) |
 | RBA | 2Y | 2Y ACGB Table F2 benchmark yield | 5.43 | **5.78** | 71 | **1.00** | 213 | 1.00 | 0.447 | No Excess Signal (Noise-dominated) |
-| CBR | 1Y | 1Y OFZ zero-coupon curve | 19.89 | **7.17** | 99 | — | 0 | — | — | No Holds in Regime |
+| CBR | 1Y | 1Y OFZ zero-coupon curve | 20.89 | **1.04** | 100 | — | 0 | — | — | No Holds in Regime |
 | BoJ | 1Y | 1Y JGB Ministry of Finance yield | 0.89 | **19.47** | 12 | **1.42** | 184 | 1.01 | 0.102 | No Excess Signal (Noise-dominated) |
 | BCB | 1Y | 1Y Swap DI x pre 360d (SGS 7806) | 23.60 | **1.07** | 112 | **1.57** | 70 | 0.99 | 0.165 | No Excess Signal (Noise-dominated) |
 | PBoC | 2Y | 2Y ChinaBond sovereign benchmark yield | 8.63 | **1.59** | 28 | — | 0 | — | — | No Holds in Regime |
