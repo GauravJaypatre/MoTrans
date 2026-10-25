@@ -1,7 +1,7 @@
 # MoTrans-15 v2.0 Data Freeze Certification
 
 **Release Tag**: `v2.0-data-freeze`  
-**Git Commit Hash**: `b2c5ffbdc81a2e4543bb10ec8de229a0aaa2b06e`  
+**Git Commit Hash**: `1f9688bf8f3c2429875bcb6d71d032e70b774254`  
 **Parent Freeze**: `v1.0-data-freeze` (permanently locked and preserved)  
 **Certification Date**: 2026-10-25  
 **Verification Engine**: Bitwise Double-Rebuild Verification Pass  
