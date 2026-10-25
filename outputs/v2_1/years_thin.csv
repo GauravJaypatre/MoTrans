@@ -1,0 +1,16 @@
+regime,year,decisions_count,flag,reason
+CBR,2010,4,FEWER_THAN_8_DECISIONS,Emergency rate-change only regime; peacetime schedule has 8 meetings/yr but 2022 wartime truncation stopped tracking
+CBR,2011,3,FEWER_THAN_8_DECISIONS,Emergency rate-change only regime; peacetime schedule has 8 meetings/yr but 2022 wartime truncation stopped tracking
+CBR,2012,3,FEWER_THAN_8_DECISIONS,Emergency rate-change only regime; peacetime schedule has 8 meetings/yr but 2022 wartime truncation stopped tracking
+CBR,2013,1,FEWER_THAN_8_DECISIONS,Emergency rate-change only regime; peacetime schedule has 8 meetings/yr but 2022 wartime truncation stopped tracking
+CBR,2014,6,FEWER_THAN_8_DECISIONS,Emergency rate-change only regime; peacetime schedule has 8 meetings/yr but 2022 wartime truncation stopped tracking
+CBR,2015,5,FEWER_THAN_8_DECISIONS,Emergency rate-change only regime; peacetime schedule has 8 meetings/yr but 2022 wartime truncation stopped tracking
+CBR,2016,2,FEWER_THAN_8_DECISIONS,Emergency rate-change only regime; peacetime schedule has 8 meetings/yr but 2022 wartime truncation stopped tracking
+CBR,2017,6,FEWER_THAN_8_DECISIONS,Emergency rate-change only regime; peacetime schedule has 8 meetings/yr but 2022 wartime truncation stopped tracking
+CBR,2018,4,FEWER_THAN_8_DECISIONS,Emergency rate-change only regime; peacetime schedule has 8 meetings/yr but 2022 wartime truncation stopped tracking
+CBR,2019,5,FEWER_THAN_8_DECISIONS,Emergency rate-change only regime; peacetime schedule has 8 meetings/yr but 2022 wartime truncation stopped tracking
+CBR,2020,4,FEWER_THAN_8_DECISIONS,Emergency rate-change only regime; peacetime schedule has 8 meetings/yr but 2022 wartime truncation stopped tracking
+CBR,2021,7,FEWER_THAN_8_DECISIONS,Emergency rate-change only regime; peacetime schedule has 8 meetings/yr but 2022 wartime truncation stopped tracking
+CBR,2023,5,FEWER_THAN_8_DECISIONS,Emergency rate-change only regime; peacetime schedule has 8 meetings/yr but 2022 wartime truncation stopped tracking
+CBR,2024,3,FEWER_THAN_8_DECISIONS,Emergency rate-change only regime; peacetime schedule has 8 meetings/yr but 2022 wartime truncation stopped tracking
+CBR,2025,5,FEWER_THAN_8_DECISIONS,Emergency rate-change only regime; peacetime schedule has 8 meetings/yr but 2022 wartime truncation stopped tracking

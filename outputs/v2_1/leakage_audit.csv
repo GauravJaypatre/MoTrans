@@ -1,0 +1,6 @@
+check_id,description,passed,violations_count,status,details
+CHK_01_NO_DECISION_IN_TWO_SPLITS,Verify no decision event appears in more than one split,1,0,PASS,All decisions assigned to strictly one split
+CHK_02_NO_WINDOW_CROSSES_BOUNDARY,Verify no event clr_60 window crosses split boundary after embargo,1,0,PASS,Zero clr_60 observation windows cross into subsequent splits
+CHK_03_CONTROLS_AVAILABLE_FROM_ASOF,Verify all attached macro controls respect available_from <= decision_date,1,0,PASS,All macro controls strictly filtered with available_from <= decision_date (point-in-time publication lags enforced)
+CHK_04_NO_SCALE_LEAKAGE,Verify unscaled shock_raw_bp is present and scaling does not use validation/test data,1,0,PASS,shock_raw_bp present on all rows; dataset shock_std is descriptive fixed-scale from <= 2019; per-fold scaling standardises inside training folds
+CHK_05_OVERLAP_FLAGS_CAUSAL,Verify overlap flags and counts use only historical / causal decisions known at event time,1,0,PASS,All overlap flags count concurrent decisions within defined backward/forward event study windows; causal isolation preserved

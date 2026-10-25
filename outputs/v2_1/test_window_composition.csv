@@ -1,0 +1,6 @@
+regime,shock_tier,shock_measure_type,decisions_count,hikes_count,cuts_count,holds_count,event_rows_count,notes
+ECB,1,hf_ois,14,0,8,6,518,
+BoC,2,yield_proxy,14,0,8,6,518,
+BoE,2,yield_proxy,14,0,5,9,518,
+Fed,2,yield_proxy,14,0,4,10,518,High-frequency data ends Dec 2023; fallback to Tier 2 proxy
+RBA,2,yield_proxy,14,0,3,11,518,

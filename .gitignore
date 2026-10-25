@@ -27,6 +27,12 @@ data/v2/*
 data/v2/**
 !data/v2/.gitkeep
 !data/v2/release/README.md
+data/v2_1/*.parquet
+data/v2_1/release/*.parquet
+!data/v2_1/.gitkeep
+!data/v2_1/release/README.md
+!data/v2_1/folds.csv
+!data/v2_1/release/folds.csv
 
 
 
@@ -40,6 +46,8 @@ outputs/*
 !outputs/*.md
 !outputs/v2/
 !outputs/v2/**
+!outputs/v2_1/
+!outputs/v2_1/**
 
 
 

@@ -1,9 +1,11 @@
-"""Model Guardrail — MoTrans-15 v2.0.
+"""Model Guardrail — MoTrans-15 v2.0 & v2.1.
 
 Enforces strict temporal isolation and prevents data leakage:
-1. Rejects any model training on 'final_holdout' (final 12 months of available data).
-2. Rejects any model training on 'blind_test' (held out for v1.0 pre-registered evaluation).
-3. Verifies that time-ordered validation sets enforce an embargo of at least 60 trading days.
+1. Rejects any model training on 'final_holdout' (v2.0) or 'blind_test' (v1.0).
+2. Rejects any model training or data access on 'test' (2024-2025) without UNLOCK_TEST=1.
+3. Rejects any access to quarantined 'post_window' (2026+) without UNLOCK_POST=1.
+4. Logs all test and post-window unlock events with timestamp and git commit hash to outputs/v2_1/unlock_audit.log.
+5. Verifies that time-ordered validation sets enforce an embargo of at least 60 trading days.
 """
 
 from __future__ import annotations
@@ -11,13 +13,41 @@ from __future__ import annotations
 import datetime as dt
 import os
 from pathlib import Path
+import subprocess
 import pandas as pd
+
+ROOT = Path(__file__).resolve().parent.parent
+LOG_FILE = ROOT / "outputs" / "v2_1" / "unlock_audit.log"
 
 # Final 12 months of available data (2026-10-13 minus 365 days)
 FINAL_HOLDOUT_START = dt.date(2025, 10, 14)
-
-
 V2_WINDOW_START = dt.date(2010, 1, 1)
+
+
+def get_git_hash() -> str:
+    """Return the current git commit hash."""
+    try:
+        res = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=str(ROOT),
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=5,
+        )
+        return res.stdout.strip()
+    except Exception:
+        return "UNKNOWN_COMMIT"
+
+
+def log_unlock(split_name: str, context: str = "") -> None:
+    """Log an unlock event with timestamp and git commit hash."""
+    LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+    ts = dt.datetime.now(dt.timezone.utc).isoformat()
+    git_hash = get_git_hash()
+    entry = f"[{ts}] UNLOCK_{split_name.upper()} | git_commit={git_hash} | context={context}\n"
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(entry)
 
 
 def split_tag_v2(date: dt.date | str) -> str:
@@ -35,7 +65,7 @@ def split_tag_v2(date: dt.date | str) -> str:
 
 
 def assert_no_holdout(df: pd.DataFrame, allow_holdout: bool = False, allow_blind_test: bool = False) -> None:
-    """Assert that a dataset passed to a training model contains zero holdout or blind-test observations."""
+    """Assert that a dataset passed to a training model contains zero holdout or blind-test observations (v2.0 legacy)."""
     unlock_holdout = allow_holdout or os.environ.get("UNLOCK_HOLDOUT") == "1"
     unlock_blind = allow_blind_test or os.environ.get("UNLOCK_BLIND") == "1"
 
@@ -59,6 +89,77 @@ def assert_no_holdout(df: pd.DataFrame, allow_holdout: bool = False, allow_blind
         if "split_tag" in df.columns:
             if (df["split_tag"] == "blind_test").any():
                 raise PermissionError("Access to 'blind_test' is locked for exploratory training. Pre-registered blind test data cannot be accessed without UNLOCK_BLIND=1.")
+
+
+def assert_no_test_or_post(df: pd.DataFrame, allow_test: bool = False, allow_post: bool = False) -> None:
+    """Assert that a dataset contains zero test or post-window observations (v2.1)."""
+    unlock_test = allow_test or os.environ.get("UNLOCK_TEST") == "1"
+    unlock_post = allow_post or os.environ.get("UNLOCK_POST") == "1"
+
+    if not unlock_test:
+        if "final_split" in df.columns:
+            if (df["final_split"] == "test").any():
+                raise PermissionError("Access to 'test' split (2024-2025) is locked by model_guard.py. Set UNLOCK_TEST=1 to override.")
+        if "decision_date" in df.columns:
+            d_col = pd.to_datetime(df["decision_date"]).dt.date
+            if ((d_col >= dt.date(2024, 1, 1)) & (d_col <= dt.date(2025, 12, 31))).any():
+                raise PermissionError("Decision dates in 2024-2025 belong to locked 'test' split. Set UNLOCK_TEST=1 to override.")
+    else:
+        log_unlock("test", context="assert_no_test_or_post override")
+
+    if not unlock_post:
+        if "final_split" in df.columns:
+            if (df["final_split"] == "post_window").any():
+                raise PermissionError("Access to 'post_window' (2026+) is quarantined and locked by model_guard.py. Set UNLOCK_POST=1 to override.")
+        if "decision_date" in df.columns:
+            d_col = pd.to_datetime(df["decision_date"]).dt.date
+            if (d_col >= dt.date(2026, 1, 1)).any():
+                raise PermissionError("Decision dates >= 2026-01-01 are quarantined to 'post_window'. Set UNLOCK_POST=1 to override.")
+    else:
+        log_unlock("post", context="assert_no_test_or_post override")
+
+
+def load_v2_1_table(
+    table_name_or_path: str | Path,
+    split: str | None = None,
+    allow_test: bool = False,
+    allow_post: bool = False,
+) -> pd.DataFrame:
+    """Safely load a MoTrans-15 v2.1 table with automatic leakage protection."""
+    p = Path(table_name_or_path)
+    if not p.is_absolute():
+        p = ROOT / "data" / "v2_1" / table_name_or_path
+        if not p.suffix:
+            p = p.with_suffix(".parquet")
+
+    if not p.exists():
+        raise FileNotFoundError(f"Table file not found: {p}")
+
+    df = pd.read_parquet(p)
+
+    unlock_test = allow_test or os.environ.get("UNLOCK_TEST") == "1"
+    unlock_post = allow_post or os.environ.get("UNLOCK_POST") == "1"
+
+    if split is not None:
+        if split == "test" and not unlock_test:
+            raise PermissionError("Access to 'test' split (2024-2025) is locked. Set UNLOCK_TEST=1 to load.")
+        if split == "post_window" and not unlock_post:
+            raise PermissionError("Access to 'post_window' (2026+) is locked. Set UNLOCK_POST=1 to load.")
+        if "final_split" in df.columns:
+            df = df[df["final_split"] == split].copy()
+
+    # If full table loaded without explicit split filter, filter out locked splits unless unlocked
+    if not unlock_test and "final_split" in df.columns:
+        df = df[df["final_split"] != "test"]
+    elif unlock_test and "final_split" in df.columns and (df["final_split"] == "test").any():
+        log_unlock("test", context=f"load_v2_1_table({p.name})")
+
+    if not unlock_post and "final_split" in df.columns:
+        df = df[df["final_split"] != "post_window"]
+    elif unlock_post and "final_split" in df.columns and (df["final_split"] == "post_window").any():
+        log_unlock("post", context=f"load_v2_1_table({p.name})")
+
+    return df.reset_index(drop=True)
 
 
 def verify_embargo(train_dates: pd.Series | list | dt.date | str, val_dates: pd.Series | list | dt.date | str, min_embargo_days: int = 60) -> bool:
