@@ -23,6 +23,11 @@ data/interim/*
 !data/interim/.gitkeep
 data/final/*
 !data/final/.gitkeep
+data/v2/*
+data/v2/**
+!data/v2/.gitkeep
+
+
 
 # ── Outputs (regenerable) ───────────────────────────────────────
 outputs/*

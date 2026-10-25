@@ -91,3 +91,39 @@ During Phase E and subsequent validation audits:
 Monetary policy decisions across the 12 regimes frequently occur in close proximity:
 - **Contamination Share**: Overlap shares are 36.0% at 1 day (`overlap_1d`), 69.1% at 3 days, 84.6% at 5 days, 99.7% at 20 days, and 99.96% at 60 days.
 - **Causal Attribution**: At horizons beyond 5 trading days ($clr_{20}$, $clr_{60}$), equity price changes almost certainly reflect the compounding effects of multiple global central bank actions. Researchers estimating medium-to-long horizon cumulative returns must control for `overlap_count_Wd` or restrict analysis to non-overlapping windows.
+
+---
+
+## 10. MoTrans-15 v2.0 Addendum & Specific Methodological Limits
+
+### 10.1 Central Bank of Russia (CBR) Decision Dates & Lack of Holds
+- **Correction from Effective Dates to Announcement Dates**: An audit against the official Bank of Russia calendar (`data/raw/timing_sources/cbr_cal_mp.html`) revealed that 38 out of 41 effective Key Rate decisions (2013–2022) were recorded on Monday effective dates. In v2.0, all 38 decisions have been re-dated to the official Friday Board meeting dates, re-aligning event windows and 1Y yield proxy surprises. The original BIS dates are preserved in `bis_effective_date`.
+- **Complete Absence of Scheduled Holds**: CBR has **zero scheduled holds** recorded in the catalog. Only active rate changes (hikes and cuts) are published in the underlying BIS series.
+
+### 10.2 Same-Pattern Audit Across All Regimes
+- **G6 Central Banks (Fed, ECB, BoE, BoC, RBA, BoJ)**: 100% of decision dates in 2010+ correspond to official committee/board decision announcement dates. Zero decisions are Monday-after-meeting lags.
+- **Emerging Market Regimes (BoK, PBoC)**:
+  - Bank of Korea (BoK) and People's Bank of China (PBoC) lack automated official calendar readers; their dates reflect BIS effective dates. Scheduled rate holds are not recorded. Both regimes are marked with `shock_primary = 0` and `analysis_ok = 0`.
+  - Banco Central do Brasil (BCB), Banco de México (Banxico), and Reserve Bank of India (RBI) are dated by official committee announcement schedules.
+
+### 10.3 Single-Source Equity Prices & External Verification
+- **S&P 500**: Verified against FRED `SP500` with 99.84% of daily returns agreeing within 1 bp (maximum difference 1.2 bp due to rounding).
+- **Nikkei 225**: Matches FRED `NIKKEI225` to cents when accounting for FRED's 1-day US calendar reporting lag.
+- **Single-Source Series**: The remaining 36 equity series have no secondary provider on disk and remain strictly classified as single-source Yahoo Finance data (`price_source_verified = 0`).
+
+### 10.4 Macro Controls Vintage Contamination & Statistics Canada CPI Status
+- **Industrial Production Revision Contamination**: OECD STES Industrial Production data represents latest revised historical series rather than real-time first releases. Because IP undergoes substantial revisions up to 12 months after reference periods, it introduces revision lookahead contamination and is **excluded from all default v2 tables** (`analysis_tier1_2010plus.parquet`, `analysis_tier2_primary_2010plus.parquet`), retained strictly in a labeled sensitivity table (`sensitivity_macro_revision_2010plus.parquet`).
+- **Statistics Canada (StatCan) CPI Unverified**: Agency calendar pages for BLS (US), Eurostat (EA), ONS (GB), ABS (AU), and SBJ (JP) were downloaded and verified in `data/raw/cpi_calendars/`. Statistics Canada returned HTTP 503 (anti-bot protection); Canadian CPI release dates remain graded **Unverified (Grade C)**.
+
+### 10.5 Tradeable ETF Proxy Tracking Divergence
+Five tradeable ETF proxies exhibit significant annualized tracking error relative to cash benchmark indices due to expense ratios, dividend drag, and localized component weighting:
+- `ea_emu_smallcap_etf` vs `de_mdax`: Tracking Error = 9.28% ($r = 0.8673$)
+- `de_stoxx_banks_etf` vs `de_dax_banks`: Tracking Error = 17.70% ($r = 0.8583$)
+- `jp_topix_banks_etf` vs `jp_nikkei225`: Tracking Error = 20.52% ($r = 0.6676$)
+- `kr_banks_etf` vs `kr_kospi`: Tracking Error = 22.44% ($r = 0.5546$)
+- `jp_mothers_etf` vs `jp_nikkei225`: Tracking Error = 31.65% ($r = 0.5145$)
+All 5 series are explicitly flagged with `proxy_type = 'etf_proxy'`.
+
+### 10.6 Bank of Japan Operating Target vs Facility Spread
+On 2026-09-18, the BoJ Policy Board raised the uncollateralized overnight call rate target by +25 bp to around 1.25% (verified from official PDF statement). BIS series `WS_CBPOL/D.JP` logged the complementary lending facility ceiling rate (1.00%), creating a crosscheck spread difference. The dataset correctly records the official 1.25% operating target.
+
