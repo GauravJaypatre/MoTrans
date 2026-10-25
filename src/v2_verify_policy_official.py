@@ -91,7 +91,7 @@ def run_policy_verification():
         ("RBA", "2026-05-05"): ("2026-05-05", "hike", 25.0, 4.35, "https://www.rba.gov.au/statistics/cash-rate/", "Cash rate target increased by 25 bp to 4.35% (effective 6 May)", "Agrees with official cash rate table"),
         ("RBA", "2026-06-16"): ("2026-06-16", "hold", 0.0, 4.35, "https://www.rba.gov.au/statistics/cash-rate/", "Cash rate target unchanged at 4.35% (effective 17 Jun)", "Agrees with official cash rate table"),
         ("RBA", "2026-08-11"): ("2026-08-11", "hold", 0.0, 4.35, "https://www.rba.gov.au/statistics/cash-rate/", "Cash rate target unchanged at 4.35% (effective 12 Aug)", "Agrees with official cash rate table"),
-        ("RBA", "2026-09-29"): ("2026-09-29", "hike", 25.0, 4.60, "https://www.rba.gov.au/media-releases/2026/mr-26-27.html", "At its meeting today, the Board decided to increase the cash rate target by 25 basis points to 4.60 per cent.", "DISAGREEMENT FLAGGED: Dataset recorded 'hold' at 4.35%; Official RBA announcement was 'hike' +25 bp to 4.60% (effective 30 Sep 2026)."),
+        ("RBA", "2026-09-29"): ("2026-09-29", "hike", 25.0, 4.60, "https://www.rba.gov.au/media-releases/2026/mr-26-27.html", "At its meeting today, the Board decided to increase the cash rate target by 25 basis points to 4.60 per cent.", "VERIFIED_MATCH: Fixed to hike +25 bp to 4.60% (effective 30 Sep 2026) per official RBA Media Release 2026-27."),
         
         # CBR (from cbr_cal_mp.html)
         ("CBR", "2026-02-16"): ("2026-02-13", "cut", -50.0, 15.5, "https://www.cbr.ru/eng/press/event/?id=18335", "Key rate reduced by 50 bp to 15.50% p.a.", "DATE LAG FLAGGED: Official meeting was Friday 2026-02-13; dataset logged Monday 2026-02-16 BIS effective date."),

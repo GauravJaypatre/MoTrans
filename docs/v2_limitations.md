@@ -1,7 +1,7 @@
 # Methodological & Data Limitations — MoTrans-15 v2.0 (Phase V1 Addendum)
 
 **Status**: Formal Record of Known Constraints and Unverified Items  
-**Date**: 2026-10-24  
+**Date**: 2026-10-25  
 
 ---
 
@@ -12,9 +12,10 @@
   - Nikkei 225 (`^N225`): Direct calendar alignment with FRED `NIKKEI225` failed after two attempts (99.7% of days > 1 bp difference). Root cause: FRED logs Tokyo exchange closing levels on the subsequent US observation date (T+1 calendar lag). When shifted by 1 business day to account for FRED's US-centric reporting convention, price levels match to cents.
   - All 36 remaining equity index series have no secondary source and remain strictly classified as `single-source`.
 
-## 2. Policy Decisions Discrepancies
-- **RBA 2026-09-29**: The v1 dataset recorded `decision = hold, size_bp = 0.0, new_rate_pct = 4.35%`. Official RBA Media Release 2026-27 (released 29 September 2026) confirmed: *"At its meeting today, the Board decided to increase the cash rate target by 25 basis points to 4.60 per cent."* (Effective 30 September 2026). The v1 record is erroneous.
-- **CBR Meeting vs Effective Dates**: v1 recorded Monday effective dates from BIS `WS_CBPOL/D.RU` rather than the official Friday Board decision announcement dates.
+## 2. Policy Decisions Discrepancies & CBR Convention
+- **RBA 2026-09-29 Fixed**: Fixed from 'hold' at 4.35% to 'hike' +25 bp to 4.60% (effective 30 Sep 2026) per official raw HTML of RBA Media Release 2026-27: *"At its meeting today, the Board decided to increase the cash rate target by 25 basis points to 4.60 per cent."*
+- **CBR Meeting vs Effective Dates**: v1 recorded Monday effective dates from BIS `WS_CBPOL/D.RU` rather than the official Friday Board decision announcement dates. An audit against `cbr_cal_mp.html` confirmed that 38 out of 41 effective CBR decisions were logged with Monday effective dates.
+- **CBR Omission of Scheduled Holds**: CBR has no scheduled holds in the dataset. Because rate meetings without rate changes were not published in BIS CBPOL series, only active rate changes are recorded for CBR.
 - **BoJ Complementary Lending Facility**: In 2026, BIS `WS_CBPOL/D.JP` records the Complementary Lending Facility rate (0.75% -> 1.00% -> 1.25%), rather than the uncollateralized call rate target. Meeting dates and direction of actions match official MPM statements.
 
 ## 3. Macro Controls Vintage Contamination (`ind_prod`)

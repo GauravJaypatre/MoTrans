@@ -33,13 +33,13 @@ def test_verification_summary_exists_and_grades():
     assert "external_verification" in df.columns, "external_verification column missing"
 
     # Check honest regraded grades
-    grades = dict(zip(df["check_family"], zip(df["internal_consistency"], df["external_verification"])))
+    grades = dict(zip(df["check_family"], zip(df["internal_consistency"], df["external_verification"].fillna(""))))
     assert grades["A. Index Prices"] == ("Grade A", "Grade C"), "Prices must be Internal A, External C (single-source)"
     assert grades["B. Policy Decisions"] == ("Grade A", "Grade B"), "Policy must be Internal A, External B"
-    assert grades["C. Shocks & Yields"] == ("Grade A", "Grade B"), "Shocks must be Internal A, External B"
+    assert grades["C. Shocks & Yields"] == ("Grade A", ""), "Shocks must be Internal A, External blank"
     assert grades["D. Event Returns"] == ("Grade A", "Grade B"), "Event returns must be Internal A, External B"
     assert grades["E. Timing & DST Edge Cases"] == ("Grade A", "Grade C"), "Timing must be Internal A, External C"
-    assert grades["F. Macro Controls Lags"] == ("Grade A", "Grade B"), "Controls must be Internal A, External B"
+    assert grades["F. Macro Controls Lags"] == ("Grade A", "Grade C"), "Controls must be Internal A, External C (StatCan unverified)"
 
     # All check families must have status PASS
     for _, row in df.iterrows():
@@ -63,18 +63,20 @@ def test_price_second_source_check():
     assert len(single_source) == 36, f"Expected 36 single-source series, got {len(single_source)}"
 
 
-def test_policy_2026_and_rba_flag():
+def test_policy_2026_and_rba_fixed():
     p = Path("outputs/v2/policy_2026_verified.csv")
     assert p.exists(), "outputs/v2/policy_2026_verified.csv must exist"
     df = pd.read_csv(p)
     assert len(df) == 41, f"Expected 41 decisions in 2026, got {len(df)}"
 
-    # Explicitly check RBA 2026-09-29 discrepancy
+    # Explicitly check RBA 2026-09-29 is verified match as hike
     rba_sep = df[(df["regime"] == "RBA") & (df["dataset_date"] == "2026-09-29")]
     assert len(rba_sep) == 1
-    assert rba_sep["verification_status"].iloc[0] == "DISAGREEMENT_REPORTED"
-    assert rba_sep["dataset_decision"].iloc[0] == "hold"
+    assert rba_sep["verification_status"].iloc[0] == "VERIFIED_MATCH"
+    assert rba_sep["dataset_decision"].iloc[0] == "hike"
     assert rba_sep["official_decision"].iloc[0] == "hike"
+    assert rba_sep["dataset_size_bp"].iloc[0] == 25.0
+    assert rba_sep["dataset_new_rate"].iloc[0] == 4.60
     assert "4.60 per cent" in rba_sep["official_text_excerpt"].iloc[0]
 
 
@@ -93,6 +95,17 @@ def test_timing_official_check():
 
     assert (df["timing_verified"] == 1).all()
     assert (df["timestamp_match"] == 1).all()
+
+    # Evidence levels
+    assert "convention_verified" in df.columns
+    assert "event_verified" in df.columns
+    assert "timing_verified_level" in df.columns
+    assert (df["convention_verified"] == 1).all()
+    assert df["event_verified"].sum() == 11  # 10 Fed statements + 1 RBA statement
+
+    # Valid IANA timezone check
+    assert not df["timezone"].str.contains("Frankfurt").any()
+    assert (df["timezone"] == "Europe/Berlin").any()
 
 
 def test_controls_cpi_and_vintage_audit():
@@ -116,19 +129,28 @@ def test_controls_cpi_and_vintage_audit():
     assert "EXCLUDE_FROM_DEFAULT_SET" in ip_row["v2_recommendation"].iloc[0]
 
 
-def test_shocks_external_and_event_alignment():
-    p_shk = Path("outputs/v2/shocks_external_check.csv")
+def test_shocks_replication_and_event_alignment():
+    p_shk = Path("outputs/v2/shocks_replication_check.csv")
     assert p_shk.exists()
     df_shk = pd.read_csv(p_shk)
-    assert len(df_shk) == 20, f"Expected 20 external shock checks, got {len(df_shk)}"
-    assert (df_shk["verification_status"] == "VERIFIED_EXTERNAL_AGREEMENT").all()
-    assert (df_shk["sign_ordering_agrees"] == 1).all()
+    assert len(df_shk) == 20, f"Expected 20 replication shock checks, got {len(df_shk)}"
+    assert (df_shk["check_type"] == "replication").all()
+    assert (df_shk["replication_status"] == "VERIFIED_INTERNAL_REPLICATION").all()
 
     p_align = Path("outputs/v2/event_alignment_audit.csv")
     assert p_align.exists()
     df_align = pd.read_csv(p_align)
     assert len(df_align) == 500, f"Expected 500 sampled events, got {len(df_align)}"
     assert (df_align["alignment_verified"] == 1).all()
+
+
+def test_cbr_date_verification_audit():
+    p_cbr = Path("outputs/v2/cbr_date_verification_audit.csv")
+    assert p_cbr.exists(), "outputs/v2/cbr_date_verification_audit.csv must exist"
+    df = pd.read_csv(p_cbr)
+    assert len(df) == 51, f"Expected 51 CBR decisions, got {len(df)}"
+    assert (df["is_effective"] == 1).sum() == 41, "Expected 41 effective decisions"
+    assert df["date_changed"].sum() == 38, "Expected 38 decisions where date changes to Friday"
 
 
 def test_scorecard_and_limitations_exist():
@@ -148,5 +170,5 @@ def test_scorecard_and_limitations_exist():
     lim_text = limitations.read_text(encoding="utf-8")
     assert "Single-Source Price Series" in lim_text
     assert "RBA 2026-09-29" in lim_text
-    assert "Macro Controls Vintage Contamination" in lim_text
-    assert "Announcement Timing Verification Scope" in lim_text
+    assert "CBR Meeting vs Effective Dates" in lim_text
+    assert "CBR Omission of Scheduled Holds" in lim_text

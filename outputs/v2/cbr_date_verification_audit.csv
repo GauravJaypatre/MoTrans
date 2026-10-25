@@ -1,0 +1,52 @@
+dataset_date,dataset_day,decision,size_bp,new_rate_pct,official_meeting_date,official_meeting_day,date_changed,days_lag,is_effective,meeting_type
+2010-02-24,Wednesday,cut,-25.0,8.5,2010-02-24,Wednesday,0,0,0,Refinancing Rate Era (Pre-2014) or Unscheduled
+2010-03-29,Monday,cut,-25.0,8.25,2010-03-29,Monday,0,0,0,Refinancing Rate Era (Pre-2014) or Unscheduled
+2010-04-30,Friday,cut,-25.0,8.0,2010-04-30,Friday,0,0,0,Refinancing Rate Era (Pre-2014) or Unscheduled
+2010-05-31,Monday,cut,-25.0,7.75,2010-05-31,Monday,0,0,0,Refinancing Rate Era (Pre-2014) or Unscheduled
+2011-02-28,Monday,hike,25.0,8.0,2011-02-28,Monday,0,0,0,Refinancing Rate Era (Pre-2014) or Unscheduled
+2011-05-03,Tuesday,hike,25.0,8.25,2011-05-03,Tuesday,0,0,0,Refinancing Rate Era (Pre-2014) or Unscheduled
+2011-12-26,Monday,cut,-25.0,8.0,2011-12-26,Monday,0,0,0,Refinancing Rate Era (Pre-2014) or Unscheduled
+2012-06-20,Wednesday,hike,25.0,8.25,2012-06-20,Wednesday,0,0,0,Refinancing Rate Era (Pre-2014) or Unscheduled
+2012-07-03,Tuesday,cut,-25.0,8.0,2012-07-03,Tuesday,0,0,0,Refinancing Rate Era (Pre-2014) or Unscheduled
+2012-09-14,Friday,hike,25.0,8.25,2012-09-14,Friday,0,0,0,Refinancing Rate Era (Pre-2014) or Unscheduled
+2013-09-13,Friday,cut,-275.0,5.5,2013-09-13,Friday,0,0,1,Introduction of Key Rate (5.50%)
+2014-03-03,Monday,hike,150.0,7.0,2014-03-03,Monday,0,0,1,The Bank of Russia Board of Directors unscheduled meeting on
+2014-04-28,Monday,hike,50.0,7.5,2014-04-25,Friday,1,3,1,The Bank of Russia Board of Directors meeting on monetary po
+2014-07-28,Monday,hike,50.0,8.0,2014-07-25,Friday,1,3,1,The Bank of Russia Board of Directors meeting on monetary po
+2014-11-05,Wednesday,hike,150.0,9.5,2014-10-31,Friday,1,5,1,The Bank of Russia Board of Directors meeting on monetary po
+2014-12-12,Friday,hike,100.0,10.5,2014-12-11,Thursday,1,1,1,The Bank of Russia Board of Directors meeting on monetary po
+2014-12-16,Tuesday,hike,650.0,17.0,2014-12-15,Monday,1,1,1,The Bank of Russia Board of Directors unscheduled meeting on
+2015-02-02,Monday,cut,-200.0,15.0,2015-01-30,Friday,1,3,1,The Bank of Russia Board of Directors meeting on monetary po
+2015-03-16,Monday,cut,-100.0,14.0,2015-03-13,Friday,1,3,1,The Bank of Russia Board of Directors meeting on monetary po
+2015-05-05,Tuesday,cut,-150.0,12.5,2015-04-30,Thursday,1,5,1,The Bank of Russia Board of Directors meeting on monetary po
+2015-06-16,Tuesday,cut,-100.0,11.5,2015-06-15,Monday,1,1,1,The Bank of Russia Board of Directors meeting on monetary po
+2015-08-03,Monday,cut,-50.0,11.0,2015-07-31,Friday,1,3,1,The Bank of Russia Board of Directors meeting on monetary po
+2016-06-14,Tuesday,cut,-50.0,10.5,2016-06-10,Friday,1,4,1,The Bank of Russia Board of Directors meeting on monetary po
+2016-09-19,Monday,cut,-50.0,10.0,2016-09-16,Friday,1,3,1,The Bank of Russia Board of Directors meeting on monetary po
+2017-03-27,Monday,cut,-25.0,9.75,2017-03-24,Friday,1,3,1,The Bank of Russia Board of Directors meeting on monetary po
+2017-05-03,Wednesday,cut,-50.0,9.25,2017-04-28,Friday,1,5,1,The Bank of Russia Board of Directors meeting on monetary po
+2017-06-19,Monday,cut,-25.0,9.0,2017-06-16,Friday,1,3,1,The Bank of Russia Board of Directors meeting on monetary po
+2017-09-20,Wednesday,cut,-50.0,8.5,2017-09-15,Friday,1,5,1,The Bank of Russia Board of Directors meeting on monetary po
+2017-10-27,Friday,cut,-25.0,8.25,2017-10-27,Friday,0,0,1,The Bank of Russia Board of Directors meeting on monetary po
+2017-12-18,Monday,cut,-50.0,7.75,2017-12-15,Friday,1,3,1,The Bank of Russia Board of Directors meeting on monetary po
+2018-02-12,Monday,cut,-25.0,7.5,2018-02-09,Friday,1,3,1,Board of Directors’ monetary policy meeting(Press release is
+2018-03-27,Tuesday,cut,-25.0,7.25,2018-03-23,Friday,1,4,1,Board of Directors’ monetary policy meeting (Press release i
+2018-09-17,Monday,hike,25.0,7.5,2018-09-14,Friday,1,3,1,Board of Directors’ monetary policy meeting (Press release i
+2018-12-17,Monday,hike,25.0,7.75,2018-12-14,Friday,1,3,1,Board of Directors’ monetary policy meeting (Press release i
+2019-06-17,Monday,cut,-25.0,7.5,2019-06-14,Friday,1,3,1,Board of Directors’ monetary policy meeting Press release
+2019-07-29,Monday,cut,-25.0,7.25,2019-07-26,Friday,1,3,1,Board of Directors’ monetary policy meeting Press release
+2019-09-09,Monday,cut,-25.0,7.0,2019-09-06,Friday,1,3,1,Board of Directors’ monetary policy meeting Press release
+2019-10-28,Monday,cut,-50.0,6.5,2019-10-25,Friday,1,3,1,Board of Directors’ monetary policy meeting Press release
+2019-12-16,Monday,cut,-25.0,6.25,2019-12-13,Friday,1,3,1,Board of Directors’ monetary policy meeting Press release an
+2020-02-10,Monday,cut,-25.0,6.0,2020-02-07,Friday,1,3,1,Bank of Russia Board of Directors’ monetary policy meeting P
+2020-04-27,Monday,cut,-50.0,5.5,2020-04-24,Friday,1,3,1,Bank of Russia Board of Directors’ monetary policy meeting P
+2020-06-24,Wednesday,cut,-100.0,4.5,2020-06-19,Friday,1,5,1,Bank of Russia Board of Directors’ monetary policy meeting P
+2020-07-27,Monday,cut,-25.0,4.25,2020-07-24,Friday,1,3,1,Bank of Russia Board of Directors’ monetary policy meeting P
+2021-03-22,Monday,hike,25.0,4.5,2021-03-19,Friday,1,3,1,Bank of Russia Board of Directors’ key rate meeting Press re
+2021-04-26,Monday,hike,50.0,5.0,2021-04-23,Friday,1,3,1,Bank of Russia Board of Directors’ key rate meeting Press re
+2021-06-15,Tuesday,hike,50.0,5.5,2021-06-11,Friday,1,4,1,Bank of Russia Board of Directors’ key rate meeting Press re
+2021-07-26,Monday,hike,100.0,6.5,2021-07-23,Friday,1,3,1,Bank of Russia Board of Directors’ key rate meeting Press re
+2021-09-13,Monday,hike,25.0,6.75,2021-09-10,Friday,1,3,1,Bank of Russia Board of Directors’ key rate meeting Press re
+2021-10-25,Monday,hike,75.0,7.5,2021-10-22,Friday,1,3,1,Bank of Russia Board of Directors’ key rate meeting Press re
+2021-12-20,Monday,hike,100.0,8.5,2021-12-17,Friday,1,3,1,Bank of Russia Board of Directors’ key rate meeting Press re
+2022-02-14,Monday,hike,100.0,9.5,2022-02-11,Friday,1,3,1,Bank of Russia Board of Directors’ key rate meeting Press re
