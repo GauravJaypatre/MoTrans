@@ -115,11 +115,11 @@ All controls matched using conservative point-in-time rule: $\text{available\_fr
 
 | Column | Type | Range | Definition & Filtering Rule |
 | :--- | :--- | :--- | :--- |
-| `price_source_verified` | int | `{0, 1}` | 1 for `us_sp500` (verified against FRED within 1.2 bp); 0 for 37 single-source series. |
-| `shock_verified` | int | `{0, 1}` | 1 for shocks verified by replication against saved raw data files. |
-| `timing_verified_level` | string | `{event, convention, none}` | Timing provenance: `event` (statement header verified); `convention` (official period convention verified); `none` (unverified). |
-| `policy_verified` | int | `{0, 1}` | 1 for official central-bank-audited policy decisions. |
-| `analysis_ok` | int | `{0, 1}` | Primary quality filter. Equal to 0 if timing is unverified (`none`) for a primary decision, date is unverified, or event spans prolonged halts. Equal to 1 for clean analysis sample. |
+| `price_source_verified` | int | `{0, 1}` | 1 for `us_sp500` and `jp_nikkei225` (both verified against FRED within 1.2 bp); 0 for 36 single-source series. |
+| `shock_replicated` | int | `{0, 1}` | 1 for shocks verified by internal replication against saved raw data files (not external literature). |
+| `timing_verified_level` | string | `{event, convention, none}` | Timing provenance: `event` (statement header verified); `convention` (official period convention verified, including BoE across 2010+); `none` (unverified). |
+| `policy_verified` | int | `{0, 1}` | 1 for official central-bank-audited policy decisions (G6 and pre-war CBR). |
+| `analysis_ok` | int | `{0, 1}` | Primary quality filter. Equal to 0 if timing is unverified (`none`) for a primary decision, date is unverified, timing is ambiguous, or event spans prolonged market halts. Equal to 1 for clean analysis sample. Usable sample summaries across tables and regimes are recorded in `outputs/v2/usable_sample.csv`. |
 
 ---
 

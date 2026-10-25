@@ -99,7 +99,8 @@ def write_freeze_doc(hashes: dict[str, str], git_hash: str):
     lines = [
         "# MoTrans-15 v2.0 Data Freeze Certification",
         "",
-        "**Release Tag**: `v2.0-data-freeze`  ",
+        "**Release Tag**: `v2.0.1-data-freeze` (CBR emergency alignment, non-decision exclusion, and usable sample freeze)  ",
+        "**Initial v2.0 Tag**: `v2.0-data-freeze` (commit `1f9688bf8f3c2429875bcb6d71d032e70b774254`, preserved unchanged)  ",
         f"**Git Commit Hash**: `{git_hash}`  ",
         "**Parent Freeze**: `v1.0-data-freeze` (permanently locked and preserved)  ",
         "**Certification Date**: 2026-10-25  ",

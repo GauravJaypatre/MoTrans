@@ -26,6 +26,8 @@ data/final/*
 data/v2/*
 data/v2/**
 !data/v2/.gitkeep
+!data/v2/release/README.md
+
 
 
 

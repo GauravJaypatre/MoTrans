@@ -40,6 +40,9 @@ def assert_no_holdout(df: pd.DataFrame, allow_holdout: bool = False, allow_blind
     unlock_blind = allow_blind_test or os.environ.get("UNLOCK_BLIND") == "1"
 
     if not unlock_holdout:
+        if "final_holdout" in df.columns:
+            if (df["final_holdout"] == 1).any():
+                raise PermissionError("Access to 'final_holdout' is locked by model_guard.py. Training on holdout data is strictly forbidden without UNLOCK_HOLDOUT=1.")
         if "split_tag" in df.columns:
             if (df["split_tag"] == "final_holdout").any():
                 raise PermissionError("Access to 'final_holdout' is locked by model_guard.py. Training on holdout data is strictly forbidden without UNLOCK_HOLDOUT=1.")
