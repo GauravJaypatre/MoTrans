@@ -1,5 +1,6 @@
 fold_id,origin_date,train_start,train_end_nominal,val_start,val_end,embargo_days,train_decisions_total,val_decisions_total,train_hikes_total,val_hikes_total,train_tier1_hikes,flag_under_10_tier1_hikes,notes
-1,2016-01-01,2010-01-01,2015-12-31,2016-01-01,2017-12-31,60,560,160,69,18,2,1,Low tightening content in 2010-2015 (ZIRP era)
-2,2018-01-01,2010-01-01,2017-12-31,2018-01-01,2019-12-31,60,719,161,85,17,6,1,Low tightening content in 2010-2015 (ZIRP era)
-3,2020-01-01,2010-01-01,2019-12-31,2020-01-01,2021-12-31,60,878,173,106,22,11,0,Standard expansion window
-4,2022-01-01,2010-01-01,2021-12-31,2022-01-01,2023-12-31,60,1053,172,120,93,11,0,Standard expansion window
+1,2016-01-01,2010-01-01,2015-12-31,2016-01-01,2017-12-31,60,276,97,12,7,2,1,Low tightening content in 2010-2015 (ZIRP era)
+2,2018-01-01,2010-01-01,2017-12-31,2018-01-01,2019-12-31,60,372,96,18,10,6,1,Low tightening content in 2010-2015 (ZIRP era)
+3,2020-01-01,2010-01-01,2019-12-31,2020-01-01,2021-12-31,60,467,91,30,5,11,0,Standard expansion window
+4,2022-01-01,2010-01-01,2021-12-31,2022-01-01,2023-12-31,60,572,76,35,57,11,0,Standard expansion window
+final_fit,2024-01-01,2010-01-01,2023-12-31,,,60,648,0,92,0,32,0,Final fit set across full TRAIN + VALIDATION (2010-2023) with 60-day embargo before 2024-01-01 test cutoff

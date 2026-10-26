@@ -120,3 +120,116 @@ def test_v2_1_leakage_audit_suite():
     df_audit = run_leakage_audit()
     assert (df_audit["passed"] == 1).all()
     assert (df_audit["violations_count"] == 0).all()
+
+
+def test_v2_1_overlap_prior_causality():
+    """Verify that overlap_prior_* columns exist and use only earlier decisions (t_prior < t)."""
+    import numpy as np
+    policy_raw = pd.read_csv(ROOT / "data" / "final" / "policy_decisions.csv", dtype={"decision_date": str})
+    pol_clean = policy_raw[policy_raw["event_type"] != "non_decision"].drop_duplicates("event_id").copy()
+    bdate_range = pd.bdate_range("1999-01-01", "2026-12-31")
+    pol_dates = pd.to_datetime(pol_clean["decision_date"]).to_numpy()
+    pol_ids = pol_clean["event_id"].to_numpy()
+
+    for fname in V2_1_ANALYSIS_TABLES:
+        df = pd.read_parquet(DATA_V2_1 / fname)
+        for W in (1, 3, 5, 20, 60):
+            flag_col = f"overlap_prior_{W}d"
+            cnt_col = f"overlap_prior_count_{W}d"
+            assert flag_col in df.columns, f"{flag_col} missing in {fname}"
+            assert cnt_col in df.columns, f"{cnt_col} missing in {fname}"
+
+    # Verify that the decision window strictly ends at t - 1 trading day
+    for d, eid in zip(pol_dates[:50], pol_ids[:50]):
+        prev_idx = int(np.searchsorted(bdate_range, d, side="left")) - 1
+        for W in (1, 3, 5, 20, 60):
+            start_idx = max(0, prev_idx - W + 1)
+            start_b = bdate_range[start_idx]
+            end_b = bdate_range[prev_idx]
+            mask = (pol_dates >= start_b) & (pol_dates <= end_b) & (pol_ids != eid)
+            matched = pol_dates[mask]
+            assert (matched < d).all(), f"Leakage found in prior window for {eid}"
+
+
+def test_v2_1_final_fit_isolation():
+    """Verify final_fit row in folds.csv and verify it never includes test or post_window rows."""
+    import datetime as dt
+    folds_df = pd.read_csv(DATA_V2_1 / "folds.csv")
+    ff_row = folds_df[folds_df["fold_id"] == "final_fit"]
+    assert not ff_row.empty, "final_fit row missing from folds.csv"
+    assert int(ff_row["train_decisions_total"].iloc[0]) == 648
+    assert int(ff_row["val_decisions_total"].iloc[0]) == 0
+    assert int(ff_row["train_hikes_total"].iloc[0]) == 92
+
+    for fname in ["analysis_tier1.parquet", "analysis_tier2_primary.parquet", "secondary_holds.parquet"]:
+        df_ff = load_v2_1_table(fname, split="final_fit")
+        # Must never have test or post_window rows
+        assert (df_ff["final_split"].isin(["train", "validation"])).all()
+        assert (df_ff["final_split"] != "test").all()
+        assert (df_ff["final_split"] != "post_window").all()
+        # Decision date strictly before 2024-01-01
+        d_dates = pd.to_datetime(df_ff["decision_date"]).dt.date
+        assert (d_dates < dt.date(2024, 1, 1)).all(), "final_fit contains decisions >= 2024-01-01"
+        assert (df_ff["embargo_dropped"] == 0).all()
+
+
+def test_v2_1_fold_counts_reconciliation():
+    """Verify fold_counts.csv reconciles perfectly with split_counts.csv on Fold 4 validation."""
+    fc = pd.read_csv(ROOT / "outputs" / "v2_1" / "fold_counts.csv")
+    sc = pd.read_csv(ROOT / "outputs" / "v2_1" / "split_counts.csv")
+
+    f4_val = fc[(fc["fold_id"].astype(str) == "4") & (fc["role"] == "val")]
+    assert len(f4_val) == 6, f"Expected 6 rows for fold 4 val, got {len(f4_val)}"
+    assert f4_val["decisions_count"].sum() == 76
+    assert f4_val["hikes_count"].sum() == 57
+    assert f4_val["cuts_count"].sum() == 0
+    assert f4_val["holds_count"].sum() == 19
+
+    # Reconcile with validation split in split_counts
+    val_sc = sc[sc["split"] == "validation"]
+    assert val_sc["decisions_count"].sum() == 76
+    hikes_sc = val_sc[val_sc["decision"] == "hike"]["decisions_count"].sum()
+    holds_sc = val_sc[val_sc["decision"] == "hold"]["decisions_count"].sum()
+    assert hikes_sc == 57
+    assert holds_sc == 19
+
+
+def test_v2_1_row_membership_partition():
+    """Verify row_membership.csv sums exactly to 52,242 rows and no 2026 decision is included."""
+    rm = pd.read_csv(ROOT / "outputs" / "v2_1" / "row_membership.csv")
+    total_rows = rm["event_rows_count"].sum()
+    assert total_rows == 52242, f"Expected 52,242 total event rows in 2010-2025, got {total_rows}"
+
+    # Verify unverified_regime in row_membership does not include 2026
+    events = pd.read_parquet(ROOT / "data" / "final" / "events.parquet")
+    events = events[events["event_type"] != "non_decision"].copy()
+    em_2026 = events[(events["decision_date"] >= "2026-01-01") & (events["regime"].isin(["BCB", "Banxico", "RBI"]))]
+    assert len(em_2026) > 0, "Expected 2026 EM rows to exist in source"
+    
+    # In 2010-2025, decisions for BCB, Banxico, RBI must be exactly 369
+    events_win = events[(events["decision_date"] >= "2010-01-01") & (events["decision_date"] <= "2025-12-31")]
+    em_win = events_win[events_win["regime"].isin(["BCB", "Banxico", "RBI"])]
+    assert em_win["event_id"].nunique() == 369, f"Expected 369 decisions for BCB/Banxico/RBI in 2010-2025, got {em_win['event_id'].nunique()}"
+
+
+def test_v2_1_test_window_composition_separation():
+    """Verify test_window_composition.csv separates Tier 1, Tier 2 primary, and Secondary holds."""
+    tw = pd.read_csv(ROOT / "outputs" / "v2_1" / "test_window_composition.csv")
+    tables = set(tw["table"].unique())
+    assert tables == {"Tier 1", "Tier 2 primary", "Secondary holds"}
+    
+    t1_sub = tw[tw["table"] == "Tier 1"]
+    assert t1_sub["decisions_count"].sum() == 14
+    assert t1_sub["cuts_count"].sum() == 8
+    assert t1_sub["holds_count"].sum() == 6
+
+    t2_sub = tw[tw["table"] == "Tier 2 primary"]
+    assert t2_sub["decisions_count"].sum() == 20
+    assert t2_sub["cuts_count"].sum() == 20
+    assert t2_sub["holds_count"].sum() == 0
+
+    sec_sub = tw[tw["table"] == "Secondary holds"]
+    assert sec_sub["decisions_count"].sum() == 36
+    assert sec_sub["holds_count"].sum() == 36
+    assert sec_sub["cuts_count"].sum() == 0
+

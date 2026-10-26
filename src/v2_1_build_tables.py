@@ -1,4 +1,4 @@
-"""MoTrans-15 v2.1 Table Builder & Leakage Protection Pipeline.
+"""MoTrans-15 v2.1 / v2.1.1 Table Builder & Leakage Protection Pipeline.
 
 Builds:
 - data/v2_1/analysis_tier1.parquet
@@ -8,13 +8,14 @@ Builds:
 - data/v2_1/sensitivity_macro_revision.parquet
 - data/v2_1/post_window_2026.parquet
 - data/v2_1/excluded_rows.parquet
-- data/v2_1/folds.csv
+- data/v2_1/folds.csv (with final_fit row)
 - data/v2_1/release/ (release subset without licensed price levels)
 
 Produces reports under outputs/v2_1/:
 - split_counts.csv
 - fold_counts.csv
 - test_window_composition.csv
+- row_membership.csv
 - years_thin.csv
 - analysis_ok_breakdown.csv
 - decisions_by_regime_year_2010_2025.csv
@@ -58,8 +59,34 @@ DATA_V2_1_RELEASE.mkdir(parents=True, exist_ok=True)
 OUTPUTS_V2_1.mkdir(parents=True, exist_ok=True)
 
 
+def compute_counts(df: pd.DataFrame, group_cols: list[str]) -> pd.DataFrame:
+    """Standard unified counting function used across all v2.1/v2.1.1 reports.
+    
+    Guarantees that decisions_count is strictly df['event_id'].nunique(),
+    with consistent breakdown into hikes_count, cuts_count, holds_count,
+    and event_rows_count.
+    """
+    records = []
+    for keys, g in df.groupby(group_cols, observed=False):
+        if not isinstance(keys, tuple):
+            keys = (keys,)
+        rec = dict(zip(group_cols, keys))
+        decs = int(g["event_id"].nunique())
+        hikes = int((g["decision"] == "hike").groupby(g["event_id"]).any().sum())
+        cuts = int((g["decision"] == "cut").groupby(g["event_id"]).any().sum())
+        holds = int((g["decision"] == "hold").groupby(g["event_id"]).any().sum())
+        rows = int(len(g))
+        rec["decisions_count"] = decs
+        rec["hikes_count"] = hikes
+        rec["cuts_count"] = cuts
+        rec["holds_count"] = holds
+        rec["event_rows_count"] = rows
+        records.append(rec)
+    return pd.DataFrame(records)
+
+
 def build_v2_1_tables():
-    print("=== Starting MoTrans-15 v2.1 Dataset Build ===")
+    print("=== Starting MoTrans-15 v2.1/v2.1.1 Dataset Build ===")
     
     # 1. Load source tables
     events = pd.read_parquet(DATA_FINAL / "events.parquet")
@@ -138,7 +165,6 @@ def build_v2_1_tables():
     cbr_med = float(np.median(cbr_non_emerg["shock_proxy_raw"].values))
     cbr_mad = float(np.median(np.abs(cbr_non_emerg["shock_proxy_raw"].values - cbr_med)))
     cbr_robust_scale = cbr_mad * 1.4826
-    cbr_legacy_scale = float(np.std(cbr_train["shock_proxy_raw"].values, ddof=1))
 
     shock_raw_list = []
     shock_std_legacy_list = []
@@ -177,11 +203,33 @@ def build_v2_1_tables():
     events["shock_std_legacy"] = shock_std_legacy_list
     events["shock_std"] = shock_std_list
 
-    # 4. Compute 60-day observation date and embargo drop
+    # 4. Backward-Looking Overlap Prior Controls (Predictive Use, No Lookahead)
+    print("--- Adding Backward-Looking Overlap Prior Contamination Controls ---")
+    bdate_range = pd.bdate_range("1999-01-01", "2026-12-31")
+    pol_clean = policy[policy["event_type"] != "non_decision"].drop_duplicates("event_id").copy()
+    pol_dates = pd.to_datetime(pol_clean["decision_date"]).to_numpy()
+    pol_ids = pol_clean["event_id"].to_numpy()
+
+    prior_cols = {}
+    for W in (1, 3, 5, 20, 60):
+        cnt_map = {}
+        for d, eid in zip(pol_dates, pol_ids):
+            prev_idx = int(np.searchsorted(bdate_range, d, side="left")) - 1
+            start_idx = max(0, prev_idx - W + 1)
+            start_b = bdate_range[start_idx]
+            end_b = bdate_range[prev_idx]
+            mask = (pol_dates >= start_b) & (pol_dates <= end_b) & (pol_ids != eid)
+            cnt_map[eid] = int(mask.sum())
+        prior_cols[f"overlap_prior_count_{W}d"] = cnt_map
+        prior_cols[f"overlap_prior_{W}d"] = {k: int(v > 0) for k, v in cnt_map.items()}
+
+    for cname, cdict in prior_cols.items():
+        events[cname] = events["event_id"].map(cdict).fillna(0).astype(int)
+
+    # 5. Compute 60-day observation date and embargo drop
     print("--- Computing 60-Day Embargo and Drop Flags ---")
     dates_by_idx = {sid: np.array(g.sort_values("date")["date"].tolist()) for sid, g in panel.groupby("index_id")}
 
-    # Precompute obs_60_date on unique (index_id, react_obs_date)
     unique_pairs = events[["index_id", "react_obs_date"]].drop_duplicates()
     obs_60_dict = {}
     for _, row in unique_pairs.iterrows():
@@ -238,7 +286,7 @@ def build_v2_1_tables():
 
     events["embargo_dropped"] = events.apply(check_embargo, axis=1)
 
-    # 5. Assign Rolling-Origin Folds inside TRAIN + VALIDATION
+    # 6. Assign Rolling-Origin Folds inside TRAIN + VALIDATION
     print("--- Assigning Rolling-Origin Development Folds ---")
     origins = [
         (1, dt.date(2016, 1, 1), dt.date(2017, 12, 31)),
@@ -263,7 +311,7 @@ def build_v2_1_tables():
 
         events[col] = events.apply(assign_f, axis=1)
 
-    # 6. QE / YCC Indicator (BoJ)
+    # 7. QE / YCC Indicator (BoJ)
     def is_boj_qe_ycc(row):
         if row["regime"] != "BoJ":
             return 0
@@ -273,15 +321,11 @@ def build_v2_1_tables():
 
     events["qe_ycc_indicator"] = events.apply(is_boj_qe_ycc, axis=1)
 
-    # 7. Row-Quality Columns & Exclusion Reasons
+    # 8. Row-Quality Columns & Exclusion Reasons
     print("--- Deriving Row Quality & Exclusion Reasons ---")
-    # price_source_verified: us_sp500 and jp_nikkei225 verified against FRED
     events["price_source_verified"] = events["index_id"].isin(["us_sp500", "jp_nikkei225"]).astype(int)
-
-    # shock_replicated: Tier 1 HF OIS and Tier 2 clean sovereign yield proxies
     events["shock_replicated"] = (events["shock_usable"].fillna(0).astype(int) == 1).astype(int)
 
-    # timing_verified_level: event / convention / none
     fed_event_dates = {
         "2016-01-27", "2016-03-16", "2016-06-15", "2016-12-14", "2017-03-15",
         "2018-03-21", "2019-07-31", "2020-01-29", "2022-03-16", "2026-09-16"
@@ -307,6 +351,8 @@ def build_v2_1_tables():
             timing_level.append("convention")
         elif reg == "CBR" and dt.date(2013, 9, 13) <= d <= dt.date(2022, 2, 14):
             timing_level.append("convention")
+        elif reg == "BoJ" and d >= dt.date(2010, 1, 1):
+            timing_level.append("convention")
         else:
             timing_level.append("none")
     events["timing_verified_level"] = timing_level
@@ -321,13 +367,15 @@ def build_v2_1_tables():
     etf_proxies = {"ea_emu_smallcap_etf", "de_stoxx_banks_etf", "jp_topix_banks_etf", "kr_banks_etf", "jp_mothers_etf"}
     events["proxy_type"] = events["index_id"].apply(lambda sid: "etf_proxy" if sid in etf_proxies else "cash_benchmark")
 
-    # analysis_ok: clean, verified, not ambiguous, not halted, not embargo dropped
+    # analysis_ok: clean, verified, not ambiguous, not halted, not embargo dropped, shock usable if not BoJ
     is_moex_halt = (events["index_id"] == "ru_imoex") & (pd.to_datetime(events["decision_date"]).dt.date >= dt.date(2022, 2, 24))
+    is_bad_shock = (events["regime"] != "BoJ") & (events["shock_usable"].fillna(0).astype(int) == 0)
     events["analysis_ok"] = (
         (events["policy_verified"] == 1) &
         (events["timing_verified_level"] != "none") &
         (events["timing_ambiguous"] == 0) &
         (~is_moex_halt) &
+        (~is_bad_shock) &
         (events["embargo_dropped"] == 0)
     ).astype(int)
 
@@ -337,14 +385,14 @@ def build_v2_1_tables():
             return "none"
         if row["embargo_dropped"] == 1:
             return "embargo_dropped"
-        if row["regime"] in ["BCB", "Banxico", "RBI"]:
+        if row["regime"] in ["BCB", "Banxico", "RBI", "BoK", "PBoC"]:
             return "unverified_regime"
         if row["policy_verified"] == 0:
             return "policy_unverified"
-        if row["timing_verified_level"] == "none":
-            return "timing_unverified"
         if row["timing_ambiguous"] == 1:
             return "timing_ambiguous"
+        if row["timing_verified_level"] == "none":
+            return "timing_unverified"
         if row["index_id"] == "ru_imoex" and str(row["decision_date"]) >= "2022-02-24":
             return "moex_halt"
         if row.get("shock_usable", 1) == 0:
@@ -353,11 +401,11 @@ def build_v2_1_tables():
 
     events["exclusion_reason"] = events.apply(derive_exclusion_reason, axis=1)
 
-    # 8. Separate 2026 Post-Window Rows (Quarantined)
+    # 9. Separate 2026 Post-Window Rows (Quarantined)
     print("--- Isolating 2026 Post-Window Rows ---")
     post_window_rows = events[events["final_split"] == "post_window"].sort_values(["regime", "decision_date", "index_id"]).reset_index(drop=True)
     post_window_rows.to_parquet(DATA_V2_1 / "post_window_2026.parquet", index=False)
-    print(f"Saved {DATA_V2_1 / 'post_window_2026.parquet'}: {len(post_window_rows):,} rows (quarantined).")
+    print(f"Saved {DATA_V2_1 / 'post_window_2026.parquet'}: {len(post_window_rows):,} rows ({post_window_rows['event_id'].nunique()} decisions quarantined).")
 
     # Filter window for analysis tables: 2010-01-01 to 2025-12-31
     events_window = events[events["final_split"].isin(["train", "validation", "test"])].copy()
@@ -365,7 +413,7 @@ def build_v2_1_tables():
     # Excluded rows companion file (analysis_ok == 0 in 2010-2025 window)
     excluded_rows = events_window[events_window["analysis_ok"] == 0].sort_values(["regime", "decision_date", "index_id"]).reset_index(drop=True)
     excluded_rows.to_parquet(DATA_V2_1 / "excluded_rows.parquet", index=False)
-    print(f"Saved {DATA_V2_1 / 'excluded_rows.parquet'}: {len(excluded_rows):,} rows.")
+    print(f"Saved {DATA_V2_1 / 'excluded_rows.parquet'}: {len(excluded_rows):,} rows ({excluded_rows['event_id'].nunique()} decisions).")
 
     # Base columns for analysis tables
     analysis_cols = [
@@ -375,6 +423,8 @@ def build_v2_1_tables():
         "clr_1", "clr_3", "clr_5", "clr_20", "clr_60",
         "overlap_1d", "overlap_3d", "overlap_5d", "overlap_20d", "overlap_60d",
         "overlap_count_1d", "overlap_count_3d", "overlap_count_5d", "overlap_count_20d", "overlap_count_60d",
+        "overlap_prior_1d", "overlap_prior_3d", "overlap_prior_5d", "overlap_prior_20d", "overlap_prior_60d",
+        "overlap_prior_count_1d", "overlap_prior_count_3d", "overlap_prior_count_5d", "overlap_prior_count_20d", "overlap_prior_count_60d",
         "policy_rate", "zero_lower_bound", "qe_ycc_indicator",
         "ctrl_vix", "ctrl_cpi", "ctrl_yield_1y", "ctrl_yield_2y", "ctrl_yield_short",
         "ctrl_fx_lcu_per_usd", "ctrl_policy_rate",
@@ -389,7 +439,7 @@ def build_v2_1_tables():
         (events_window["analysis_ok"] == 1)
     ][analysis_cols].sort_values(["regime", "decision_date", "index_id"]).reset_index(drop=True)
     t1_df.to_parquet(DATA_V2_1 / "analysis_tier1.parquet", index=False)
-    print(f"Saved {DATA_V2_1 / 'analysis_tier1.parquet'}: {len(t1_df):,} rows ({t1_df['decision_date'].nunique()} decisions).")
+    print(f"Saved {DATA_V2_1 / 'analysis_tier1.parquet'}: {len(t1_df):,} rows ({t1_df['event_id'].nunique()} decisions).")
 
     # Table 2: analysis_tier2_primary.parquet (Rate change decisions with proxy shocks; analysis_ok == 1)
     t2_df = events_window[
@@ -399,7 +449,7 @@ def build_v2_1_tables():
         (events_window["analysis_ok"] == 1)
     ][analysis_cols].sort_values(["regime", "decision_date", "index_id"]).reset_index(drop=True)
     t2_df.to_parquet(DATA_V2_1 / "analysis_tier2_primary.parquet", index=False)
-    print(f"Saved {DATA_V2_1 / 'analysis_tier2_primary.parquet'}: {len(t2_df):,} rows ({t2_df['decision_date'].nunique()} decisions).")
+    print(f"Saved {DATA_V2_1 / 'analysis_tier2_primary.parquet'}: {len(t2_df):,} rows ({t2_df['event_id'].nunique()} decisions).")
 
     # Table 3: secondary_holds.parquet (Scheduled hold decisions; analysis_ok == 1)
     sec_holds_df = events_window[
@@ -409,7 +459,7 @@ def build_v2_1_tables():
         (events_window["analysis_ok"] == 1)
     ][analysis_cols].sort_values(["regime", "decision_date", "index_id"]).reset_index(drop=True)
     sec_holds_df.to_parquet(DATA_V2_1 / "secondary_holds.parquet", index=False)
-    print(f"Saved {DATA_V2_1 / 'secondary_holds.parquet'}: {len(sec_holds_df):,} rows ({sec_holds_df['decision_date'].nunique()} decisions).")
+    print(f"Saved {DATA_V2_1 / 'secondary_holds.parquet'}: {len(sec_holds_df):,} rows ({sec_holds_df['event_id'].nunique()} decisions).")
 
     # Table 4: panel.parquet (Daily panel for the 2010-2025 window)
     panel_window = panel[(panel["date"] >= dt.date(2010, 1, 1)) & (panel["date"] <= dt.date(2025, 12, 31))].sort_values(["index_id", "date"]).reset_index(drop=True)
@@ -425,51 +475,78 @@ def build_v2_1_tables():
         (events_window["analysis_ok"] == 1)
     ][sens_cols].sort_values(["regime", "decision_date", "index_id"]).reset_index(drop=True)
     sens_df.to_parquet(DATA_V2_1 / "sensitivity_macro_revision.parquet", index=False)
-    print(f"Saved {DATA_V2_1 / 'sensitivity_macro_revision.parquet'}: {len(sens_df):,} rows.")
+    print(f"Saved {DATA_V2_1 / 'sensitivity_macro_revision.parquet'}: {len(sens_df):,} rows ({sens_df['event_id'].nunique()} decisions).")
 
-    # 9. Create data/v2_1/folds.csv
+    # Combined analysis tables for unified fold counting and refitting
+    all_analysis_tables = pd.concat([t1_df, t2_df, sec_holds_df], ignore_index=True)
+
+    # 10. Create data/v2_1/folds.csv (with final_fit row)
     print("--- Creating data/v2_1/folds.csv ---")
     fold_summary = []
-    # Count decisions based on unique event_id among usable decisions
     for fid, orig, val_end in origins:
         fcol = f"fold_{fid}"
-        train_sub = events_window[events_window[fcol] == "train"]
-        val_sub = events_window[events_window[fcol] == "val"]
+        train_sub = all_analysis_tables[all_analysis_tables[fcol] == "train"]
+        val_sub = all_analysis_tables[all_analysis_tables[fcol] == "val"]
         
         train_decs = train_sub["event_id"].nunique()
         val_decs = val_sub["event_id"].nunique()
 
-        train_hikes = train_sub[train_sub["decision"] == "hike"]["event_id"].nunique()
-        val_hikes = val_sub[val_sub["decision"] == "hike"]["event_id"].nunique()
+        train_hikes = (train_sub["decision"] == "hike").groupby(train_sub["event_id"]).any().sum()
+        val_hikes = (val_sub["decision"] == "hike").groupby(val_sub["event_id"]).any().sum()
 
-        # Tier 1 hikes in training
-        t1_hikes = train_sub[(train_sub["shock_tier"] == 1) & (train_sub["decision"] == "hike")]["event_id"].nunique()
+        t1_hikes = ((train_sub["shock_tier"] == 1) & (train_sub["decision"] == "hike")).groupby(train_sub["event_id"]).any().sum()
 
         flag_under_10 = 1 if t1_hikes < 10 else 0
         note = "Low tightening content in 2010-2015 (ZIRP era)" if flag_under_10 else "Standard expansion window"
 
         fold_summary.append({
-            "fold_id": fid,
+            "fold_id": str(fid),
             "origin_date": str(orig),
             "train_start": "2010-01-01",
             "train_end_nominal": str(orig - dt.timedelta(days=1)),
             "val_start": str(orig),
             "val_end": str(val_end),
             "embargo_days": EMBARGO_DAYS,
-            "train_decisions_total": train_decs,
-            "val_decisions_total": val_decs,
-            "train_hikes_total": train_hikes,
-            "val_hikes_total": val_hikes,
-            "train_tier1_hikes": t1_hikes,
-            "flag_under_10_tier1_hikes": flag_under_10,
+            "train_decisions_total": int(train_decs),
+            "val_decisions_total": int(val_decs),
+            "train_hikes_total": int(train_hikes),
+            "val_hikes_total": int(val_hikes),
+            "train_tier1_hikes": int(t1_hikes),
+            "flag_under_10_tier1_hikes": int(flag_under_10),
             "notes": note
         })
+
+    # Add final_fit row (TRAIN + VALIDATION with 60-day embargo before test window 2024-01-01)
+    final_fit_sub = all_analysis_tables[
+        (all_analysis_tables["final_split"].isin(["train", "validation"])) & 
+        (all_analysis_tables["embargo_dropped"] == 0)
+    ]
+    ff_decs = final_fit_sub["event_id"].nunique()
+    ff_hikes = (final_fit_sub["decision"] == "hike").groupby(final_fit_sub["event_id"]).any().sum()
+    ff_t1_hikes = ((final_fit_sub["shock_tier"] == 1) & (final_fit_sub["decision"] == "hike")).groupby(final_fit_sub["event_id"]).any().sum()
+
+    fold_summary.append({
+        "fold_id": "final_fit",
+        "origin_date": "2024-01-01",
+        "train_start": "2010-01-01",
+        "train_end_nominal": "2023-12-31",
+        "val_start": "",
+        "val_end": "",
+        "embargo_days": EMBARGO_DAYS,
+        "train_decisions_total": int(ff_decs),
+        "val_decisions_total": 0,
+        "train_hikes_total": int(ff_hikes),
+        "val_hikes_total": 0,
+        "train_tier1_hikes": int(ff_t1_hikes),
+        "flag_under_10_tier1_hikes": 0,
+        "notes": "Final fit set across full TRAIN + VALIDATION (2010-2023) with 60-day embargo before 2024-01-01 test cutoff"
+    })
 
     df_folds = pd.DataFrame(fold_summary)
     df_folds.to_csv(DATA_V2_1 / "folds.csv", index=False)
     print(f"Saved {DATA_V2_1 / 'folds.csv'}.")
 
-    # 10. Generate Release Directory (strip proprietary level_local)
+    # 11. Generate Release Directory (strip proprietary level_local)
     print("--- Creating Release Bundle (stripped level_local) ---")
     panel_returns_only = panel_window.drop(columns=["level_local"])
     panel_returns_only.to_parquet(DATA_V2_1_RELEASE / "panel_returns_only.parquet", index=False)
@@ -480,7 +557,7 @@ def build_v2_1_tables():
     shutil.copy2(DATA_V2_1 / "sensitivity_macro_revision.parquet", DATA_V2_1_RELEASE / "sensitivity_macro_revision.parquet")
     shutil.copy2(DATA_V2_1 / "folds.csv", DATA_V2_1_RELEASE / "folds.csv")
 
-    readme_content = """# MoTrans-15 v2.1 Release Distribution Notice
+    readme_content = """# MoTrans-15 v2.1/v2.1.1 Release Distribution Notice
 
 ## Proprietary License and Privacy Restrictions
 
@@ -494,86 +571,155 @@ This release directory contains cumulative log returns (`clr_1`, `clr_3`, `clr_5
     (DATA_V2_1_RELEASE / "README.md").write_text(readme_content, encoding="utf-8")
     print("Saved release tables and data/v2_1/release/README.md.")
 
-    # 11. Generate Sample Reports in outputs/v2_1/
+    # 12. Generate Sample Reports in outputs/v2_1/
     print("--- Generating Sample Reports in outputs/v2_1/ ---")
     
-    # 11a. split_counts.csv
-    split_records = []
-    # Usable event rows
-    grp = events_window[events_window["analysis_ok"] == 1].groupby([
-        "final_split", "regime", "shock_tier", "shock_measure_type", "decision"
-    ])
-    for (sp, reg, tier, s_type, dec), g in grp:
-        split_records.append({
-            "split": sp,
-            "regime": reg,
-            "tier": tier,
-            "shock_measure_type": s_type,
-            "decision": dec,
-            "decisions_count": g["event_id"].nunique(),
-            "event_rows_count": len(g)
-        })
-    df_splits = pd.DataFrame(split_records).sort_values(["split", "regime", "tier", "decision"]).reset_index(drop=True)
-    df_splits.to_csv(OUTPUTS_V2_1 / "split_counts.csv", index=False)
+    # 12a. split_counts.csv (Unified count function across usable analysis tables)
+    split_counts_df = compute_counts(all_analysis_tables, ["final_split", "regime", "shock_tier", "shock_measure_type", "decision"])
+    split_counts_df = split_counts_df.rename(columns={"final_split": "split", "shock_tier": "tier"})
+    split_counts_df = split_counts_df.sort_values(["split", "regime", "tier", "decision"]).reset_index(drop=True)
+    split_counts_df.to_csv(OUTPUTS_V2_1 / "split_counts.csv", index=False)
     print(f"Saved {OUTPUTS_V2_1 / 'split_counts.csv'}.")
 
-    # 11b. fold_counts.csv
+    # 12b. fold_counts.csv (One row per fold, role, regime, and tier; no lumped rows)
     fold_counts_records = []
     for fid, orig, val_end in origins:
         fcol = f"fold_{fid}"
         for role in ["train", "val"]:
-            sub = events_window[(events_window[fcol] == role) & (events_window["analysis_ok"] == 1)]
-            for (reg, tier), g in sub.groupby(["regime", "shock_tier"]):
-                decs = g["event_id"].nunique()
-                hikes = g[g["decision"] == "hike"]["event_id"].nunique()
-                cuts = g[g["decision"] == "cut"]["event_id"].nunique()
-                holds = g[g["decision"] == "hold"]["event_id"].nunique()
-                flag = 1 if (role == "train" and tier == 1 and hikes < 10) else 0
+            sub = all_analysis_tables[all_analysis_tables[fcol] == role]
+            df_c = compute_counts(sub, ["regime", "shock_tier"])
+            for _, r in df_c.iterrows():
+                flag = 1 if (role == "train" and r["shock_tier"] == 1 and r["hikes_count"] < 10) else 0
                 fold_counts_records.append({
-                    "fold_id": fid,
+                    "fold_id": str(fid),
                     "role": role,
-                    "regime": reg,
-                    "tier": tier,
-                    "decisions_count": decs,
-                    "hikes_count": hikes,
-                    "cuts_count": cuts,
-                    "holds_count": holds,
-                    "event_rows_count": len(g),
+                    "regime": r["regime"],
+                    "tier": int(r["shock_tier"]),
+                    "decisions_count": int(r["decisions_count"]),
+                    "hikes_count": int(r["hikes_count"]),
+                    "cuts_count": int(r["cuts_count"]),
+                    "holds_count": int(r["holds_count"]),
+                    "event_rows_count": int(r["event_rows_count"]),
                     "flag_under_10_tier1_hikes": flag
                 })
     df_fcounts = pd.DataFrame(fold_counts_records).sort_values(["fold_id", "role", "regime", "tier"]).reset_index(drop=True)
     df_fcounts.to_csv(OUTPUTS_V2_1 / "fold_counts.csv", index=False)
     print(f"Saved {OUTPUTS_V2_1 / 'fold_counts.csv'}.")
 
-    # 11c. test_window_composition.csv
-    test_usable = events_window[(events_window["final_split"] == "test") & (events_window["analysis_ok"] == 1)]
+    # 12c. test_window_composition.csv (Separating Tier 1, Tier 2 primary rate changes, and secondary holds)
     test_comp = []
-    for (reg, tier, s_type), g in test_usable.groupby(["regime", "shock_tier", "shock_measure_type"]):
-        decs = g["event_id"].nunique()
-        hikes = g[g["decision"] == "hike"]["event_id"].nunique()
-        cuts = g[g["decision"] == "cut"]["event_id"].nunique()
-        holds = g[g["decision"] == "hold"]["event_id"].nunique()
-        fed_note = "High-frequency data ends Dec 2023; fallback to Tier 2 proxy" if reg == "Fed" and tier == 2 else ""
-        test_comp.append({
-            "regime": reg,
-            "shock_tier": tier,
-            "shock_measure_type": s_type,
-            "decisions_count": decs,
-            "hikes_count": hikes,
-            "cuts_count": cuts,
-            "holds_count": holds,
-            "event_rows_count": len(g),
-            "notes": fed_note
-        })
-    df_test_comp = pd.DataFrame(test_comp).sort_values(["shock_tier", "regime"]).reset_index(drop=True)
+    for tab_name, df_tab, s_tier in [
+        ("Tier 1", t1_df, 1),
+        ("Tier 2 primary", t2_df, 2),
+        ("Secondary holds", sec_holds_df, 2)
+    ]:
+        sub = df_tab[df_tab["final_split"] == "test"]
+        df_c = compute_counts(sub, ["regime", "shock_measure_type"])
+        for _, r in df_c.iterrows():
+            fed_note = "High-frequency data ends Dec 2023; fallback to Tier 2 proxy" if r["regime"] == "Fed" and tab_name != "Tier 1" else ""
+            test_comp.append({
+                "table": tab_name,
+                "regime": r["regime"],
+                "shock_tier": s_tier,
+                "shock_measure_type": r["shock_measure_type"],
+                "decisions_count": int(r["decisions_count"]),
+                "hikes_count": int(r["hikes_count"]),
+                "cuts_count": int(r["cuts_count"]),
+                "holds_count": int(r["holds_count"]),
+                "event_rows_count": int(r["event_rows_count"]),
+                "notes": fed_note
+            })
+    df_test_comp = pd.DataFrame(test_comp).sort_values(["shock_tier", "table", "regime"]).reset_index(drop=True)
     df_test_comp.to_csv(OUTPUTS_V2_1 / "test_window_composition.csv", index=False)
     print(f"Saved {OUTPUTS_V2_1 / 'test_window_composition.csv'}.")
 
-    # 11d. years_thin.csv
+    # 12d. row_membership.csv (Exact bitwise partition of all 52,242 rows in 2010-2025 window)
+    print("--- Generating outputs/v2_1/row_membership.csv ---")
+    t1_keys = set(t1_df["event_id"] + "__" + t1_df["index_id"])
+    t2_keys = set(t2_df["event_id"] + "__" + t2_df["index_id"])
+    sec_keys = set(sec_holds_df["event_id"] + "__" + sec_holds_df["index_id"])
+
+    def assign_membership(row):
+        k = row["event_id"] + "__" + row["index_id"]
+        if k in t1_keys:
+            return "tier1", "analysis_tier1", "Fed; ECB", "High-frequency intraday surprises (Bauer-Swanson MPS; EA-MPD OIS 1Y)"
+        if k in t2_keys:
+            return "tier2_primary", "analysis_tier2_primary", "BoE; BoC; RBA; CBR; Fed; ECB", "Rate-change decisions with 1-day sovereign yield proxy shocks"
+        if k in sec_keys:
+            return "secondary_holds", "secondary_holds", "BoE; BoC; RBA; Fed", "Scheduled hold decisions with sovereign yield proxy shocks"
+        
+        # Usable but not in any table (BoJ clean)
+        if row["regime"] == "BoJ" and row["analysis_ok"] == 1:
+            return "usable_not_in_any_table", "usable_unassigned", "BoJ", "Clean BoJ decisions without high-frequency shock or sovereign rate change proxy"
+        
+        # Excluded reasons
+        reason = row["exclusion_reason"]
+        if reason == "unverified_regime":
+            return "excluded", "unverified_regime", "Banxico; BCB; RBI; BoK; PBoC", "Emerging market / unverified central bank announcement timestamps (2010-2025 only; 2026 quarantined)"
+        if reason == "embargo_dropped":
+            return "excluded", "embargo_dropped", "BoE; BoC; RBA; CBR; BoJ; Fed; ECB", "Decisions within 60 days before train/val/test boundary or obs_60 reaching across split"
+        if reason == "timing_ambiguous":
+            return "excluded", "timing_ambiguous", "BoE; BoC; CBR; BoJ; Fed", "Intraday timestamp ambiguous across primary sources or announcement timing unclear"
+        if reason == "policy_unverified":
+            return "excluded", "policy_unverified", "CBR", "Post-2022-02-24 CBR decisions during wartime market closure and capital controls"
+        if reason == "timing_unverified":
+            return "excluded", "timing_unverified", "CBR", "Emergency or ad-hoc meetings lacking official advance calendar protocol"
+        if reason == "moex_halt":
+            return "excluded", "moex_halt", "MOEX", "Russian stock exchange trading halt spanning February-March 2022 (ru_imoex only)"
+        if reason == "shock_unusable":
+            return "excluded", "shock_unusable", "RBA", "RBA June-August 2013 decisions with Grade C (unusable) proxy shocks"
+        return "excluded", reason, row["regime"], "Other excluded event rows"
+
+    mem_tuples = [assign_membership(r) for _, r in events_window.iterrows()]
+    events_window["membership_category"] = [t[0] for t in mem_tuples]
+    events_window["reason_or_table"] = [t[1] for t in mem_tuples]
+    events_window["regimes_note"] = [t[2] for t in mem_tuples]
+    events_window["description_note"] = [t[3] for t in mem_tuples]
+
+    membership_records = []
+    total_window_rows = len(events_window)
+
+    order = [
+        ("tier1", "analysis_tier1"),
+        ("tier2_primary", "analysis_tier2_primary"),
+        ("secondary_holds", "secondary_holds"),
+        ("usable_not_in_any_table", "usable_unassigned"),
+        ("excluded", "unverified_regime"),
+        ("excluded", "embargo_dropped"),
+        ("excluded", "timing_ambiguous"),
+        ("excluded", "policy_unverified"),
+        ("excluded", "timing_unverified"),
+        ("excluded", "moex_halt"),
+        ("excluded", "shock_unusable")
+    ]
+
+    for cat, r_or_t in order:
+        sub = events_window[(events_window["membership_category"] == cat) & (events_window["reason_or_table"] == r_or_t)]
+        if sub.empty:
+            continue
+        decs = sub["event_id"].nunique()
+        rows = len(sub)
+        share = rows / total_window_rows * 100.0
+        reg_note = sub["regimes_note"].iloc[0]
+        desc = sub["description_note"].iloc[0]
+        membership_records.append({
+            "membership_category": cat,
+            "reason_or_table": r_or_t,
+            "regimes": reg_note,
+            "decisions_count": decs,
+            "event_rows_count": rows,
+            "share_of_total_rows": f"{share:.3f}%",
+            "description": desc
+        })
+
+    df_membership = pd.DataFrame(membership_records)
+    df_membership.to_csv(OUTPUTS_V2_1 / "row_membership.csv", index=False)
+    print(f"Saved {OUTPUTS_V2_1 / 'row_membership.csv'}: {df_membership['event_rows_count'].sum():,} total rows.")
+
+    # 12e. years_thin.csv
     policy_window = policy[(policy["decision_date"] >= "2010-01-01") & (policy["decision_date"] <= "2025-12-31")].copy()
     policy_window["year"] = pd.to_datetime(policy_window["decision_date"]).dt.year
     
-    # Decisions by regime year
     g6_regimes = ["Fed", "ECB", "BoE", "BoC", "RBA", "CBR", "BoJ"]
     dec_by_yr = policy_window[policy_window["regime"].isin(g6_regimes)].groupby(["regime", "year"])["decision_date"].nunique().unstack(fill_value=0)
     dec_by_yr.to_csv(OUTPUTS_V2_1 / "decisions_by_regime_year_2010_2025.csv")
@@ -601,7 +747,7 @@ This release directory contains cumulative log returns (`clr_1`, `clr_3`, `clr_5
     df_thin.to_csv(OUTPUTS_V2_1 / "years_thin.csv", index=False)
     print(f"Saved {OUTPUTS_V2_1 / 'years_thin.csv'}.")
 
-    # 11e. analysis_ok_breakdown.csv
+    # 12f. analysis_ok_breakdown.csv
     ex_breakdown = []
     ex_df = events_window[events_window["analysis_ok"] == 0].copy()
     ex_df["year"] = pd.to_datetime(ex_df["decision_date"]).dt.year
@@ -618,7 +764,8 @@ This release directory contains cumulative log returns (`clr_1`, `clr_3`, `clr_5
     df_ex.to_csv(OUTPUTS_V2_1 / "analysis_ok_breakdown.csv", index=False)
     print(f"Saved {OUTPUTS_V2_1 / 'analysis_ok_breakdown.csv'}.")
 
-    print("=== MoTrans-15 v2.1 Tables and Reports Successfully Generated ===")
+    print("=== MoTrans-15 v2.1/v2.1.1 Tables and Reports Successfully Generated ===")
+
 
 if __name__ == "__main__":
     build_v2_1_tables()

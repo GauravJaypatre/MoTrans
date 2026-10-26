@@ -141,11 +141,16 @@ def load_v2_1_table(
     unlock_post = allow_post or os.environ.get("UNLOCK_POST") == "1"
 
     if split is not None:
-        if split == "test" and not unlock_test:
+        if split == "final_fit":
+            if "final_split" in df.columns and "embargo_dropped" in df.columns:
+                df = df[(df["final_split"].isin(["train", "validation"])) & (df["embargo_dropped"] == 0)].copy()
+            elif "final_split" in df.columns:
+                df = df[df["final_split"].isin(["train", "validation"])].copy()
+        elif split == "test" and not unlock_test:
             raise PermissionError("Access to 'test' split (2024-2025) is locked. Set UNLOCK_TEST=1 to load.")
-        if split == "post_window" and not unlock_post:
+        elif split == "post_window" and not unlock_post:
             raise PermissionError("Access to 'post_window' (2026+) is locked. Set UNLOCK_POST=1 to load.")
-        if "final_split" in df.columns:
+        elif "final_split" in df.columns:
             df = df[df["final_split"] == split].copy()
 
     # If full table loaded without explicit split filter, filter out locked splits unless unlocked

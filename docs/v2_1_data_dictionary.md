@@ -69,14 +69,30 @@ Comprehensive variable definitions, types, measurement units, provenance sources
 
 ## 5. Overlap Controls (Concurrent Central Bank Announcements)
 
+### Forward Overlap Controls (Event-Study Contamination Controls Only — `leak_for_forecasting = 1`)
+These columns look forward into the event window $[t, t+W-1]$ to control for concurrent foreign central bank shocks in descriptive event-study regressions. Because they require future knowledge of announcements occurring after time $t$, **they are strictly prohibited from use as predictive features in forecasting models** (`leak_for_forecasting = 1`).
+
 | Column Name | Data Type | Units / Format | Provenance Source | Description & Leakage Isolation Notes |
 | :--- | :---: | :---: | :--- | :--- |
-| `overlap_1d` | int | 0 / 1 | Event study alignment | 1 if another central bank announcement occurs within 1 trading day. |
-| `overlap_3d` | int | 0 / 1 | Event study alignment | 1 if another central bank announcement occurs within 3 trading days. |
-| `overlap_5d` | int | 0 / 1 | Event study alignment | 1 if another central bank announcement occurs within 5 trading days. |
-| `overlap_20d` | int | 0 / 1 | Event study alignment | 1 if another central bank announcement occurs within 20 trading days. |
-| `overlap_60d` | int | 0 / 1 | Event study alignment | 1 if another central bank announcement occurs within 60 trading days. |
-| `overlap_count_<h>` | int | Integer count | Event study alignment | Exact count of concurrent central bank decisions within the horizon. |
+| `overlap_1d` | int | 0 / 1 | Event study alignment | 1 if another central bank announcement occurs within forward $[t, t]$ window. (`leak_for_forecasting = 1`) |
+| `overlap_3d` | int | 0 / 1 | Event study alignment | 1 if another central bank announcement occurs within forward $[t, t+2]$ window. (`leak_for_forecasting = 1`) |
+| `overlap_5d` | int | 0 / 1 | Event study alignment | 1 if another central bank announcement occurs within forward $[t, t+4]$ window. (`leak_for_forecasting = 1`) |
+| `overlap_20d` | int | 0 / 1 | Event study alignment | 1 if another central bank announcement occurs within forward $[t, t+19]$ window. (`leak_for_forecasting = 1`) |
+| `overlap_60d` | int | 0 / 1 | Event study alignment | 1 if another central bank announcement occurs within forward $[t, t+59]$ window. (`leak_for_forecasting = 1`) |
+| `overlap_count_1d`, `...`, `overlap_count_60d` | int | Integer count | Event study alignment | Count of foreign/concurrent central bank decisions in forward $[t, t+W-1]$ window. (`leak_for_forecasting = 1`) |
+
+### Backward Overlap Prior Controls (Predictive & Forecasting Features — `leak_for_forecasting = 0`)
+These columns evaluate only central bank announcements occurring in the preceding $W$ trading days strictly prior to decision date $t$ ($t_{prior} < t$). They preserve strict temporal causality and are certified for predictive use.
+
+| Column Name | Data Type | Units / Format | Provenance Source | Description & Leakage Isolation Notes |
+| :--- | :---: | :---: | :--- | :--- |
+| `overlap_prior_1d` | int | 0 / 1 | Historical calendar | 1 if another central bank announcement occurred on preceding trading day $[t-1, t-1]$. (`leak_for_forecasting = 0`) |
+| `overlap_prior_3d` | int | 0 / 1 | Historical calendar | 1 if another central bank announcement occurred within preceding 3 trading days $[t-3, t-1]$. (`leak_for_forecasting = 0`) |
+| `overlap_prior_5d` | int | 0 / 1 | Historical calendar | 1 if another central bank announcement occurred within preceding 5 trading days $[t-5, t-1]$. (`leak_for_forecasting = 0`) |
+| `overlap_prior_20d` | int | 0 / 1 | Historical calendar | 1 if another central bank announcement occurred within preceding 20 trading days $[t-20, t-1]$. (`leak_for_forecasting = 0`) |
+| `overlap_prior_60d` | int | 0 / 1 | Historical calendar | 1 if another central bank announcement occurred within preceding 60 trading days $[t-60, t-1]$. (`leak_for_forecasting = 0`) |
+| `overlap_prior_count_1d`, `...`, `overlap_prior_count_60d` | int | Integer count | Historical calendar | Exact count of foreign/concurrent decisions in preceding $W$ trading days ($t_{prior} < t$). (`leak_for_forecasting = 0`) |
+
 
 ---
 
