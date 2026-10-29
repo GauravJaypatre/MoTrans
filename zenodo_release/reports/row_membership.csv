@@ -1,0 +1,12 @@
+membership_category,reason_or_table,regimes,decisions_count,event_rows_count,share_of_total_rows,description
+tier1,analysis_tier1,Fed; ECB,253,9350,17.897%,High-frequency intraday surprises (Bauer-Swanson MPS; EA-MPD OIS 1Y)
+tier2_primary,analysis_tier2_primary,BoE; BoC; RBA; CBR; Fed; ECB,130,4851,9.286%,Rate-change decisions with 1-day sovereign yield proxy shocks
+secondary_holds,secondary_holds,BoE; BoC; RBA; Fed,335,12454,23.839%,Scheduled hold decisions with sovereign yield proxy shocks
+usable_not_in_any_table,usable_unassigned,BoJ,162,5924,11.340%,Clean BoJ decisions without high-frequency shock or sovereign rate change proxy
+excluded,unverified_regime,Banxico; BCB; RBI; BoK; PBoC,407,15135,28.971%,Emerging market / unverified central bank announcement timestamps (2010-2025 only; 2026 quarantined)
+excluded,embargo_dropped,BoE; BoC; RBA; CBR; BoJ; Fed; ECB,64,2432,4.655%,Decisions within 60 days before train/val/test boundary or obs_60 reaching across split
+excluded,timing_ambiguous,BoE; BoC; CBR; BoJ; Fed,45,1067,2.042%,Intraday timestamp ambiguous across primary sources or announcement timing unclear
+excluded,policy_unverified,CBR,16,608,1.164%,Post-2022-02-24 CBR decisions during wartime market closure and capital controls
+excluded,timing_unverified,CBR,22,140,0.268%,Emergency or ad-hoc meetings lacking official advance calendar protocol
+excluded,moex_halt,MOEX,167,167,0.320%,Russian stock exchange trading halt spanning February-March 2022 (ru_imoex only)
+excluded,shock_unusable,RBA,3,114,0.218%,RBA June-August 2013 decisions with Grade C (unusable) proxy shocks

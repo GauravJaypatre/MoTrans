@@ -1,8 +1,8 @@
 # MoTrans-15 v2.1.1 Data Freeze Certification
 
 **Release Tag**: `v2.1.1-train-test-ready`  
-**Git Commit Hash**: `be11b3f4c49a2e0da976715a677dac398e859a8a`  
-**Certification Date**: 2026-10-26  
+**Git Commit Hash**: `f30ab1838c0820fa41f134c91cc058066c48cfdf` (reconciled from pre-commit draft placeholder `be11b3f4c49a2e0da976715a677dac398e859a8a`)  
+**Certification Date**: 2026-10-26 (reconciled 2026-10-29 on branch zenodo-release)  
 **Verification Engine**: Bitwise Double-Rebuild Verification Pass (Python 3.13)  
 
 ---
@@ -13,12 +13,16 @@ All parent tags are permanently preserved in the repository history and have not
 
 | Release Tag | Tag Object Hash | Target Commit Hash | Status |
 | :--- | :--- | :--- | :---: |
-| `v1.0-data-freeze` | `750d1924fa2780b18f0760b7d4053113ee875f1d` | `1774400c972fef4105b04f2747521be4bb6805fd` | **PERMANENT / UNMOVED** |
-| `v2.0-data-freeze` | `11d5c94f62aa856b4198b10f9b3cb0a491603e7e` | `a4bc9d6a4b210459247bf612a65cc0bd1a922101` | **PERMANENT / UNMOVED** |
-| `v2.0.1-data-freeze` | `9f67b2703c1a5affef2b007d86043913d50ac66c` | `67cb97b60af58d2663e91333ebfacfe3780c8356` | **PERMANENT / UNMOVED** |
-| `v2.1-train-test-ready` | `10eb56ea5aa32cd94718076e4387587854deb75c` | `be11b3f4c49a2e0da976715a677dac398e859a8a` | **PERMANENT / UNMOVED** |
+| `v1.0-data-freeze` | `62b5ba2d1fcc5494257084bb28eab21f1ec21eeb` | `2f83d70f97bf134e5e75cb0055478208047814ed` | **PERMANENT / UNMOVED** |
+| `v2.0-data-freeze` | `a3807cb9e7403c03953e22f7094358f52224d231` | `7b09609cfe96b310e38ec369157ec63053c5c0de` | **PERMANENT / UNMOVED** |
+| `v2.0.1-data-freeze` | `62325ac2d1aad2e7e13b37f9cb6eead0a9aba806` | `4b8fc6aa5cd59018816b826e374286fd5715161a` | **PERMANENT / UNMOVED** |
+| `v2.1-train-test-ready` | `8147cd19b497e85804246131219e6bdd1b0e7684` | `435f2fba24a388cc24a6c0672a7bc32da031368c` | **PERMANENT / UNMOVED** |
+| `v2.1.1-train-test-ready` | `a6f7f8b95c86e01bbe4177580fd34c5c2c009ba1` | `f30ab1838c0820fa41f134c91cc058066c48cfdf` | **PERMANENT / UNMOVED** |
 
-> **Note on `v1.0-data-freeze`**: The annotated tag target commit is strictly `1774400c972fef4105b04f2747521be4bb6805fd`, confirming that the v1.0 data freeze point has never moved.
+> **Audit Note on History & Tag Objects**:
+> - Pre-rewrite hashes (prior to removing Claude co-authorship metadata): `v1.0` commit `1774400c...` (tag `750d1924...`), `v2.0` commit `a4bc9d6a...` (tag `11d5c94f...`), `v2.0.1` commit `67cb97b6...` (tag `9f67b270...`), `v2.1` commit `be11b3f4...` (tag `10eb56ea...`), `v2.1.1` commit `a8985361...` (tag `3da65565...` / report draft `2d80319...`).
+> - The initial draft of `DATA_FREEZE_v2_1.md` recorded commit `be11b3f4...` because the commit for v2.1.1 (`a8985361...` / `f30ab183...`) had not yet been finalized at the moment the document text was staged.
+> - Current post-rewrite tag objects and commit hashes above reflect the active repository history where all underlying data files retain 100% bitwise SHA-256 identity.
 
 ---
 

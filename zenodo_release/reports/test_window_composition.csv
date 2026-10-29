@@ -1,0 +1,10 @@
+table,regime,shock_tier,shock_measure_type,decisions_count,hikes_count,cuts_count,holds_count,event_rows_count,notes
+Tier 1,ECB,1,hf_ois,14,0,8,6,518,
+Secondary holds,BoC,2,yield_proxy,6,0,0,6,222,
+Secondary holds,BoE,2,yield_proxy,9,0,0,9,333,
+Secondary holds,Fed,2,yield_proxy,10,0,0,10,370,High-frequency data ends Dec 2023; fallback to Tier 2 proxy
+Secondary holds,RBA,2,yield_proxy,11,0,0,11,407,
+Tier 2 primary,BoC,2,yield_proxy,8,0,8,0,296,
+Tier 2 primary,BoE,2,yield_proxy,5,0,5,0,185,
+Tier 2 primary,Fed,2,yield_proxy,4,0,4,0,148,High-frequency data ends Dec 2023; fallback to Tier 2 proxy
+Tier 2 primary,RBA,2,yield_proxy,3,0,3,0,111,

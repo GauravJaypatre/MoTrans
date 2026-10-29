@@ -503,3 +503,23 @@ official page)"`. See ISS-029 for the sourcing plan.
   - Test suite: 140 passed out of 140 tests with zero skips and zero failures.
 - **Dataset Frozen**: All modifications to `data/final/` are strictly halted under tag `v1.0-data-freeze`.
 
+
+
+---
+
+## 2026-10-29 — Zenodo Release Branch & Version Identity Reconciliation
+
+### DECISION-029: Version Identity Reconciliation, Contributor Audit, and Zenodo Release Package Setup
+- **Date Recorded**: 2026-10-29 (Branch: `zenodo-release`).
+- **Context & History Audit**:
+  - The v2.1.1 freeze was originally tagged as `v2.1.1-train-test-ready`.
+  - In commit `f30ab1838c0820fa41f134c91cc058066c48cfdf` (`a8985361...` prior to contributor trailer cleanup), `docs/DATA_FREEZE_v2_1.md` retained the parent commit hash `be11b3f4c49a2e0da976715a677dac398e859a8a` because the self-referential commit hash for v2.1.1 could not be known prior to staging the commit.
+  - Tag object variations across reports (`2d80319...` vs `3da6556...` vs `a6f7f8b...`) resulted from re-tagging and repository metadata rewrite (removal of automated Claude co-author trailer to attribute all commits strictly to repository maintainers GauravJaypatre and prachi-3011).
+  - All 14 data files under `data/v2_1/` and `data/v2_1/release/` were cryptographically re-verified and proved 100% identical bit-for-bit to their certified SHA-256 hashes in `docs/DATA_FREEZE_v2_1.md`.
+- **Correction Applied**:
+  - On branch `zenodo-release` (created from `v2.1.1-train-test-ready`), updated `docs/DATA_FREEZE_v2_1.md` header to explicitly state the true commit hash `f30ab1838c0820fa41f134c91cc058066c48cfdf`, reconciled the tag object and target commit table, and added an explanatory audit note.
+  - Frozen tags in git history are never moved or overwritten; this reconciliation is committed exclusively to branch `zenodo-release`.
+- **Zenodo Packaging Protocol**:
+  - Branch `zenodo-release` established to build the publication package in `zenodo_release/`.
+  - Configuration defined in `zenodo_release_config.py` with `ACCESS_MODE = "restricted"`, `DATA_LICENSE = "CC-BY-4.0"`, `CODE_LICENSE = "MIT"`.
+  - Final release package will be marked with new tag `v2.1.1-zenodo-package`.
