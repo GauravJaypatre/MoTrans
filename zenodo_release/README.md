@@ -7,12 +7,60 @@
 - **ACCESS_MODE**: `restricted` (Access granted by request for academic replication)
 - **DATA_LICENSE**: `CC-BY-4.0`
 - **CODE_LICENSE**: `MIT`
-- **Authors & Affiliations**: See `CITATION.cff` (Placeholders marked `TODO` pending publication metadata)
+- **Authors & Affiliations**: Gaurav Mansing Jaypatre & Prachi Ravi Pawar (Pimpri Chinchwad College of Engineering (PCCOE), Pune, India)
+- **Contact Email**: `jaypatregaurav81@gmail.com`
 - **Reason for Restricted Access**: Financial index return series are derived from commercial exchange closing prices without signed vendor redistribution clearance. Closing price levels (`level_local`) are omitted from all tables; access to derived return tables is restricted to verified academic researchers upon request.
 
 ---
 
-## 1. Sample Splits & Embargo Protocol
+## 1. How to Request Access
+In accordance with data provider license terms, this dataset is published under **Restricted Access** on Zenodo. Access is granted free of charge to researchers for academic study and replication.
+
+To request access:
+1. Submit an access request via the Zenodo web interface or email the lead author directly at **`jaypatregaurav81@gmail.com`**.
+2. In your request, please provide:
+   - Full Name and Institutional Affiliation (university, department, or research institute).
+   - Brief statement of the intended academic research or replication study.
+   - Confirmation that the dataset will be used solely for academic research and that raw or derived tables will not be redistributed commercially.
+3. Access requests are evaluated and approved promptly (typically within 48–72 hours).
+
+---
+
+## 2. How to Cite
+
+> **Note on DOI**: A persistent Digital Object Identifier (DOI) will be assigned upon publication on Zenodo. Once assigned, please use the official Zenodo DOI for citation.
+
+If you use this dataset in your research, please cite it as follows:
+
+**APA:**
+> Jaypatre, G. M., & Pawar, P. R. (2026). *MoTrans-15: Monetary policy surprises, central bank communication and equity-index responses for the largest economies, 2010-2025* (Version 2.1.1) [Data set]. Zenodo.
+
+**BibTeX:**
+```bibtex
+@dataset{jaypatre_pawar_2026_motrans15,
+  author       = {Jaypatre, Gaurav Mansing and Pawar, Prachi Ravi},
+  title        = {{MoTrans-15: Monetary policy surprises, central bank communication and equity-index responses for the largest economies, 2010-2025}},
+  year         = {2026},
+  month        = oct,
+  publisher    = {Zenodo},
+  version      = {2.1.1},
+  url          = {https://github.com/GauravJaypatre/MoTrans-15_Policy-and-Markets}
+}
+```
+
+---
+
+## 3. What is NOT Included and Why
+For exhaustive details on data safety, licensing terms, and research boundaries, see `LIMITATIONS_PACKAGE.md` and `LICENCE_AND_PROVENANCE.md`. Key exclusions include:
+- **Vendor Raw Data Feeds (`data/raw/`)**: Commercial index vendor feeds and third-party web scrapes are excluded from distribution to adhere strictly to redistribution terms. Pipeline code in `code/` can process primary sources fetched under individual researcher access.
+- **Closing Price Levels (`level_local`)**: Proprietary index price levels are omitted across all tables to protect index provider intellectual property. All analysis tables provide continuous log event return windows (`clr_1` through `clr_60`) and daily panel returns without level reconstructions.
+- **Manual Statement Qualitative Labels**: Hand-annotated narrative classifications have not undergone double-blind expert replication and are excluded from this release (see `docs/labelling_guide.md`).
+- **Post-Window Observations (`post_window_2026.parquet`)**: 2026 data are strictly quarantined to prevent look-ahead contamination.
+- **Excluded Rows Table (`excluded_rows.parquet`)**: Decisions failing strict timestamp verification or sovereign yield data completeness are quarantined to keep the distribution tables focused on the usable empirical sample.
+
+---
+
+## 4. Sample Splits & Embargo Protocol
 
 | Split | Window Range | Decisions | Hikes | Cuts | Holds | Event Rows | Role in Research Design |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
@@ -29,7 +77,7 @@ The out-of-sample test split (2024-2025) contains **0 interest rate hikes**, ref
 
 ---
 
-## 2. Table Tiers & Partition Membership
+## 5. Table Tiers & Partition Membership
 
 All row and decision counts are computed strictly from committed CSV reports (`reports/row_membership.csv`):
 
@@ -45,7 +93,7 @@ All row and decision counts are computed strictly from committed CSV reports (`r
 
 ---
 
-## 3. Rolling-Origin Cross-Validation & Final Fit (`data/folds.csv`)
+## 6. Rolling-Origin Cross-Validation & Final Fit (`data/folds.csv`)
 
 To respect the temporal arrow of time, MoTrans-15 defines 4 rolling-origin evaluation folds plus a unified `final_fit` set (documented in `reports/fold_counts.csv`):
 
@@ -63,7 +111,7 @@ To respect the temporal arrow of time, MoTrans-15 defines 4 rolling-origin evalu
 
 ---
 
-## 4. Package Contents & Navigation
+## 7. Package Contents & Navigation
 ```
 zenodo_release/
 ├── README.md                          # This document
@@ -71,8 +119,8 @@ zenodo_release/
 ├── LICENSE-CODE                       # MIT License (Code)
 ├── CITATION.cff                       # Citation metadata (CFF 1.2.0)
 ├── .zenodo.json                       # Zenodo deposit metadata
-├── CHECKSUMS.sha256                   # SHA-256 hashes of all packaged files
-├── MANIFEST.csv                       # Package file inventory with sizes and hashes
+├── CHECKSUMS.sha256                   # SHA-256 hashes of all packaged files (excludes itself)
+├── MANIFEST.csv                       # Package file inventory with sizes and hashes (includes CHECKSUMS.sha256)
 ├── LICENCE_AND_PROVENANCE.md          # Provider inventory and license terms
 ├── PROVENANCE.md                      # Audit certification & guardrail log
 ├── LIMITATIONS_PACKAGE.md             # Scientific limitations & unverified items
@@ -110,12 +158,6 @@ zenodo_release/
     ├── tasks.py                       # Task runner
     ├── requirements.txt               # Full Python dependency lock
     ├── pytest.ini                     # Test configuration
+    ├── conftest.py                    # Test configuration with auto-skips for excluded paths
     └── README.md                      # Code instructions & raw data notice
 ```
-
----
-
-## 5. Exclusions & Limitations Notice
-- **Statement Qualitative Hand Labels**: Manual statement qualitative classifications have not undergone double-blind expert replication and are **not included** in this release package (see `docs/labelling_guide.md` for guidelines).
-- **Post-Window Observations (`post_window_2026`)**: 2026 data are strictly quarantined and omitted from release tables.
-- **Excluded Rows Table (`excluded_rows.parquet`)**: Omitted to keep package focused on analysis-ready and secondary tables.

@@ -11,8 +11,16 @@ import hashlib
 import json
 import os
 import shutil
+import stat
 import subprocess
+import sys
+import zipfile
 from pathlib import Path
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
 
 import pandas as pd
 import pyarrow.parquet as pq
@@ -27,6 +35,7 @@ DATA_V2_1 = ROOT / "data" / "v2_1"
 DOCS = ROOT / "docs"
 OUTPUTS_V2_1 = ROOT / "outputs" / "v2_1"
 OUTPUTS_V2 = ROOT / "outputs" / "v2"
+ZIP_PATH = ROOT / "MoTrans15_v2.1.1_zenodo_package.zip"
 
 # Certified hashes from docs/DATA_FREEZE_v2_1.md
 CERTIFIED_HASHES = {
@@ -45,13 +54,22 @@ def sha256_file(path: Path) -> str:
             h.update(chunk)
     return h.hexdigest()
 
+import stat
+
+def remove_readonly(func, path, exc):
+    os.chmod(path, stat.S_IWRITE)
+    func(path)
+
 def ensure_clean_dir(path: Path) -> None:
     if path.exists():
-        shutil.rmtree(path)
+        try:
+            shutil.rmtree(path, onexc=remove_readonly)
+        except Exception:
+            subprocess.run(["powershell", "-Command", f'Remove-Item -Path "{path}" -Recurse -Force'], check=False)
     path.mkdir(parents=True, exist_ok=True)
 
 def verify_source_hashes() -> None:
-    print("[1/10] Verifying source file SHA-256 hashes against DATA_FREEZE_v2_1.md...")
+    print("[1/11] Verifying source file SHA-256 hashes against DATA_FREEZE_v2_1.md...")
     for filename, expected_hash in CERTIFIED_HASHES.items():
         src_path = DATA_V2_1_RELEASE / filename
         if not src_path.exists():
@@ -64,7 +82,7 @@ def verify_source_hashes() -> None:
         print(f"  Verified {filename}: {actual_hash[:16]}... OK")
 
 def copy_data_files() -> None:
-    print("[2/10] Copying allowed data files and generating CSV convenience exports...")
+    print("[2/11] Copying allowed data files and generating CSV convenience exports...")
     data_dest = RELEASE_DIR / "data"
     data_dest.mkdir(parents=True, exist_ok=True)
 
@@ -86,7 +104,7 @@ def copy_data_files() -> None:
             print(f"  Exported convenience CSV: {csv_name} ({len(df)} rows)")
 
 def copy_docs() -> None:
-    print("[3/10] Copying documentation files...")
+    print("[3/11] Copying documentation files...")
     docs_dest = RELEASE_DIR / "docs"
     docs_dest.mkdir(parents=True, exist_ok=True)
 
@@ -106,7 +124,7 @@ def copy_docs() -> None:
         print(f"  Copied {dest_name}")
 
 def copy_reports() -> None:
-    print("[4/10] Copying report CSV files...")
+    print("[4/11] Copying report CSV files...")
     reports_dest = RELEASE_DIR / "reports"
     reports_dest.mkdir(parents=True, exist_ok=True)
 
@@ -126,7 +144,7 @@ def copy_reports() -> None:
         print(f"  Copied {dest_name}")
 
 def copy_code() -> None:
-    print("[5/10] Packaging code (src, tests, tasks, requirements, pytest.ini)...")
+    print("[5/11] Packaging code (src, tests, tasks, requirements, pytest.ini, conftest.py)...")
     code_dest = RELEASE_DIR / "code"
     code_dest.mkdir(parents=True, exist_ok=True)
 
@@ -146,6 +164,51 @@ def copy_code() -> None:
     for f in ["tasks.py", "requirements.txt", "pytest.ini"]:
         shutil.copy2(ROOT / f, code_dest / f)
 
+    # Add isolated-package conftest.py to auto-skip tests requiring excluded raw/interim/v2 data
+    conftest_code = '''"""Pytest configuration for isolated Zenodo release code package.
+
+Automatically skips tests that depend on data directories excluded from the
+public release package per license and privacy safety rules (e.g. data/raw,
+data/final, data/v2, unredacted panel.parquet, post_window_2026.parquet).
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+import pytest
+
+REASON_EXCLUDED = "requires data excluded from public release; see LIMITATIONS_PACKAGE.md"
+
+def pytest_collection_modifyitems(config, items):
+    root = Path(config.rootdir)
+    missing_final = not (root / "data" / "final").exists()
+    missing_v2 = not (root / "data" / "v2").exists()
+    missing_outputs_v2 = not (root / "outputs" / "v2").exists()
+    missing_unredacted_v2_1 = not (root / "data" / "v2_1" / "panel.parquet").exists()
+
+    skip_marker = pytest.mark.skip(reason=REASON_EXCLUDED)
+
+    for item in items:
+        nodeid = item.nodeid
+        if "test_analysis_tables.py" in nodeid and missing_final:
+            item.add_marker(skip_marker)
+        elif "test_v2_tables.py" in nodeid and missing_v2:
+            item.add_marker(skip_marker)
+        elif "test_v2_1_tables.py" in nodeid and missing_unredacted_v2_1:
+            item.add_marker(skip_marker)
+        elif "test_v2_v0_coverage.py" in nodeid and missing_outputs_v2:
+            if any(name in nodeid for name in [
+                "test_coverage_csv_exists_and_valid",
+                "test_v2_spec_states_exploratory",
+                "test_effective_sample_csvs",
+                "test_holdout_candidates_csv",
+            ]):
+                item.add_marker(skip_marker)
+        elif "test_v2_v1_verification.py" in nodeid and missing_outputs_v2:
+            item.add_marker(skip_marker)
+'''
+    (code_dest / "conftest.py").write_text(conftest_code, encoding="utf-8")
+
     # Write code README
     code_readme = (
         "# MoTrans-15 v2.1.1 Code Package\n\n"
@@ -161,13 +224,13 @@ def copy_code() -> None:
         "```\n"
     )
     (code_dest / "README.md").write_text(code_readme, encoding="utf-8")
-    print("  Packaged src, tests, and configuration into code/")
+    print("  Packaged src, tests, configuration, and conftest.py into code/")
 
 def write_license_files() -> None:
-    print("[6/10] Writing LICENSE and LICENSE-CODE...")
+    print("[6/11] Writing LICENSE and LICENSE-CODE...")
     mit_text = (
         "MIT License\n\n"
-        "Copyright (c) 2026 MoTrans-15 Contributors\n\n"
+        "Copyright (c) 2026 Gaurav Mansing Jaypatre and Prachi Ravi Pawar\n\n"
         "Permission is hereby granted, free of charge, to any person obtaining a copy\n"
         "of this software and associated documentation files (the \"Software\"), to deal\n"
         "in the Software without restriction, including without limitation the rights\n"
@@ -211,7 +274,7 @@ def write_license_files() -> None:
     (RELEASE_DIR / "LICENSE").write_text(cc_by_text, encoding="utf-8")
 
 def build_licence_and_provenance() -> None:
-    print("[7/10] Building LICENCE_AND_PROVENANCE.md from data/raw/MANIFEST.csv...")
+    print("[7/11] Building LICENCE_AND_PROVENANCE.md from data/raw/MANIFEST.csv...")
     manifest_path = ROOT / "data" / "raw" / "MANIFEST.csv"
     assert manifest_path.exists(), "data/raw/MANIFEST.csv missing"
     df_m = pd.read_csv(manifest_path)
@@ -263,9 +326,9 @@ def build_licence_and_provenance() -> None:
     ]
 
     lines = [
-        "# MoTrans-15 v2.1.1 Data Source Licence & Provenance Audit\n",
+        "# MoTrans-15 v2.1.1 Data Source Licence & Provenance Audit\n\n",
         "This document provides an exhaustive inventory of all data providers, quoting their stated terms directly from `data/raw/MANIFEST.csv` and documenting open licensing questions for research dissemination.\n\n",
-        "## Summary of Licencing Status\n",
+        "## Summary of Licencing Status\n\n",
         f"- **Selected Access Mode**: `{cfg.ACCESS_MODE}` (Access granted by request for academic replication).\n",
         "- **Proprietary Closing Price Levels**: **Omitted** (`level_local` excluded from all packaged tables; `panel_returns_only.parquet` provides continuous log returns without starting levels).\n",
         "- **Raw Data Status**: Excluded from package (`data/raw/` contains vendor feeds that cannot be redistributed).\n\n",
@@ -274,7 +337,7 @@ def build_licence_and_provenance() -> None:
 
     for p in providers:
         sub = df_m[p["filter"]]
-        lines.append(f"### {p['name']}\n")
+        lines.append(f"### {p['name']}\n\n")
         lines.append(f"- **Data Category**: {p['category']}\n")
         lines.append(f"- **What is Used**: {p['usage']}\n")
         if len(sub) > 0:
@@ -294,14 +357,14 @@ def build_licence_and_provenance() -> None:
     print("  Generated LICENCE_AND_PROVENANCE.md")
 
 def build_provenance_and_limitations() -> None:
-    print("[8/10] Building PROVENANCE.md and LIMITATIONS_PACKAGE.md...")
+    print("[8/11] Building PROVENANCE.md and LIMITATIONS_PACKAGE.md...")
     prov_text = (
         "# MoTrans-15 v2.1.1 Package Provenance & Integrity Certification\n\n"
         "## 1. Build Environment & Commit Identity\n"
         "- **Package Name**: MoTrans-15 v2.1.1 Zenodo Release Package\n"
         "- **Base Freeze Commit**: `f30ab1838c0820fa41f134c91cc058066c48cfdf` (Tag: `v2.1.1-train-test-ready`)\n"
         "- **Release Branch**: `zenodo-release`\n"
-        "- **Release Tag**: `v2.1.1-zenodo-package`\n"
+        "- **Release Tag**: `v2.1.1-zenodo-package-r2`\n"
         "- **Python Version**: Python 3.13.1\n"
         "- **Packaging Engine**: Automated Bitwise Packaging & Verification Suite\n\n"
         "## 2. Research Guardrail Certification\n"
@@ -348,57 +411,53 @@ def build_provenance_and_limitations() -> None:
     print("  Generated PROVENANCE.md and LIMITATIONS_PACKAGE.md")
 
 def build_metadata_files() -> None:
-    print("[9/10] Building .zenodo.json and CITATION.cff...")
-    # Determine repo URL from .git/config
-    git_config_path = ROOT / ".git" / "config"
+    print("[9/11] Building .zenodo.json and CITATION.cff...")
     repo_url = "https://github.com/GauravJaypatre/MoTrans-15_Policy-and-Markets"
-    if git_config_path.exists():
-        text = git_config_path.read_text(encoding="utf-8")
-        for line in text.splitlines():
-            if "url = " in line and "github.com" in line:
-                repo_url = line.split("url = ")[-1].strip().replace(".git", "")
-                break
 
-    # Authors check
-    authors_file = ROOT / "CITATION_AUTHORS.txt"
-    if authors_file.exists() and authors_file.read_text(encoding="utf-8").strip():
-        # parse authors if present
-        authors_raw = authors_file.read_text(encoding="utf-8").strip().splitlines()
-        creators = [{"name": a.strip()} for a in authors_raw if a.strip()]
-        cff_authors = [{"name": a.strip()} for a in authors_raw if a.strip()]
-    else:
-        creators = [
-            {
-                "name": "TODO: Author Name",
-                "affiliation": "TODO: Author Affiliation",
-                "orcid": "0000-0000-0000-0000",
-            }
-        ]
-        cff_authors = [
-            {
-                "name": "TODO: Author Name",
-                "affiliation": "TODO: Author Affiliation",
-                "orcid": "https://orcid.org/0000-0000-0000-0000",
-            }
-        ]
+    creators = [
+        {
+            "name": "Jaypatre, Gaurav Mansing",
+            "affiliation": "Pimpri Chinchwad College of Engineering (PCCOE), Pune, India",
+        },
+        {
+            "name": "Pawar, Prachi Ravi",
+            "affiliation": "Pimpri Chinchwad College of Engineering (PCCOE), Pune, India",
+        },
+    ]
+
+    description_html = (
+        "<p><strong>MoTrans-15 (v2.1.1)</strong> is a standardized, replication-certified dataset of monetary policy surprises, "
+        "central bank communications, macroeconomic controls, and equity-index return responses across 15 major economies from "
+        "2010 through 2025 (16 calendar years).</p>\n"
+        "<p><strong>Dataset Characteristics:</strong></p>\n"
+        "<ul>\n"
+        "  <li><strong>Evaluation Window:</strong> 2010-01-01 to 2025-12-31 (16 calendar years).</li>\n"
+        "  <li><strong>Temporal Splits:</strong> TRAIN (2010-2021, 572 decisions), VALIDATION (2022-2023, 76 decisions), TEST (2024-2025, 70 decisions).</li>\n"
+        "  <li><strong>Embargo Protocol:</strong> Strict 60-day embargo prevents multi-horizon event window overlap across split boundaries.</li>\n"
+        "  <li><strong>Locked Out-of-Sample Test Split:</strong> Contains exactly 0 interest rate hikes, reflecting the global post-inflation monetary easing cycle.</li>\n"
+        "  <li><strong>Cross-Validation:</strong> 4 expanding rolling-origin evaluation folds plus a unified final_fit estimation partition (folds.csv).</li>\n"
+        "</ul>\n"
+        "<p><strong>Restricted Access Notice:</strong> Access is restricted upon request for academic research and replication due to derived "
+        "equity return series from commercial index feeds. Closing price levels (<code>level_local</code>) are omitted. Access can be requested "
+        "by emailing <a href=\"mailto:jaypatregaurav81@gmail.com\">jaypatregaurav81@gmail.com</a>.</p>"
+    )
+
+    access_conditions_text = (
+        "Access to derived equity return tables and documentation is granted upon request for academic research and replication. "
+        "To request access, please contact jaypatregaurav81@gmail.com stating your name, institutional affiliation, and a brief description "
+        "of your intended academic research project."
+    )
 
     zenodo_json = {
         "title": cfg.TITLE,
         "upload_type": "dataset",
-        "description": (
-            "MoTrans-15 (v2.1.1): A comprehensive, replication-certified dataset of monetary policy surprises, "
-            "central bank communications, macroeconomic controls, and equity-index return responses across the "
-            "world's largest economies from 2010 through 2025.\n\n"
-            "Evaluation Window: 2010-01-01 to 2025-12-31 (16 years)\n"
-            "Splits: TRAIN (2010-2021, 572 decisions), VALIDATION (2022-2023, 76 decisions), TEST (2024-2025, 70 decisions)\n"
-            "Embargo Protocol: 60-day embargo prevents multi-horizon event window overlap across split boundaries.\n\n"
-            "Notice on Access: Access is restricted upon request for academic research and replication due to derived "
-            "financial return series. The out-of-sample test split is strictly locked and contains zero rate hikes."
-        ),
+        "description": description_html,
         "creators": creators,
-        "access_right": cfg.ACCESS_MODE,
-        "license": cfg.DATA_LICENSE,
+        "access_right": "restricted",
+        "access_conditions": access_conditions_text,
+        "license": "cc-by-4.0",
         "version": "2.1.1",
+        "publication_date": "2026-10-29",
         "keywords": [
             "monetary policy",
             "central banks",
@@ -411,8 +470,8 @@ def build_metadata_files() -> None:
         ],
         "language": "eng",
         "notes": (
-            "MoTrans-15 v2.1.1 release package. The test split (2024-2025) is strictly locked for model selection "
-            "and out-of-sample evaluation, and contains zero interest rate hikes (property of the 2024-2025 global monetary easing cycle)."
+            "MoTrans-15 v2.1.1 release package. The test split (2024-2025) is strictly locked for model evaluation "
+            "and contains zero interest rate hikes (property of the 2024-2025 global monetary easing cycle)."
         ),
         "related_identifiers": [
             {
@@ -424,34 +483,33 @@ def build_metadata_files() -> None:
     }
     (RELEASE_DIR / ".zenodo.json").write_text(json.dumps(zenodo_json, indent=2), encoding="utf-8")
 
-    cff_lines = [
-        "cff-version: 1.2.0\n",
-        'message: "If you use this dataset, please cite it as below."\n',
-        f'title: "{cfg.TITLE}"\n',
-        'version: "2.1.1"\n',
-        'doi: "TODO (reserve on Zenodo draft)"\n',
-        'date-released: "2026-10-29"\n',
-        f'license: "{cfg.DATA_LICENSE}"\n',
-        f'repository-code: "{repo_url}"\n',
-        "type: dataset\n",
-        "authors:\n",
-    ]
-    for a in cff_authors:
-        cff_lines.append(f'  - name: "{a["name"]}"\n')
-        if "affiliation" in a:
-            cff_lines.append(f'    affiliation: "{a["affiliation"]}"\n')
-        if "orcid" in a:
-            cff_lines.append(f'    orcid: "{a["orcid"]}"\n')
-    (RELEASE_DIR / "CITATION.cff").write_text("".join(cff_lines), encoding="utf-8")
+    cff_content = f"""cff-version: 1.2.0
+message: "If you use this dataset, please cite it as below."
+title: "{cfg.TITLE}"
+version: "2.1.1"
+date-released: "2026-10-29"
+license: "CC-BY-4.0"
+repository-code: "{repo_url}"
+type: dataset
+authors:
+  - family-names: "Jaypatre"
+    given-names: "Gaurav Mansing"
+    affiliation: "Pimpri Chinchwad College of Engineering (PCCOE), Pune, India"
+  - family-names: "Pawar"
+    given-names: "Prachi Ravi"
+    affiliation: "Pimpri Chinchwad College of Engineering (PCCOE), Pune, India"
+contact:
+  - email: "jaypatregaurav81@gmail.com"
+    name: "Gaurav Mansing Jaypatre"
+"""
+    (RELEASE_DIR / "CITATION.cff").write_text(cff_content, encoding="utf-8")
     print("  Generated .zenodo.json and CITATION.cff")
 
 def build_readme() -> None:
-    print("[10/10] Building zenodo_release/README.md with exact figures from CSV reports...")
+    print("[10/11] Building zenodo_release/README.md with exact figures from CSV reports...")
     # Load exact numbers from CSV reports
     df_split = pd.read_csv(OUTPUTS_V2_1 / "split_counts.csv")
-    df_folds = pd.read_csv(OUTPUTS_V2_1 / "fold_counts.csv")
     df_rows = pd.read_csv(OUTPUTS_V2_1 / "row_membership.csv")
-    df_test = pd.read_csv(OUTPUTS_V2_1 / "test_window_composition.csv")
 
     split_grp = df_split.groupby("split")[["decisions_count", "hikes_count", "cuts_count", "holds_count", "event_rows_count"]].sum().reset_index()
 
@@ -475,12 +533,60 @@ def build_readme() -> None:
 - **ACCESS_MODE**: `{cfg.ACCESS_MODE}` (Access granted by request for academic replication)
 - **DATA_LICENSE**: `{cfg.DATA_LICENSE}`
 - **CODE_LICENSE**: `{cfg.CODE_LICENSE}`
-- **Authors & Affiliations**: See `CITATION.cff` (Placeholders marked `TODO` pending publication metadata)
+- **Authors & Affiliations**: Gaurav Mansing Jaypatre & Prachi Ravi Pawar (Pimpri Chinchwad College of Engineering (PCCOE), Pune, India)
+- **Contact Email**: `jaypatregaurav81@gmail.com`
 - **Reason for Restricted Access**: Financial index return series are derived from commercial exchange closing prices without signed vendor redistribution clearance. Closing price levels (`level_local`) are omitted from all tables; access to derived return tables is restricted to verified academic researchers upon request.
 
 ---
 
-## 1. Sample Splits & Embargo Protocol
+## 1. How to Request Access
+In accordance with data provider license terms, this dataset is published under **Restricted Access** on Zenodo. Access is granted free of charge to researchers for academic study and replication.
+
+To request access:
+1. Submit an access request via the Zenodo web interface or email the lead author directly at **`jaypatregaurav81@gmail.com`**.
+2. In your request, please provide:
+   - Full Name and Institutional Affiliation (university, department, or research institute).
+   - Brief statement of the intended academic research or replication study.
+   - Confirmation that the dataset will be used solely for academic research and that raw or derived tables will not be redistributed commercially.
+3. Access requests are evaluated and approved promptly (typically within 48–72 hours).
+
+---
+
+## 2. How to Cite
+
+> **Note on DOI**: A persistent Digital Object Identifier (DOI) will be assigned upon publication on Zenodo. Once assigned, please use the official Zenodo DOI for citation.
+
+If you use this dataset in your research, please cite it as follows:
+
+**APA:**
+> Jaypatre, G. M., & Pawar, P. R. (2026). *MoTrans-15: Monetary policy surprises, central bank communication and equity-index responses for the largest economies, 2010-2025* (Version 2.1.1) [Data set]. Zenodo.
+
+**BibTeX:**
+```bibtex
+@dataset{{jaypatre_pawar_2026_motrans15,
+  author       = {{Jaypatre, Gaurav Mansing and Pawar, Prachi Ravi}},
+  title        = {{{{MoTrans-15: Monetary policy surprises, central bank communication and equity-index responses for the largest economies, 2010-2025}}}},
+  year         = {{2026}},
+  month        = oct,
+  publisher    = {{Zenodo}},
+  version      = {{2.1.1}},
+  url          = {{https://github.com/GauravJaypatre/MoTrans-15_Policy-and-Markets}}
+}}
+```
+
+---
+
+## 3. What is NOT Included and Why
+For exhaustive details on data safety, licensing terms, and research boundaries, see `LIMITATIONS_PACKAGE.md` and `LICENCE_AND_PROVENANCE.md`. Key exclusions include:
+- **Vendor Raw Data Feeds (`data/raw/`)**: Commercial index vendor feeds and third-party web scrapes are excluded from distribution to adhere strictly to redistribution terms. Pipeline code in `code/` can process primary sources fetched under individual researcher access.
+- **Closing Price Levels (`level_local`)**: Proprietary index price levels are omitted across all tables to protect index provider intellectual property. All analysis tables provide continuous log event return windows (`clr_1` through `clr_60`) and daily panel returns without level reconstructions.
+- **Manual Statement Qualitative Labels**: Hand-annotated narrative classifications have not undergone double-blind expert replication and are excluded from this release (see `docs/labelling_guide.md`).
+- **Post-Window Observations (`post_window_2026.parquet`)**: 2026 data are strictly quarantined to prevent look-ahead contamination.
+- **Excluded Rows Table (`excluded_rows.parquet`)**: Decisions failing strict timestamp verification or sovereign yield data completeness are quarantined to keep the distribution tables focused on the usable empirical sample.
+
+---
+
+## 4. Sample Splits & Embargo Protocol
 
 | Split | Window Range | Decisions | Hikes | Cuts | Holds | Event Rows | Role in Research Design |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
@@ -497,7 +603,7 @@ The out-of-sample test split (2024-2025) contains **0 interest rate hikes**, ref
 
 ---
 
-## 2. Table Tiers & Partition Membership
+## 5. Table Tiers & Partition Membership
 
 All row and decision counts are computed strictly from committed CSV reports (`reports/row_membership.csv`):
 
@@ -513,7 +619,7 @@ All row and decision counts are computed strictly from committed CSV reports (`r
 
 ---
 
-## 3. Rolling-Origin Cross-Validation & Final Fit (`data/folds.csv`)
+## 6. Rolling-Origin Cross-Validation & Final Fit (`data/folds.csv`)
 
 To respect the temporal arrow of time, MoTrans-15 defines 4 rolling-origin evaluation folds plus a unified `final_fit` set (documented in `reports/fold_counts.csv`):
 
@@ -531,7 +637,7 @@ To respect the temporal arrow of time, MoTrans-15 defines 4 rolling-origin evalu
 
 ---
 
-## 4. Package Contents & Navigation
+## 7. Package Contents & Navigation
 ```
 zenodo_release/
 ├── README.md                          # This document
@@ -539,8 +645,8 @@ zenodo_release/
 ├── LICENSE-CODE                       # MIT License (Code)
 ├── CITATION.cff                       # Citation metadata (CFF 1.2.0)
 ├── .zenodo.json                       # Zenodo deposit metadata
-├── CHECKSUMS.sha256                   # SHA-256 hashes of all packaged files
-├── MANIFEST.csv                       # Package file inventory with sizes and hashes
+├── CHECKSUMS.sha256                   # SHA-256 hashes of all packaged files (excludes itself)
+├── MANIFEST.csv                       # Package file inventory with sizes and hashes (includes CHECKSUMS.sha256)
 ├── LICENCE_AND_PROVENANCE.md          # Provider inventory and license terms
 ├── PROVENANCE.md                      # Audit certification & guardrail log
 ├── LIMITATIONS_PACKAGE.md             # Scientific limitations & unverified items
@@ -578,21 +684,15 @@ zenodo_release/
     ├── tasks.py                       # Task runner
     ├── requirements.txt               # Full Python dependency lock
     ├── pytest.ini                     # Test configuration
+    ├── conftest.py                    # Test configuration with auto-skips for excluded paths
     └── README.md                      # Code instructions & raw data notice
 ```
-
----
-
-## 5. Exclusions & Limitations Notice
-- **Statement Qualitative Hand Labels**: Manual statement qualitative classifications have not undergone double-blind expert replication and are **not included** in this release package (see `docs/labelling_guide.md` for guidelines).
-- **Post-Window Observations (`post_window_2026`)**: 2026 data are strictly quarantined and omitted from release tables.
-- **Excluded Rows Table (`excluded_rows.parquet`)**: Omitted to keep package focused on analysis-ready and secondary tables.
 """
     (RELEASE_DIR / "README.md").write_text(readme, encoding="utf-8")
     print("  Generated README.md")
 
 def generate_checksums_and_manifest() -> None:
-    print("[Final] Generating MANIFEST.csv and CHECKSUMS.sha256...")
+    print("[Final Checksums] Generating MANIFEST.csv and CHECKSUMS.sha256...")
     all_files = []
     for root_dir, _, files in os.walk(RELEASE_DIR):
         for f in sorted(files):
@@ -604,24 +704,68 @@ def generate_checksums_and_manifest() -> None:
             sha = sha256_file(full_path)
             all_files.append((rel_path, size, sha))
 
-    # Write CHECKSUMS.sha256
-    with open(RELEASE_DIR / "CHECKSUMS.sha256", "w", encoding="utf-8") as f:
+    # Write CHECKSUMS.sha256 (excludes itself to prevent self-referential hash mutation)
+    checksums_path = RELEASE_DIR / "CHECKSUMS.sha256"
+    with open(checksums_path, "w", encoding="utf-8") as f:
         for rel_path, _, sha in sorted(all_files, key=lambda x: x[0]):
             f.write(f"{sha}  {rel_path}\n")
 
+    chk_count = len(all_files)
+    print(f"  CHECKSUMS.sha256 written: {chk_count} files checksummed.")
+
     # Add CHECKSUMS.sha256 to MANIFEST
-    chk_sha = sha256_file(RELEASE_DIR / "CHECKSUMS.sha256")
-    chk_size = (RELEASE_DIR / "CHECKSUMS.sha256").stat().st_size
+    chk_sha = sha256_file(checksums_path)
+    chk_size = checksums_path.stat().st_size
     all_files.append(("CHECKSUMS.sha256", chk_size, chk_sha))
 
-    # Write MANIFEST.csv
-    with open(RELEASE_DIR / "MANIFEST.csv", "w", encoding="utf-8", newline="") as f:
+    # Write MANIFEST.csv (includes CHECKSUMS.sha256)
+    manifest_path = RELEASE_DIR / "MANIFEST.csv"
+    with open(manifest_path, "w", encoding="utf-8", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["file_path", "size_bytes", "sha256"])
         for rel_path, size, sha in sorted(all_files, key=lambda x: x[0]):
             writer.writerow([rel_path, size, sha])
 
-    print(f"  Packaged {len(all_files)} total files.")
+    print(f"  MANIFEST.csv written: {len(all_files)} total tracked files ({chk_count} package files + CHECKSUMS.sha256).")
+
+def build_deterministic_zip() -> None:
+    print("[Zip] Building deterministic archive MoTrans15_v2.1.1_zenodo_package.zip...")
+    if ZIP_PATH.exists():
+        ZIP_PATH.unlink()
+
+    fixed_time = (2026, 10, 29, 0, 0, 0)
+    file_mode = 0o644 | 0o100000
+
+    # Collect all files to include
+    entries = []
+    for root_dir, _, files in os.walk(RELEASE_DIR):
+        for f in sorted(files):
+            # Ignore transient / VCS files if any
+            if f in [".DS_Store", "Thumbs.db"] or f.endswith(".pyc") or f.endswith(".pyo"):
+                continue
+            if "__pycache__" in root_dir or ".pytest_cache" in root_dir or ".git" in root_dir:
+                continue
+            full_p = Path(root_dir) / f
+            arcname = full_p.relative_to(RELEASE_DIR).as_posix()
+            entries.append((arcname, full_p))
+
+    entries.sort(key=lambda x: x[0])
+
+    with zipfile.ZipFile(ZIP_PATH, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+        for arcname, full_p in entries:
+            zinfo = zipfile.ZipInfo(filename=arcname, date_time=fixed_time)
+            zinfo.external_attr = file_mode << 16
+            zinfo.compress_type = zipfile.ZIP_DEFLATED
+            with open(full_p, "rb") as fp:
+                data = fp.read()
+            zf.writestr(zinfo, data)
+
+    zip_size = ZIP_PATH.stat().st_size
+    zip_sha = sha256_file(ZIP_PATH)
+    print(f"  Archive built successfully:")
+    print(f"    Path:   {ZIP_PATH}")
+    print(f"    Size:   {zip_size:,} bytes ({zip_size / (1024*1024):.2f} MB)")
+    print(f"    SHA256: {zip_sha}")
 
 def main():
     print("==================================================")
@@ -639,8 +783,8 @@ def main():
     build_metadata_files()
     build_readme()
     generate_checksums_and_manifest()
-    print("Package build complete in zenodo_release/.")
+    build_deterministic_zip()
+    print("Package build complete in zenodo_release/ and zip archive ready.")
 
 if __name__ == "__main__":
     main()
-

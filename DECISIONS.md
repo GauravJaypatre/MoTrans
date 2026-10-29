@@ -523,3 +523,34 @@ official page)"`. See ISS-029 for the sourcing plan.
   - Branch `zenodo-release` established to build the publication package in `zenodo_release/`.
   - Configuration defined in `zenodo_release_config.py` with `ACCESS_MODE = "restricted"`, `DATA_LICENSE = "CC-BY-4.0"`, `CODE_LICENSE = "MIT"`.
   - Final release package will be marked with new tag `v2.1.1-zenodo-package`.
+
+---
+
+## 2026-10-29 — Zenodo Release Package Revision 2 Finalization
+
+### DECISION-030: Zenodo Release Package Finalization (Metadata, Isolated Testing, and Deterministic Archive)
+- **Date Recorded**: 2026-10-29 (Branch: `zenodo-release`, Tag: `v2.1.1-zenodo-package-r2`).
+- **Context & Objectives**:
+  - Finalize all remaining deposit requirements for MoTrans-15 v2.1.1 in `zenodo_release/` so that the dataset can be deposited directly to Zenodo and published with zero further modifications.
+  - Comply with all strict research integrity constraints: no modification to `zenodo_release/data/`, no fabrication of DOIs, ORCIDs, or affiliations, zero unverified placeholders in distribution text files, and full pass across 9 release gates.
+- **Author Identity & Metadata Finalization**:
+  - Registered official dataset authors:
+    1. Gaurav Mansing Jaypatre (`affiliation: "Pimpri Chinchwad College of Engineering (PCCOE), Pune, India"`, `email: "jaypatregaurav81@gmail.com"`).
+    2. Prachi Ravi Pawar (`affiliation: "Pimpri Chinchwad College of Engineering (PCCOE), Pune, India"`).
+  - Validated `.zenodo.json` against Zenodo's dataset deposit schema: `upload_type: "dataset"`, `access_right: "restricted"`, `license: "cc-by-4.0"`, `language: "eng"`, `version: "2.1.1"`, HTML-safe `description`, explicit `access_conditions` pointing to lead author email for academic replication requests.
+  - Validated `CITATION.cff` under CFF 1.2.0: author order matches `.zenodo.json`; unreserved DOI line removed and replaced by README instruction stating persistent DOI is registered upon Zenodo publication.
+- **Documentation & Consistency Review**:
+  - Audited all distribution text files for placeholder strings (`TODO`, `TBD`, `FIXME`, `XXX`, `0000-0000`): exactly 0 hits found across all text files.
+  - Added "How to Request Access", "How to Cite" (APA and BibTeX), and "What is NOT Included and Why" sections to `zenodo_release/README.md`.
+  - Audited `LICENCE_AND_PROVENANCE.md`, `README.md`, and `.zenodo.json` to ensure unanimous restricted-access wording: closing price levels omitted, derived returns from proprietary feeds restricted to academic replication by request.
+- **Isolated Package Testing Solution**:
+  - Built `zenodo_release/code/conftest.py` with `pytest_collection_modifyitems` hook to auto-skip 149 tests depending on excluded raw/interim data (`data/raw`, `data/final`, `data/v2`, `panel.parquet` with `level_local`, `post_window_2026.parquet`) with reason string `"requires data excluded from public release; see LIMITATIONS_PACKAGE.md"`.
+  - Verified isolated code package pytest suite: **28 passed, 149 skipped, 0 failed**.
+  - Verified repo-root regression suite: **177 passed, 0 failed**.
+- **Deterministic Upload Archive Generation**:
+  - Built `MoTrans15_v2.1.1_zenodo_package.zip` (8,519,150 bytes, SHA-256 `a538b2d8a324b463bfd35e805a74f9f519aade3bca1d4fcf6191089c6ee0c92b`) with fixed entry timestamps `(2026, 10, 29, 0, 0, 0)`, sorted relative paths, standard file attributes, and strict exclusion of caches (`__pycache__`, `.pytest_cache`) and VCS directories.
+  - Verified archive extraction to temporary storage: 100% bit-for-bit match of all 6 parquet and CSV data tables against certified hashes in `docs/DATA_FREEZE_v2_1.md`.
+- **Release Verification & Tag**:
+  - All 9 quality gates evaluated by `verify_zenodo_package.py` and confirmed `PASS`.
+  - Tagged on `zenodo-release` as `v2.1.1-zenodo-package-r2` (leaving `v2.1.1-train-test-ready` and `v2.1.1-zenodo-package` untouched).
+

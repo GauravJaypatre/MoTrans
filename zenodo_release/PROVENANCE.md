@@ -4,7 +4,7 @@
 - **Package Name**: MoTrans-15 v2.1.1 Zenodo Release Package
 - **Base Freeze Commit**: `f30ab1838c0820fa41f134c91cc058066c48cfdf` (Tag: `v2.1.1-train-test-ready`)
 - **Release Branch**: `zenodo-release`
-- **Release Tag**: `v2.1.1-zenodo-package`
+- **Release Tag**: `v2.1.1-zenodo-package-r2`
 - **Python Version**: Python 3.13.1
 - **Packaging Engine**: Automated Bitwise Packaging & Verification Suite
 

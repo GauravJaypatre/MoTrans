@@ -1,17 +1,22 @@
 {
   "title": "MoTrans-15: Monetary policy surprises, central bank communication and equity-index responses for the largest economies, 2010-2025 (v2.1.1)",
   "upload_type": "dataset",
-  "description": "MoTrans-15 (v2.1.1): A comprehensive, replication-certified dataset of monetary policy surprises, central bank communications, macroeconomic controls, and equity-index return responses across the world's largest economies from 2010 through 2025.\n\nEvaluation Window: 2010-01-01 to 2025-12-31 (16 years)\nSplits: TRAIN (2010-2021, 572 decisions), VALIDATION (2022-2023, 76 decisions), TEST (2024-2025, 70 decisions)\nEmbargo Protocol: 60-day embargo prevents multi-horizon event window overlap across split boundaries.\n\nNotice on Access: Access is restricted upon request for academic research and replication due to derived financial return series. The out-of-sample test split is strictly locked and contains zero rate hikes.",
+  "description": "<p><strong>MoTrans-15 (v2.1.1)</strong> is a standardized, replication-certified dataset of monetary policy surprises, central bank communications, macroeconomic controls, and equity-index return responses across 15 major economies from 2010 through 2025 (16 calendar years).</p>\n<p><strong>Dataset Characteristics:</strong></p>\n<ul>\n  <li><strong>Evaluation Window:</strong> 2010-01-01 to 2025-12-31 (16 calendar years).</li>\n  <li><strong>Temporal Splits:</strong> TRAIN (2010-2021, 572 decisions), VALIDATION (2022-2023, 76 decisions), TEST (2024-2025, 70 decisions).</li>\n  <li><strong>Embargo Protocol:</strong> Strict 60-day embargo prevents multi-horizon event window overlap across split boundaries.</li>\n  <li><strong>Locked Out-of-Sample Test Split:</strong> Contains exactly 0 interest rate hikes, reflecting the global post-inflation monetary easing cycle.</li>\n  <li><strong>Cross-Validation:</strong> 4 expanding rolling-origin evaluation folds plus a unified final_fit estimation partition (folds.csv).</li>\n</ul>\n<p><strong>Restricted Access Notice:</strong> Access is restricted upon request for academic research and replication due to derived equity return series from commercial index feeds. Closing price levels (<code>level_local</code>) are omitted. Access can be requested by emailing <a href=\"mailto:jaypatregaurav81@gmail.com\">jaypatregaurav81@gmail.com</a>.</p>",
   "creators": [
     {
-      "name": "TODO: Author Name",
-      "affiliation": "TODO: Author Affiliation",
-      "orcid": "0000-0000-0000-0000"
+      "name": "Jaypatre, Gaurav Mansing",
+      "affiliation": "Pimpri Chinchwad College of Engineering (PCCOE), Pune, India"
+    },
+    {
+      "name": "Pawar, Prachi Ravi",
+      "affiliation": "Pimpri Chinchwad College of Engineering (PCCOE), Pune, India"
     }
   ],
   "access_right": "restricted",
-  "license": "CC-BY-4.0",
+  "access_conditions": "Access to derived equity return tables and documentation is granted upon request for academic research and replication. To request access, please contact jaypatregaurav81@gmail.com stating your name, institutional affiliation, and a brief description of your intended academic research project.",
+  "license": "cc-by-4.0",
   "version": "2.1.1",
+  "publication_date": "2026-10-29",
   "keywords": [
     "monetary policy",
     "central banks",
@@ -23,10 +28,10 @@
     "leakage audit"
   ],
   "language": "eng",
-  "notes": "MoTrans-15 v2.1.1 release package. The test split (2024-2025) is strictly locked for model selection and out-of-sample evaluation, and contains zero interest rate hikes (property of the 2024-2025 global monetary easing cycle).",
+  "notes": "MoTrans-15 v2.1.1 release package. The test split (2024-2025) is strictly locked for model evaluation and contains zero interest rate hikes (property of the 2024-2025 global monetary easing cycle).",
   "related_identifiers": [
     {
-      "identifier": "https://github.com/prachi-3011/MoTrans-15",
+      "identifier": "https://github.com/GauravJaypatre/MoTrans-15_Policy-and-Markets",
       "relation": "isSupplementTo",
       "scheme": "url"
     }

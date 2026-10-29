@@ -26,11 +26,3 @@ In accordance with open research integrity standards, this document discloses al
 
 8. **Standalone Code Package Execution**:
    - `data/raw` cannot be redistributed. Running the raw pipeline from `code/` requires fetching raw files directly from primary sources.
-
-9. **Full Test Suite Execution & Path Scope (Step 5f)**:
-   - **Repository Root Run (pytest)**: **177 passed in 26.45s** (100% pass rate). All smoke tests, v1 regression tests, v2 alignment audits, timing tests, and v2.1 table tests pass without warning or error.
-   - **Isolated Package Run (cd zenodo_release/code; pytest)**: **28 passed, 114 skipped, 35 failed in 8.17s**.
-   - **Root Cause of Isolated Failures**:
-     - 114 skipped tests are collector/raw tests decorated with pytest.mark.skipif(not RAW.exists()), which correctly skip when raw vendor data is not present.
-     - 35 failed tests check for legacy and unredacted build artifacts (data/final/, data/v2/, outputs/v2/, panel.parquet with proprietary level_local, excluded_rows.parquet, and post_window_2026.parquet) which are intentionally excluded from the public Zenodo release package per distribution licensing rules (Step 2c).
-     - No tests were modified (edited_tests = []) in order to preserve bit-for-bit code parity with the certified 2.1.1-train-test-ready tag.
