@@ -1,28 +1,30 @@
 # MoTrans-15: Monetary policy surprises, central bank communication and equity-index responses for the largest economies, 2010-2025 (v2.1.1)
 
 ## Overview & Scope
-**MoTrans-15 (v2.1.1)** is a standardized, replication-certified dataset tracking central bank monetary policy announcements, high-frequency surprises, macroeconomic controls, and equity market responses across the world's major economies for the evaluation window **2010-01-01 to 2025-12-31** (16 calendar years).
+**MoTrans-15 (v2.1.1)**: central banks and equity indices for 15 economies were screened; usable analysis decisions exist for the Fed, ECB, BoE, BoC, RBA and CBR (BoJ as a sensitivity set); Brazil, Mexico, India, Korea and China have no usable decisions in this version. The evaluation window covers **2010-01-01 to 2025-12-31** (16 calendar years).
+
+Code and data pipeline were developed with AI-assisted coding tools.
 
 ### Configuration & Access Terms
-- **ACCESS_MODE**: `restricted` (Access granted by request for academic replication)
-- **DATA_LICENSE**: `CC-BY-4.0`
+- **ACCESS_MODE**: `restricted` (Access granted by request via Zenodo for academic replication)
+- **DATA_LICENSE**: `Other (non-open / non-commercial research use; see LICENSE)`
 - **CODE_LICENSE**: `MIT`
 - **Authors & Affiliations**: Gaurav Mansing Jaypatre & Prachi Ravi Pawar (Pimpri Chinchwad College of Engineering (PCCOE), Pune, India)
-- **Contact Email**: `jaypatregaurav81@gmail.com`
-- **Reason for Restricted Access**: Financial index return series are derived from commercial exchange closing prices without signed vendor redistribution clearance. Closing price levels (`level_local`) are omitted from all tables; access to derived return tables is restricted to verified academic researchers upon request.
+- **Contact**: `TODO` (to be configured by depositor via Zenodo access-request interface)
+- **Reason for Restricted Access**: Financial index return series are derived from commercial exchange closing prices without signed vendor redistribution clearance. Closing price levels (`level_local`) are omitted from all tables; access to derived return tables is restricted to verified academic researchers upon request via Zenodo.
 
 ---
 
 ## 1. How to Request Access
-In accordance with data provider license terms, this dataset is published under **Restricted Access** on Zenodo. Access is granted free of charge to researchers for academic study and replication.
+In accordance with data provider license terms, this dataset is published under **Restricted Access** on Zenodo. Access is granted free of charge to researchers for non-commercial academic study and scientific replication.
 
 To request access:
-1. Submit an access request via the Zenodo web interface or email the lead author directly at **`jaypatregaurav81@gmail.com`**.
+1. Submit an access request directly via the **Zenodo web interface** on the deposit record page.
 2. In your request, please provide:
    - Full Name and Institutional Affiliation (university, department, or research institute).
    - Brief statement of the intended academic research or replication study.
-   - Confirmation that the dataset will be used solely for academic research and that raw or derived tables will not be redistributed commercially.
-3. Access requests are evaluated and approved promptly (typically within 48–72 hours).
+   - Confirmation that the dataset will be used solely for non-commercial academic research and that raw or derived tables will not be redistributed.
+3. Access requests are evaluated and approved promptly through Zenodo.
 
 ---
 
@@ -50,13 +52,17 @@ If you use this dataset in your research, please cite it as follows:
 
 ---
 
-## 3. What is NOT Included and Why
-For exhaustive details on data safety, licensing terms, and research boundaries, see `LIMITATIONS_PACKAGE.md` and `LICENCE_AND_PROVENANCE.md`. Key exclusions include:
-- **Vendor Raw Data Feeds (`data/raw/`)**: Commercial index vendor feeds and third-party web scrapes are excluded from distribution to adhere strictly to redistribution terms. Pipeline code in `code/` can process primary sources fetched under individual researcher access.
-- **Closing Price Levels (`level_local`)**: Proprietary index price levels are omitted across all tables to protect index provider intellectual property. All analysis tables provide continuous log event return windows (`clr_1` through `clr_60`) and daily panel returns without level reconstructions.
-- **Manual Statement Qualitative Labels**: Hand-annotated narrative classifications have not undergone double-blind expert replication and are excluded from this release (see `docs/labelling_guide.md`).
-- **Post-Window Observations (`post_window_2026.parquet`)**: 2026 data are strictly quarantined to prevent look-ahead contamination.
-- **Excluded Rows Table (`excluded_rows.parquet`)**: Decisions failing strict timestamp verification or sovereign yield data completeness are quarantined to keep the distribution tables focused on the usable empirical sample.
+## 3. What is NOT Included and Why (Package Limitations)
+For exhaustive details on data safety, licensing terms, and research boundaries, see `LIMITATIONS_PACKAGE.md` and `LICENCE_AND_PROVENANCE.md`. Key exclusions and limitations include:
+1. **Single-Source Equity Price Feeds**: All equity indices rely on single primary vendor feeds, with the exception of S&P 500 (`us_sp500`) and Nikkei 225 (`jp_nikkei225`), which are independently verified against FRED.
+2. **Emerging-Market Announcement Timing**: BCB, Banxico, RBI, and BoK lack official scraped minute-level release timestamps; their decisions are disqualified (`analysis_ok = 0`).
+3. **Bank of England Pre-2016 Timing**: BoE announcements prior to 2016-01-01 are verified at the convention level (strict Thursday 12:00 noon protocol) rather than minute-level press release scrapes.
+4. **Statistics Canada CPI Calendar**: Historical Canadian CPI release dates follow agency calendar schedules rather than minute-level release timestamps.
+5. **Industrial-Production Vintages**: IP controls use historical time series with first-available vintage indicators rather than real-time point-in-time vintage triangles.
+6. **Hand Labels Excluded**: Statement narrative qualitative classifications have not undergone double-blind expert replication and are excluded.
+7. **2026 Decisions Verified Only Internally**: 2026 decisions are quarantined in `post_window_2026.parquet` and verified only internally; they are omitted from distribution tables.
+8. **Test Split Properties (Zero Hikes and Zero Fed Tier 1 Decisions)**: The 2024–2025 test window contains exactly **0 interest rate hikes** (reflecting the easing cycle among the included central banks) and **0 Fed Tier 1 decisions** (Bauer-Swanson series ends December 2023).
+9. **Skipped Package Tests (149 of 177)**: 149 of 177 unit and regression tests are auto-skipped in `code/` because vendor raw data (`data/raw/`) and unredacted price levels cannot be redistributed.
 
 ---
 
@@ -73,7 +79,7 @@ For exhaustive details on data safety, licensing terms, and research boundaries,
 Because multi-horizon event windows span up to 60 trading days (`clr_60`), any policy decision occurring within 60 calendar days prior to a partition boundary (or whose 60-day response window crosses into the subsequent split) is quarantined under `embargo_dropped` (64 decisions, 2,432 rows) to eliminate look-ahead leakage.
 
 ### Critical Property of the Test Split
-The out-of-sample test split (2024-2025) contains **0 interest rate hikes**, reflecting the empirical reality of the 2024-2025 global easing cycle (28 cuts, 42 holds). Models must not be evaluated on rate-hike conditioning during test evaluation.
+The out-of-sample test split (2024-2025) contains **0 interest rate hikes**, reflecting the empirical reality of the easing cycle among the included central banks (28 cuts, 42 holds), and **0 Fed Tier 1 decisions**.
 
 ---
 
@@ -102,7 +108,7 @@ To respect the temporal arrow of time, MoTrans-15 defines 4 rolling-origin evalu
 | `1` | 2016-01-01 | 2010-01-01 to 2015-12-31 | 2016-01-01 to 2017-12-31 | 276 | 97 | 12 | 7 | ZIRP / Post-GFC recovery era |
 | `2` | 2018-01-01 | 2010-01-01 to 2017-12-31 | 2018-01-01 to 2019-12-31 | 372 | 96 | 18 | 10 | Pre-COVID normalization |
 | `3` | 2020-01-01 | 2010-01-01 to 2019-12-31 | 2020-01-01 to 2021-12-31 | 467 | 91 | 30 | 5 | Pandemic policy shock era |
-| `4` | 2022-01-01 | 2010-01-01 to 2021-12-31 | 2022-01-01 to 2023-12-31 | 572 | 76 | 35 | 57 | Global inflation tightening cycle |
+| `4` | 2022-01-01 | 2010-01-01 to 2021-12-31 | 2022-01-01 to 2023-12-31 | 572 | 76 | 35 | 57 | Post-pandemic inflation cycle |
 | `final_fit` | 2024-01-01 | 2010-01-01 to 2023-12-31 | — | 648 | 0 | 92 | 0 | Full TRAIN + VALIDATION estimation set before locked test split |
 
 ### How to Use `folds.csv`
@@ -115,7 +121,7 @@ To respect the temporal arrow of time, MoTrans-15 defines 4 rolling-origin evalu
 ```
 zenodo_release/
 ├── README.md                          # This document
-├── LICENSE                            # Creative Commons CC-BY-4.0 (Dataset)
+├── LICENSE                            # Custom Non-Open Research License (CC-BY-4.0 preserved conditionally)
 ├── LICENSE-CODE                       # MIT License (Code)
 ├── CITATION.cff                       # Citation metadata (CFF 1.2.0)
 ├── .zenodo.json                       # Zenodo deposit metadata

@@ -1,7 +1,7 @@
 {
   "title": "MoTrans-15: Monetary policy surprises, central bank communication and equity-index responses for the largest economies, 2010-2025 (v2.1.1)",
   "upload_type": "dataset",
-  "description": "<p><strong>MoTrans-15 (v2.1.1)</strong> is a standardized, replication-certified dataset of monetary policy surprises, central bank communications, macroeconomic controls, and equity-index return responses across 15 major economies from 2010 through 2025 (16 calendar years).</p>\n<p><strong>Dataset Characteristics:</strong></p>\n<ul>\n  <li><strong>Evaluation Window:</strong> 2010-01-01 to 2025-12-31 (16 calendar years).</li>\n  <li><strong>Temporal Splits:</strong> TRAIN (2010-2021, 572 decisions), VALIDATION (2022-2023, 76 decisions), TEST (2024-2025, 70 decisions).</li>\n  <li><strong>Embargo Protocol:</strong> Strict 60-day embargo prevents multi-horizon event window overlap across split boundaries.</li>\n  <li><strong>Locked Out-of-Sample Test Split:</strong> Contains exactly 0 interest rate hikes, reflecting the global post-inflation monetary easing cycle.</li>\n  <li><strong>Cross-Validation:</strong> 4 expanding rolling-origin evaluation folds plus a unified final_fit estimation partition (folds.csv).</li>\n</ul>\n<p><strong>Restricted Access Notice:</strong> Access is restricted upon request for academic research and replication due to derived equity return series from commercial index feeds. Closing price levels (<code>level_local</code>) are omitted. Access can be requested by emailing <a href=\"mailto:jaypatregaurav81@gmail.com\">jaypatregaurav81@gmail.com</a>.</p>",
+  "description": "<p><strong>MoTrans-15 (v2.1.1)</strong>: central banks and equity indices for 15 economies were screened; usable analysis decisions exist for the Fed, ECB, BoE, BoC, RBA and CBR (BoJ as a sensitivity set); Brazil, Mexico, India, Korea and China have no usable decisions in this version. The evaluation window covers 2010-01-01 to 2025-12-31 (16 calendar years).</p>\n<p>Code and data pipeline were developed with AI-assisted coding tools.</p>\n<p><strong>Dataset Characteristics:</strong></p>\n<ul>\n  <li><strong>Evaluation Window:</strong> 2010-01-01 to 2025-12-31 (16 calendar years).</li>\n  <li><strong>Temporal Splits:</strong> TRAIN (2010-2021, 572 decisions), VALIDATION (2022-2023, 76 decisions), TEST (2024-2025, 70 decisions).</li>\n  <li><strong>Embargo Protocol:</strong> Strict 60-day embargo prevents multi-horizon event window overlap across split boundaries.</li>\n  <li><strong>Locked Out-of-Sample Test Split:</strong> Contains exactly 0 interest rate hikes, reflecting the easing cycle among the included central banks, and 0 Fed Tier 1 decisions.</li>\n  <li><strong>Cross-Validation:</strong> 4 expanding rolling-origin evaluation folds plus a unified final_fit estimation partition (folds.csv).</li>\n</ul>\n<p><strong>Restricted Access Notice:</strong> Access is restricted upon request for non-commercial academic research and replication due to derived equity return series from commercial index feeds. Closing price levels (<code>level_local</code>) are omitted. Access can be requested via the Zenodo access-request interface.</p>",
   "creators": [
     {
       "name": "Jaypatre, Gaurav Mansing",
@@ -13,8 +13,8 @@
     }
   ],
   "access_right": "restricted",
-  "access_conditions": "Access to derived equity return tables and documentation is granted upon request for academic research and replication. To request access, please contact jaypatregaurav81@gmail.com stating your name, institutional affiliation, and a brief description of your intended academic research project.",
-  "license": "cc-by-4.0",
+  "access_conditions": "Access to derived equity return tables and documentation is granted upon request via the Zenodo access-request interface for non-commercial academic research and replication. To request access, please submit an access request through the Zenodo interface detailing your institutional affiliation and intended academic research project.",
+  "license": "other-closed",
   "version": "2.1.1",
   "publication_date": "2026-10-29",
   "keywords": [
@@ -28,7 +28,7 @@
     "leakage audit"
   ],
   "language": "eng",
-  "notes": "MoTrans-15 v2.1.1 release package. The test split (2024-2025) is strictly locked for model evaluation and contains zero interest rate hikes (property of the 2024-2025 global monetary easing cycle).",
+  "notes": "MoTrans-15 v2.1.1 release package. The test split (2024-2025) is strictly locked for model evaluation and contains zero interest rate hikes (property of the easing cycle among the included central banks) and zero Fed Tier 1 decisions. Data License: Other (non-open) research use license; Code License: MIT. Code and data pipeline were developed with AI-assisted coding tools.",
   "related_identifiers": [
     {
       "identifier": "https://github.com/GauravJaypatre/MoTrans-15_Policy-and-Markets",

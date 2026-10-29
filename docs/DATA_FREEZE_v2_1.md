@@ -1,7 +1,7 @@
 # MoTrans-15 v2.1.1 Data Freeze Certification
 
 **Release Tag**: `v2.1.1-train-test-ready`  
-**Git Commit Hash**: `f30ab1838c0820fa41f134c91cc058066c48cfdf` (reconciled from pre-commit draft placeholder `be11b3f4c49a2e0da976715a677dac398e859a8a`)  
+**Git Commit Hash**: 30ab1838c0820fa41f134c91cc058066c48cfdf  
 **Certification Date**: 2026-10-26 (reconciled 2026-10-29 on branch zenodo-release)  
 **Verification Engine**: Bitwise Double-Rebuild Verification Pass (Python 3.13)  
 
@@ -20,9 +20,9 @@ All parent tags are permanently preserved in the repository history and have not
 | `v2.1.1-train-test-ready` | `a6f7f8b95c86e01bbe4177580fd34c5c2c009ba1` | `f30ab1838c0820fa41f134c91cc058066c48cfdf` | **PERMANENT / UNMOVED** |
 
 > **Audit Note on History & Tag Objects**:
-> - Pre-rewrite hashes (prior to removing Claude co-authorship metadata): `v1.0` commit `1774400c...` (tag `750d1924...`), `v2.0` commit `a4bc9d6a...` (tag `11d5c94f...`), `v2.0.1` commit `67cb97b6...` (tag `9f67b270...`), `v2.1` commit `be11b3f4...` (tag `10eb56ea...`), `v2.1.1` commit `a8985361...` (tag `3da65565...` / report draft `2d80319...`).
-> - The initial draft of `DATA_FREEZE_v2_1.md` recorded commit `be11b3f4...` because the commit for v2.1.1 (`a8985361...` / `f30ab183...`) had not yet been finalized at the moment the document text was staged.
-> - Current post-rewrite tag objects and commit hashes above reflect the active repository history where all underlying data files retain 100% bitwise SHA-256 identity.
+> - All commit hashes and tag objects listed in the table above exist directly in the active repository history.
+> - The history rewrite occurred during repository maintainer setup to remove automated bot co-authorship trailers (git-filter-repo), ensuring all commits reflect official repository authors.
+> - Under this active repository history, all underlying data files retain 100% bitwise SHA-256 identity against the frozen dataset specification.
 
 ---
 

@@ -4,7 +4,7 @@ All package settings are controlled exclusively from this file.
 """
 
 ACCESS_MODE = "restricted"  # "restricted" or "open"
-DATA_LICENSE = "CC-BY-4.0"
+DATA_LICENSE = "Other (non-open)"
 CODE_LICENSE = "MIT"
 TITLE = (
     "MoTrans-15: Monetary policy surprises, central bank communication and equity-index "

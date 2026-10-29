@@ -4,12 +4,12 @@
 - **Package Name**: MoTrans-15 v2.1.1 Zenodo Release Package
 - **Base Freeze Commit**: `f30ab1838c0820fa41f134c91cc058066c48cfdf` (Tag: `v2.1.1-train-test-ready`)
 - **Release Branch**: `zenodo-release`
-- **Release Tag**: `v2.1.1-zenodo-package-r2`
+- **Release Tag**: `v2.1.1-zenodo-package-r3`
 - **Python Version**: Python 3.13.1
-- **Packaging Engine**: Automated Bitwise Packaging & Verification Suite
+- **Development Note**: Code and data pipeline were developed with AI-assisted coding tools.
 
 ## 2. Research Guardrail Certification
-> **CRITICAL CERTIFICATION**: Neither `UNLOCK_TEST` nor `UNLOCK_POST` was set at any time during the creation or verification of this release package. The packaging and verification scripts accessed strictly date, identifier, and partition columns (`event_id`, `decision_date`, `final_split`, `decision`) for row counting, leakage checks, and schema auditing. No test-split outcome columns or post-window outcomes were inspected or modeled.
+> **CRITICAL CERTIFICATION**: Neither `UNLOCK_TEST` nor `UNLOCK_POST` was set by any packaging script or model code. The packaging and verification scripts accessed strictly date, identifier, and partition columns (`event_id`, `decision_date`, `final_split`, `decision`) for row counting, leakage checks, and schema auditing. No test-split outcome columns or post-window outcomes were inspected or modeled. (All unlock audit events recorded during verification were triggered exclusively by unit tests in `tests/test_v2_1_tables.py` validating that the model guard security lock raises `PermissionError` when unset; see `outputs/v2_1/unlock_audit_packaging.log`).
 
 ## 3. Cryptographic Verification Summary
 All data tables packaged in `data/` were verified bit-for-bit against the SHA-256 hashes certified in `docs/DATA_FREEZE_v2_1.md` before packaging:

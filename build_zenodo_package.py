@@ -1,4 +1,4 @@
-"""MoTrans-15 v2.1.1 Zenodo Release Package Builder.
+"""MoTrans-15 v2.1.1 Zenodo Release Package Builder (Revision 3).
 
 Generates the complete release package in zenodo_release/ according to all
 strict research integrity and packaging guidelines.
@@ -21,9 +21,6 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8")
-
-import pandas as pd
-import pyarrow.parquet as pq
 
 # Import configuration
 import zenodo_release_config as cfg
@@ -53,8 +50,6 @@ def sha256_file(path: Path) -> str:
         while chunk := f.read(65536):
             h.update(chunk)
     return h.hexdigest()
-
-import stat
 
 def remove_readonly(func, path, exc):
     os.chmod(path, stat.S_IWRITE)
@@ -99,6 +94,7 @@ def copy_data_files() -> None:
         if filename in ["analysis_tier1.parquet", "analysis_tier2_primary.parquet", "secondary_holds.parquet"]:
             csv_name = filename.replace(".parquet", ".csv")
             csv_path = data_dest / csv_name
+            import pandas as pd
             df = pd.read_parquet(src_path)
             df.to_csv(csv_path, index=False)
             print(f"  Exported convenience CSV: {csv_name} ({len(df)} rows)")
@@ -213,12 +209,14 @@ def pytest_collection_modifyitems(config, items):
     code_readme = (
         "# MoTrans-15 v2.1.1 Code Package\n\n"
         "This directory contains the Python pipeline, verification suite, and regression tests for MoTrans-15.\n\n"
+        "## Development Notice\n"
+        "The code and data processing pipeline were developed with AI-assisted coding tools.\n\n"
         "## Important Redistribution Notice Regarding Raw Data\n"
         "- `data/raw` contains proprietary vendor feeds and web archives which **cannot be redistributed** under public Zenodo license terms.\n"
         "- The packaged parquet analysis tables in `../data/` are pre-built, bitwise-certified, and ready for immediate research consumption.\n"
         "- To execute the end-to-end raw data ingestion pipeline (`python -m src.pipeline`), primary sources must be retrieved directly in accordance with vendor terms.\n\n"
         "## Running Tests\n"
-        "To run the unit test suite:\n"
+        "To run the test suite:\n"
         "```bash\n"
         "pytest\n"
         "```\n"
@@ -227,7 +225,7 @@ def pytest_collection_modifyitems(config, items):
     print("  Packaged src, tests, configuration, and conftest.py into code/")
 
 def write_license_files() -> None:
-    print("[6/11] Writing LICENSE and LICENSE-CODE...")
+    print("[6/11] Writing LICENSE (Custom Non-Open Research License) and LICENSE-CODE (MIT)...")
     mit_text = (
         "MIT License\n\n"
         "Copyright (c) 2026 Gaurav Mansing Jaypatre and Prachi Ravi Pawar\n\n"
@@ -249,34 +247,36 @@ def write_license_files() -> None:
     )
     (RELEASE_DIR / "LICENSE-CODE").write_text(mit_text, encoding="utf-8")
 
-    cc_by_text = (
-        "Creative Commons Attribution 4.0 International Public License\n\n"
-        "By exercising the Licensed Rights (defined below), You accept and agree to be bound by the terms and conditions of this Creative Commons Attribution 4.0 International Public License (\"Public License\"). To the extent this Public License may be interpreted as a contract, You are granted the Licensed Rights in consideration of Your acceptance of these terms and conditions, and the Licensor grants You such rights in consideration of benefits the Licensor receives from making the Licensed Material available under these terms and conditions.\n\n"
-        "Section 1 -- Definitions.\n"
-        "a. Adapted Material means material that is subject to Copyright and Similar Rights that is derived from or based upon the Licensed Material...\n"
-        "b. Copyright and Similar Rights means copyright and/or similar rights closely related to copyright including, without limitation, performance, broadcast, sound recording, and Sui Generis Database Rights...\n"
-        "c. Effective Technological Measures means those measures that, in the absence of proper authority, may not be circumvented under laws fulfilling obligations under Article 11 of the WIPO Copyright Treaty adopted on December 20, 1996...\n"
-        "d. Exceptions and Limitations means fair use, fair dealing, and/or any other exception or limitation to Copyright and Similar Rights that applies to Your use of the Licensed Material.\n"
-        "e. Licensed Material means the artistic or literary work, database, or other material to which the Licensor applied this Public License.\n"
-        "f. Licensed Rights means the rights granted to You subject to the terms and conditions of this Public License, which are limited to all Copyright and Similar Rights that apply to Your use of the Licensed Material and that the Licensor has authority to license.\n"
-        "g. Licensor means the individual(s) or entity(ies) granting rights under this Public License.\n"
-        "h. Share means to provide material to the public by any means or process that requires permission under the Licensed Rights, such as reproduction, public display, public performance, distribution, dissemination, communication, or importation...\n"
-        "i. Sui Generis Database Rights means rights other than copyright resulting from Directive 96/9/EC of the European Parliament and of the Council of 11 March 1996 on the legal protection of databases, as amended and/or succeeded, as well as other essentially equivalent rights anywhere in the world.\n"
-        "j. You means the individual or entity exercising the Licensed Rights under this Public License.\n\n"
-        "Section 2 -- Scope.\n"
-        "a. License grant. Subject to the terms and conditions of this Public License, the Licensor hereby grants You a worldwide, royalty-free, non-sublicensable, non-exclusive, irrevocable license to exercise the Licensed Rights in the Licensed Material to:\n"
-        "   1. reproduce and Share the Licensed Material, in whole or in part; and\n"
-        "   2. produce, reproduce, and Share Adapted Material.\n\n"
-        "Section 3 -- Attribution.\n"
-        "If You Share the Licensed Material, You must retain identification of the creator(s) and attribution information, notice of this Public License, and indicate if You modified the Licensed Material.\n\n"
-        "Full legal code: https://creativecommons.org/licenses/by/4.0/legalcode\n"
+    custom_license_text = (
+        "MoTrans-15 Research Use License (Non-Open / Restricted Academic Access)\n\n"
+        "Copyright (c) 2026 Gaurav Mansing Jaypatre and Prachi Ravi Pawar\n\n"
+        "This dataset is distributed under a custom non-open research-use license:\n\n"
+        "1. Permitted Uses:\n"
+        "   - Use is strictly permitted for non-commercial academic research, teaching, and scientific replication.\n\n"
+        "2. Redistribution Prohibitions:\n"
+        "   - Neither the dataset, nor any constituent tables, derived return windows, or parsed series may be redistributed,\n"
+        "     re-hosted, mirrored, sub-licensed, or made available to third parties in whole or in part without express written authorization.\n\n"
+        "3. Commercial Use:\n"
+        "   - Commercial use, exploitation, or inclusion in commercial financial models or proprietary trading systems is strictly prohibited.\n\n"
+        "4. Mandatory Attribution:\n"
+        "   - Any published paper, thesis, conference proceeding, or academic report utilizing this dataset must cite MoTrans-15 v2.1.1\n"
+        "     and its authors as specified in CITATION.cff and README.md.\n\n"
+        "5. Access Protocol:\n"
+        "   - Access is restricted and granted individually upon request via the official Zenodo access-request interface\n"
+        "     for verified academic research purposes.\n\n"
+        "6. Documented Future Licensing Option (CC-BY-4.0):\n"
+        "   - Transition to an open Creative Commons Attribution 4.0 International (CC-BY-4.0) license is maintained as a\n"
+        "     documented future option, strictly conditional upon the acquisition of formal, signed redistribution clearance\n"
+        "     from primary financial index providers (recorded in LICENCE_CLEARANCE.txt). In the absence of signed clearance,\n"
+        "     this restricted license remains exclusively in force.\n"
     )
-    (RELEASE_DIR / "LICENSE").write_text(cc_by_text, encoding="utf-8")
+    (RELEASE_DIR / "LICENSE").write_text(custom_license_text, encoding="utf-8")
 
 def build_licence_and_provenance() -> None:
     print("[7/11] Building LICENCE_AND_PROVENANCE.md from data/raw/MANIFEST.csv...")
     manifest_path = ROOT / "data" / "raw" / "MANIFEST.csv"
     assert manifest_path.exists(), "data/raw/MANIFEST.csv missing"
+    import pandas as pd
     df_m = pd.read_csv(manifest_path)
 
     # Group key providers
@@ -327,9 +327,10 @@ def build_licence_and_provenance() -> None:
 
     lines = [
         "# MoTrans-15 v2.1.1 Data Source Licence & Provenance Audit\n\n",
-        "This document provides an exhaustive inventory of all data providers, quoting their stated terms directly from `data/raw/MANIFEST.csv` and documenting open licensing questions for research dissemination.\n\n",
+        "This document provides an inventory of all data providers, quoting their stated terms directly from `data/raw/MANIFEST.csv` and documenting licensing questions for research dissemination.\n\n",
         "## Summary of Licencing Status\n\n",
-        f"- **Selected Access Mode**: `{cfg.ACCESS_MODE}` (Access granted by request for academic replication).\n",
+        f"- **Selected Access Mode**: `{cfg.ACCESS_MODE}` (Access granted by request via Zenodo for academic replication).\n",
+        "- **Data Licence**: Custom 'Other (non-open)' research-use license (non-commercial academic research, no redistribution, attribution required; CC-BY-4.0 is preserved as a documented future option conditional on `LICENCE_CLEARANCE.txt`).\n",
         "- **Proprietary Closing Price Levels**: **Omitted** (`level_local` excluded from all packaged tables; `panel_returns_only.parquet` provides continuous log returns without starting levels).\n",
         "- **Raw Data Status**: Excluded from package (`data/raw/` contains vendor feeds that cannot be redistributed).\n\n",
         "## Provider Inventory & Quoted Terms\n\n",
@@ -364,15 +365,16 @@ def build_provenance_and_limitations() -> None:
         "- **Package Name**: MoTrans-15 v2.1.1 Zenodo Release Package\n"
         "- **Base Freeze Commit**: `f30ab1838c0820fa41f134c91cc058066c48cfdf` (Tag: `v2.1.1-train-test-ready`)\n"
         "- **Release Branch**: `zenodo-release`\n"
-        "- **Release Tag**: `v2.1.1-zenodo-package-r2`\n"
+        "- **Release Tag**: `v2.1.1-zenodo-package-r3`\n"
         "- **Python Version**: Python 3.13.1\n"
-        "- **Packaging Engine**: Automated Bitwise Packaging & Verification Suite\n\n"
+        "- **Development Note**: Code and data pipeline were developed with AI-assisted coding tools.\n\n"
         "## 2. Research Guardrail Certification\n"
-        "> **CRITICAL CERTIFICATION**: Neither `UNLOCK_TEST` nor `UNLOCK_POST` was set at any time during "
-        "the creation or verification of this release package. The packaging and verification scripts accessed "
-        "strictly date, identifier, and partition columns (`event_id`, `decision_date`, `final_split`, `decision`) "
-        "for row counting, leakage checks, and schema auditing. No test-split outcome columns or post-window outcomes "
-        "were inspected or modeled.\n\n"
+        "> **CRITICAL CERTIFICATION**: Neither `UNLOCK_TEST` nor `UNLOCK_POST` was set by any packaging script "
+        "or model code. The packaging and verification scripts accessed strictly date, identifier, and partition "
+        "columns (`event_id`, `decision_date`, `final_split`, `decision`) for row counting, leakage checks, and schema auditing. "
+        "No test-split outcome columns or post-window outcomes were inspected or modeled. (All unlock audit events recorded during "
+        "verification were triggered exclusively by unit tests in `tests/test_v2_1_tables.py` validating that the model guard security "
+        "lock raises `PermissionError` when unset; see `outputs/v2_1/unlock_audit_packaging.log`).\n\n"
         "## 3. Cryptographic Verification Summary\n"
         "All data tables packaged in `data/` were verified bit-for-bit against the SHA-256 hashes certified in "
         "`docs/DATA_FREEZE_v2_1.md` before packaging:\n"
@@ -389,23 +391,26 @@ def build_provenance_and_limitations() -> None:
         "# MoTrans-15 v2.1.1 Release Package Limitations\n\n"
         "In accordance with open research integrity standards, this document discloses all known package constraints, "
         "data limitations, and unverified components:\n\n"
-        "1. **Restricted Access Designation**:\n"
-        "   - Because financial market return series are derived from commercial index feeds without signed redistribution clearance (`LICENCE_CLEARANCE.txt` not present), this dataset is designated **Restricted Access** on Zenodo (accessible upon academic request).\n\n"
-        "2. **Single-Source Equity Price Feeds**:\n"
+        "1. **Single-Source Equity Price Feeds**:\n"
         "   - Only S&P 500 (`us_sp500`) and Nikkei 225 (`jp_nikkei225`) have been cross-verified against independent FRED data (`price_source_verified = 1`).\n"
         "   - The remaining 36 indices rely on primary vendor feeds (`price_source_verified = 0`).\n\n"
-        "3. **Emerging Market Announcement Timestamps**:\n"
-        "   - Banco Central do Brasil (BCB), Banco de México (Banxico), Reserve Bank of India (RBI), and Bank of Korea (BoK) lack official scraped minute-level release archives. These decisions are disqualified from the primary evaluation sample (`analysis_ok = 0`).\n\n"
-        "4. **Bank of England Pre-2016 MPC Timing**:\n"
+        "2. **Emerging Market Announcement Timestamps**:\n"
+        "   - Banco Central do Brasil (BCB), Banco de México (Banxico), Reserve Bank of India (RBI), and Bank of Korea (BoK) lack official scraped minute-level release archives. These decisions are disqualified from the primary evaluation sample (`analysis_ok = 0`). Brazil, Mexico, India, Korea and China have no usable decisions in this version.\n\n"
+        "3. **Bank of England Pre-2016 MPC Timing**:\n"
         "   - BoE announcement timing prior to 2016-01-01 is verified at convention level (strict Thursday 12:00 noon GMT protocol) rather than minute-level press release scrapes (`timing_verified_level = 'convention'`).\n\n"
-        "5. **Macroeconomic Vintage Revisions**:\n"
-        "   - Industrial Production series reflect historical time series with first-available vintage indicators rather than real-time point-in-time vintage triangles across all 12 economies (`macro_vintage_verified = 0`).\n\n"
-        "6. **Qualitative Hand Labels Excluded**:\n"
-        "   - Narrative statement qualitative hand classifications have not undergone double-blind expert replication and are excluded from this release.\n\n"
-        "7. **Zero Rate Hikes in Out-of-Sample Test Split**:\n"
-        "   - The 2024–2025 strictly locked test split contains exactly **0 interest rate hikes**, reflecting the empirical reality of the global post-inflation monetary easing cycle. Models must not rely on rate hike observations during out-of-sample evaluation.\n\n"
-        "8. **Standalone Code Package Execution**:\n"
-        "   - `data/raw` cannot be redistributed. Running the raw pipeline from `code/` requires fetching raw files directly from primary sources.\n"
+        "4. **Statistics Canada CPI Calendar**:\n"
+        "   - Statistics Canada historical CPI release dates and times follow agency release calendar schedules rather than minute-level announcement timestamps.\n\n"
+        "5. **Macroeconomic Industrial-Production Vintage Revisions**:\n"
+        "   - Industrial Production series reflect historical time series with first-available vintage indicators rather than real-time point-in-time vintage triangles across all economies (`macro_vintage_verified = 0`).\n\n"
+        "6. **Qualitative Hand Labels Not Completed**:\n"
+        "   - Narrative statement qualitative hand classifications have not undergone double-blind expert replication and are excluded from this release (see `docs/labelling_guide.md`).\n\n"
+        "7. **2026 Decisions Verified Only Internally**:\n"
+        "   - 2026 policy decisions and market data are quarantined in `post_window_2026.parquet` and verified only internally; they are strictly excluded from the release tables to prevent temporal contamination.\n\n"
+        "8. **Test Split Properties (Zero Hikes and Zero Fed Tier 1 Decisions)**:\n"
+        "   - The 2024–2025 strictly locked test split contains exactly **0 interest rate hikes**, reflecting the easing cycle among the included central banks.\n"
+        "   - The test split contains **0 Fed Tier 1 decisions** because the Bauer-Swanson high-frequency surprise series ends in December 2023 (2024–2025 Fed decisions rely on 1-day sovereign yield proxy surprises under Tier 2).\n\n"
+        "9. **Skipped Package Tests (149 of 177)**:\n"
+        "   - In the isolated release package (`code/`), 149 of 177 tests are auto-skipped via `conftest.py` because proprietary vendor raw feeds (`data/raw/`), legacy tables (`data/v2/`), unredacted price levels (`level_local`), and quarantined 2026 data cannot be redistributed. Running all 177 tests requires restoring primary raw feeds.\n"
     )
     (RELEASE_DIR / "LIMITATIONS_PACKAGE.md").write_text(limits_text, encoding="utf-8")
     print("  Generated PROVENANCE.md and LIMITATIONS_PACKAGE.md")
@@ -426,26 +431,28 @@ def build_metadata_files() -> None:
     ]
 
     description_html = (
-        "<p><strong>MoTrans-15 (v2.1.1)</strong> is a standardized, replication-certified dataset of monetary policy surprises, "
-        "central bank communications, macroeconomic controls, and equity-index return responses across 15 major economies from "
-        "2010 through 2025 (16 calendar years).</p>\n"
+        "<p><strong>MoTrans-15 (v2.1.1)</strong>: central banks and equity indices for 15 economies were screened; "
+        "usable analysis decisions exist for the Fed, ECB, BoE, BoC, RBA and CBR (BoJ as a sensitivity set); "
+        "Brazil, Mexico, India, Korea and China have no usable decisions in this version. The evaluation window covers "
+        "2010-01-01 to 2025-12-31 (16 calendar years).</p>\n"
+        "<p>Code and data pipeline were developed with AI-assisted coding tools.</p>\n"
         "<p><strong>Dataset Characteristics:</strong></p>\n"
         "<ul>\n"
         "  <li><strong>Evaluation Window:</strong> 2010-01-01 to 2025-12-31 (16 calendar years).</li>\n"
         "  <li><strong>Temporal Splits:</strong> TRAIN (2010-2021, 572 decisions), VALIDATION (2022-2023, 76 decisions), TEST (2024-2025, 70 decisions).</li>\n"
         "  <li><strong>Embargo Protocol:</strong> Strict 60-day embargo prevents multi-horizon event window overlap across split boundaries.</li>\n"
-        "  <li><strong>Locked Out-of-Sample Test Split:</strong> Contains exactly 0 interest rate hikes, reflecting the global post-inflation monetary easing cycle.</li>\n"
+        "  <li><strong>Locked Out-of-Sample Test Split:</strong> Contains exactly 0 interest rate hikes, reflecting the easing cycle among the included central banks, and 0 Fed Tier 1 decisions.</li>\n"
         "  <li><strong>Cross-Validation:</strong> 4 expanding rolling-origin evaluation folds plus a unified final_fit estimation partition (folds.csv).</li>\n"
         "</ul>\n"
-        "<p><strong>Restricted Access Notice:</strong> Access is restricted upon request for academic research and replication due to derived "
+        "<p><strong>Restricted Access Notice:</strong> Access is restricted upon request for non-commercial academic research and replication due to derived "
         "equity return series from commercial index feeds. Closing price levels (<code>level_local</code>) are omitted. Access can be requested "
-        "by emailing <a href=\"mailto:jaypatregaurav81@gmail.com\">jaypatregaurav81@gmail.com</a>.</p>"
+        "via the Zenodo access-request interface.</p>"
     )
 
     access_conditions_text = (
-        "Access to derived equity return tables and documentation is granted upon request for academic research and replication. "
-        "To request access, please contact jaypatregaurav81@gmail.com stating your name, institutional affiliation, and a brief description "
-        "of your intended academic research project."
+        "Access to derived equity return tables and documentation is granted upon request via the Zenodo access-request interface "
+        "for non-commercial academic research and replication. To request access, please submit an access request through the Zenodo interface "
+        "detailing your institutional affiliation and intended academic research project."
     )
 
     zenodo_json = {
@@ -455,7 +462,7 @@ def build_metadata_files() -> None:
         "creators": creators,
         "access_right": "restricted",
         "access_conditions": access_conditions_text,
-        "license": "cc-by-4.0",
+        "license": "other-closed",
         "version": "2.1.1",
         "publication_date": "2026-10-29",
         "keywords": [
@@ -471,7 +478,9 @@ def build_metadata_files() -> None:
         "language": "eng",
         "notes": (
             "MoTrans-15 v2.1.1 release package. The test split (2024-2025) is strictly locked for model evaluation "
-            "and contains zero interest rate hikes (property of the 2024-2025 global monetary easing cycle)."
+            "and contains zero interest rate hikes (property of the easing cycle among the included central banks) and zero Fed Tier 1 decisions. "
+            "Data License: Other (non-open) research use license; Code License: MIT. "
+            "Code and data pipeline were developed with AI-assisted coding tools."
         ),
         "related_identifiers": [
             {
@@ -488,7 +497,7 @@ message: "If you use this dataset, please cite it as below."
 title: "{cfg.TITLE}"
 version: "2.1.1"
 date-released: "2026-10-29"
-license: "CC-BY-4.0"
+license: "LicenseRef-Other-NonOpen"
 repository-code: "{repo_url}"
 type: dataset
 authors:
@@ -499,15 +508,15 @@ authors:
     given-names: "Prachi Ravi"
     affiliation: "Pimpri Chinchwad College of Engineering (PCCOE), Pune, India"
 contact:
-  - email: "jaypatregaurav81@gmail.com"
-    name: "Gaurav Mansing Jaypatre"
+  - name: "TODO"
+    email: "TODO"
 """
     (RELEASE_DIR / "CITATION.cff").write_text(cff_content, encoding="utf-8")
     print("  Generated .zenodo.json and CITATION.cff")
 
 def build_readme() -> None:
     print("[10/11] Building zenodo_release/README.md with exact figures from CSV reports...")
-    # Load exact numbers from CSV reports
+    import pandas as pd
     df_split = pd.read_csv(OUTPUTS_V2_1 / "split_counts.csv")
     df_rows = pd.read_csv(OUTPUTS_V2_1 / "row_membership.csv")
 
@@ -527,28 +536,30 @@ def build_readme() -> None:
     readme = f"""# {cfg.TITLE}
 
 ## Overview & Scope
-**MoTrans-15 (v2.1.1)** is a standardized, replication-certified dataset tracking central bank monetary policy announcements, high-frequency surprises, macroeconomic controls, and equity market responses across the world's major economies for the evaluation window **2010-01-01 to 2025-12-31** (16 calendar years).
+**MoTrans-15 (v2.1.1)**: central banks and equity indices for 15 economies were screened; usable analysis decisions exist for the Fed, ECB, BoE, BoC, RBA and CBR (BoJ as a sensitivity set); Brazil, Mexico, India, Korea and China have no usable decisions in this version. The evaluation window covers **2010-01-01 to 2025-12-31** (16 calendar years).
+
+Code and data pipeline were developed with AI-assisted coding tools.
 
 ### Configuration & Access Terms
-- **ACCESS_MODE**: `{cfg.ACCESS_MODE}` (Access granted by request for academic replication)
-- **DATA_LICENSE**: `{cfg.DATA_LICENSE}`
+- **ACCESS_MODE**: `{cfg.ACCESS_MODE}` (Access granted by request via Zenodo for academic replication)
+- **DATA_LICENSE**: `Other (non-open / non-commercial research use; see LICENSE)`
 - **CODE_LICENSE**: `{cfg.CODE_LICENSE}`
 - **Authors & Affiliations**: Gaurav Mansing Jaypatre & Prachi Ravi Pawar (Pimpri Chinchwad College of Engineering (PCCOE), Pune, India)
-- **Contact Email**: `jaypatregaurav81@gmail.com`
-- **Reason for Restricted Access**: Financial index return series are derived from commercial exchange closing prices without signed vendor redistribution clearance. Closing price levels (`level_local`) are omitted from all tables; access to derived return tables is restricted to verified academic researchers upon request.
+- **Contact**: `TODO` (to be configured by depositor via Zenodo access-request interface)
+- **Reason for Restricted Access**: Financial index return series are derived from commercial exchange closing prices without signed vendor redistribution clearance. Closing price levels (`level_local`) are omitted from all tables; access to derived return tables is restricted to verified academic researchers upon request via Zenodo.
 
 ---
 
 ## 1. How to Request Access
-In accordance with data provider license terms, this dataset is published under **Restricted Access** on Zenodo. Access is granted free of charge to researchers for academic study and replication.
+In accordance with data provider license terms, this dataset is published under **Restricted Access** on Zenodo. Access is granted free of charge to researchers for non-commercial academic study and scientific replication.
 
 To request access:
-1. Submit an access request via the Zenodo web interface or email the lead author directly at **`jaypatregaurav81@gmail.com`**.
+1. Submit an access request directly via the **Zenodo web interface** on the deposit record page.
 2. In your request, please provide:
    - Full Name and Institutional Affiliation (university, department, or research institute).
    - Brief statement of the intended academic research or replication study.
-   - Confirmation that the dataset will be used solely for academic research and that raw or derived tables will not be redistributed commercially.
-3. Access requests are evaluated and approved promptly (typically within 48–72 hours).
+   - Confirmation that the dataset will be used solely for non-commercial academic research and that raw or derived tables will not be redistributed.
+3. Access requests are evaluated and approved promptly through Zenodo.
 
 ---
 
@@ -576,13 +587,17 @@ If you use this dataset in your research, please cite it as follows:
 
 ---
 
-## 3. What is NOT Included and Why
-For exhaustive details on data safety, licensing terms, and research boundaries, see `LIMITATIONS_PACKAGE.md` and `LICENCE_AND_PROVENANCE.md`. Key exclusions include:
-- **Vendor Raw Data Feeds (`data/raw/`)**: Commercial index vendor feeds and third-party web scrapes are excluded from distribution to adhere strictly to redistribution terms. Pipeline code in `code/` can process primary sources fetched under individual researcher access.
-- **Closing Price Levels (`level_local`)**: Proprietary index price levels are omitted across all tables to protect index provider intellectual property. All analysis tables provide continuous log event return windows (`clr_1` through `clr_60`) and daily panel returns without level reconstructions.
-- **Manual Statement Qualitative Labels**: Hand-annotated narrative classifications have not undergone double-blind expert replication and are excluded from this release (see `docs/labelling_guide.md`).
-- **Post-Window Observations (`post_window_2026.parquet`)**: 2026 data are strictly quarantined to prevent look-ahead contamination.
-- **Excluded Rows Table (`excluded_rows.parquet`)**: Decisions failing strict timestamp verification or sovereign yield data completeness are quarantined to keep the distribution tables focused on the usable empirical sample.
+## 3. What is NOT Included and Why (Package Limitations)
+For exhaustive details on data safety, licensing terms, and research boundaries, see `LIMITATIONS_PACKAGE.md` and `LICENCE_AND_PROVENANCE.md`. Key exclusions and limitations include:
+1. **Single-Source Equity Price Feeds**: All equity indices rely on single primary vendor feeds, with the exception of S&P 500 (`us_sp500`) and Nikkei 225 (`jp_nikkei225`), which are independently verified against FRED.
+2. **Emerging-Market Announcement Timing**: BCB, Banxico, RBI, and BoK lack official scraped minute-level release timestamps; their decisions are disqualified (`analysis_ok = 0`).
+3. **Bank of England Pre-2016 Timing**: BoE announcements prior to 2016-01-01 are verified at the convention level (strict Thursday 12:00 noon protocol) rather than minute-level press release scrapes.
+4. **Statistics Canada CPI Calendar**: Historical Canadian CPI release dates follow agency calendar schedules rather than minute-level release timestamps.
+5. **Industrial-Production Vintages**: IP controls use historical time series with first-available vintage indicators rather than real-time point-in-time vintage triangles.
+6. **Hand Labels Excluded**: Statement narrative qualitative classifications have not undergone double-blind expert replication and are excluded.
+7. **2026 Decisions Verified Only Internally**: 2026 decisions are quarantined in `post_window_2026.parquet` and verified only internally; they are omitted from distribution tables.
+8. **Test Split Properties (Zero Hikes and Zero Fed Tier 1 Decisions)**: The 2024–2025 test window contains exactly **0 interest rate hikes** (reflecting the easing cycle among the included central banks) and **0 Fed Tier 1 decisions** (Bauer-Swanson series ends December 2023).
+9. **Skipped Package Tests (149 of 177)**: 149 of 177 unit and regression tests are auto-skipped in `code/` because vendor raw data (`data/raw/`) and unredacted price levels cannot be redistributed.
 
 ---
 
@@ -599,7 +614,7 @@ For exhaustive details on data safety, licensing terms, and research boundaries,
 Because multi-horizon event windows span up to 60 trading days (`clr_60`), any policy decision occurring within 60 calendar days prior to a partition boundary (or whose 60-day response window crosses into the subsequent split) is quarantined under `embargo_dropped` (64 decisions, 2,432 rows) to eliminate look-ahead leakage.
 
 ### Critical Property of the Test Split
-The out-of-sample test split (2024-2025) contains **0 interest rate hikes**, reflecting the empirical reality of the 2024-2025 global easing cycle (28 cuts, 42 holds). Models must not be evaluated on rate-hike conditioning during test evaluation.
+The out-of-sample test split (2024-2025) contains **0 interest rate hikes**, reflecting the empirical reality of the easing cycle among the included central banks (28 cuts, 42 holds), and **0 Fed Tier 1 decisions**.
 
 ---
 
@@ -628,7 +643,7 @@ To respect the temporal arrow of time, MoTrans-15 defines 4 rolling-origin evalu
 | `1` | 2016-01-01 | 2010-01-01 to 2015-12-31 | 2016-01-01 to 2017-12-31 | 276 | 97 | 12 | 7 | ZIRP / Post-GFC recovery era |
 | `2` | 2018-01-01 | 2010-01-01 to 2017-12-31 | 2018-01-01 to 2019-12-31 | 372 | 96 | 18 | 10 | Pre-COVID normalization |
 | `3` | 2020-01-01 | 2010-01-01 to 2019-12-31 | 2020-01-01 to 2021-12-31 | 467 | 91 | 30 | 5 | Pandemic policy shock era |
-| `4` | 2022-01-01 | 2010-01-01 to 2021-12-31 | 2022-01-01 to 2023-12-31 | 572 | 76 | 35 | 57 | Global inflation tightening cycle |
+| `4` | 2022-01-01 | 2010-01-01 to 2021-12-31 | 2022-01-01 to 2023-12-31 | 572 | 76 | 35 | 57 | Post-pandemic inflation cycle |
 | `final_fit` | 2024-01-01 | 2010-01-01 to 2023-12-31 | — | 648 | 0 | 92 | 0 | Full TRAIN + VALIDATION estimation set before locked test split |
 
 ### How to Use `folds.csv`
@@ -641,7 +656,7 @@ To respect the temporal arrow of time, MoTrans-15 defines 4 rolling-origin evalu
 ```
 zenodo_release/
 ├── README.md                          # This document
-├── LICENSE                            # Creative Commons CC-BY-4.0 (Dataset)
+├── LICENSE                            # Custom Non-Open Research License (CC-BY-4.0 preserved conditionally)
 ├── LICENSE-CODE                       # MIT License (Code)
 ├── CITATION.cff                       # Citation metadata (CFF 1.2.0)
 ├── .zenodo.json                       # Zenodo deposit metadata
@@ -769,7 +784,7 @@ def build_deterministic_zip() -> None:
 
 def main():
     print("==================================================")
-    print("Building MoTrans-15 v2.1.1 Zenodo Release Package")
+    print("Building MoTrans-15 v2.1.1 Zenodo Release Package (Revision 3)")
     print("==================================================")
     verify_source_hashes()
     ensure_clean_dir(RELEASE_DIR)

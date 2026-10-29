@@ -1,10 +1,11 @@
 # MoTrans-15 v2.1.1 Data Source Licence & Provenance Audit
 
-This document provides an exhaustive inventory of all data providers, quoting their stated terms directly from `data/raw/MANIFEST.csv` and documenting open licensing questions for research dissemination.
+This document provides an inventory of all data providers, quoting their stated terms directly from `data/raw/MANIFEST.csv` and documenting licensing questions for research dissemination.
 
 ## Summary of Licencing Status
 
-- **Selected Access Mode**: `restricted` (Access granted by request for academic replication).
+- **Selected Access Mode**: `restricted` (Access granted by request via Zenodo for academic replication).
+- **Data Licence**: Custom 'Other (non-open)' research-use license (non-commercial academic research, no redistribution, attribution required; CC-BY-4.0 is preserved as a documented future option conditional on `LICENCE_CLEARANCE.txt`).
 - **Proprietary Closing Price Levels**: **Omitted** (`level_local` excluded from all packaged tables; `panel_returns_only.parquet` provides continuous log returns without starting levels).
 - **Raw Data Status**: Excluded from package (`data/raw/` contains vendor feeds that cannot be redistributed).
 

@@ -554,3 +554,31 @@ official page)"`. See ISS-029 for the sourcing plan.
   - All 9 quality gates evaluated by `verify_zenodo_package.py` and confirmed `PASS`.
   - Tagged on `zenodo-release` as `v2.1.1-zenodo-package-r2` (leaving `v2.1.1-train-test-ready` and `v2.1.1-zenodo-package` untouched).
 
+---
+
+## 2026-10-29 — Zenodo Release Package Revision 3 Finalization
+
+### DECISION-031: Package Refinements (Custom Non-Open License, Scope Precision, AI Disclosure, Limitations, and R3 Tag)
+- **Date Recorded**: 2026-10-29 (Branch: `zenodo-release`, Tag: `v2.1.1-zenodo-package-r3`).
+- **Context & Motivation**:
+  - Incorporate user review feedback for the final publication-ready Zenodo package in `zenodo_release/`.
+  - Do not upload anything and do not push to remote; work strictly locally on a new tag `v2.1.1-zenodo-package-r3`.
+- **Changes Implemented**:
+  1. **License Precision**:
+     - Converted data license in `.zenodo.json` (`other-closed`), `CITATION.cff` (`LicenseRef-Other-NonOpen`), and `zenodo_release/LICENSE` to a custom non-open research-use license (non-commercial academic research, no redistribution, attribution required, access by Zenodo request).
+     - Explicitly documented that transition to CC-BY-4.0 remains a future option conditional upon obtaining formal clearance (`LICENCE_CLEARANCE.txt`).
+  2. **Description & Scope Precision**:
+     - Removed words "replication-certified" and "standardized".
+     - Updated coverage description: *"central banks and equity indices for 15 economies were screened; usable analysis decisions exist for the Fed, ECB, BoE, BoC, RBA and CBR (BoJ as a sensitivity set); Brazil, Mexico, India, Korea and China have no usable decisions in this version"*.
+     - Refined easing cycle phrasing to *"easing cycle among the included central banks"*.
+     - Added explicit disclosure: *"Code and data pipeline were developed with AI-assisted coding tools."*
+     - Replaced personal email with Zenodo access-request interface instructions, leaving contact as `TODO` for depositor in `CITATION.cff` and `README.md`.
+  3. **Exhaustive Package Limitations**:
+     - Synchronized `LIMITATIONS_PACKAGE.md` and `README.md` to enumerate all 9 explicit items: single-source prices (all but S&P 500, Nikkei 225), emerging-market timing exclusions, BoE pre-2016 convention timing, Statistics Canada CPI calendar, industrial-production vintages, uncompleted qualitative hand labels, 2026 internal verification, test split zero hikes and zero Fed Tier 1 decisions, and 149 of 177 auto-skipped package tests due to non-redistributable raw vendor feeds.
+  4. **Audit Log & Freeze Integrity**:
+     - Documented all packaging test unlock events in `outputs/v2_1/unlock_audit_packaging.log` and updated `docs/DATA_FREEZE_v2_1.md` so that every cited commit hash exists in the active repository.
+     - Confirmed all 6 data tables under `zenodo_release/data/` remain 100% bit-for-bit identical to frozen hashes.
+  5. **Archive & Tag**:
+     - Rebuilt deterministic zip archive `MoTrans15_v2.1.1_zenodo_package.zip` and tagged on `zenodo-release` as `v2.1.1-zenodo-package-r3`.
+
+
