@@ -10,7 +10,7 @@ Code and data pipeline were developed with AI-assisted coding tools.
 - **DATA_LICENSE**: `Other (non-open / non-commercial research use; see LICENSE)`
 - **CODE_LICENSE**: `MIT`
 - **Authors & Affiliations**: Gaurav Mansing Jaypatre & Prachi Ravi Pawar (Pimpri Chinchwad College of Engineering (PCCOE), Pune, India)
-- **Contact**: `TODO` (to be configured by depositor via Zenodo access-request interface)
+- **Access Requests**: Managed directly via the official Zenodo access-request interface
 - **Reason for Restricted Access**: Financial index return series are derived from commercial exchange closing prices without signed vendor redistribution clearance. Closing price levels (`level_local`) are omitted from all tables; access to derived return tables is restricted to verified academic researchers upon request via Zenodo.
 
 ---

@@ -509,7 +509,6 @@ message: "If you use this dataset, please cite it as below."
 title: "{cfg.TITLE}"
 version: "2.1.1"
 date-released: "2026-10-29"
-license: "LicenseRef-Other-NonOpen"
 repository-code: "{repo_url}"
 type: dataset
 authors:
@@ -519,9 +518,6 @@ authors:
   - family-names: "Pawar"
     given-names: "Prachi Ravi"
     affiliation: "Pimpri Chinchwad College of Engineering (PCCOE), Pune, India"
-contact:
-  - name: "TODO"
-    email: "TODO"
 """
     (RELEASE_DIR / "CITATION.cff").write_text(cff_content, encoding="utf-8")
     print("  Generated .zenodo.json and CITATION.cff")
@@ -557,7 +553,7 @@ Code and data pipeline were developed with AI-assisted coding tools.
 - **DATA_LICENSE**: `Other (non-open / non-commercial research use; see LICENSE)`
 - **CODE_LICENSE**: `{cfg.CODE_LICENSE}`
 - **Authors & Affiliations**: Gaurav Mansing Jaypatre & Prachi Ravi Pawar (Pimpri Chinchwad College of Engineering (PCCOE), Pune, India)
-- **Contact**: `TODO` (to be configured by depositor via Zenodo access-request interface)
+- **Access Requests**: Managed directly via the official Zenodo access-request interface
 - **Reason for Restricted Access**: Financial index return series are derived from commercial exchange closing prices without signed vendor redistribution clearance. Closing price levels (`level_local`) are omitted from all tables; access to derived return tables is restricted to verified academic researchers upon request via Zenodo.
 
 ---

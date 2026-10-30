@@ -2,7 +2,7 @@
 
 Validates all 9 quality and release gates:
 1. JSON / CFF metadata validity (custom non-open research license, updated description, AI tool disclosure)
-2. Zero unauthorized placeholders (only authorized contact TODO allowed)
+2. Zero placeholders (strict check across all files)
 3. Checksums match (all files against CHECKSUMS.sha256)
 4. Data hashes unchanged vs DATA_FREEZE_v2_1.md
 5. Price-level safety (level_local absent)
@@ -100,7 +100,7 @@ def gate_1_metadata_validity() -> bool:
     assert cff_data.get("title") == z_data["title"], "Title mismatch between CFF and Zenodo JSON"
     assert cff_data.get("version") == "2.1.1", f"Version mismatch: {cff_data.get('version')}"
     assert cff_data.get("date-released") == "2026-10-29", f"date-released mismatch: {cff_data.get('date-released')}"
-    assert cff_data.get("license") in ["LicenseRef-Other-NonOpen", "Other"], f"Invalid CFF license: {cff_data.get('license')}"
+    assert "license" not in cff_data, "Custom non-SPDX license string must not be present in CITATION.cff"
     assert "doi" not in cff_data, "Unreserved DOI placeholder must not be present in CITATION.cff"
     
     cff_authors = cff_data.get("authors", [])
@@ -108,9 +108,8 @@ def gate_1_metadata_validity() -> bool:
     assert cff_authors[0]["family-names"] == "Jaypatre" and cff_authors[0]["given-names"] == "Gaurav Mansing"
     assert cff_authors[1]["family-names"] == "Pawar" and cff_authors[1]["given-names"] == "Prachi Ravi"
 
-    contact = cff_data.get("contact", [])
-    assert len(contact) > 0 and contact[0].get("name") == "TODO", "Contact in CITATION.cff must be left as TODO for user per instruction"
-    print("  CITATION.cff: VALID (conforms to CFF 1.2.0, non-open license ref, author order matches .zenodo.json).")
+    assert "contact" not in cff_data or len(cff_data.get("contact", [])) == 0, "Contact block should be omitted when REMOVE_CONTACT is active"
+    print("  CITATION.cff: VALID (conforms to CFF 1.2.0, author order matches .zenodo.json).")
     return True
 
 def gate_2_zero_todos() -> bool:
@@ -131,9 +130,6 @@ def gate_2_zero_todos() -> bool:
                 match = pattern.search(line)
                 if match:
                     rel_p = str(fpath.relative_to(RELEASE_DIR))
-                    # Allow the authorized contact TODO requested by user
-                    if rel_p in ["CITATION.cff", "README.md"] and "TODO" in line:
-                        continue
                     hits.append((rel_p, line_no, match.group(), line.strip()))
 
     if hits:
@@ -142,8 +138,7 @@ def gate_2_zero_todos() -> bool:
             print(f"    {rel_p}:{l_no}: [{word}] -> {text}")
         raise AssertionError(f"Found {len(hits)} forbidden placeholders in package text files!")
     
-    print("  Zero unauthorized placeholder hits found across all package text files.")
-    print("  [Authorized Exception]: User-requested 'contact: TODO' in CITATION.cff and README.md.")
+    print("  Zero placeholder hits found across all package text files (0 exceptions).")
     print("  [Audit Note]: Incidental compressed binary parquet byte sequences (analysis_tier1, panel_returns_only) audited as floating point/dictionary bytes.")
     return True
 
@@ -343,7 +338,7 @@ def main():
     results = {}
     gates = [
         ("Gate 1: JSON / CFF metadata validity", gate_1_metadata_validity),
-        ("Gate 2: Zero unauthorized placeholders", gate_2_zero_todos),
+        ("Gate 2: Zero placeholders (strict)", gate_2_zero_todos),
         ("Gate 3: Checksums match (CHECKSUMS.sha256)", gate_3_checksums_match),
         ("Gate 4: Data hashes unchanged vs freeze", gate_4_data_hashes_unchanged),
         ("Gate 5: Price-level safety (level_local absent)", gate_5_no_price_levels),
