@@ -202,6 +202,13 @@ def pytest_collection_modifyitems(config, items):
                 item.add_marker(skip_marker)
         elif "test_v2_v1_verification.py" in nodeid and missing_outputs_v2:
             item.add_marker(skip_marker)
+
+
+@pytest.fixture(autouse=True)
+def redirect_audit_log(tmp_path, monkeypatch):
+    """Ensure that running tests never modifies production unlock audit logs."""
+    test_log = tmp_path / "test_unlock_audit.log"
+    monkeypatch.setenv("MOTRANS_AUDIT_LOG", str(test_log))
 '''
     (code_dest / "conftest.py").write_text(conftest_code, encoding="utf-8")
 
@@ -372,9 +379,8 @@ def build_provenance_and_limitations() -> None:
         "> **CRITICAL CERTIFICATION**: Neither `UNLOCK_TEST` nor `UNLOCK_POST` was set by any packaging script "
         "or model code. The packaging and verification scripts accessed strictly date, identifier, and partition "
         "columns (`event_id`, `decision_date`, `final_split`, `decision`) for row counting, leakage checks, and schema auditing. "
-        "No test-split outcome columns or post-window outcomes were inspected or modeled. (All unlock audit events recorded during "
-        "verification were triggered exclusively by unit tests in `tests/test_v2_1_tables.py` validating that the model guard security "
-        "lock raises `PermissionError` when unset; see `outputs/v2_1/unlock_audit_packaging.log`).\n\n"
+        "No test-split outcome columns or post-window outcomes were inspected or modeled. (All unlock audit events "
+        "during test verification are redirected via `MOTRANS_AUDIT_LOG` to temporary test fixtures, leaving production audit logs untouched).\n\n"
         "## 3. Cryptographic Verification Summary\n"
         "All data tables packaged in `data/` were verified bit-for-bit against the SHA-256 hashes certified in "
         "`docs/DATA_FREEZE_v2_1.md` before packaging:\n"

@@ -17,7 +17,18 @@ import subprocess
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
-LOG_FILE = ROOT / "outputs" / "v2_1" / "unlock_audit.log"
+DEFAULT_LOG_FILE = ROOT / "outputs" / "v2_1" / "unlock_audit.log"
+
+
+def get_log_file() -> Path:
+    """Return the active audit log path, allowing environment override for tests."""
+    override = os.environ.get("MOTRANS_AUDIT_LOG")
+    if override:
+        return Path(override)
+    return DEFAULT_LOG_FILE
+
+
+LOG_FILE = DEFAULT_LOG_FILE
 
 # Final 12 months of available data (2026-10-13 minus 365 days)
 FINAL_HOLDOUT_START = dt.date(2025, 10, 14)
@@ -42,11 +53,12 @@ def get_git_hash() -> str:
 
 def log_unlock(split_name: str, context: str = "") -> None:
     """Log an unlock event with timestamp and git commit hash."""
-    LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+    target_log = get_log_file()
+    target_log.parent.mkdir(parents=True, exist_ok=True)
     ts = dt.datetime.now(dt.timezone.utc).isoformat()
     git_hash = get_git_hash()
     entry = f"[{ts}] UNLOCK_{split_name.upper()} | git_commit={git_hash} | context={context}\n"
-    with open(LOG_FILE, "a", encoding="utf-8") as f:
+    with open(target_log, "a", encoding="utf-8") as f:
         f.write(entry)
 
 
