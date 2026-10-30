@@ -116,18 +116,16 @@ Because git commit hashes cryptographically encapsulate commit author and messag
 | `v2.0-data-freeze` | `a4bc9d6a...` (tag `11d5c94f...`) | `7b09609cfe96b310e38ec369157ec63053c5c0de` | `a3807cb9e7403c03953e22f7094358f52224d231` | Phase V1–V4 independent verification |
 | `v2.0.1-data-freeze` | `67cb97b6...` (tag `9f67b270...`) | `4b8fc6aa5cd59018816b826e374286fd5715161a` | `62325ac2d1aad2e7e13b37f9cb6eead0a9aba806` | CBR emergency alignment, holdout guard |
 | `v2.1-train-test-ready` | `be11b3f4c49a...` (tag `10eb56ea...`) | `435f2fba24a388cc24a6c0672a7bc32da031368c` | `8147cd19b497e85804246131219e6bdd1b0e7684` | 2010–2025 window, CV folds, leakage audit |
-| `v2.1.1-train-test-ready` | `a8985361...` (tag `2d80319...`) | `f30ab1838c0820fa41f134c91cc058066c48cfdf` | `a6f7f8b95c86e01bbe4177580fd34c5c2c009ba1` | Decision count reconciliation, final_fit |
+| `v2.1.1-train-test-ready` | `a8985361...` (tag `3da6556...`) | `f30ab1838c0820fa41f134c91cc058066c48cfdf` | `a6f7f8b95c86e01bbe4177580fd34c5c2c009ba1` | Decision count reconciliation, final_fit |
 | `v2.1.1-zenodo-package` | — | `63126907200d95bd40fc8627359965b7c45da95d` | `6a2c90ad44ba66c96453f88f81a82be324606902` | Initial Zenodo package build |
 | `v2.1.1-zenodo-package-r2` | — | `d6d784b652318a46ca27a7714b7c1ce48d3560b2` | `bd81df370804be57dd708ec347e576bff4250a43` | Reconciled metadata, conftest auto-skip |
 | `v2.1.1-zenodo-package-r3` | — | `8339d6bc9d0a835f7d59a3f952934483e12bde27` | `993401fc3eacc1bfc22020c518aecdaa34eb01e9` | Custom non-open license, AI disclosure, 9 limitations |
 
 > **Audit Clarification on v2.1.1 Commit & Tag Object Lineage**:
-> - **Pre-Rewrite Commit Hash**: Prior to the `git-filter-repo` contributor trailer rewrite, tag `v2.1.1-train-test-ready` pointed to commit `a8985361...` on branch `v2.1-train-test`. This is explicitly attested by `DECISIONS.md:516` (commit `6312690`) and the committed audit trail in `docs/DATA_FREEZE_v2_1.md` (lines 22–24). The transient reference `940ed62` appeared only in informal conversation transcripts; it does not exist in the active git object database, git reflog, or any commit diff, and whether `940ed62` was a local unpushed scratch commit or an external revision is not determinable from repository evidence.
-> - **Tag Object Hash Evolution (`2d80319...` → `3da6556...` → `a6f7f8b...`)**:
->   - `2d80319...`: The original annotated tag object created for `v2.1.1-train-test-ready` pointing to `a8985361...` before history sanitation (attested by `docs/DATA_FREEZE_v2_1.md` line 22).
->   - `3da6556...`: An intermediate tag object created during initial bot co-author removal and recorded in `docs/DATA_FREEZE_v2_1.md` (line 22) and `DECISIONS.md:517`.
->   - `a6f7f8b...`: The active, definitive annotated tag object in the repository pointing to target commit `f30ab1838c0820fa41f134c91cc058066c48cfdf`, created when `git-filter-repo` completed rebuilding annotated tags across the whole tree with human maintainer metadata (`GauravJaypatre <jaypatregaurav81@gmail.com>`, timestamp `1793027611 +0530`, verified via `git cat-file -p refs/tags/v2.1.1-train-test-ready`).
->   - The intermediate git object blobs for `2d80319` and `3da6556` were pruned during repository history filtering and are not determinable from repository evidence beyond these documented citations.
+> - **Pre-Rewrite Commit (`a8985361...`)**: The pre-rewrite commit for `v2.1.1-train-test-ready` was `a8985361...` on branch `v2.1-train-test` (attested by `DECISIONS.md:516` and `docs/DATA_FREEZE_v2_1.md:22`).
+> - **Pre-Rewrite Tag Object (`3da6556...`) & Post-Rewrite Tag Object (`a6f7f8b...`)**: Pre-rewrite tag object was `3da6556...` (attested by `docs/DATA_FREEZE_v2_1.md:22`); active post-rewrite tag object is `a6f7f8b95c86e01bbe4177580fd34c5c2c009ba1` pointing to `f30ab1838c0820fa41f134c91cc058066c48cfdf` (verified via `git cat-file -p refs/tags/v2.1.1-train-test-ready`).
+> - **Identifier `2d80319...`**: Labelled "report draft 2d80319..." in `docs/DATA_FREEZE_v2_1.md:22`; it is not determinable from repository evidence whether it was ever a tag object.
+> - **Identifier `940ed62...`**: Not determinable from repository evidence (does not exist in git object database, reflog, or commit diffs).
 
 ---
 
