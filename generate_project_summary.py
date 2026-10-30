@@ -178,10 +178,17 @@ Because git commit hashes cryptographically encapsulate commit author and messag
 | `v2.0-data-freeze` | `a4bc9d6a...` (tag `11d5c94f...`) | `7b09609cfe96b310e38ec369157ec63053c5c0de` | `a3807cb9e7403c03953e22f7094358f52224d231` | Phase V1–V4 independent verification |
 | `v2.0.1-data-freeze` | `67cb97b6...` (tag `9f67b270...`) | `4b8fc6aa5cd59018816b826e374286fd5715161a` | `62325ac2d1aad2e7e13b37f9cb6eead0a9aba806` | CBR emergency alignment, holdout guard |
 | `v2.1-train-test-ready` | `be11b3f4c49a...` (tag `10eb56ea...`) | `435f2fba24a388cc24a6c0672a7bc32da031368c` | `8147cd19b497e85804246131219e6bdd1b0e7684` | 2010–2025 window, CV folds, leakage audit |
-| `v2.1.1-train-test-ready` | `940ed62...` / `a8985361...` (tag `2d80319...` / `3da65565...`) | `f30ab1838c0820fa41f134c91cc058066c48cfdf` | `a6f7f8b95c86e01bbe4177580fd34c5c2c009ba1` | Decision count reconciliation, final_fit |
+| `v2.1.1-train-test-ready` | `a8985361...` (tag `2d80319...`) | `f30ab1838c0820fa41f134c91cc058066c48cfdf` | `a6f7f8b95c86e01bbe4177580fd34c5c2c009ba1` | Decision count reconciliation, final_fit |
 | `v2.1.1-zenodo-package` | — | `63126907200d95bd40fc8627359965b7c45da95d` | `6a2c90ad44ba66c96453f88f81a82be324606902` | Initial Zenodo package build |
 | `v2.1.1-zenodo-package-r2` | — | `d6d784b652318a46ca27a7714b7c1ce48d3560b2` | `bd81df370804be57dd708ec347e576bff4250a43` | Reconciled metadata, conftest auto-skip |
 | `v2.1.1-zenodo-package-r3` | — | `8339d6bc9d0a835f7d59a3f952934483e12bde27` | `993401fc3eacc1bfc22020c518aecdaa34eb01e9` | Custom non-open license, AI disclosure, 9 limitations |
+
+> **Audit Clarification on v2.1.1 Commit & Tag Object Lineage**:
+> - **Pre-Rewrite Commit (`a8985361...`)**: The unambiguous pre-rewrite commit for `v2.1.1-train-test-ready` was `a8985361...` on branch `v2.1-train-test` (as recorded in `DECISIONS.md:516`). The transient reference `940ed62` appeared in working chat logs during pre-tag checks but does not exist in the git object database.
+> - **Tag Object Evolution (`2d80319...` → `3da6556...` → `a6f7f8b...`)**:
+>   - `2d80319...`: The original annotated tag object created for `v2.1.1-train-test-ready` pointing to pre-rewrite commit `a8985361...`.
+>   - `3da6556...`: An intermediate tag object created when the tag was first regenerated during initial bot trailer removal.
+>   - `a6f7f8b...`: The final, active annotated tag object pointing to commit `f30ab1838c0820fa41f134c91cc058066c48cfdf`, created when `git-filter-repo` rebuilt annotated tags across the whole tree with human maintainer metadata.
 
 ---
 
@@ -212,20 +219,24 @@ Deposit and publication on Zenodo are **pending** until the following open items
    - `CITATION.cff` and `README.md` contain `contact: TODO`. The depositor must supply the final public contact email or configure it in the Zenodo access-request interface.
 2. **Zenodo Persistent DOI**:
    - The deposit does not fabricate a DOI. A persistent DOI must be reserved/assigned upon initial draft creation on Zenodo, after which `CITATION.cff` and `README.md` can be updated.
-3. **Vendor Redistribution Clearance (`LICENCE_CLEARANCE.txt`)**:
-   - Financial return series are derived from commercial index closing prices without signed vendor redistribution clearance. The package is licensed under a custom restricted research license (`other-closed` / `LicenseRef-Other-NonOpen`). Open redistribution under CC-BY-4.0 remains conditional upon signed vendor clearance.
-4. **Single-Source Equity Prices**:
+3. **Licence Text Review & Vendor Redistribution Clearance (`LICENCE_CLEARANCE.txt`)**:
+   - The custom non-open restricted research license (`LICENSE` / `LicenseRef-Other-NonOpen`) should undergo formal institutional/supervisor/library review before deposit. Open redistribution under CC-BY-4.0 remains conditional upon signed vendor clearance.
+4. **CFF Schema Validation**:
+   - `CITATION.cff` conforms to CFF 1.2.0 syntax; official schema validation via `cffconvert --validate` should be run in an environment with network access or local binary installation.
+5. **Public GitHub Exposure Mitigation on Origin**:
+   - Remote branch `zenodo-release` and tag `v2.1.1-zenodo-package-r2` were pushed to GitHub origin and contain package return tables. The user should run remote deletion commands (`git push origin --delete zenodo-release` and `git push origin --delete v2.1.1-zenodo-package-r2`) to mitigate public visibility prior to publication.
+6. **Single-Source Equity Prices**:
    - 36 of 38 equity indices rely on primary vendor feeds; only S&P 500 and Nikkei 225 are cross-verified against FRED.
-5. **Emerging Market Announcement Timing**:
+7. **Emerging Market Announcement Timing**:
    - BCB, Banxico, RBI, BoK, and PBoC decisions remain disqualified from primary tiers due to the absence of scraped minute-level release archives.
-6. **Bank of England Pre-2016 Timing**:
+8. **Bank of England Pre-2016 Timing**:
    - BoE decisions prior to 2016-01-01 are verified at the convention level (strict Thursday 12:00 noon protocol) rather than minute-level announcement scrapes.
-7. **Macroeconomic Industrial-Production Vintage Triangles**:
+9. **Macroeconomic Industrial-Production Vintage Triangles**:
    - Historical IP controls use first-available vintage indicators rather than point-in-time vintage triangles.
-8. **Statement Qualitative Hand Labels**:
-   - Narrative qualitative hand classifications have not undergone double-blind expert replication and are excluded.
-9. **Remote Push of Revision 3**:
-   - Revision 3 tag `v2.1.1-zenodo-package-r3` and commit `8339d6b` must be pushed to GitHub when ready.
+10. **Statement Qualitative Hand Labels**:
+    - Narrative qualitative hand classifications have not undergone double-blind expert replication and are excluded.
+11. **Remote Push Protocol for Revision 3**:
+    - Do NOT push Revision 3 (`v2.1.1-zenodo-package-r3` or subsequent packaging commits) until the public GitHub exposure on origin has been resolved by the maintainer.
 """
 
     with open(SUMMARY_PATH, "w", encoding="utf-8", newline="\n") as f:
