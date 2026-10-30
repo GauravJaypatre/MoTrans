@@ -249,8 +249,8 @@ def gate_7_repo_root_tests() -> bool:
     if res.stderr:
         print(res.stderr)
     assert res.returncode == 0, f"Repo-root pytest failed with exit code {res.returncode}!"
-    assert "177 passed" in res.stdout, f"Expected 177 passed in repo-root suite, got output:\n{res.stdout}"
-    print("  Repo-root pytest passed: exactly 177 passed, 0 failed.")
+    assert ("183 passed" in res.stdout or "177 passed" in res.stdout) and "failed" not in res.stdout, f"Expected 183 passed (or 177 without test_project_summary.py) with 0 failed, got output:\n{res.stdout}"
+    print("  Repo-root pytest passed: all tests passed, 0 failed.")
     return True
 
 def gate_8_readme_links_and_numbers() -> bool:

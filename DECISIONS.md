@@ -581,4 +581,30 @@ official page)"`. See ISS-029 for the sourcing plan.
   5. **Archive & Tag**:
      - Rebuilt deterministic zip archive `MoTrans15_v2.1.1_zenodo_package.zip` and tagged on `zenodo-release` as `v2.1.1-zenodo-package-r3`.
 
+---
+
+## 2026-10-30 — Project Summary Generation & CSV Consistency Enforcement
+
+### DECISION-032: Scripted Project Summary Generation and Automated CSV Consistency Test
+- **Date Recorded**: 2026-10-30 (Branch: `zenodo-release`).
+- **Context & Motivation**:
+  - Replaced manual documentation figures with an automated generation script (`generate_project_summary.py`) creating `docs/PROJECT_SUMMARY.md` strictly from committed CSV reports:
+    - `outputs/v2_1/split_counts.csv`
+    - `outputs/v2_1/fold_counts.csv`
+    - `outputs/v2_1/row_membership.csv`
+    - `outputs/v2_1/test_window_composition.csv`
+  - Eliminates hand-typed counts to ensure perfect alignment with empirical outputs.
+- **Key Disclosures & Corrections in Summary**:
+  1. **Tier Counts**: Tier 1 = 253 decisions / 9,350 event rows; Tier 2 primary = 130 decisions / 4,851 event rows; Secondary holds = 335 decisions / 12,454 event rows (decisions counted by unique `event_id`).
+  2. **Split Composition**: Computed directly from `split_counts.csv` (train = 572 decs / 21,247 event rows; val = 76 decs / 2,818 event rows; test = 70 decs / 2,590 event rows; total = 718 decs / 26,655 event rows).
+  3. **Tier 1 Regimes & Coverage**: Explicitly noted Tier 1 covers Fed to Dec 2023 (Bauer-Swanson MPS) and ECB to Oct 2025 (EA-MPD OIS).
+  4. **History Rewrite Mapping**: Replaced "tags are permanent and immutable" with an accurate description of the `git-filter-repo` contributor trailer cleanup and a full pre- vs. post-rewrite commit hash mapping table.
+  5. **BoJ Sensitivity Role**: Clarified that the BoJ has 162 clean usable decisions (5,924 event rows), unassigned to primary tiers under ZIRP/NIRP/YCC without high-frequency or rate-change proxy shocks, and preserved as a sensitivity set (not an unverified emerging market).
+  6. **Push Status**: Clarified that branch `zenodo-release` and tag `v2.1.1-zenodo-package-r2` were pushed to GitHub, while `v2.1.1-zenodo-package-r3` remains local.
+  7. **Pending Deposit Status**: Removed "ready for deposit" and enumerated all 9 open items required before final publication.
+- **Automated Verification**:
+  - Added unit test suite `tests/test_project_summary.py` (6 tests) which automatically fails if any quantitative figure in `docs/PROJECT_SUMMARY.md` diverges from the committed CSV reports.
+  - Full repo test suite verified: **183 passed, 0 failed**.
+
+
 
