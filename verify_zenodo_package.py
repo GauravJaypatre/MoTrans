@@ -249,8 +249,18 @@ def gate_7_repo_root_tests() -> bool:
     if res.stderr:
         print(res.stderr)
     assert res.returncode == 0, f"Repo-root pytest failed with exit code {res.returncode}!"
-    assert ("183 passed" in res.stdout or "177 passed" in res.stdout) and "failed" not in res.stdout, f"Expected 183 passed (or 177 without test_project_summary.py) with 0 failed, got output:\n{res.stdout}"
-    print("  Repo-root pytest passed: all tests passed, 0 failed.")
+    assert "failed" not in res.stdout, f"Failures detected in repo-root pytest:\n{res.stdout}"
+    m_coll = re.search(r"collected\s+(\d+)\s+items", res.stdout)
+    assert m_coll is not None, f"Could not determine collected test count from output:\n{res.stdout}"
+    total_collected = int(m_coll.group(1))
+    assert total_collected >= 183, f"Expected at least 183 tests, got {total_collected}"
+    m_pass = re.search(r"(\d+)\s+passed", res.stdout)
+    assert m_pass is not None, f"Could not determine passed count from output:\n{res.stdout}"
+    total_passed = int(m_pass.group(1))
+    assert total_passed == total_collected, (
+        f"Mismatch: collected {total_collected} tests but only {total_passed} passed!"
+    )
+    print(f"  Repo-root pytest passed: strictly {total_passed}/{total_collected} passed, 0 failed.")
     return True
 
 def gate_8_readme_links_and_numbers() -> bool:
