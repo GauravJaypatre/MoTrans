@@ -3,8 +3,7 @@
 ## 1. Build Environment & Commit Identity
 - **Package Name**: MoTrans-15 v2.1.1 Zenodo Release Package
 - **Base Freeze Commit**: `f30ab1838c0820fa41f134c91cc058066c48cfdf` (Tag: `v2.1.1-train-test-ready`)
-- **Release Branch**: `zenodo-release`
-- **Release Tag**: `v2.1.1-zenodo-package-r3`
+- **Dataset Release Version**: `2.1.1`
 - **Python Version**: Python 3.13.1
 - **Development Note**: Code and data pipeline were developed with AI-assisted coding tools. Full replication and pipeline code is provided directly in the `code/` folder of this release package.
 
