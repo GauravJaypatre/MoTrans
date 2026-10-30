@@ -1,0 +1,253 @@
+================================================================================
+MOTRANS-15 DATA SOURCE LICENCE CLEARANCE LOG (DRAFT TEMPLATE)
+================================================================================
+
+This document is a formal clearance tracker for institutional review and vendor
+redistribution permissions. Every field below is deliberately unpopulated until
+verified by the primary investigators and university licensing authorities.
+
+================================================================================
+SECTION (A): VENDOR / COMMERCIAL PRICE DATA
+================================================================================
+
+SOURCE: Yahoo Finance (yfinance)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: B3 S.A. (Brasil, Bolsa, Balcao)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: China Securities Index Co. (csindex.com.cn)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: Moscow Exchange ISS (iss.moex.com)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: NSE Indices Limited (niftyindices.com)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: Federal Reserve Bank of St. Louis (FRED - third-party equity series: S&P DJI, Nikkei Inc., NASDAQ OMX)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+
+================================================================================
+SECTION (B): OFFICIAL CENTRAL-BANK OR GOVERNMENT SOURCES
+================================================================================
+
+SOURCE: Bank for International Settlements (BIS)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: Federal Reserve Board (US)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: European Central Bank (ECB / EA-MPD Altavilla et al. 2019)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: Federal Reserve Bank of San Francisco (FRBSF / Bauer & Swanson 2023)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: Bank of England (BoE)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: Bank of Canada (BoC)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: Reserve Bank of Australia (RBA)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: Bank of Russia (CBR / cbr.ru)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: Bank of Japan (BoJ)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: US Department of the Treasury
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: Deutsche Bundesbank
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: Ministry of Finance Japan (MoF)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: OECD STES
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: National Statistical Agencies (BLS, Eurostat, ONS, Statistics Canada, ABS, SBJ)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+--------------------------------------------------------------------------------
+SOURCE: Other Central Banks (Reserve Bank of India, Banco Central do Brasil, Banco de Mexico)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+
+================================================================================
+SECTION (C): HAND LABELS / OUR OWN DERIVED VARIABLES
+================================================================================
+
+SOURCE: MoTrans-15 Research Authors
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
+
+================================================================================
+SECTION (D): OTHER
+================================================================================
+
+SOURCE: ChinaBond / Eastmoney (via AKShare)
+--------------------------------------------------------------------------------
+Terms-of-use URL: 
+Date checked: 
+Permission for redistribution of derived data (yes/no/conditional): 
+Conditions: 
+Written permission reference: 
+Decided release form (full / restricted / aggregates only / excluded): 
+
