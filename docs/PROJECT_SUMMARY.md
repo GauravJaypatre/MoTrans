@@ -132,7 +132,7 @@ Because git commit hashes cryptographically encapsulate commit author and messag
 ## 6. Package Archive & Verification Status at packaging, 2026-10-31
 
 - **Deterministic Upload Archive**:
-  - File: `MoTrans15_v2.1.1_zenodo_package.zip` (8,520,125 bytes, 8.13 MB)
+  - File: `MoTrans15_v2.1.1_zenodo_package.zip`
   - Fixed timestamp: `2026-10-29 00:00:00`, sorted entries, standard permissions, zero cache/junk files.
 - **Verified Package Hashes vs DATA_FREEZE_v2_1.md**:
   - `analysis_tier1.parquet`: `8a6207dd0c753c7d24d0a4d091dbdb05ee38d3010913a85b4c9f87a86e44979e` (IDENTICAL)
@@ -146,12 +146,12 @@ Because git commit hashes cryptographically encapsulate commit author and messag
 
 ## 7. Open Items & Research Limitations (Status at packaging, 2026-10-31)
 
-Deposit and publication on Zenodo are **blocked**; the package is **NOT ready to publish** because the following open legal and provenance clearance items remain unresolved:
+Status at packaging, 2026-10-31: this version is a pre-clearance snapshot deposited under Restricted Access (files visible only to approved requesters). Access requests are not being approved at present while (a) licence review and (b) vendor redistribution clearance for derived equity returns are completed. A refined dataset is planned as a later version.
 
-### Unresolved Clearance Items (Package NOT Ready to Publish)
+### Open Clearance Items
 
 1. **Licence Review by Supervisor / Library (`LICENCE_REVIEW_DONE = NO`)**:
-   - The custom non-open restricted research license (`LICENSE`) has not undergone formal institutional, supervisor, or library review. The package is NOT ready to publish until this clearance is formally completed.
+   - The custom non-open restricted research license (`LICENSE`) has not undergone formal institutional, supervisor, or library review. Access requests remain on hold until institutional clearance is completed.
 2. **Financial Index Vendor Redistribution Clearance (`VENDOR_CLEARANCE = NOT_CLEARED`)**:
    - Formal redistribution clearance for derived equity returns has not been acquired from primary financial index exchange providers (`LICENCE_CLEARANCE.txt`). In the absence of signed vendor clearance, the package cannot be released under open terms (CC-BY-4.0) and remains restricted.
 

@@ -84,7 +84,8 @@ def gate_1_metadata_validity() -> bool:
     assert z_data["creators"][1]["name"] == "Pawar, Prachi Ravi"
     assert z_data.get("license") in ["other-closed", "Other (non-open)"], f"License must be other-closed, got {z_data.get('license')}"
     assert z_data.get("access_right") == "restricted", f"Access right must be restricted, got {z_data.get('access_right')}"
-    assert "access_conditions" in z_data and "Zenodo" in z_data["access_conditions"]
+    assert "access_conditions" in z_data and "case by case" in z_data["access_conditions"]
+    assert "Requests are not being approved at present" in z_data["access_conditions"]
     assert "jaypatregaurav81@gmail.com" not in z_data.get("access_conditions", ""), "Personal email should be replaced with Zenodo request mechanism!"
     assert z_data.get("version") == "2.1.1", f"Version mismatch: {z_data.get('version')}"
     assert z_data.get("language") == "eng", "Language must be eng"
@@ -276,6 +277,8 @@ def gate_8_readme_links_and_numbers() -> bool:
     assert "github.com" not in text.lower(), "GitHub URLs should be removed from README.md when REPO_IS_PRIVATE is YES"
     assert "code/" in text, "README must point to code/ folder"
     assert "Status at packaging, 2026-10-31" in text, "Time-stamped status section missing in README!"
+    assert "pre-clearance snapshot deposited under Restricted Access" in text, "New status phrasing missing in README!"
+    assert "Requests are not being approved at present" in text, "New access phrasing missing in README!"
     assert "Note on DOI" not in text, "Stale DOI note should be removed from README!"
 
     # 2. Check 9 mandatory limitations

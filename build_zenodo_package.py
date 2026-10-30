@@ -455,15 +455,13 @@ def build_metadata_files() -> None:
         "  <li><strong>Locked Out-of-Sample Test Split:</strong> Contains exactly 0 interest rate hikes, reflecting the easing cycle among the included central banks, and 0 Fed Tier 1 decisions.</li>\n"
         "  <li><strong>Cross-Validation:</strong> 4 expanding rolling-origin evaluation folds plus a unified final_fit estimation partition (folds.csv).</li>\n"
         "</ul>\n"
-        "<p><strong>Restricted Access Notice:</strong> Access is restricted upon request for non-commercial academic research and replication due to derived "
-        "equity return series from commercial index feeds. Closing price levels (<code>level_local</code>) are omitted. Access can be requested "
-        "via the Zenodo access-request interface.</p>"
+        "<p><strong>Restricted Access Notice:</strong> Access is granted case by case for non-commercial academic research. "
+        "Requests are not being approved at present while redistribution terms for some underlying source series are confirmed.</p>"
     )
 
     access_conditions_text = (
-        "Access to derived equity return tables and documentation is granted upon request via the Zenodo access-request interface "
-        "for non-commercial academic research and replication. To request access, please submit an access request through the Zenodo interface "
-        "detailing your institutional affiliation and intended academic research project."
+        "Access is granted case by case for non-commercial academic research. "
+        "Requests are not being approved at present while redistribution terms for some underlying source series are confirmed."
     )
 
     zenodo_json = {
@@ -541,27 +539,22 @@ def build_readme() -> None:
 Code and data pipeline were developed with AI-assisted coding tools. Full replication and pipeline code is provided directly in the `code/` folder of this release package.
 
 ### Status at packaging, 2026-10-31
-- **ACCESS_MODE**: `{cfg.ACCESS_MODE}` (Access granted by request via Zenodo for academic replication)
+Status at packaging, 2026-10-31: this version is a pre-clearance snapshot deposited under Restricted Access (files visible only to approved requesters). Access requests are not being approved at present while (a) licence review and (b) vendor redistribution clearance for derived equity returns are completed. A refined dataset is planned as a later version.
+
+- **ACCESS_MODE**: `{cfg.ACCESS_MODE}` (Files visible only to approved requesters)
 - **DATA_LICENSE**: `Other (non-open / non-commercial research use; see LICENSE)`
 - **CODE_LICENSE**: `{cfg.CODE_LICENSE}`
 - **Authors & Affiliations**: Gaurav Mansing Jaypatre & Prachi Ravi Pawar (Pimpri Chinchwad College of Engineering (PCCOE), Pune, India)
-- **Access Requests**: Managed directly via the official Zenodo access-request interface
 - **Licence Review**: Pending institutional / supervisory review (`LICENCE_REVIEW_DONE = NO`)
 - **Vendor Redistribution Clearance**: Not cleared (`VENDOR_CLEARANCE = NOT_CLEARED`); derived returns restricted to academic replication requests
-- **Reason for Restricted Access**: Financial index return series are derived from commercial exchange closing prices without signed vendor redistribution clearance. Closing price levels (`level_local`) are omitted from all tables; access to derived return tables is restricted to verified academic researchers upon request via Zenodo.
+- **Reason for Restricted Access**: Financial index return series are derived from commercial exchange closing prices without signed vendor redistribution clearance. Closing price levels (`level_local`) are omitted from all tables.
 
 ---
 
-## 1. How to Request Access
-In accordance with data provider license terms, this dataset is published under **Restricted Access** on Zenodo. Access is granted free of charge to researchers for non-commercial academic study and scientific replication.
+## 1. Access Terms & Policy
+Access is granted case by case for non-commercial academic research. Requests are not being approved at present while redistribution terms for some underlying source series are confirmed.
 
-To request access:
-1. Submit an access request directly via the **Zenodo web interface** on the deposit record page.
-2. In your request, please provide:
-   - Full Name and Institutional Affiliation (university, department, or research institute).
-   - Brief statement of the intended academic research or replication study.
-   - Confirmation that the dataset will be used solely for non-commercial academic research and that raw or derived tables will not be redistributed.
-3. Access requests are evaluated and approved promptly through Zenodo.
+When reviews and clearances are complete, requests will be handled via the Zenodo web interface for verified academic research and replication.
 
 ---
 

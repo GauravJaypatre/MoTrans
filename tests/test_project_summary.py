@@ -156,7 +156,9 @@ def test_required_phrasings_and_disclosures(summary_text):
     assert "Status at packaging, 2026-10-31" in summary_text
     assert "Licence Review by Supervisor / Library" in summary_text
     assert "Vendor Redistribution Clearance" in summary_text
-    assert "NOT ready to publish" in summary_text
+    assert "pre-clearance snapshot deposited under Restricted Access" in summary_text
+    assert "Access requests are not being approved at present" in summary_text
+    assert "NOT ready to publish" not in summary_text
 
     # Requirement 7: remove stale statements on publication
     assert "were pushed" not in summary_text
