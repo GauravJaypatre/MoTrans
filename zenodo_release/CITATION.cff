@@ -3,7 +3,6 @@ message: "If you use this dataset, please cite it as below."
 title: "MoTrans-15: Monetary policy surprises, central bank communication and equity-index responses for the largest economies, 2010-2025 (v2.1.1)"
 version: "2.1.1"
 date-released: "2026-10-29"
-repository-code: "https://github.com/GauravJaypatre/MoTrans-15_Policy-and-Markets"
 type: dataset
 authors:
   - family-names: "Jaypatre"

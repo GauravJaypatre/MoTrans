@@ -132,7 +132,7 @@ Because git commit hashes cryptographically encapsulate commit author and messag
 ## 6. Remote Repository Synchronization & Package Archive
 
 - **Remote Branch & Tag Status**:
-  - Branch `zenodo-release` and tag `v2.1.1-zenodo-package-r2` **were pushed** to GitHub (`https://github.com/GauravJaypatre/MoTrans-15_Policy-and-Markets.git`).
+  - Branch `zenodo-release` and tag `v2.1.1-zenodo-package-r2` **were pushed** to remote origin. Replication and analysis code is provided directly in the `code/` folder of the release package.
   - Revision 3 (`v2.1.1-zenodo-package-r3` at commit `8339d6bc9d0a835f7d59a3f952934483e12bde27`) is currently local on branch `zenodo-release` and has not yet been pushed to remote.
 - **Deterministic Upload Archive**:
   - File: `MoTrans15_v2.1.1_zenodo_package.zip` (8,519,576 bytes, 8.12 MB)
@@ -152,16 +152,16 @@ Because git commit hashes cryptographically encapsulate commit author and messag
 
 Deposit and publication on Zenodo are **pending** until the following open items are resolved:
 
-1. **Author Contact Information**:
-   - `CITATION.cff` and `README.md` contain `contact: TODO`. The depositor must supply the final public contact email or configure it in the Zenodo access-request interface.
-2. **Zenodo Persistent DOI**:
-   - The deposit does not fabricate a DOI. A persistent DOI must be reserved/assigned upon initial draft creation on Zenodo, after which `CITATION.cff` and `README.md` can be updated.
-3. **Licence Text Review & Vendor Redistribution Clearance (`LICENCE_CLEARANCE.txt`)**:
+1. **Licence Review by Supervisor / Library**:
    - The custom non-open restricted research license (`LICENSE` / `LicenseRef-Other-NonOpen`) should undergo formal institutional/supervisor/library review before deposit. Open redistribution under CC-BY-4.0 remains conditional upon signed vendor clearance.
-4. **CFF Schema Validation**:
-   - `CITATION.cff` conforms to CFF 1.2.0 syntax; official schema validation via `cffconvert --validate` should be run in an environment with network access or local binary installation.
-5. **Public GitHub Exposure Mitigation on Origin**:
-   - Remote branch `zenodo-release` and tag `v2.1.1-zenodo-package-r2` were pushed to GitHub origin and contain package return tables. The user should run remote deletion commands (`git push origin --delete zenodo-release` and `git push origin --delete v2.1.1-zenodo-package-r2`) to mitigate public visibility prior to publication.
+2. **Vendor Redistribution Clearance (`LICENCE_CLEARANCE.txt`)**:
+   - Confirm whether derived multi-horizon cumulative log returns (`clr_1` to `clr_60`) and continuous log returns require formal vendor licensing from primary exchange providers before open release.
+3. **Zenodo Persistent DOI**:
+   - A persistent DOI must be reserved/assigned upon initial draft creation on Zenodo, after which `CITATION.cff` and `README.md` can be updated.
+4. **GitHub Repo Set to Private**:
+   - Maintainer confirmation that the repository is set to private (`REPO_IS_PRIVATE = YES`) to protect against unauthorized public exposure of return tables prior to clearance. Full pipeline and replication code is provided directly in the `code/` folder inside the release package.
+5. **Author Contact Information**:
+   - Access requests are managed directly via the official Zenodo access-request interface; personal contact details are omitted per depositor instruction.
 6. **Single-Source Equity Prices**:
    - 36 of 38 equity indices rely on primary vendor feeds; only S&P 500 and Nikkei 225 are cross-verified against FRED.
 7. **Emerging Market Announcement Timing**:
@@ -173,4 +173,4 @@ Deposit and publication on Zenodo are **pending** until the following open items
 10. **Statement Qualitative Hand Labels**:
     - Narrative qualitative hand classifications have not undergone double-blind expert replication and are excluded.
 11. **Remote Push Protocol for Revision 3**:
-    - Do NOT push Revision 3 (`v2.1.1-zenodo-package-r3` or subsequent packaging commits) until the public GitHub exposure on origin has been resolved by the maintainer.
+    - Do NOT push Revision 3 (`v2.1.1-zenodo-package-r3` or subsequent packaging commits) until the remote exposure on origin has been resolved by the maintainer.

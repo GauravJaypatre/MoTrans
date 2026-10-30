@@ -7,7 +7,7 @@ Validates all 9 quality and release gates:
 4. Data hashes unchanged vs DATA_FREEZE_v2_1.md
 5. Price-level safety (level_local absent)
 6. Isolated-package tests in zenodo_release/code/ (0 failed)
-7. Full repository tests in root (177 passed, no filters)
+7. Full repository tests in root (187 passed, no filters)
 8. README links, figures match committed CSV reports, and all 9 limitations present
 9. Total package size and deterministic zip archive integrity
 """
@@ -102,6 +102,8 @@ def gate_1_metadata_validity() -> bool:
     assert cff_data.get("date-released") == "2026-10-29", f"date-released mismatch: {cff_data.get('date-released')}"
     assert "license" not in cff_data, "Custom non-SPDX license string must not be present in CITATION.cff"
     assert "doi" not in cff_data, "Unreserved DOI placeholder must not be present in CITATION.cff"
+    assert "repository-code" not in cff_data, "repository-code should be removed from CITATION.cff when REPO_IS_PRIVATE is YES"
+    assert "related_identifiers" not in z_data or len(z_data.get("related_identifiers", [])) == 0, "GitHub related_identifiers should be removed from .zenodo.json when REPO_IS_PRIVATE is YES"
     
     cff_authors = cff_data.get("authors", [])
     assert len(cff_authors) == 2, f"Expected 2 authors, got {len(cff_authors)}"
@@ -271,6 +273,8 @@ def gate_8_readme_links_and_numbers() -> bool:
     assert "easing cycle among the included central banks" in text
     assert "Code and data pipeline were developed with AI-assisted coding tools." in text
     assert "jaypatregaurav81@gmail.com" not in text, "Personal email must not appear in README!"
+    assert "github.com" not in text.lower(), "GitHub URLs should be removed from README.md when REPO_IS_PRIVATE is YES"
+    assert "code/" in text, "README must point to code/ folder"
 
     # 2. Check 9 mandatory limitations
     assert "Single-Source Equity Price Feeds" in text
@@ -343,7 +347,7 @@ def main():
         ("Gate 4: Data hashes unchanged vs freeze", gate_4_data_hashes_unchanged),
         ("Gate 5: Price-level safety (level_local absent)", gate_5_no_price_levels),
         ("Gate 6: Isolated package tests (0 failed)", gate_6_isolated_package_tests),
-        ("Gate 7: Repository root tests (177 passed)", gate_7_repo_root_tests),
+        ("Gate 7: Repository root tests (187 passed)", gate_7_repo_root_tests),
         ("Gate 8: README links, figures & 9 limitations", gate_8_readme_links_and_numbers),
         ("Gate 9: Package size & Zip archive integrity", gate_9_package_size_and_zip_integrity),
     ]
@@ -368,7 +372,7 @@ def main():
             all_passed = False
     print("=" * 59)
     if all_passed:
-        print("ALL 9 VERIFICATION GATES PASSED! PACKAGE IS READY FOR ZENODO DEPOSIT.")
+        print("All automated gates passed. Manual items remain: licence review, vendor clearance, DOI assignment.")
     else:
         print("ONE OR MORE GATES FAILED. INSPECT LOGS ABOVE.")
         sys.exit(1)

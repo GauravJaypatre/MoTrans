@@ -6,7 +6,7 @@
 - **Release Branch**: `zenodo-release`
 - **Release Tag**: `v2.1.1-zenodo-package-r3`
 - **Python Version**: Python 3.13.1
-- **Development Note**: Code and data pipeline were developed with AI-assisted coding tools.
+- **Development Note**: Code and data pipeline were developed with AI-assisted coding tools. Full replication and pipeline code is provided directly in the `code/` folder of this release package.
 
 ## 2. Research Guardrail Certification
 > **CRITICAL CERTIFICATION**: Neither `UNLOCK_TEST` nor `UNLOCK_POST` was set by any packaging script or model code. The packaging and verification scripts accessed strictly date, identifier, and partition columns (`event_id`, `decision_date`, `final_split`, `decision`) for row counting, leakage checks, and schema auditing. No test-split outcome columns or post-window outcomes were inspected or modeled. (All unlock audit events during test verification are redirected via `MOTRANS_AUDIT_LOG` to temporary test fixtures, leaving production audit logs untouched).

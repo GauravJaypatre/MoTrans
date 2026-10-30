@@ -380,7 +380,7 @@ def build_provenance_and_limitations() -> None:
         "- **Release Branch**: `zenodo-release`\n"
         "- **Release Tag**: `v2.1.1-zenodo-package-r3`\n"
         "- **Python Version**: Python 3.13.1\n"
-        "- **Development Note**: Code and data pipeline were developed with AI-assisted coding tools.\n\n"
+        "- **Development Note**: Code and data pipeline were developed with AI-assisted coding tools. Full replication and pipeline code is provided directly in the `code/` folder of this release package.\n\n"
         "## 2. Research Guardrail Certification\n"
         "> **CRITICAL CERTIFICATION**: Neither `UNLOCK_TEST` nor `UNLOCK_POST` was set by any packaging script "
         "or model code. The packaging and verification scripts accessed strictly date, identifier, and partition "
@@ -429,7 +429,6 @@ def build_provenance_and_limitations() -> None:
 
 def build_metadata_files() -> None:
     print("[9/11] Building .zenodo.json and CITATION.cff...")
-    repo_url = "https://github.com/GauravJaypatre/MoTrans-15_Policy-and-Markets"
 
     creators = [
         {
@@ -447,7 +446,8 @@ def build_metadata_files() -> None:
         "usable analysis decisions exist for the Fed, ECB, BoE, BoC, RBA and CBR (BoJ as a sensitivity set); "
         "Brazil, Mexico, India, Korea and China have no usable decisions in this version. The evaluation window covers "
         "2010-01-01 to 2025-12-31 (16 calendar years).</p>\n"
-        "<p>Code and data pipeline were developed with AI-assisted coding tools.</p>\n"
+        "<p>Code and data pipeline were developed with AI-assisted coding tools. Replication and analysis code is "
+        "packaged directly in the <code>code/</code> folder of this deposit.</p>\n"
         "<p><strong>Dataset Characteristics:</strong></p>\n"
         "<ul>\n"
         "  <li><strong>Evaluation Window:</strong> 2010-01-01 to 2025-12-31 (16 calendar years).</li>\n"
@@ -492,15 +492,9 @@ def build_metadata_files() -> None:
             "MoTrans-15 v2.1.1 release package. The test split (2024-2025) is strictly locked for model evaluation "
             "and contains zero interest rate hikes (property of the easing cycle among the included central banks) and zero Fed Tier 1 decisions. "
             "Data License: Other (non-open) research use license; Code License: MIT. "
-            "Code and data pipeline were developed with AI-assisted coding tools."
+            "Code and data pipeline were developed with AI-assisted coding tools. "
+            "Replication and evaluation code is provided directly in the code/ folder."
         ),
-        "related_identifiers": [
-            {
-                "identifier": repo_url,
-                "relation": "isSupplementTo",
-                "scheme": "url",
-            }
-        ],
     }
     (RELEASE_DIR / ".zenodo.json").write_text(json.dumps(zenodo_json, indent=2), encoding="utf-8")
 
@@ -509,7 +503,6 @@ message: "If you use this dataset, please cite it as below."
 title: "{cfg.TITLE}"
 version: "2.1.1"
 date-released: "2026-10-29"
-repository-code: "{repo_url}"
 type: dataset
 authors:
   - family-names: "Jaypatre"
@@ -546,7 +539,7 @@ def build_readme() -> None:
 ## Overview & Scope
 **MoTrans-15 (v2.1.1)**: central banks and equity indices for 15 economies were screened; usable analysis decisions exist for the Fed, ECB, BoE, BoC, RBA and CBR (BoJ as a sensitivity set); Brazil, Mexico, India, Korea and China have no usable decisions in this version. The evaluation window covers **2010-01-01 to 2025-12-31** (16 calendar years).
 
-Code and data pipeline were developed with AI-assisted coding tools.
+Code and data pipeline were developed with AI-assisted coding tools. Full replication and pipeline code is provided directly in the `code/` folder of this release package.
 
 ### Configuration & Access Terms
 - **ACCESS_MODE**: `{cfg.ACCESS_MODE}` (Access granted by request via Zenodo for academic replication)
@@ -589,7 +582,7 @@ If you use this dataset in your research, please cite it as follows:
   month        = oct,
   publisher    = {{Zenodo}},
   version      = {{2.1.1}},
-  url          = {{https://github.com/GauravJaypatre/MoTrans-15_Policy-and-Markets}}
+  note         = {{Replication code included in code/ folder of release package}}
 }}
 ```
 

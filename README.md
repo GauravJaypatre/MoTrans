@@ -21,7 +21,7 @@ Brazil · Spain · Mexico · Australia · South Korea
 Needs Git and Python 3.12. On macOS/Linux use `.venv/bin/` instead of `.venv\Scripts\`.
 
 ```bash
-git clone https://github.com/prachi-3011/MoTrans-15.git
+# Extract release package or clone private repository into working directory
 cd MoTrans-15
 py -3.12 -m venv .venv
 .venv\Scripts\pip install -r requirements.txt

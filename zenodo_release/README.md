@@ -3,7 +3,7 @@
 ## Overview & Scope
 **MoTrans-15 (v2.1.1)**: central banks and equity indices for 15 economies were screened; usable analysis decisions exist for the Fed, ECB, BoE, BoC, RBA and CBR (BoJ as a sensitivity set); Brazil, Mexico, India, Korea and China have no usable decisions in this version. The evaluation window covers **2010-01-01 to 2025-12-31** (16 calendar years).
 
-Code and data pipeline were developed with AI-assisted coding tools.
+Code and data pipeline were developed with AI-assisted coding tools. Full replication and pipeline code is provided directly in the `code/` folder of this release package.
 
 ### Configuration & Access Terms
 - **ACCESS_MODE**: `restricted` (Access granted by request via Zenodo for academic replication)
@@ -46,7 +46,7 @@ If you use this dataset in your research, please cite it as follows:
   month        = oct,
   publisher    = {Zenodo},
   version      = {2.1.1},
-  url          = {https://github.com/GauravJaypatre/MoTrans-15_Policy-and-Markets}
+  note         = {Replication code included in code/ folder of release package}
 }
 ```
 
