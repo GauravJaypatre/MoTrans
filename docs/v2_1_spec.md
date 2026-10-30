@@ -4,7 +4,7 @@
 
 This document defines the official parameters for **MoTrans-15 v2.1**, the training and testing-ready dataset covering monetary policy decisions from 2010-01-01 through 2025-12-31.
 
-All parameters are configured in [`src/v2_1_config.py`](file:///c:/Users/HP/OneDrive/المستندات/Projects/MoTrans/src/v2_1_config.py):
+All parameters are configured in [`src/v2_1_config.py`](../src/v2_1_config.py):
 
 | Parameter | Value | Description |
 | :--- | :---: | :--- |

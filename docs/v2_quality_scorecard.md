@@ -9,7 +9,7 @@
 
 ## 1. Executive Summary Table
 
-All metrics generated directly by committed scripts and saved in [`outputs/v2/verification_summary.csv`](file:///c:/Users/HP/OneDrive/المستندات/Projects/MoTrans/outputs/v2/verification_summary.csv):
+All metrics generated directly by committed scripts and saved in [`outputs/v2/verification_summary.csv`](../outputs/v2/verification_summary.csv):
 
 | Check Family | Check Type | Entities Tested | N Tested | N Failed | Failure Rate | Internal Consistency | External Verification | Verification Assessment |
 | :--- | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
