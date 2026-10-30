@@ -122,11 +122,12 @@ Because git commit hashes cryptographically encapsulate commit author and messag
 | `v2.1.1-zenodo-package-r3` | — | `8339d6bc9d0a835f7d59a3f952934483e12bde27` | `993401fc3eacc1bfc22020c518aecdaa34eb01e9` | Custom non-open license, AI disclosure, 9 limitations |
 
 > **Audit Clarification on v2.1.1 Commit & Tag Object Lineage**:
-> - **Pre-Rewrite Commit (`a8985361...`)**: The unambiguous pre-rewrite commit for `v2.1.1-train-test-ready` was `a8985361...` on branch `v2.1-train-test` (as recorded in `DECISIONS.md:516`). The transient reference `940ed62` appeared in working chat logs during pre-tag checks but does not exist in the git object database.
-> - **Tag Object Evolution (`2d80319...` → `3da6556...` → `a6f7f8b...`)**:
->   - `2d80319...`: The original annotated tag object created for `v2.1.1-train-test-ready` pointing to pre-rewrite commit `a8985361...`.
->   - `3da6556...`: An intermediate tag object created when the tag was first regenerated during initial bot trailer removal.
->   - `a6f7f8b...`: The final, active annotated tag object pointing to commit `f30ab1838c0820fa41f134c91cc058066c48cfdf`, created when `git-filter-repo` rebuilt annotated tags across the whole tree with human maintainer metadata.
+> - **Pre-Rewrite Commit Hash**: Prior to the `git-filter-repo` contributor trailer rewrite, tag `v2.1.1-train-test-ready` pointed to commit `a8985361...` on branch `v2.1-train-test`. This is explicitly attested by `DECISIONS.md:516` (commit `6312690`) and the committed audit trail in `docs/DATA_FREEZE_v2_1.md` (lines 22–24). The transient reference `940ed62` appeared only in informal conversation transcripts; it does not exist in the active git object database, git reflog, or any commit diff, and whether `940ed62` was a local unpushed scratch commit or an external revision is not determinable from repository evidence.
+> - **Tag Object Hash Evolution (`2d80319...` → `3da6556...` → `a6f7f8b...`)**:
+>   - `2d80319...`: The original annotated tag object created for `v2.1.1-train-test-ready` pointing to `a8985361...` before history sanitation (attested by `docs/DATA_FREEZE_v2_1.md` line 22).
+>   - `3da6556...`: An intermediate tag object created during initial bot co-author removal and recorded in `docs/DATA_FREEZE_v2_1.md` (line 22) and `DECISIONS.md:517`.
+>   - `a6f7f8b...`: The active, definitive annotated tag object in the repository pointing to target commit `f30ab1838c0820fa41f134c91cc058066c48cfdf`, created when `git-filter-repo` completed rebuilding annotated tags across the whole tree with human maintainer metadata (`GauravJaypatre <jaypatregaurav81@gmail.com>`, timestamp `1793027611 +0530`, verified via `git cat-file -p refs/tags/v2.1.1-train-test-ready`).
+>   - The intermediate git object blobs for `2d80319` and `3da6556` were pruned during repository history filtering and are not determinable from repository evidence beyond these documented citations.
 
 ---
 
