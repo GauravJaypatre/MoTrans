@@ -18,6 +18,7 @@ def pytest_collection_modifyitems(config, items):
     missing_v2 = not (root / "data" / "v2").exists()
     missing_outputs_v2 = not (root / "outputs" / "v2").exists()
     missing_unredacted_v2_1 = not (root / "data" / "v2_1" / "panel.parquet").exists()
+    missing_docs_summary = not (root / "docs" / "PROJECT_SUMMARY.md").exists()
 
     skip_marker = pytest.mark.skip(reason=REASON_EXCLUDED)
 
@@ -28,6 +29,8 @@ def pytest_collection_modifyitems(config, items):
         elif "test_v2_tables.py" in nodeid and missing_v2:
             item.add_marker(skip_marker)
         elif "test_v2_1_tables.py" in nodeid and missing_unredacted_v2_1:
+            item.add_marker(skip_marker)
+        elif "test_project_summary.py" in nodeid and missing_docs_summary:
             item.add_marker(skip_marker)
         elif "test_v2_v0_coverage.py" in nodeid and missing_outputs_v2:
             if any(name in nodeid for name in [
