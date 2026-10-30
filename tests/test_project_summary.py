@@ -146,16 +146,20 @@ def test_required_phrasings_and_disclosures(summary_text):
     assert "2f83d70f97bf134e5e75cb0055478208047814ed" in summary_text
     assert "f30ab1838c0820fa41f134c91cc058066c48cfdf" in summary_text
 
-    # Requirement 5: correct BoJ description, pushed r2 status, and file names
+    # Requirement 5: correct BoJ description and file names
     assert "162 clean, usable decisions (5,924 event rows)" in summary_text
-    assert "Branch `zenodo-release` and tag `v2.1.1-zenodo-package-r2` **were pushed**" in summary_text
     assert "data/v2_1/release/analysis_tier1.parquet" in summary_text
     assert "data/v2_1/panel.parquet" in summary_text
 
     # Requirement 6: remove 'ready for deposit' until open items closed, and list them
     assert "ready for deposit" not in summary_text.lower()
-    assert "Open Items Before Deposit & Publication" in summary_text
-    assert "Author Contact Information" in summary_text
-    assert "Zenodo Persistent DOI" in summary_text
+    assert "Status at packaging, 2026-10-31" in summary_text
+    assert "Licence Review by Supervisor / Library" in summary_text
     assert "Vendor Redistribution Clearance" in summary_text
+    assert "NOT ready to publish" in summary_text
+
+    # Requirement 7: remove stale statements on publication
+    assert "were pushed" not in summary_text
+    assert "DOI assignment" not in summary_text
+    assert "repo set to private" not in summary_text.lower()
 

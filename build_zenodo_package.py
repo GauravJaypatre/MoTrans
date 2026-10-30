@@ -541,12 +541,14 @@ def build_readme() -> None:
 
 Code and data pipeline were developed with AI-assisted coding tools. Full replication and pipeline code is provided directly in the `code/` folder of this release package.
 
-### Configuration & Access Terms
+### Status at packaging, 2026-10-31
 - **ACCESS_MODE**: `{cfg.ACCESS_MODE}` (Access granted by request via Zenodo for academic replication)
 - **DATA_LICENSE**: `Other (non-open / non-commercial research use; see LICENSE)`
 - **CODE_LICENSE**: `{cfg.CODE_LICENSE}`
 - **Authors & Affiliations**: Gaurav Mansing Jaypatre & Prachi Ravi Pawar (Pimpri Chinchwad College of Engineering (PCCOE), Pune, India)
 - **Access Requests**: Managed directly via the official Zenodo access-request interface
+- **Licence Review**: Pending institutional / supervisory review (`LICENCE_REVIEW_DONE = NO`)
+- **Vendor Redistribution Clearance**: Not cleared (`VENDOR_CLEARANCE = NOT_CLEARED`); derived returns restricted to academic replication requests
 - **Reason for Restricted Access**: Financial index return series are derived from commercial exchange closing prices without signed vendor redistribution clearance. Closing price levels (`level_local`) are omitted from all tables; access to derived return tables is restricted to verified academic researchers upon request via Zenodo.
 
 ---
@@ -565,8 +567,6 @@ To request access:
 ---
 
 ## 2. How to Cite
-
-> **Note on DOI**: A persistent Digital Object Identifier (DOI) will be assigned upon publication on Zenodo. Once assigned, please use the official Zenodo DOI for citation.
 
 If you use this dataset in your research, please cite it as follows:
 

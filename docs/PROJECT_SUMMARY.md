@@ -129,14 +129,10 @@ Because git commit hashes cryptographically encapsulate commit author and messag
 
 ---
 
-## 6. Remote Repository Synchronization & Package Archive
+## 6. Package Archive & Verification Status at packaging, 2026-10-31
 
-- **Remote Branch & Tag Status**:
-  - Branch `zenodo-release` and tag `v2.1.1-zenodo-package-r2` **were pushed** to remote origin. Replication and analysis code is provided directly in the `code/` folder of the release package.
-  - Revision 3 (`v2.1.1-zenodo-package-r3` at commit `8339d6bc9d0a835f7d59a3f952934483e12bde27`) is currently local on branch `zenodo-release` and has not yet been pushed to remote.
 - **Deterministic Upload Archive**:
-  - File: `MoTrans15_v2.1.1_zenodo_package.zip` (8,519,576 bytes, 8.12 MB)
-  - SHA-256: `b0d0a3c74e569502d8dfe049aeda384c4acbadac829155e0f5666241dae77d2a`
+  - File: `MoTrans15_v2.1.1_zenodo_package.zip` (8,520,125 bytes, 8.13 MB)
   - Fixed timestamp: `2026-10-29 00:00:00`, sorted entries, standard permissions, zero cache/junk files.
 - **Verified Package Hashes vs DATA_FREEZE_v2_1.md**:
   - `analysis_tier1.parquet`: `8a6207dd0c753c7d24d0a4d091dbdb05ee38d3010913a85b4c9f87a86e44979e` (IDENTICAL)
@@ -148,29 +144,26 @@ Because git commit hashes cryptographically encapsulate commit author and messag
 
 ---
 
-## 7. Open Items Before Deposit & Publication
+## 7. Open Items & Research Limitations (Status at packaging, 2026-10-31)
 
-Deposit and publication on Zenodo are **pending** until the following open items are resolved:
+Deposit and publication on Zenodo are **blocked**; the package is **NOT ready to publish** because the following open legal and provenance clearance items remain unresolved:
 
-1. **Licence Review by Supervisor / Library**:
-   - The custom non-open restricted research license (`LICENSE` / `LicenseRef-Other-NonOpen`) should undergo formal institutional/supervisor/library review before deposit. Open redistribution under CC-BY-4.0 remains conditional upon signed vendor clearance.
-2. **Vendor Redistribution Clearance (`LICENCE_CLEARANCE.txt`)**:
-   - Confirm whether derived multi-horizon cumulative log returns (`clr_1` to `clr_60`) and continuous log returns require formal vendor licensing from primary exchange providers before open release.
-3. **Zenodo Persistent DOI**:
-   - A persistent DOI must be reserved/assigned upon initial draft creation on Zenodo, after which `CITATION.cff` and `README.md` can be updated.
-4. **GitHub Repo Set to Private**:
-   - Maintainer confirmation that the repository is set to private (`REPO_IS_PRIVATE = YES`) to protect against unauthorized public exposure of return tables prior to clearance. Full pipeline and replication code is provided directly in the `code/` folder inside the release package.
-5. **Author Contact Information**:
-   - Access requests are managed directly via the official Zenodo access-request interface; personal contact details are omitted per depositor instruction.
-6. **Single-Source Equity Prices**:
+### Unresolved Clearance Items (Package NOT Ready to Publish)
+
+1. **Licence Review by Supervisor / Library (`LICENCE_REVIEW_DONE = NO`)**:
+   - The custom non-open restricted research license (`LICENSE`) has not undergone formal institutional, supervisor, or library review. The package is NOT ready to publish until this clearance is formally completed.
+2. **Financial Index Vendor Redistribution Clearance (`VENDOR_CLEARANCE = NOT_CLEARED`)**:
+   - Formal redistribution clearance for derived equity returns has not been acquired from primary financial index exchange providers (`LICENCE_CLEARANCE.txt`). In the absence of signed vendor clearance, the package cannot be released under open terms (CC-BY-4.0) and remains restricted.
+
+### Genuine Research Design & Data Limitations
+
+3. **Single-Source Equity Prices**:
    - 36 of 38 equity indices rely on primary vendor feeds; only S&P 500 and Nikkei 225 are cross-verified against FRED.
-7. **Emerging Market Announcement Timing**:
+4. **Emerging Market Announcement Timing**:
    - BCB, Banxico, RBI, BoK, and PBoC decisions remain disqualified from primary tiers due to the absence of scraped minute-level release archives.
-8. **Bank of England Pre-2016 Timing**:
+5. **Bank of England Pre-2016 Timing**:
    - BoE decisions prior to 2016-01-01 are verified at the convention level (strict Thursday 12:00 noon protocol) rather than minute-level announcement scrapes.
-9. **Macroeconomic Industrial-Production Vintage Triangles**:
+6. **Macroeconomic Industrial-Production Vintage Triangles**:
    - Historical IP controls use first-available vintage indicators rather than point-in-time vintage triangles.
-10. **Statement Qualitative Hand Labels**:
-    - Narrative qualitative hand classifications have not undergone double-blind expert replication and are excluded.
-11. **Remote Push Protocol for Revision 3**:
-    - Do NOT push Revision 3 (`v2.1.1-zenodo-package-r3` or subsequent packaging commits) until the remote exposure on origin has been resolved by the maintainer.
+7. **Statement Qualitative Hand Labels**:
+   - Narrative qualitative hand classifications have not undergone double-blind expert replication and are excluded.

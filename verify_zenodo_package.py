@@ -275,6 +275,8 @@ def gate_8_readme_links_and_numbers() -> bool:
     assert "jaypatregaurav81@gmail.com" not in text, "Personal email must not appear in README!"
     assert "github.com" not in text.lower(), "GitHub URLs should be removed from README.md when REPO_IS_PRIVATE is YES"
     assert "code/" in text, "README must point to code/ folder"
+    assert "Status at packaging, 2026-10-31" in text, "Time-stamped status section missing in README!"
+    assert "Note on DOI" not in text, "Stale DOI note should be removed from README!"
 
     # 2. Check 9 mandatory limitations
     assert "Single-Source Equity Price Feeds" in text
