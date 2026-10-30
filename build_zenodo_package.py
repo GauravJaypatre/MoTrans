@@ -150,11 +150,14 @@ def copy_code() -> None:
         code_dest / "src",
         ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.pyo"),
     )
-    # Copy tests
+    # Copy tests (excluding repo-level packaging/summary consistency tests that test repo root artifacts)
     shutil.copytree(
         ROOT / "tests",
         code_dest / "tests",
-        ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.pyo"),
+        ignore=shutil.ignore_patterns(
+            "__pycache__", "*.pyc", "*.pyo",
+            "test_project_summary.py", "test_release_parquet_matches_summary.py",
+        ),
     )
     # Copy root config files
     for f in ["tasks.py", "requirements.txt", "pytest.ini"]:
