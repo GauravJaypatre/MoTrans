@@ -638,3 +638,37 @@ official page)"`. See ISS-029 for the sourcing plan.
      - Rebuilt `MoTrans15_v2.1.1_zenodo_package.zip` (8,520,245 bytes, SHA-256 `861975e61596d8e1ae0c35bf024fb3e1e81d45e8ac8711ddc9b18b256e3add9f`).
      - Executed all 9 gates in `verify_zenodo_package.py`: strictly 9/9 PASS.
      - Confirmed `outputs/v2_1/unlock_audit.log` remains at exactly 16 lines.
+
+---
+
+## 2026-11-02 — Phase 2 Modeling Harness Architecture
+
+### DECISION-034: Leakage-Proof Modeling Harness Implementation (`src/modeling/`)
+- **Date Recorded**: 2026-11-02 (Branch: `modeling-ready`).
+- **Context & Motivation**:
+  - Implement a dedicated empirical modeling harness in `src/modeling/` to guarantee temporal isolation, fold-safe standardization, cluster-robust standard errors, tier discipline, and verifiable results logging.
+  - Comply with all strict zero-leakage research rules: zero access to test-split outcomes without unlock flag, zero fitting on validation or test observations, zero remote pushes, and zero modification of production `unlock_audit.log`.
+- **Architectural Components**:
+  1. **Data Access Layer (`src/modeling/data_loader.py`)**:
+     - `load_modeling_data`: Defaults to `train_val` partition with automatic exclusion of `embargo_dropped` observations.
+     - Physical blocking of test split outcomes (`clr_1` to `clr_60`): attempting to access test outcomes without `UNLOCK_TEST=1` and `allow_test_outcomes=True` raises `PermissionError` AND logs the attempt to `outputs/v2_1/unlock_audit.log`. Loading test features without outcomes is permitted for out-of-sample prediction.
+     - `load_fold_data`: Provides partition extraction for rolling-origin evaluation folds (`fold_1` to `fold_4`) by matching role (`train` or `val`).
+  2. **Fold-Safe Preprocessing (`src/modeling/pipeline.py`)**:
+     - `FoldSafeScaler`: Standardizes raw shocks (`shock_raw_bp`) strictly within training boundaries.
+     - Anti-leakage guard: actively inspects sample; if validation or test rows are passed into `fit()`, raises `ValueError("Data leakage detected")`.
+  3. **Clustering & Overlap Protocol (`src/modeling/clustering.py`)**:
+     - `get_cluster_ids`: Provides decision-level (`event_id`) and index-level (`index_id`) cluster identifiers.
+     - `filter_overlap`: Drops or flags contaminating events using `overlap_prior_1d` through `overlap_prior_60d`.
+     - `fit_ols_clustered`: Implements OLS with clustered covariance matrices via `statsmodels`.
+  4. **Tier Separation Protocol (`src/modeling/tier_handler.py`)**:
+     - Enforces that Tier 1 (high-frequency intraday OIS/MPS) and Tier 2 (daily sovereign yield proxies) cannot be pooled without an explicit `shock_tier` indicator in model specifications.
+     - Prohibits secondary holds from primary specifications, restricting them strictly to labeled sensitivity runs (`is_sensitivity=True`).
+  5. **Results Ledger & Refit Protocol (`src/modeling/results_writer.py`)**:
+     - `ResultsLedger`: Logs model specifications, sample sizes, cluster counts, coefficients, standard errors, p-values, and $R^2$ to `outputs/modeling/ledger.csv`.
+     - Mandatory caveat append: Whenever estimating models on `final_fit` or `train_val`, automatically appends:
+       `"easing/hold regime only; cannot assess tightening transfer"`.
+  6. **Automated Verification**:
+     - Added comprehensive test suite `tests/test_modeling_harness.py` (7 tests, all PASS).
+     - Full repo test suite verified: **197 passed, 0 failed**.
+     - All 9 Zenodo release package gates re-verified and passing (isolated package test count maintained at 177: 28 passed, 149 skipped).
+     - `outputs/v2_1/unlock_audit.log` preserved at strictly 16 historical lines.

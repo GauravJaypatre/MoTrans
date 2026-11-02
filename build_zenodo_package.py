@@ -157,7 +157,7 @@ def copy_code() -> None:
         ignore=shutil.ignore_patterns(
             "__pycache__", "*.pyc", "*.pyo",
             "test_project_summary.py", "test_release_parquet_matches_summary.py",
-            "test_docs_match_csvs.py",
+            "test_docs_match_csvs.py", "test_modeling_harness.py",
         ),
     )
     # Copy root config files
