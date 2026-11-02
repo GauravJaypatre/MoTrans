@@ -7,7 +7,7 @@ In accordance with open research integrity standards, this document discloses al
    - The remaining 36 indices rely on primary vendor feeds (`price_source_verified = 0`).
 
 2. **Emerging Market Announcement Timestamps**:
-   - Banco Central do Brasil (BCB), Banco de México (Banxico), Reserve Bank of India (RBI), and Bank of Korea (BoK) lack official scraped minute-level release archives. These decisions are disqualified from the primary evaluation sample (`analysis_ok = 0`). Brazil, Mexico, India, Korea and China have no usable decisions in this version.
+   - Banco Central do Brasil (BCB), Banco de México (Banxico), Reserve Bank of India (RBI), and Bank of Korea (BoK) lack official scraped minute-level release archives; announcement times were not verified in this version. These decisions are disqualified from the primary evaluation sample (`analysis_ok = 0`). Brazil, Mexico, India, Korea and China have no usable decisions in this version.
 
 3. **Bank of England Pre-2016 MPC Timing**:
    - BoE announcement timing prior to 2016-01-01 is verified at convention level (strict Thursday 12:00 noon GMT protocol) rather than minute-level press release scrapes (`timing_verified_level = 'convention'`).
@@ -25,7 +25,7 @@ In accordance with open research integrity standards, this document discloses al
    - 2026 policy decisions and market data are quarantined in `post_window_2026.parquet` and verified only internally; they are strictly excluded from the release tables to prevent temporal contamination.
 
 8. **Test Split Properties (Zero Hikes and Zero Fed Tier 1 Decisions)**:
-   - The 2024–2025 strictly locked test split contains exactly **0 interest rate hikes**, reflecting the easing cycle among the included central banks.
+   - The 2024–2025 strictly locked test split contains exactly **0 interest rate hikes**, reflecting easing among the included central banks (BoJ hiked in the same period).
    - The test split contains **0 Fed Tier 1 decisions** because the Bauer-Swanson high-frequency surprise series ends in December 2023 (2024–2025 Fed decisions rely on 1-day sovereign yield proxy surprises under Tier 2).
 
 9. **Skipped Package Tests (149 of 177)**:

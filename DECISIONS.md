@@ -608,3 +608,33 @@ official page)"`. See ISS-029 for the sourcing plan.
 
 
 
+---
+
+## 2026-11-02 — Phase 1 Metadata Reconciliation & Modeling Readiness
+
+### DECISION-033: Phase 1 Documentation, Metadata Reconciliation, and Automated Drift Prevention
+- **Date Recorded**: 2026-11-02 (Branch: `modeling-ready`).
+- **Context & Motivation**:
+  - Reconcile all metadata, summary tables, and limitations across `docs/PROJECT_SUMMARY.md`, `zenodo_release/README.md`, `.zenodo.json`, and `LIMITATIONS_PACKAGE.md` with zero tolerance for drift.
+  - Implement automated tests verifying all figures strictly against `outputs/v2_1/split_counts.csv` and `outputs/v2_1/row_membership.csv`.
+  - Maintain all frozen data hashes, zero remote pushes, zero history rewrites, and strictly preserve the 16 historical lines in `outputs/v2_1/unlock_audit.log`.
+- **Reconciliation Details**:
+  1. **Macro Revision Sensitivity Count**: Replaced legacy typo `382` with exact mathematical count `383` decisions (14,201 rows), representing the exact disjoint union of Tier 1 (253 decisions) and Tier 2 primary (130 decisions).
+  2. **Split Composition Consistency**: Re-verified exact arithmetic from `split_counts.csv`:
+     - Train: 35 hikes, 63 cuts, 474 holds (572 decisions, 21,247 event rows).
+     - Validation: 57 hikes, 0 cuts, 19 holds (76 decisions, 2,818 event rows).
+     - Test: 0 hikes, 28 cuts, 42 holds (70 decisions, 2,590 event rows).
+     - Total: 92 hikes, 91 cuts, 535 holds (718 decisions, 26,655 event rows).
+  3. **Phrasing Refinements**:
+     - Clarified easing regime: "easing among the included central banks (BoJ hiked in the same period) during the easing cycle among the included central banks".
+     - BoJ quarantine rationale: "zero/negative-rate regime and absence of an intraday shock series".
+     - Emerging markets exclusion rationale: "announcement times were not verified in this version".
+     - Unlock guardrail documentation: explicit notice that attempting unauthorized test/post access raises an error AND logs to `outputs/v2_1/unlock_audit.log`.
+     - Shock scaling guidance: clarified that `shock_std` is a fixed descriptive scale; modelers must standardize `shock_raw_bp` fold-by-fold strictly within training fold observations.
+  4. **Automated Drift Prevention**:
+     - Added `tests/test_docs_match_csvs.py` to repository root suite (total 190 tests, 190 passed).
+     - Added `test_docs_match_csvs.py` to `build_zenodo_package.py` code copy ignore pattern to preserve the certified 177 tests in the isolated release package (28 passed, 149 skipped).
+  5. **Verification & Audit Invariance**:
+     - Rebuilt `MoTrans15_v2.1.1_zenodo_package.zip` (8,520,245 bytes, SHA-256 `861975e61596d8e1ae0c35bf024fb3e1e81d45e8ac8711ddc9b18b256e3add9f`).
+     - Executed all 9 gates in `verify_zenodo_package.py`: strictly 9/9 PASS.
+     - Confirmed `outputs/v2_1/unlock_audit.log` remains at exactly 16 lines.

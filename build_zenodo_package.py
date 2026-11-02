@@ -157,6 +157,7 @@ def copy_code() -> None:
         ignore=shutil.ignore_patterns(
             "__pycache__", "*.pyc", "*.pyo",
             "test_project_summary.py", "test_release_parquet_matches_summary.py",
+            "test_docs_match_csvs.py",
         ),
     )
     # Copy root config files
@@ -406,7 +407,7 @@ def build_provenance_and_limitations() -> None:
         "   - Only S&P 500 (`us_sp500`) and Nikkei 225 (`jp_nikkei225`) have been cross-verified against independent FRED data (`price_source_verified = 1`).\n"
         "   - The remaining 36 indices rely on primary vendor feeds (`price_source_verified = 0`).\n\n"
         "2. **Emerging Market Announcement Timestamps**:\n"
-        "   - Banco Central do Brasil (BCB), Banco de México (Banxico), Reserve Bank of India (RBI), and Bank of Korea (BoK) lack official scraped minute-level release archives. These decisions are disqualified from the primary evaluation sample (`analysis_ok = 0`). Brazil, Mexico, India, Korea and China have no usable decisions in this version.\n\n"
+        "   - Banco Central do Brasil (BCB), Banco de México (Banxico), Reserve Bank of India (RBI), and Bank of Korea (BoK) lack official scraped minute-level release archives; announcement times were not verified in this version. These decisions are disqualified from the primary evaluation sample (`analysis_ok = 0`). Brazil, Mexico, India, Korea and China have no usable decisions in this version.\n\n"
         "3. **Bank of England Pre-2016 MPC Timing**:\n"
         "   - BoE announcement timing prior to 2016-01-01 is verified at convention level (strict Thursday 12:00 noon GMT protocol) rather than minute-level press release scrapes (`timing_verified_level = 'convention'`).\n\n"
         "4. **Statistics Canada CPI Calendar**:\n"
@@ -418,7 +419,7 @@ def build_provenance_and_limitations() -> None:
         "7. **2026 Decisions Verified Only Internally**:\n"
         "   - 2026 policy decisions and market data are quarantined in `post_window_2026.parquet` and verified only internally; they are strictly excluded from the release tables to prevent temporal contamination.\n\n"
         "8. **Test Split Properties (Zero Hikes and Zero Fed Tier 1 Decisions)**:\n"
-        "   - The 2024–2025 strictly locked test split contains exactly **0 interest rate hikes**, reflecting the easing cycle among the included central banks.\n"
+        "   - The 2024–2025 strictly locked test split contains exactly **0 interest rate hikes**, reflecting easing among the included central banks (BoJ hiked in the same period).\n"
         "   - The test split contains **0 Fed Tier 1 decisions** because the Bauer-Swanson high-frequency surprise series ends in December 2023 (2024–2025 Fed decisions rely on 1-day sovereign yield proxy surprises under Tier 2).\n\n"
         "9. **Skipped Package Tests (149 of 177)**:\n"
         "   - In the isolated release package (`code/`), 149 of 177 tests are auto-skipped via `conftest.py` because proprietary vendor raw feeds (`data/raw/`), legacy tables (`data/v2/`), unredacted price levels (`level_local`), and quarantined 2026 data cannot be redistributed. Running all 177 tests requires restoring primary raw feeds.\n"
@@ -452,7 +453,7 @@ def build_metadata_files() -> None:
         "  <li><strong>Evaluation Window:</strong> 2010-01-01 to 2025-12-31 (16 calendar years).</li>\n"
         "  <li><strong>Temporal Splits:</strong> TRAIN (2010-2021, 572 decisions), VALIDATION (2022-2023, 76 decisions), TEST (2024-2025, 70 decisions).</li>\n"
         "  <li><strong>Embargo Protocol:</strong> Strict 60-day embargo prevents multi-horizon event window overlap across split boundaries.</li>\n"
-        "  <li><strong>Locked Out-of-Sample Test Split:</strong> Contains exactly 0 interest rate hikes, reflecting the easing cycle among the included central banks, and 0 Fed Tier 1 decisions.</li>\n"
+        "  <li><strong>Locked Out-of-Sample Test Split:</strong> Contains exactly 0 interest rate hikes, reflecting easing among the included central banks (BoJ hiked in the same period) during the easing cycle among the included central banks, and 0 Fed Tier 1 decisions.</li>\n"
         "  <li><strong>Cross-Validation:</strong> 4 expanding rolling-origin evaluation folds plus a unified final_fit estimation partition (folds.csv).</li>\n"
         "</ul>\n"
         "<p><strong>Restricted Access Notice:</strong> Access is granted case by case for non-commercial academic research. "
@@ -487,7 +488,7 @@ def build_metadata_files() -> None:
         "language": "eng",
         "notes": (
             "MoTrans-15 v2.1.1 release package. The test split (2024-2025) is strictly locked for model evaluation "
-            "and contains zero interest rate hikes (property of the easing cycle among the included central banks) and zero Fed Tier 1 decisions. "
+            "and contains zero interest rate hikes (reflecting easing among the included central banks (BoJ hiked in the same period) during the easing cycle among the included central banks) and zero Fed Tier 1 decisions. "
             "Data License: Other (non-open) research use license; Code License: MIT. "
             "Code and data pipeline were developed with AI-assisted coding tools. "
             "Replication and evaluation code is provided directly in the code/ folder."
@@ -583,13 +584,13 @@ If you use this dataset in your research, please cite it as follows:
 ## 3. What is NOT Included and Why (Package Limitations)
 For exhaustive details on data safety, licensing terms, and research boundaries, see `LIMITATIONS_PACKAGE.md` and `LICENCE_AND_PROVENANCE.md`. Key exclusions and limitations include:
 1. **Single-Source Equity Price Feeds**: All equity indices rely on single primary vendor feeds, with the exception of S&P 500 (`us_sp500`) and Nikkei 225 (`jp_nikkei225`), which are independently verified against FRED.
-2. **Emerging-Market Announcement Timing**: BCB, Banxico, RBI, and BoK lack official scraped minute-level release timestamps; their decisions are disqualified (`analysis_ok = 0`).
+2. **Emerging-Market Announcement Timing**: BCB, Banxico, RBI, and BoK lack official scraped minute-level release timestamps; announcement times were not verified in this version. Their decisions are disqualified (`analysis_ok = 0`).
 3. **Bank of England Pre-2016 Timing**: BoE announcements prior to 2016-01-01 are verified at the convention level (strict Thursday 12:00 noon protocol) rather than minute-level press release scrapes.
 4. **Statistics Canada CPI Calendar**: Historical Canadian CPI release dates follow agency calendar schedules rather than minute-level release timestamps.
 5. **Industrial-Production Vintages**: IP controls use historical time series with first-available vintage indicators rather than real-time point-in-time vintage triangles.
 6. **Hand Labels Excluded**: Statement narrative qualitative classifications have not undergone double-blind expert replication and are excluded.
 7. **2026 Decisions Verified Only Internally**: 2026 decisions are quarantined in `post_window_2026.parquet` and verified only internally; they are omitted from distribution tables.
-8. **Test Split Properties (Zero Hikes and Zero Fed Tier 1 Decisions)**: The 2024–2025 test window contains exactly **0 interest rate hikes** (reflecting the easing cycle among the included central banks) and **0 Fed Tier 1 decisions** (Bauer-Swanson series ends December 2023).
+8. **Test Split Properties (Zero Hikes and Zero Fed Tier 1 Decisions)**: The 2024–2025 test window contains exactly **0 interest rate hikes** (reflecting easing among the included central banks (BoJ hiked in the same period) during the easing cycle among the included central banks) and **0 Fed Tier 1 decisions** (Bauer-Swanson series ends December 2023).
 9. **Skipped Package Tests (149 of 177)**: 149 of 177 unit and regression tests are auto-skipped in `code/` because vendor raw data (`data/raw/`) and unredacted price levels cannot be redistributed.
 
 ---
@@ -607,7 +608,11 @@ For exhaustive details on data safety, licensing terms, and research boundaries,
 Because multi-horizon event windows span up to 60 trading days (`clr_60`), any policy decision occurring within 60 calendar days prior to a partition boundary (or whose 60-day response window crosses into the subsequent split) is quarantined under `embargo_dropped` (64 decisions, 2,432 rows) to eliminate look-ahead leakage.
 
 ### Critical Property of the Test Split
-The out-of-sample test split (2024-2025) contains **0 interest rate hikes**, reflecting the empirical reality of the easing cycle among the included central banks (28 cuts, 42 holds), and **0 Fed Tier 1 decisions**.
+The out-of-sample test split (2024-2025) contains **0 interest rate hikes**, reflecting the empirical reality of easing among the included central banks (BoJ hiked in the same period) during the easing cycle among the included central banks (28 cuts, 42 holds), and **0 Fed Tier 1 decisions**.
+
+### Model Guardrail & Shock Standardization Guidance
+- **Unlock Guardrail**: Attempting unauthorized access to test split or post-window observations raises an error AND logs the event to `outputs/v2_1/unlock_audit.log`.
+- **Shock Standardization**: The column `shock_std` reflects fixed descriptive scaling (pre-2020 SD; CBR robust MAD). Modelers must not treat `shock_std` as a train-fitted feature; all modeling pipelines must standardize `shock_raw_bp` strictly fold-by-fold using scalers fit solely on training fold observations.
 
 ---
 
@@ -620,7 +625,7 @@ All row and decision counts are computed strictly from committed CSV reports (`r
 | `data/analysis_tier1.parquet` | **Tier 1**: High-frequency intraday surprises (Bauer-Swanson MPS; EA-MPD 1Y OIS) | Fed, ECB | {t1_info['decisions_count']} | {t1_info['event_rows_count']:,} | {t1_info['share_of_total_rows']} |
 | `data/analysis_tier2_primary.parquet` | **Tier 2 Primary**: Rate-change decisions with 1-day sovereign yield proxy surprises | BoE, BoC, RBA, CBR, Fed, ECB | {t2_info['decisions_count']} | {t2_info['event_rows_count']:,} | {t2_info['share_of_total_rows']} |
 | `data/secondary_holds.parquet` | **Secondary Holds**: Scheduled hold decisions with sovereign yield proxy surprises | BoE, BoC, RBA, Fed | {sh_info['decisions_count']} | {sh_info['event_rows_count']:,} | {sh_info['share_of_total_rows']} |
-| `data/sensitivity_macro_revision.parquet` | **Macro Revision Sensitivity**: Controls robustness table | All primary regimes | 382 | 14,201 | — |
+| `data/sensitivity_macro_revision.parquet` | **Macro Revision Sensitivity**: Controls robustness table | All primary regimes | {t1_info['decisions_count'] + t2_info['decisions_count']} | {t1_info['event_rows_count'] + t2_info['event_rows_count']:,} | — |
 | `data/panel_returns_only.parquet` | **Daily Panel**: Continuous log returns without proprietary closing levels | 15 economies | — | 148,869 | — |
 
 *Convenience CSV exports are provided for Tier 1 (`analysis_tier1.csv`), Tier 2 (`analysis_tier2_primary.csv`), and Secondary Holds (`secondary_holds.csv`).*

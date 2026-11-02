@@ -102,7 +102,7 @@ Central banks and equity indices for **15 economies** were screened. Decisions a
    - **Shock Measure**: 1-day sovereign benchmark yield change proxies for scheduled rate-hold decisions.
    - **Regimes**: BoE, BoC, RBA, Fed.
 4. **Macro Revision Sensitivity (`data/v2_1/release/sensitivity_macro_revision.parquet`)**:
-   - **Scope**: 382 decisions, 14,201 event rows across primary regimes.
+   - **Scope**: **{t1_decs + t2_decs}** decisions, **{t1_rows + t2_rows:,}** event rows across primary regimes (the disjoint union of Tier 1 and Tier 2 primary).
 5. **Daily Return Panel (`data/v2_1/release/panel_returns_only.parquet`)**:
    - **Scope**: 148,869 daily observations across 38 indices in 15 economies.
    - **Price-Level Safety**: Proprietary closing price levels (`level_local`, `close`, `price`, `index_level`) are strictly excluded to protect vendor intellectual property. The table contains continuous log returns (`ret_local`, `ret_usd`) without starting levels. (Internal panel with price levels is quarantined in root `data/v2_1/panel.parquet`).
@@ -120,12 +120,12 @@ Central banks and equity indices for **15 economies** were screened. Decisions a
 ### Status of Bank of Japan (BoJ)
 - The Bank of Japan has **{boj_decs} clean, usable decisions ({boj_rows:,} event rows)** (`usable_not_in_any_table`).
 - BoJ is **not** an unverified emerging market regime.
-- However, because the BoJ operated under zero/negative interest rate policies (ZIRP/NIRP) and yield curve control (YCC) without an intraday high-frequency shock series or conventional policy rate change proxy shocks, BoJ decisions are unassigned to primary tiers and preserved as a separate sensitivity evaluation set.
+- However, because the BoJ operated under a zero/negative-rate regime and absence of an intraday shock series (as well as yield curve control without conventional policy rate change proxy shocks), BoJ decisions are unassigned to primary tiers and preserved as a separate sensitivity evaluation set.
 
 ### Status of Screened Emerging Markets
 - **Brazil (BCB), Mexico (Banxico), India (RBI), Korea (BoK), and China (PBoC)**:
   - Total screened: **407 decisions, 15,135 event rows** (`excluded / unverified_regime`).
-  - Disqualified from primary analysis tables (`analysis_ok = 0`) because these central banks lack officially scraped minute-level announcement timestamps.
+  - Disqualified from primary analysis tables (`analysis_ok = 0`) because announcement times were not verified in this version (these central banks lack officially scraped minute-level announcement timestamps).
 
 ---
 
@@ -144,9 +144,14 @@ All counts are computed directly from `outputs/v2_1/split_counts.csv`:
 1. **60-Day Embargo Protocol**:
    - Because multi-horizon event windows span up to 60 trading days (`clr_60`), any policy decision occurring within 60 calendar days prior to a partition boundary (or whose response window crosses into the next split) is quarantined under `embargo_dropped` (**64 decisions, 2,432 event rows**) to eliminate look-ahead leakage.
 2. **Empirical Reality of the Test Split (2024–2025)**:
-   - Contains **0 interest rate hikes**, reflecting the empirical reality of the monetary easing cycle among the included central banks ({int(test_s['cuts_count'])} cuts, {int(test_s['holds_count'])} holds).
+   - Contains **0 interest rate hikes**, reflecting the empirical reality of easing among the included central banks (BoJ hiked in the same period) ({int(test_s['cuts_count'])} cuts, {int(test_s['holds_count'])} holds).
    - Contains **0 Fed Tier 1 decisions** (the Bauer-Swanson high-frequency series ends in December 2023; 2024–2025 Fed decisions are evaluated under Tier 2 yield proxies).
    - In Tier 1, the test split contains exclusively ECB decisions ({ecb_t1_decs} decisions, {ecb_t1_rows:,} event rows; 8 cuts, 6 holds).
+3. **Automated Unlock Guardrail (`src/model_guard.py`)**:
+   - Access to the locked `test` split (2024–2025) or quarantined post-window observations is blocked by default. Attempting unauthorized access raises an error AND logs the attempt to `outputs/v2_1/unlock_audit.log`.
+4. **Standardized Shock Guidance (`shock_std` vs `shock_raw_bp`)**:
+   - The dataset provides `shock_std` with fixed descriptive scaling (pre-2020 standard deviation for primary regimes; robust MAD scale of 13.3434 bp for CBR).
+   - Modelers must not treat `shock_std` as a train-fitted feature; all modeling pipelines must standardize `shock_raw_bp` strictly fold-by-fold using scalers fit solely on training fold observations.
 
 ---
 

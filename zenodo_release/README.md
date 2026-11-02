@@ -50,13 +50,13 @@ If you use this dataset in your research, please cite it as follows:
 ## 3. What is NOT Included and Why (Package Limitations)
 For exhaustive details on data safety, licensing terms, and research boundaries, see `LIMITATIONS_PACKAGE.md` and `LICENCE_AND_PROVENANCE.md`. Key exclusions and limitations include:
 1. **Single-Source Equity Price Feeds**: All equity indices rely on single primary vendor feeds, with the exception of S&P 500 (`us_sp500`) and Nikkei 225 (`jp_nikkei225`), which are independently verified against FRED.
-2. **Emerging-Market Announcement Timing**: BCB, Banxico, RBI, and BoK lack official scraped minute-level release timestamps; their decisions are disqualified (`analysis_ok = 0`).
+2. **Emerging-Market Announcement Timing**: BCB, Banxico, RBI, and BoK lack official scraped minute-level release timestamps; announcement times were not verified in this version. Their decisions are disqualified (`analysis_ok = 0`).
 3. **Bank of England Pre-2016 Timing**: BoE announcements prior to 2016-01-01 are verified at the convention level (strict Thursday 12:00 noon protocol) rather than minute-level press release scrapes.
 4. **Statistics Canada CPI Calendar**: Historical Canadian CPI release dates follow agency calendar schedules rather than minute-level release timestamps.
 5. **Industrial-Production Vintages**: IP controls use historical time series with first-available vintage indicators rather than real-time point-in-time vintage triangles.
 6. **Hand Labels Excluded**: Statement narrative qualitative classifications have not undergone double-blind expert replication and are excluded.
 7. **2026 Decisions Verified Only Internally**: 2026 decisions are quarantined in `post_window_2026.parquet` and verified only internally; they are omitted from distribution tables.
-8. **Test Split Properties (Zero Hikes and Zero Fed Tier 1 Decisions)**: The 2024–2025 test window contains exactly **0 interest rate hikes** (reflecting the easing cycle among the included central banks) and **0 Fed Tier 1 decisions** (Bauer-Swanson series ends December 2023).
+8. **Test Split Properties (Zero Hikes and Zero Fed Tier 1 Decisions)**: The 2024–2025 test window contains exactly **0 interest rate hikes** (reflecting easing among the included central banks (BoJ hiked in the same period) during the easing cycle among the included central banks) and **0 Fed Tier 1 decisions** (Bauer-Swanson series ends December 2023).
 9. **Skipped Package Tests (149 of 177)**: 149 of 177 unit and regression tests are auto-skipped in `code/` because vendor raw data (`data/raw/`) and unredacted price levels cannot be redistributed.
 
 ---
@@ -74,7 +74,11 @@ For exhaustive details on data safety, licensing terms, and research boundaries,
 Because multi-horizon event windows span up to 60 trading days (`clr_60`), any policy decision occurring within 60 calendar days prior to a partition boundary (or whose 60-day response window crosses into the subsequent split) is quarantined under `embargo_dropped` (64 decisions, 2,432 rows) to eliminate look-ahead leakage.
 
 ### Critical Property of the Test Split
-The out-of-sample test split (2024-2025) contains **0 interest rate hikes**, reflecting the empirical reality of the easing cycle among the included central banks (28 cuts, 42 holds), and **0 Fed Tier 1 decisions**.
+The out-of-sample test split (2024-2025) contains **0 interest rate hikes**, reflecting the empirical reality of easing among the included central banks (BoJ hiked in the same period) during the easing cycle among the included central banks (28 cuts, 42 holds), and **0 Fed Tier 1 decisions**.
+
+### Model Guardrail & Shock Standardization Guidance
+- **Unlock Guardrail**: Attempting unauthorized access to test split or post-window observations raises an error AND logs the event to `outputs/v2_1/unlock_audit.log`.
+- **Shock Standardization**: The column `shock_std` reflects fixed descriptive scaling (pre-2020 SD; CBR robust MAD). Modelers must not treat `shock_std` as a train-fitted feature; all modeling pipelines must standardize `shock_raw_bp` strictly fold-by-fold using scalers fit solely on training fold observations.
 
 ---
 
@@ -87,7 +91,7 @@ All row and decision counts are computed strictly from committed CSV reports (`r
 | `data/analysis_tier1.parquet` | **Tier 1**: High-frequency intraday surprises (Bauer-Swanson MPS; EA-MPD 1Y OIS) | Fed, ECB | 253 | 9,350 | 17.897% |
 | `data/analysis_tier2_primary.parquet` | **Tier 2 Primary**: Rate-change decisions with 1-day sovereign yield proxy surprises | BoE, BoC, RBA, CBR, Fed, ECB | 130 | 4,851 | 9.286% |
 | `data/secondary_holds.parquet` | **Secondary Holds**: Scheduled hold decisions with sovereign yield proxy surprises | BoE, BoC, RBA, Fed | 335 | 12,454 | 23.839% |
-| `data/sensitivity_macro_revision.parquet` | **Macro Revision Sensitivity**: Controls robustness table | All primary regimes | 382 | 14,201 | — |
+| `data/sensitivity_macro_revision.parquet` | **Macro Revision Sensitivity**: Controls robustness table | All primary regimes | 383 | 14,201 | — |
 | `data/panel_returns_only.parquet` | **Daily Panel**: Continuous log returns without proprietary closing levels | 15 economies | — | 148,869 | — |
 
 *Convenience CSV exports are provided for Tier 1 (`analysis_tier1.csv`), Tier 2 (`analysis_tier2_primary.csv`), and Secondary Holds (`secondary_holds.csv`).*
