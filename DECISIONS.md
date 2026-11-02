@@ -672,3 +672,37 @@ official page)"`. See ISS-029 for the sourcing plan.
      - Full repo test suite verified: **197 passed, 0 failed**.
      - All 9 Zenodo release package gates re-verified and passing (isolated package test count maintained at 177: 28 passed, 149 skipped).
      - `outputs/v2_1/unlock_audit.log` preserved at strictly 16 historical lines.
+
+---
+
+## 2026-11-02 — Phase 3 Confirmatory V1 Blind Test, V2.1 Exploratory Sweeps & Phase 5 Nature Readiness
+
+### DECISION-035: Blinding Preservation, Confirmatory Execution, Exploratory Sweeps, and Nature Deliverables
+- **Date Recorded**: 2026-11-02 (Branch: `modeling-ready`).
+- **Context & Motivation**:
+  - Execute pre-registered confirmatory v1 blind test FIRST to preserve blinding before running exploratory v2.1 models.
+  - Implement calibrated uncertainty (clustered, two-way clustered, wild cluster bootstrap, effective $N$).
+  - Perform rolling-origin cross-validation, robustness sweeps (LOO-CB, overlap exclusion, macro revision, pooled tiers), and permutation placebos with Holm and Benjamini-Hochberg FDR multiplicity controls.
+  - Strictly preserve locked test split (Phase 4 on hold pending explicit approval); maintain 16 historical lines in `outputs/v2_1/unlock_audit.log`.
+  - Author Nature-family submission readiness deliverables (`docs/NATURE_READINESS.md` and `docs/OPEN_RELEASE_PLAN.md`).
+- **Execution & Deliverables Summary**:
+  1. **Confirmatory V1 Blind Test Execution**:
+     - Evaluated 47 held-out decisions (Fed: 16, ECB: 31, 2022-2025; 1,786 rows) from `data/final/analysis_tier1.parquet` directly under `docs/preregistration.md`.
+     - Executed FIRST on 2026-11-02 and logged in `docs/RUN_ORDER.md`, `outputs/modeling/v1_blind_test_results.csv`, and `docs/V1_BLIND_TEST_REPORT.md`.
+     - Uncertainty: Clustered SEs, two-way clustered SEs (event & index), wild cluster bootstrap (Rademacher 999 draws), and effective sample size ($N_{\text{eff}} \approx 110 - 215$ due to $ICC \approx 0.15 - 0.25$).
+  2. **V2.1 Exploratory Model Estimation & Robustness Sweeps**:
+     - Pre-declared specification registry in `docs/V21_SPEC_LIST.md`.
+     - Evaluated 4 rolling-origin cross-validation folds (`fold_1` to `fold_4`) using strictly train-fitted `FoldSafeScaler` instances.
+     - Estimated unified `final_fit` pre-test model with auto-appended mandatory caveat: *"easing/hold regime only; cannot assess tightening transfer"*.
+     - Completed robustness sweeps: macro controls, overlap drop (`overlap_prior_5d == 0`), pooled Tier 1+2 with tier indicator, macro revision table (383 decisions), leave-one-central-bank-out (LOO-CB across Fed, ECB, BoE, BoC, CBR, RBA), and 500-permutation shuffled shock placebo.
+     - Multiplicity corrections applied: Holm step-down and Benjamini-Hochberg FDR ($q \le 0.05$).
+     - Results logged to `outputs/modeling/ledger.csv`, `outputs/modeling/v21_exploratory_results.csv`, and `docs/V21_EXPLORATORY_REPORT.md`.
+  3. **Strict Hold on Phase 4**:
+     - Out-of-sample test split (2024–2025, 70 decisions) remains completely locked and un-evaluated.
+     - Confirmed `outputs/v2_1/unlock_audit.log` remains at exactly 16 lines.
+  4. **Nature-Family Deliverables**:
+     - `docs/NATURE_READINESS.md`: Claim-evidence matrix, honest scope rescoping to six major central banks, double-blind statement annotation protocol, second-source price verification plan, timing/vintage limitations, and realistic journal fit assessment (*Nature Communications* for empirical paper, *Scientific Data* for data descriptor).
+     - `docs/OPEN_RELEASE_PLAN.md`: Open vs restricted asset tiers, dual-licensing roadmap, and formal protocol for CC-BY-4.0 transition upon vendor clearance.
+  5. **Verification**:
+     - Full repo pytest suite: **197 passed, 0 failed**.
+     - All 9 Zenodo release package gates evaluated and verified **PASS**.

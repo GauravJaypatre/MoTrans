@@ -21,7 +21,12 @@ class FoldSafeScaler:
         self.stds_: Dict[str, float] = {}
         self.is_fitted_: bool = False
 
-    def fit(self, df: pd.DataFrame, is_train_mask: Optional[pd.Series] = None) -> FoldSafeScaler:
+    def fit(
+        self,
+        df: pd.DataFrame,
+        is_train_mask: Optional[pd.Series] = None,
+        allow_final_fit: bool = False,
+    ) -> FoldSafeScaler:
         """Fit scaler parameters on training data only.
 
         Parameters
@@ -31,30 +36,43 @@ class FoldSafeScaler:
         is_train_mask : Optional[pd.Series]
             Boolean mask indicating training observations. If None, checks for
             'final_split' or role columns.
+        allow_final_fit : bool
+            If True, permits fitting on combined train+validation (2010-2023)
+            specifically for the final_fit pre-test model. Test observations
+            remain strictly forbidden under all circumstances.
 
         Raises
         ------
         ValueError
-            If validation or test rows are detected in the fitting sample.
+            If validation (when allow_final_fit is False) or test rows are detected.
         """
         if is_train_mask is None:
             if "final_split" in df.columns:
-                val_present = (df["final_split"] == "validation").any()
                 test_present = (df["final_split"] == "test").any()
-                if val_present or test_present:
+                if test_present:
                     raise ValueError(
-                        "Data leakage detected! Fitting sample contains validation or test split observations. "
-                        "Scalers must be fit strictly on training fold observations."
+                        "Data leakage detected! Fitting sample contains locked test split observations. "
+                        "Test observations can never be used to fit scalers."
                     )
-                fit_df = df[df["final_split"] == "train"]
+                val_present = (df["final_split"] == "validation").any()
+                if val_present and not allow_final_fit:
+                    raise ValueError(
+                        "Data leakage detected! Fitting sample contains validation split observations. "
+                        "Scalers must be fit strictly on training fold observations (pass allow_final_fit=True only for final_fit)."
+                    )
+                fit_df = df if allow_final_fit else df[df["final_split"] == "train"]
             else:
                 fit_df = df
         else:
             if "final_split" in df.columns:
                 active = df[is_train_mask]
-                if (active["final_split"] == "validation").any() or (active["final_split"] == "test").any():
+                if (active["final_split"] == "test").any():
                     raise ValueError(
-                        "Data leakage detected! is_train_mask includes validation or test split observations."
+                        "Data leakage detected! is_train_mask includes locked test split observations."
+                    )
+                if (active["final_split"] == "validation").any() and not allow_final_fit:
+                    raise ValueError(
+                        "Data leakage detected! is_train_mask includes validation observations."
                     )
             fit_df = df[is_train_mask]
 
