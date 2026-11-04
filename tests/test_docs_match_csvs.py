@@ -107,8 +107,8 @@ def test_row_membership_and_tier_counts(csv_data, project_summary_text, zenodo_r
 
 def test_required_phrasings(project_summary_text, zenodo_readme_text):
     # Easing wording
-    assert "easing among the included central banks (BoJ hiked in the same period)" in project_summary_text
-    assert "easing among the included central banks (BoJ hiked in the same period)" in zenodo_readme_text
+    assert "an easing cycle among the included central banks (the Bank of Japan hiked in the same period)" in project_summary_text
+    assert "an easing cycle among the included central banks (the Bank of Japan hiked in the same period)" in zenodo_readme_text
 
     # BoJ reason in PROJECT_SUMMARY
     assert "zero/negative-rate regime and absence of an intraday shock series" in project_summary_text

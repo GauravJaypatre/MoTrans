@@ -626,7 +626,7 @@ official page)"`. See ISS-029 for the sourcing plan.
      - Test: 0 hikes, 28 cuts, 42 holds (70 decisions, 2,590 event rows).
      - Total: 92 hikes, 91 cuts, 535 holds (718 decisions, 26,655 event rows).
   3. **Phrasing Refinements**:
-     - Clarified easing regime: "easing among the included central banks (BoJ hiked in the same period) during the easing cycle among the included central banks".
+     - Clarified easing regime: "an easing cycle among the included central banks (the Bank of Japan hiked in the same period)".
      - BoJ quarantine rationale: "zero/negative-rate regime and absence of an intraday shock series".
      - Emerging markets exclusion rationale: "announcement times were not verified in this version".
      - Unlock guardrail documentation: explicit notice that attempting unauthorized test/post access raises an error AND logs to `outputs/v2_1/unlock_audit.log`.

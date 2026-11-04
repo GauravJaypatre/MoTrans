@@ -97,9 +97,66 @@ Measures the net directional shift in explicit or implicit forward guidance rega
 
 ---
 
-## 3. Quality Control & Agreement Assessment
+## 3. Double-Annotation Protocol & Workflow
 
-Inter-annotator reliability is evaluated using `src/label_agreement.py`:
-- **Cohen's Kappa ($\kappa$)**: Target unweighted $\kappa \ge 0.60$; linear/quadratic weighted $\kappa \ge 0.75$.
-- **Spearman Rank Correlation ($\rho$)**: Target $\rho \ge 0.70$.
-- **Discrepancy Resolution**: Differences $> 1$ point must be discussed and resolved in a joint consensus review session.
+To achieve publication-grade reliability (*Scientific Data* / *Nature Communications* standards), narrative annotations follow a strict multi-coder workflow:
+
+1. **Independent Dual Coding**:
+   - Each statement is independently coded by two trained economic annotators (Coder 1 and Coder 2) who are blinded to:
+     - Realized market returns (`clr_1` through `clr_60`).
+     - Quantitative policy surprises (`shock_std`, `size_bp`).
+     - Predictions from machine learning or NLP models.
+   - Annotations are recorded in separate blinding sheets following the schema in Section 5.
+2. **Reliability Benchmarking**:
+   - Inter-coder agreement is calculated using `scripts/agreement.py` across five complementary metrics:
+     - **Cohen's Kappa ($\kappa$)**: Nominal and quadratic-weighted agreement for paired coders.
+     - **Fleiss' Kappa ($\kappa_{\text{Fleiss}}$)**: Generalization across multiple raters.
+     - **Krippendorff's Alpha ($\alpha$)**: Ordinal and interval distance metrics handling missing data.
+     - **Spearman Rank Correlation ($\rho$)**: Monotonic rank association.
+     - **Bootstrap 95% Confidence Intervals**: Derived from 1,000 cluster-resampled bootstrap replications.
+   - Target acceptance thresholds:
+     - $\kappa \ge 0.60$ (substantial agreement; Landis & Koch, 1977).
+     - Weighted $\kappa \ge 0.75$.
+     - Krippendorff's $\alpha \ge 0.70$ (tentative conclusions permissible) and $\alpha \ge 0.800$ (definitive conclusions; Krippendorff, 2004).
+
+---
+
+## 4. Adjudication Protocol & Reconciliation Rules
+
+When coders disagree, discrepancies are processed through a deterministic three-tier adjudication ladder:
+
+1. **Tier 1 — Minor Discrepancy ($|\text{Score}_1 - \text{Score}_2| = 1$)**:
+   - For adjacent ordinal categories (e.g., Coder 1 = `+1`, Coder 2 = `+2`), coders enter an asynchronous reconciliation round.
+   - If consensus is reached, the agreed score is adopted.
+   - If consensus is not reached, the adjudicated score defaults to the arithmetic mean (or integer rounding towards conservative 0 in discrete analysis).
+2. **Tier 2 — Major Discrepancy ($|\text{Score}_1 - \text{Score}_2| \ge 2$)**:
+   - Statements with discrepancies of 2 or more points (e.g. `0` vs `+2`, or `-1` vs `+1` opposite signs) are flagged as **Severe Disagreements**.
+   - A third senior referee (Lead Economist / Domain Adjudicator) independently codes the statement blinded to the initial scores.
+   - The final score is determined by majority vote or senior adjudication, and the rationale is logged into `adjudication_log.csv`.
+3. **Audit Log Schema (`adjudication_log.csv`)**:
+   - Columns: `statement_id`, `regime`, `decision_date`, `dimension`, `score_coder1`, `score_coder2`, `discrepancy_magnitude`, `adjudicator_score`, `final_adjudicated_value`, `adjudication_rationale`, `timestamp_utc`.
+
+---
+
+## 5. Double-Annotation Template Schema
+
+The standardized blank template is stored at `docs/double_annotation_template.csv` with the following columns:
+
+| Column Name | Data Type | Permitted Values | Description |
+| :--- | :--- | :--- | :--- |
+| `statement_id` | string | e.g. `fed_2022-05-04` | Unique announcement identifier |
+| `regime` | string | `Fed`, `ECB`, `BoJ`, `RBI` | Central bank authority |
+| `decision_date` | string (ISO) | `YYYY-MM-DD` | Date of policy statement |
+| `coder_id` | string | `coder_01`, `coder_02`, `adjudicator` | Identifier of assigned annotator |
+| `hawkish_dovish` | integer | `[-2, +2]` | Overall monetary policy stance |
+| `inflation_concern` | integer | `[0, 3]` | Perceived price and wage pressures |
+| `growth_concern` | integer | `[0, 3]` | Downside growth and recession risks |
+| `uncertainty` | integer | `[0, 3]` | Perception of opacity and uncertainty |
+| `forward_guidance_shift` | integer | `[-2, +2]` | Directional change in policy path communication |
+| `confidence` | integer | `[1, 5]` | Annotator self-reported confidence (1=Low, 5=High) |
+| `key_phrases` | string | Free text | Key verbatim sentences supporting the score |
+| `adjudicated` | boolean | `0`, `1` | Whether row represents an adjudicated consensus |
+| `notes` | string | Free text | Contextual or edge-case notes |
+
+> **TRANSPARENCY NOTICE (PENDING-HUMAN-ANNOTATION)**:  
+> In compliance with strict research integrity constraints, no human annotations have been fabricated or synthesized for production estimation. Double-blind coding by independent human domain experts remains an active prerequisite (PENDING-HUMAN-ANNOTATION) prior to incorporating qualitative text scores into final causal econometric regressions. All software tools (`scripts/agreement.py`) are validated strictly on synthetic test fixtures.

@@ -158,6 +158,7 @@ def copy_code() -> None:
             "__pycache__", "*.pyc", "*.pyo",
             "test_project_summary.py", "test_release_parquet_matches_summary.py",
             "test_docs_match_csvs.py", "test_modeling_harness.py",
+            "test_model_guard_integrity.py", "test_agreement.py",
         ),
     )
     # Copy root config files
@@ -419,7 +420,7 @@ def build_provenance_and_limitations() -> None:
         "7. **2026 Decisions Verified Only Internally**:\n"
         "   - 2026 policy decisions and market data are quarantined in `post_window_2026.parquet` and verified only internally; they are strictly excluded from the release tables to prevent temporal contamination.\n\n"
         "8. **Test Split Properties (Zero Hikes and Zero Fed Tier 1 Decisions)**:\n"
-        "   - The 2024–2025 strictly locked test split contains exactly **0 interest rate hikes**, reflecting easing among the included central banks (BoJ hiked in the same period).\n"
+        "   - The 2024–2025 strictly locked test split contains exactly **0 interest rate hikes**, reflecting an easing cycle among the included central banks (the Bank of Japan hiked in the same period).\n"
         "   - The test split contains **0 Fed Tier 1 decisions** because the Bauer-Swanson high-frequency surprise series ends in December 2023 (2024–2025 Fed decisions rely on 1-day sovereign yield proxy surprises under Tier 2).\n\n"
         "9. **Skipped Package Tests (149 of 177)**:\n"
         "   - In the isolated release package (`code/`), 149 of 177 tests are auto-skipped via `conftest.py` because proprietary vendor raw feeds (`data/raw/`), legacy tables (`data/v2/`), unredacted price levels (`level_local`), and quarantined 2026 data cannot be redistributed. Running all 177 tests requires restoring primary raw feeds.\n"
@@ -453,7 +454,7 @@ def build_metadata_files() -> None:
         "  <li><strong>Evaluation Window:</strong> 2010-01-01 to 2025-12-31 (16 calendar years).</li>\n"
         "  <li><strong>Temporal Splits:</strong> TRAIN (2010-2021, 572 decisions), VALIDATION (2022-2023, 76 decisions), TEST (2024-2025, 70 decisions).</li>\n"
         "  <li><strong>Embargo Protocol:</strong> Strict 60-day embargo prevents multi-horizon event window overlap across split boundaries.</li>\n"
-        "  <li><strong>Locked Out-of-Sample Test Split:</strong> Contains exactly 0 interest rate hikes, reflecting easing among the included central banks (BoJ hiked in the same period) during the easing cycle among the included central banks, and 0 Fed Tier 1 decisions.</li>\n"
+        "  <li><strong>Locked Out-of-Sample Test Split:</strong> Contains exactly 0 interest rate hikes, reflecting an easing cycle among the included central banks (the Bank of Japan hiked in the same period), and 0 Fed Tier 1 decisions.</li>\n"
         "  <li><strong>Cross-Validation:</strong> 4 expanding rolling-origin evaluation folds plus a unified final_fit estimation partition (folds.csv).</li>\n"
         "</ul>\n"
         "<p><strong>Restricted Access Notice:</strong> Access is granted case by case for non-commercial academic research. "
@@ -488,7 +489,7 @@ def build_metadata_files() -> None:
         "language": "eng",
         "notes": (
             "MoTrans-15 v2.1.1 release package. The test split (2024-2025) is strictly locked for model evaluation "
-            "and contains zero interest rate hikes (reflecting easing among the included central banks (BoJ hiked in the same period) during the easing cycle among the included central banks) and zero Fed Tier 1 decisions. "
+            "and contains zero interest rate hikes (reflecting an easing cycle among the included central banks (the Bank of Japan hiked in the same period)) and zero Fed Tier 1 decisions. "
             "Data License: Other (non-open) research use license; Code License: MIT. "
             "Code and data pipeline were developed with AI-assisted coding tools. "
             "Replication and evaluation code is provided directly in the code/ folder."
@@ -590,7 +591,7 @@ For exhaustive details on data safety, licensing terms, and research boundaries,
 5. **Industrial-Production Vintages**: IP controls use historical time series with first-available vintage indicators rather than real-time point-in-time vintage triangles.
 6. **Hand Labels Excluded**: Statement narrative qualitative classifications have not undergone double-blind expert replication and are excluded.
 7. **2026 Decisions Verified Only Internally**: 2026 decisions are quarantined in `post_window_2026.parquet` and verified only internally; they are omitted from distribution tables.
-8. **Test Split Properties (Zero Hikes and Zero Fed Tier 1 Decisions)**: The 2024–2025 test window contains exactly **0 interest rate hikes** (reflecting easing among the included central banks (BoJ hiked in the same period) during the easing cycle among the included central banks) and **0 Fed Tier 1 decisions** (Bauer-Swanson series ends December 2023).
+8. **Test Split Properties (Zero Hikes and Zero Fed Tier 1 Decisions)**: The 2024–2025 test window contains exactly **0 interest rate hikes** (reflecting an easing cycle among the included central banks (the Bank of Japan hiked in the same period)) and **0 Fed Tier 1 decisions** (Bauer-Swanson series ends December 2023).
 9. **Skipped Package Tests (149 of 177)**: 149 of 177 unit and regression tests are auto-skipped in `code/` because vendor raw data (`data/raw/`) and unredacted price levels cannot be redistributed.
 
 ---
@@ -608,7 +609,7 @@ For exhaustive details on data safety, licensing terms, and research boundaries,
 Because multi-horizon event windows span up to 60 trading days (`clr_60`), any policy decision occurring within 60 calendar days prior to a partition boundary (or whose 60-day response window crosses into the subsequent split) is quarantined under `embargo_dropped` (64 decisions, 2,432 rows) to eliminate look-ahead leakage.
 
 ### Critical Property of the Test Split
-The out-of-sample test split (2024-2025) contains **0 interest rate hikes**, reflecting the empirical reality of easing among the included central banks (BoJ hiked in the same period) during the easing cycle among the included central banks (28 cuts, 42 holds), and **0 Fed Tier 1 decisions**.
+The out-of-sample test split (2024-2025) contains **0 interest rate hikes**, reflecting the empirical reality of an easing cycle among the included central banks (the Bank of Japan hiked in the same period) (28 cuts, 42 holds), and **0 Fed Tier 1 decisions**.
 
 ### Model Guardrail & Shock Standardization Guidance
 - **Unlock Guardrail**: Attempting unauthorized access to test split or post-window observations raises an error AND logs the event to `outputs/v2_1/unlock_audit.log`.

@@ -25,7 +25,7 @@ In accordance with open research integrity standards, this document discloses al
    - 2026 policy decisions and market data are quarantined in `post_window_2026.parquet` and verified only internally; they are strictly excluded from the release tables to prevent temporal contamination.
 
 8. **Test Split Properties (Zero Hikes and Zero Fed Tier 1 Decisions)**:
-   - The 2024–2025 strictly locked test split contains exactly **0 interest rate hikes**, reflecting easing among the included central banks (BoJ hiked in the same period).
+   - The 2024–2025 strictly locked test split contains exactly **0 interest rate hikes**, reflecting an easing cycle among the included central banks (the Bank of Japan hiked in the same period).
    - The test split contains **0 Fed Tier 1 decisions** because the Bauer-Swanson high-frequency surprise series ends in December 2023 (2024–2025 Fed decisions rely on 1-day sovereign yield proxy surprises under Tier 2).
 
 9. **Skipped Package Tests (149 of 177)**:

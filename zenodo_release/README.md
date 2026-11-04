@@ -56,7 +56,7 @@ For exhaustive details on data safety, licensing terms, and research boundaries,
 5. **Industrial-Production Vintages**: IP controls use historical time series with first-available vintage indicators rather than real-time point-in-time vintage triangles.
 6. **Hand Labels Excluded**: Statement narrative qualitative classifications have not undergone double-blind expert replication and are excluded.
 7. **2026 Decisions Verified Only Internally**: 2026 decisions are quarantined in `post_window_2026.parquet` and verified only internally; they are omitted from distribution tables.
-8. **Test Split Properties (Zero Hikes and Zero Fed Tier 1 Decisions)**: The 2024–2025 test window contains exactly **0 interest rate hikes** (reflecting easing among the included central banks (BoJ hiked in the same period) during the easing cycle among the included central banks) and **0 Fed Tier 1 decisions** (Bauer-Swanson series ends December 2023).
+8. **Test Split Properties (Zero Hikes and Zero Fed Tier 1 Decisions)**: The 2024–2025 test window contains exactly **0 interest rate hikes** (reflecting an easing cycle among the included central banks (the Bank of Japan hiked in the same period)) and **0 Fed Tier 1 decisions** (Bauer-Swanson series ends December 2023).
 9. **Skipped Package Tests (149 of 177)**: 149 of 177 unit and regression tests are auto-skipped in `code/` because vendor raw data (`data/raw/`) and unredacted price levels cannot be redistributed.
 
 ---
@@ -74,7 +74,7 @@ For exhaustive details on data safety, licensing terms, and research boundaries,
 Because multi-horizon event windows span up to 60 trading days (`clr_60`), any policy decision occurring within 60 calendar days prior to a partition boundary (or whose 60-day response window crosses into the subsequent split) is quarantined under `embargo_dropped` (64 decisions, 2,432 rows) to eliminate look-ahead leakage.
 
 ### Critical Property of the Test Split
-The out-of-sample test split (2024-2025) contains **0 interest rate hikes**, reflecting the empirical reality of easing among the included central banks (BoJ hiked in the same period) during the easing cycle among the included central banks (28 cuts, 42 holds), and **0 Fed Tier 1 decisions**.
+The out-of-sample test split (2024-2025) contains **0 interest rate hikes**, reflecting the empirical reality of an easing cycle among the included central banks (the Bank of Japan hiked in the same period) (28 cuts, 42 holds), and **0 Fed Tier 1 decisions**.
 
 ### Model Guardrail & Shock Standardization Guidance
 - **Unlock Guardrail**: Attempting unauthorized access to test split or post-window observations raises an error AND logs the event to `outputs/v2_1/unlock_audit.log`.

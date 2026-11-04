@@ -144,7 +144,7 @@ All counts are computed directly from `outputs/v2_1/split_counts.csv`:
 1. **60-Day Embargo Protocol**:
    - Because multi-horizon event windows span up to 60 trading days (`clr_60`), any policy decision occurring within 60 calendar days prior to a partition boundary (or whose response window crosses into the next split) is quarantined under `embargo_dropped` (**64 decisions, 2,432 event rows**) to eliminate look-ahead leakage.
 2. **Empirical Reality of the Test Split (2024–2025)**:
-   - Contains **0 interest rate hikes**, reflecting the empirical reality of easing among the included central banks (BoJ hiked in the same period) ({int(test_s['cuts_count'])} cuts, {int(test_s['holds_count'])} holds).
+   - Contains **0 interest rate hikes**, reflecting the empirical reality of an easing cycle among the included central banks (the Bank of Japan hiked in the same period) ({int(test_s['cuts_count'])} cuts, {int(test_s['holds_count'])} holds).
    - Contains **0 Fed Tier 1 decisions** (the Bauer-Swanson high-frequency series ends in December 2023; 2024–2025 Fed decisions are evaluated under Tier 2 yield proxies).
    - In Tier 1, the test split contains exclusively ECB decisions ({ecb_t1_decs} decisions, {ecb_t1_rows:,} event rows; 8 cuts, 6 holds).
 3. **Automated Unlock Guardrail (`src/model_guard.py`)**:

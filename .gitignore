@@ -48,6 +48,8 @@ outputs/*
 !outputs/v2/**
 !outputs/v2_1/
 !outputs/v2_1/**
+!outputs/modeling/
+!outputs/modeling/**
 
 
 
