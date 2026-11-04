@@ -96,11 +96,23 @@ To test whether shocks are contaminated by pre-announcement trends or informatio
   $$\beta_{\text{lead}} = +0.0024 \quad (\text{SE} = 0.0040, \; t = +0.60, \; p = 0.5502)$$
 - **Tier 2 Primary Lead Placebo ($N_{\text{obs}} = 6,502, N_{\text{events}} = 175$)**:
   $$\beta_{\text{lead}} = -0.0000 \quad (\text{SE} = 0.0025, \; t = -0.00, \; p = 0.9960)$$
-- **Conclusion**: Both Tier 1 and Tier 2 pass the lead placebo test with clean null coefficients, confirming the absence of pre-announcement anticipation or trend contamination.
+- **Conclusion**: For both Tier 1 and Tier 2 Primary, the lead placebo did not detect pre-announcement contamination ($\beta$, SE, $p$ reported above); this does not rule out contamination.
 
-### 5.5 Definitive Headline Decision Rule
+### 5.5 Multiplicity, Permutation, and Robustness across Headline Specifications
+
+The table below summarizes headline exploratory specifications across raw inference, wild cluster bootstrap, 5,000-permutation empirical placebos, and full-ledger multiplicity corrections across all 61 model variations logged in `outputs/modeling/ledger.csv`:
+
+| Headline Specification | Coef ($\beta$) | Cluster SE | Raw $p$ | Wild Boot $p$ | 5,000-Perm Empirical $p$ | Holm $p$ (Full Ledger) | BH $q$ (Full Ledger) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Tier 1 Baseline (`clr_5`, final_fit)** | +0.0032 | 0.0032 | 0.3187 | 0.3664 | 0.0534 | 1.0000 | 0.5851 |
+| **Pooled Tier 1 + Tier 2 (`clr_5`, final_fit)** | +0.0019 | 0.0006 | 0.0032 | 0.5686 | 0.0506 | 0.1804 | 0.0328 |
+| **Macro Revision Sensitivity (`clr_5`, final_fit)** | +0.0019 | 0.0006 | 0.0022 | 0.5706 | 0.0506 | 0.1286 | 0.0328 |
+
+**Core Multiplicity Finding**: **No headline specification provides evidence of tightening transfer after full-ledger multiplicity and permutation inference.** Under Holm-Bonferroni correction across the 61-model ledger, every headline specification yields $p_{\text{Holm}} > 0.10$ ($p \in [0.1286, 1.0000]$). Under 5,000 block-shuffled permutations preserving central bank and event spacing structure, empirical $p$-values equal or exceed 0.05 ($p \in [0.0506, 0.0534]$), while wild cluster bootstrap $p$-values exceed 0.35 ($p \in [0.3664, 0.5706]$). Furthermore, estimated point coefficients carry a positive sign ($\beta > 0$), failing the theoretical negative transmission direction expected for contractionary tightening shocks.
+
+### 5.6 Definitive Headline Decision Rule
 - **Primary Headline Benchmark**: Strictly restricted to **Tier 1 High-Frequency Identification** (Fed Bauer-Swanson MPS + ECB EA-MPD OIS 1Y).
-- **Secondary Status for Tier 2**: While Tier 2 passes the lead placebo test (confirming pre-event exogeneity), its 67% non-HFI noise variance precludes it from serving as a primary causal benchmark. It is retained exclusively as an out-of-sample transfer test. Pooled models must always include explicit tier indicators (`shock_tier`).
+- **Secondary Status for Tier 2**: While for Tier 2 the lead placebo did not detect pre-announcement contamination ($\beta = -0.0000, \text{SE} = 0.0025, p = 0.9960$; this does not rule out contamination), its 67% non-HFI noise variance precludes it from serving as a primary causal benchmark. It is retained exclusively as an out-of-sample transfer test. Pooled models must always include explicit tier indicators (`shock_tier`).
 
 ---
 

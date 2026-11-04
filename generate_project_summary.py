@@ -213,14 +213,14 @@ Because git commit hashes cryptographically encapsulate commit author and messag
 
 ## 7. Open Items & Research Limitations (Status at packaging, 2026-10-31)
 
-Status at packaging, 2026-10-31: this version is a pre-clearance snapshot deposited under Restricted Access (files visible only to approved requesters). Access requests are not being approved at present while (a) licence review and (b) vendor redistribution clearance for derived equity returns are completed. A refined dataset is planned as a later version.
+Status at packaging, 2026-10-31: this version is a pre-clearance snapshot deposited under Restricted Access (files visible only to approved requesters). Access requests are not being approved at present while (a) licence review and (b) vendor redistribution clearance for derived equity returns are completed. Authors' original contributions are CC-BY-4.0 and MIT; derived return tables are restricted and subject to vendor terms. Any future open release is possible only if vendors permit, with no timeline.
 
 ### Open Clearance Items
 
 1. **Licence Review by Supervisor / Library (`LICENCE_REVIEW_DONE = NO`)**:
    - The custom non-open restricted research license (`LICENSE`) has not undergone formal institutional, supervisor, or library review. Access requests remain on hold until institutional clearance is completed.
 2. **Financial Index Vendor Redistribution Clearance (`VENDOR_CLEARANCE = NOT_CLEARED`)**:
-   - Formal redistribution clearance for derived equity returns has not been acquired from primary financial index exchange providers (`LICENCE_CLEARANCE.txt`). In the absence of signed vendor clearance, the package cannot be released under open terms (CC-BY-4.0) and remains restricted.
+   - Formal redistribution clearance for derived equity returns has not been acquired from primary financial index exchange providers (`LICENCE_CLEARANCE.txt`). In the absence of signed vendor clearance, derived return tables remain restricted under vendor terms. Authors' original contributions are CC-BY-4.0 and MIT; any future open release of derived returns is possible only if vendors permit, with no timeline.
 
 ### Genuine Research Design & Data Limitations
 

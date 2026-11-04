@@ -63,13 +63,25 @@ The definitive confirmatory benchmark test pre-registered in `docs/preregistrati
 
 ---
 
-## 5. Multiplicity and Search Ledger Penalization
+## 5. Multiplicity, Permutation Placebos, and Search Ledger Penalization
 
-### 5.1 Falsification across 61 Exploratory Runs
+### 5.1 Headline Specifications Multiplicity & Permutation Summary
+The table below summarizes headline exploratory specifications across raw inference, wild cluster bootstrap, 5,000-permutation empirical placebos, and full-ledger multiplicity corrections across all 61 model variations logged in `outputs/modeling/ledger.csv`:
+
+| Headline Specification | Coef ($\beta$) | Cluster SE | Raw $p$ | Wild Boot $p$ | 5,000-Perm Empirical $p$ | Holm $p$ (Full Ledger) | BH $q$ (Full Ledger) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Tier 1 Baseline (`clr_5`, final_fit)** | +0.0032 | 0.0032 | 0.3187 | 0.3664 | 0.0534 | 1.0000 | 0.5851 |
+| **Pooled Tier 1 + Tier 2 (`clr_5`, final_fit)** | +0.0019 | 0.0006 | 0.0032 | 0.5686 | 0.0506 | 0.1804 | 0.0328 |
+| **Macro Revision Sensitivity (`clr_5`, final_fit)** | +0.0019 | 0.0006 | 0.0022 | 0.5706 | 0.0506 | 0.1286 | 0.0328 |
+
+**Core Conclusion**: **No headline specification provides evidence of tightening transfer after full-ledger multiplicity and permutation inference.**
+
+### 5.2 Falsification across 61 Exploratory Runs
 When tracking all 61 model variations logged in `outputs/modeling/ledger.csv`:
 - While 7 specifications exhibited nominal unadjusted $p < 0.05$ (e.g. pooled OLS without calendar controls), **only 2 models survive Holm-Bonferroni family-wise error adjustment ($p_{\text{Holm}} < 0.05$)**. Both surviving models are non-headline leave-one-out partitions (omitting RBA and BoE).
 - The pooled exploratory model (`V21_SPEC03_POOLED_T1_T2`, unadjusted $p = 0.0032$) is penalized to an adjusted $p_{\text{Holm}} = 0.1804$.
-- In the 5,000-draw block-shuffled permutation test preserving central bank and meeting spacing autocorrelation, empirical $p$-values across all primary specifications equal or exceed $0.05$ ($p \in [0.0506, 0.0534]$).
+- In the 5,000-draw block-shuffled permutation test preserving central bank and meeting spacing autocorrelation, empirical $p$-values across all primary specifications equal or exceed $0.05$ ($p \in [0.0506, 0.0534]$), while wild cluster bootstrap $p$-values exceed $0.35$ ($p \in [0.3664, 0.5706]$).
+- In pre-event lead placebos ($t-5$ to $t-1$), the lead placebo did not detect pre-announcement contamination (Tier 1 $\beta_{\text{lead}} = +0.0024, \text{SE} = 0.0040, p = 0.5502$; Tier 2 Primary $\beta_{\text{lead}} = -0.0000, \text{SE} = 0.0025, p = 0.9960$); this does not rule out contamination.
 
 ---
 

@@ -6,7 +6,7 @@
 Code and data pipeline were developed with AI-assisted coding tools. Full replication and pipeline code is provided directly in the `code/` folder of this release package.
 
 ### Status at packaging, 2026-10-31
-Status at packaging, 2026-10-31: this version is a pre-clearance snapshot deposited under Restricted Access (files visible only to approved requesters). Access requests are not being approved at present while (a) licence review and (b) vendor redistribution clearance for derived equity returns are completed. A refined dataset is planned as a later version.
+Status at packaging, 2026-10-31: this version is a pre-clearance snapshot deposited under Restricted Access (files visible only to approved requesters). Access requests are not being approved at present while (a) licence review and (b) vendor redistribution clearance for derived equity returns are completed. Authors' original contributions are CC-BY-4.0 and MIT; derived return tables are restricted and subject to vendor terms. Any future open release is possible only if vendors permit, with no timeline.
 
 - **ACCESS_MODE**: `restricted` (Files visible only to approved requesters)
 - **DATA_LICENSE**: `Other (non-open / non-commercial research use; see LICENSE)`
@@ -19,7 +19,7 @@ Status at packaging, 2026-10-31: this version is a pre-clearance snapshot deposi
 ---
 
 ## 1. Access Terms & Policy
-Access is granted case by case for non-commercial academic research. Requests are not being approved at present while redistribution terms for some underlying source series are confirmed.
+Access is granted case by case for non-commercial academic research. Requests are not being approved at present while redistribution terms for some underlying source series are confirmed. Authors' original contributions are CC-BY-4.0 and MIT; derived return tables are restricted and subject to vendor terms. Any future open release is possible only if vendors permit, with no timeline.
 
 When reviews and clearances are complete, requests will be handled via the Zenodo web interface for verified academic research and replication.
 
@@ -75,6 +75,11 @@ Because multi-horizon event windows span up to 60 trading days (`clr_60`), any p
 
 ### Critical Property of the Test Split
 The out-of-sample test split (2024-2025) contains **0 interest rate hikes**, reflecting the empirical reality of an easing cycle among the included central banks (the Bank of Japan hiked in the same period) (28 cuts, 42 holds), and **0 Fed Tier 1 decisions**.
+
+### Sample A ($N = 70$) vs. Sample B ($N = 56$ Pristine) Benchmark Partition
+- **Sample A (Full Test Set, $N = 70$ decisions, 2,590 event rows)**: Comprises all 70 decisions in the 2024–2025 window (14 ECB Tier 1 decisions, 20 Tier 2 Primary rate cuts, and 36 Secondary holds).
+- **Sample B (Pristine Test Set, $N = 56$ decisions, 2,072 event rows)**: Pure unblinded sample containing exclusively decisions that were never in the v1 blind test.
+- **Critical Methodological Boundary**: The 14 excluded ECB decisions represent the **ONLY Tier 1 high-frequency identification decisions in the entire 2024–2025 test window**. Consequently, all 56 pristine decisions in Sample B are **Tier 2 daily sovereign yield proxy decisions**, and they feature **zero interest rate hikes** (20 rate cuts and 36 holds).
 
 ### Model Guardrail & Shock Standardization Guidance
 - **Unlock Guardrail**: Attempting unauthorized access to test split or post-window observations raises an error AND logs the event to `outputs/v2_1/unlock_audit.log`.

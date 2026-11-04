@@ -13,7 +13,7 @@ This document presents an exhaustive enumeration of all structural, empirical, a
 
 ---
 
-## 2. Nine Fundamental Empirical Limitations
+## 2. Ten Fundamental Empirical Limitations
 
 ### Limitation 1: Emerging Market Timing Provenance (`timing_verified_level = "none"`)
 - **Empirical Reality**: Central bank announcement times for Banco Central do Brasil (BCB), Banco de Mexico (Banxico), and the Reserve Bank of India (RBI) could not be independently verified to the minute against public machine-readable feeds across 2000–2025.
@@ -60,3 +60,10 @@ This document presents an exhaustive enumeration of all structural, empirical, a
 - **Empirical Reality**: Historical daily closing index levels (`level_local`) are proprietary commercial assets governed by exchange licensing agreements (S&P DJI, STOXX, FTSE Russell, Nikkei Inc., B3).
 - **Protocol Action**: All raw price levels are stripped from the public release. The repository provides standardized log returns (`clr_1` through `clr_60`) and residual return series in `panel_returns_only.parquet`.
 - **Boundary**: Price levels cannot be redistributed openly. Access to derived return tables is restricted to approved non-commercial academic researchers pending formal vendor clearance.
+
+### Limitation 10: Test Split Partitioning — Sample A ($N = 70$) vs. Sample B ($N = 56$ Pristine)
+- **Empirical Reality**: In the 2024–2025 test split, 14 of the 70 policy decisions had their return outcomes computed in the pre-registered v1 blind test (`run_v1_blind_test.py`). These 14 decisions are exclusively European Central Bank announcements evaluated under Tier 1 high-frequency OIS surprises.
+- **Protocol Action**: Out-of-sample benchmark performance must be reported separately across two partitions:
+  - **Sample A (Full Test Set, $N = 70$ decisions, 2,590 event rows)**: The complete chronological evaluation window (14 ECB Tier 1 decisions, 20 Tier 2 Primary rate cuts, 36 Secondary holds).
+  - **Sample B (Pristine Test Set, $N = 56$ decisions, 2,072 event rows)**: Pure unblinded sample containing exclusively decisions that were never in the v1 blind test.
+- **Critical Methodological Boundary**: The 14 excluded ECB decisions represent the **ONLY Tier 1 high-frequency identification decisions in the entire 2024–2025 test window**. Consequently, all 56 pristine decisions in Sample B are **Tier 2 daily sovereign yield proxy decisions**, and they feature **zero interest rate hikes** (20 rate cuts and 36 holds). Researchers cannot evaluate clean high-frequency surprises or monetary tightening on the pristine unseen test split.

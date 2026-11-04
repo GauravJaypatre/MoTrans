@@ -101,3 +101,10 @@ MoTrans-15/
 - [Data dictionary](docs/data_dictionary.md)
 - [Decision log](DECISIONS.md)
 - [Issues log](docs/issues.md)
+
+
+## Licensing & Access Notice
+
+- **Authors' Original Contributions**: Maintainer-authored code, documentation, verification reports, and monetary shock series are released under **MIT** and **CC-BY-4.0**.
+- **Derived Return Tables**: Cumulative event-window return tables and daily continuous return tables are restricted and subject to commercial financial index vendor terms (`ACCESS_MODE = restricted`).
+- **Open Release Policy**: No file promises a future open CC-BY release of derived returns. Any future open release is possible **only if vendors permit, with no timeline**.

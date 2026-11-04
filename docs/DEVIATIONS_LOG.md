@@ -1,6 +1,6 @@
 # MoTrans-15: Pre-Registration Compliance & Deviations Log
 
-**Date**: 2026-11-03  
+**Date**: 2026-11-04  
 **Lock Reference**: `docs/preregistration.md` (Hash: `384c0d71a1debb054798272965f42f0d36f2e7c6f96461770a6291004739c040`, locked 2026-10-24)  
 **Execution Script**: `src/modeling/run_v1_blind_test.py`  
 **Git History Status**: Introduced in commit `f771af790cd6b58ca6b12632315adb238c3ff863` (Phase 3 confirmatory execution)
@@ -9,23 +9,25 @@
 
 ## 1. Overview and Pre-Registration Compliance Assessment
 
-The MoTrans-15 research design was formally pre-registered and cryptographically locked prior to unblinding any outcome data. This document records all identified differences between the locked protocol in `docs/preregistration.md` and the confirmatory evaluation script executed in Phase 3 (`src/modeling/run_v1_blind_test.py`).
+The MoTrans-15 research design was formally pre-registered and cryptographically locked in `docs/preregistration.md` prior to unblinding any outcome data. This document records all identified differences between the locked protocol and the confirmatory evaluation script executed in Phase 3 (`src/modeling/run_v1_blind_test.py`).
 
-In accordance with open science best practices, we report both the specification as executed in `run_v1_blind_test.py` and the exact pre-registered specification including forward policy overlap controls (`overlap_Wd`).
+In accordance with strict open science standards, the pre-registered specification controlling for forward policy overlaps (`overlap_Wd`) is treated as the **confirmatory primary result**. The executed bivariate regression (`clr_W ~ shock_std`) is classified as a **labelled deviation**.
 
 ---
 
 ## 2. Classification of Methodological Deviations
 
-### Deviation DEV-001: Absence of Policy Overlap Controls in Executed Script
-- **Pre-Registered Protocol (`docs/preregistration.md` Section 4.3)**:
-  > *"Forward event windows must control for overlapping central bank policy decisions occurring within $[t, t+W-1]$ using indicators `overlap_Wd` and continuous counts `overlap_count_Wd`."*
+### Deviation DEV-001: Absence of Policy Overlap Controls in Executed Blind Test Script
+- **Pre-Registered Protocol (`docs/preregistration.md` Section 4.3 & Section 5)**:
+  > *"Forward event windows must control for overlapping central bank policy decisions occurring within $[t, t+W-1]$ using indicators `overlap_Wd` and continuous counts `overlap_count_Wd`."*  
+  > *"Mandatory inclusion of forward window policy overlap controls (`overlap_1d` to `overlap_60d` and counts) to isolate multi-central bank confounding at medium and long horizons."*
 - **Script Implementation (`src/modeling/run_v1_blind_test.py` lines 80–120)**:
   The executed confirmatory script fitted bivariate clustered OLS regressions:
   $$\text{clr}_W = \alpha + \beta \cdot \text{shock\_std} + \epsilon$$
   omitting `overlap_Wd` and `overlap_count_Wd`.
-- **Classification**: Script omission (pre-registered covariate excluded).
-- **Impact Assessment**: Minimal to zero. As demonstrated in the sensitivity comparison below, both specifications yield statistically indistinguishable estimates with $p > 0.10$ across all horizons.
+- **Classification**: **Specification Change (Requires Author Approval)**.  
+  *Note on classification*: This deviation is formally classified as a **specification change, not a bug fix**, and is designated **"requires author approval"**. In accordance with pre-registration auditing guidelines, this is an unapproved divergence from the registered protocol.
+- **Confirmatory Status**: The pre-registration treats the overlap-controlled specification ($\text{clr}_W \sim \text{shock\_std} + \text{overlap\_Wd}$) as **confirmatory (primary result)**. The bivariate model ($\text{clr}_W \sim \text{shock\_std}$) is a **labelled deviation**.
 
 ### Deviation DEV-002: Fed Sample Truncation in Tier 1 Blind Test
 - **Pre-Registered Protocol (`docs/preregistration.md` Section 2)**:
@@ -37,30 +39,38 @@ In accordance with open science best practices, we report both the specification
 
 ---
 
-## 3. Empirical Sensitivity: Executed Bivariate vs. Pre-Registered Overlap Specification
+## 3. Side-by-Side Comparison: Primary Confirmatory (Overlap) vs. Labelled Deviation (Bivariate)
 
-To ensure complete transparency, we compare the executed bivariate regression against the exact pre-registered specification controlling for forward central bank overlaps (`overlap_Wd`):
+Both specifications were evaluated on the exact 47-decision held-out v1 sample ($N_{\text{obs}} = 1,786$) across all five pre-registered horizons using `scripts/generate_v1_compliance_diff.py`. Clustered standard errors are clustered at the `event_id` level, with wild cluster bootstrap (Rademacher 999 draws) and effective sample size ($N_{\text{eff}}$) accounting for within-event correlation:
 
-| Horizon | Model Variant | Specification | Coef ($\beta$) | Cluster SE | $t$-stat | $p$-value | $R^2$ |
+| Horizon | Specification Type | Econometric Model | Coef ($\beta$) | Cluster SE | $p$ (Cluster) | $p$ (Wild Boot) | $N_{\text{eff}}$ |
 | :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: |
-| **`clr_1`** | Executed (Bivariate) | `clr_1 ~ shock_std` | -0.0007 | 0.0008 | -0.84 | 0.4036 | 0.0004 |
-| | Pre-Registered (Overlap) | `clr_1 ~ shock_std + overlap_1d` | -0.0006 | 0.0008 | -0.78 | 0.4407 | 0.0006 |
-| **`clr_3`** | Executed (Bivariate) | `clr_3 ~ shock_std` | -0.0029 | 0.0018 | -1.63 | 0.1091 | 0.0025 |
-| | Pre-Registered (Overlap) | `clr_3 ~ shock_std + overlap_3d` | -0.0030 | 0.0019 | -1.58 | 0.1202 | 0.0027 |
-| **`clr_5`** | Executed (Bivariate) | `clr_5 ~ shock_std` | -0.0025 | 0.0022 | -1.18 | 0.2443 | 0.0012 |
-| | Pre-Registered (Overlap) | `clr_5 ~ shock_std + overlap_5d` | -0.0023 | 0.0021 | -1.10 | 0.2776 | 0.0014 |
-| **`clr_20`** | Executed (Bivariate) | `clr_20 ~ shock_std` | -0.0039 | 0.0042 | -0.93 | 0.3572 | 0.0011 |
-| | Pre-Registered (Overlap) | `clr_20 ~ shock_std + overlap_20d` | -0.0039 | 0.0042 | -0.93 | 0.3572 | 0.0011 |
-| **`clr_60`** | Executed (Bivariate) | `clr_60 ~ shock_std` | -0.0068 | 0.0058 | -1.20 | 0.2354 | 0.0013 |
-| | Pre-Registered (Overlap) | `clr_60 ~ shock_std + overlap_60d` | -0.0068 | 0.0058 | -1.20 | 0.2354 | 0.0013 |
+| **`clr_1`** | **Primary Confirmatory** | `clr_1 ~ shock_std + overlap_1d` | **-0.0006** | 0.0008 | 0.4407 | 0.4785 | 215.5 |
+| | Labelled Deviation | `clr_1 ~ shock_std` | **-0.0007** | 0.0008 | 0.4036 | 0.4424 | 215.5 |
+| **`clr_3`** | **Primary Confirmatory** | `clr_3 ~ shock_std + overlap_3d` | **-0.0030** | 0.0019 | 0.1202 | 0.1752 | 110.1 |
+| | Labelled Deviation | `clr_3 ~ shock_std` | **-0.0029** | 0.0018 | 0.1091 | 0.1592 | 110.1 |
+| **`clr_5`** | **Primary Confirmatory** | `clr_5 ~ shock_std + overlap_5d` | **-0.0023** | 0.0021 | 0.2776 | 0.3153 | 115.1 |
+| | Labelled Deviation | `clr_5 ~ shock_std` | **-0.0025** | 0.0022 | 0.2443 | 0.2753 | 115.1 |
+| **`clr_20`** | **Primary Confirmatory** | `clr_20 ~ shock_std + overlap_20d` | **-0.0039** | 0.0042 | 0.3572 | 0.3463 | 140.4 |
+| | Labelled Deviation | `clr_20 ~ shock_std` | **-0.0039** | 0.0042 | 0.3572 | 0.3463 | 140.4 |
+| **`clr_60`** | **Primary Confirmatory** | `clr_60 ~ shock_std + overlap_60d` | **-0.0068** | 0.0058 | 0.2354 | 0.2492 | 150.8 |
+| | Labelled Deviation | `clr_60 ~ shock_std` | **-0.0068** | 0.0058 | 0.2354 | 0.2492 | 150.8 |
 
-*Notes: Clustered standard errors at the `event_id` level ($N_{\text{events}} = 47, N_{\text{obs}} = 1,786$). At 20d and 60d horizons, `overlap_Wd` is saturated (1.0 across all observations in the active easing/hiking window), resulting in collinearity and identical slope estimates.*
+*Econometric Note on Medium/Long Horizons*: At horizons $W = 20$ and $W = 60$ trading days, every policy decision in the 2022–2025 window exhibits at least one overlapping central bank decision (`overlap_20d = 1` and `overlap_60d = 1` across all 1,786 rows). Because `overlap_Wd` is constant, it is mathematically collinear with the regression intercept; consequently, the slope coefficient $\beta$, clustered standard error, and wild bootstrap $p$-value are mathematically identical between the bivariate and overlap specifications.
 
 ---
 
-## 4. Formal Null Result Statement
+## 4. Pre-Registered Success Criteria Assessment
 
-Across both the executed and pre-registered specifications:
-1. **Hypothesis Direction**: Point estimates are consistently negative ($\beta \in [-0.0068, -0.0006]$), which aligns with the theoretical hypothesis that contractionary surprises depress equity valuations.
-2. **Statistical Significance**: All two-tailed clustered $p$-values exceed $0.10$ ($p \in [0.109, 0.441]$), and wild cluster bootstrap $p$-values exceed $0.15$ across all horizons.
-3. **Substantive Conclusion**: The pre-registered confirmatory v1 blind test yields a **statistically robust null finding**. In the held-out post-pandemic cycle (2022–2025), high-frequency monetary policy surprises did not exert a statistically detectable causal impact on international equity indices. This failure to reject the null is a substantive empirical finding, not a failure of statistical implementation.
+### Verbatim Pre-Registered Objectives & Benchmark Criteria
+From `docs/preregistration.md`:
+1. **Section 1 (Study Overview & Objective)**:
+   > *"The research design evaluates:*  
+   > *1. Domestic Equity Transmission: The immediate and persistent reaction of broad market, banking sector, and small-cap equity indices to domestic policy surprises.*  
+   > *2. Cross-Border Spillovers: The international transmission of US Federal Reserve and European Central Bank policy shocks to foreign equity markets.*  
+   > *3. Transmission Channels: Decomposing responses across interest rate expectations, term premia, and equity risk premia."*
+2. **Section 5 (Methodological Amendments)**:
+   > *"Pre-specified that the definitive benchmark test of cross-border monetary transmission is evaluated on the held-out blind_test period (2022–2026) for Tier 1 high-frequency shocks."*
+
+### One-Sentence Compliance & Success Assessment
+**Neither the primary confirmatory specification nor the labelled deviation meets the pre-registered success criteria for demonstrating causal transmission to equities, as both models yield statistically indistinguishable null findings with two-tailed cluster p-values exceeding 0.10 and wild bootstrap p-values exceeding 0.15 across all five horizons.**

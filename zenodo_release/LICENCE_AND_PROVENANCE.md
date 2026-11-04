@@ -5,7 +5,7 @@ This document provides an inventory of all data providers, quoting their stated 
 ## Summary of Licencing Status
 
 - **Selected Access Mode**: `restricted` (Access granted by request via Zenodo for academic replication).
-- **Data Licence**: Custom 'Other (non-open)' research-use license (non-commercial academic research, no redistribution, attribution required; CC-BY-4.0 is preserved as a documented future option conditional on `LICENCE_CLEARANCE.txt`).
+- **Data Licence**: Custom 'Other (non-open)' research-use license. Authors' original contributions are CC-BY-4.0 and MIT; derived return tables are restricted and subject to vendor terms. Any future open release is possible only if vendors permit, with no timeline.
 - **Proprietary Closing Price Levels**: **Omitted** (`level_local` excluded from all packaged tables; `panel_returns_only.parquet` provides continuous log returns without starting levels).
 - **Raw Data Status**: Excluded from package (`data/raw/` contains vendor feeds that cannot be redistributed).
 
