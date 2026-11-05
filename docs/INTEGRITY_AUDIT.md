@@ -112,7 +112,12 @@ A quantitative verification was conducted across `data/final/shocks.parquet` and
    Total:      8   10    8    8   11   20   20   22   24   20   20   20   20   20   20   16   16   16   16   17   18   16   16   16    8    7   413
    ```
 
-3. **Coincidental 413 Count in Historical Train Split**: In `data/final/analysis_tier1.parquet`, the historical `train` split ($t \le 2019-12-31$) coincidentally contains exactly **413 decisions** (12,727 panel rows; average of ~30.8 index series per decision). An audit of all documentation confirms that **no document refers to panel rows as 'decisions'**; both references to 413 correctly designate unique policy decisions (`event_id`).
+3. **Coincidental 413 Count in Historical Train Split**: In `data/final/analysis_tier1.parquet`, the historical `train` split ($t \le 2019-12-31$) coincidentally contains exactly **413 decisions** (12,727 panel rows; average of ~30.8 index series per decision).
+   - **Exact Filters Compared**:
+     - *(i) Dual-Instrument Filter*: `shocks[shocks['regime'].isin(['Fed', 'ECB']) & shocks['shock_hf_raw'].notna() & shocks['shock_proxy_raw'].notna()]` $\rightarrow$ 413 unique decisions across 2000–2025.
+     - *(ii) Tier 1 Train Split Filter*: `analysis_tier1[analysis_tier1['split_tag'] == 'train']['event_id'].nunique()` $\rightarrow$ 413 unique decisions across 2000–2019.
+   - **Intersection Analysis**: The intersection of these two sets contains exactly **332 decisions**. Exactly 81 decisions in the dual-instrument set belong to post-2019 splits (`crisis` and `blind_test`), while 81 decisions in the Tier 1 `train` split lack sovereign yield proxy pairs (e.g. pre-2004 ECB).
+   - **Conclusion**: The two sets do not share a common filter; the equal count of 413 is an exact numerical coincidence. An audit of all documentation confirms that **no document refers to panel rows as 'decisions'**; both references to 413 correctly designate unique policy decisions (`event_id`).
 
 ### 6.2 Mathematical Equivalence of Pooled vs. Macro Revision Placebos (Task 3b)
 In Phase 3 exploratory sweeps, the 5,000-draw block permutation placebo for the Pooled specification and the Macro Revision sensitivity produced identical numerical outputs down to floating-point precision:
@@ -132,13 +137,17 @@ An exhaustive set-intersection audit confirms that `sensitivity_macro_revision.p
 - **Macro Revision Union**: $253 + 130 = \mathbf{383\text{ decisions}}$, $9,350 + 4,851 = \mathbf{14,201\text{ rows}}$.
 - All release documentation (`README.md`, `.zenodo.json`, `docs/PROJECT_SUMMARY.md`) and package generation scripts use these verified parquet-derived figures.
 
-### 6.4 Nikkei 225 T+1 Reporting Convention Audit (Task 3d)
+### 6.4 Nikkei 225 T+1 Reporting Convention Audit (Task 3d & Task 4b)
 The second-source audit of Nikkei 225 (`^N225`) against FRED (`NIKKEI225`) demonstrates:
 - **Date Shift Mechanism**: FRED logs Tokyo closes under the US business day date on which the data are ingested ($t+1$ relative to Tokyo session date $t$). Shifting FRED dates backwards by 1 calendar day ($\text{date}_{\text{FRED}} - 1\text{d}$) aligns Tokyo session closes with US calendar dates.
 - **Session Alignment Counts**:
   - *Direct Calendar (Unshifted)*: 3,177 sessions compared; 99.59% fail (> 1 bp return difference; max diff = 2,262 bp).
-  - *Timezone Shifted (T+1)*: 4,105 sessions compared; 99.93% match within 1 bp (only 3 sessions differ due to Tokyo typhoon/holiday closure reconciliations; max diff = 233.45 bp).
-- **Integrity Certification**: The T+1 shift documents a known secondary data-ingestion convention and does not conceal genuine price or timing misalignment.
+  - *Timezone Shifted (T+1)*: 4,105 sessions compared; 99.93% match within 1 bp (only 3 sessions differ due to missing intermediate sessions in Yahoo Finance; max diff = 233.45 bp).
+- **Audit of the Three Discrepant Sessions Beyond 1 bp**:
+  1. **2010-07-20** (Tokyo date): Return difference = **114.42 bp** (Yahoo return: $-1.38\%$ vs FRED return: $-0.23\%$). Yahoo omitted the intermediate session recorded in FRED on 2010-07-20 at price $9,300.46$, collapsing multi-day price changes from 2010-07-15 ($9,408.36$) to 2010-07-20 ($9,278.83$).
+  2. **2010-09-15** (Tokyo date): Return difference = **233.45 bp** (Yahoo return: $+2.26\%$ vs FRED return: $-0.07\%$). Yahoo omitted the intermediate session recorded in FRED on 2010-09-15 at price $9,516.56$, computing return across two trading days from 2010-09-13 ($9,299.31$) to 2010-09-15 ($9,509.50$).
+  3. **2026-10-21** (Tokyo date): Return difference = **141.85 bp** (Yahoo return: $-1.23\%$ vs FRED return: $-2.65\%$). Yahoo omitted the intermediate session recorded in FRED on 2026-10-21 at price $64,621.24$.
+- **Integrity Certification**: In all three instances, the discrepancy is caused by the primary Yahoo feed omitting an intermediate trading day that was captured by FRED, causing Yahoo's daily return to reflect a multi-day return. There is no evidence of underlying exchange closure anomalies or price errors. The T+1 shift documents a known secondary data-ingestion convention and confirms secondary source agreement across 99.93% of sessions.
 
 ### 6.5 Reaction Window Timing and Pre-Announcement Contamination Risk (Task 3e)
 The one-session cumulative log return is defined as:
@@ -161,4 +170,48 @@ An audit across all 82,054 decision-index pairs in `data/final/events.parquet` e
 2. **Out-of-Session Announcements (`announce_in_session == 0`, 64,753 pairs)**:
    - When a policy announcement occurs after a market has closed (e.g. Asian markets on Fed/ECB announcements; European markets on Fed 14:00 ET announcements), `baseline_obs_date` is the closing price on date $t$ (which closed before the announcement), and `react_obs_date` is the closing price on date $t+1$.
    - **Clean Post-Announcement Reaction**: For out-of-session pairs, the return window starts strictly after the policy announcement. No pre-announcement trading is encapsulated.
+
+### 6.6 Empirical Robustness to Window Timing (Task 2)
+To rigorously evaluate whether pre-announcement morning trading in $\text{clr}_1$ or subsequent cumulative returns contaminates empirical conclusions, all confirmatory specifications and headline exploratory models were re-estimated separately on:
+1. **Out-of-Session Subset (`announce_in_session == 0`)**: Clean reaction windows where the baseline closing price occurs strictly prior to the announcement.
+2. **In-Session Subset (`announce_in_session == 1`)**: Reaction windows spanning the announcement date from previous close, containing pre-announcement morning trading.
+
+All models were evaluated using event-clustered standard errors and 999-draw restricted wild cluster bootstrap (Rademacher at `event_id`). Results are saved to `outputs/modeling/window_timing_robustness.csv`.
+
+#### Side-by-Side Robustness Comparison
+
+| Sample & Horizon | Specification | Window Timing Subset | $N_{\text{decs}}$ | $N_{\text{obs}}$ | Coef ($\beta$) | Cluster SE | Cluster $p$ | Wild Bootstrap $p$ |
+| :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **v1 Blind Test `clr_1`** | Bivariate (`clr_1 ~ shock`) | Full Sample | 47 | 1,786 | $-0.000655$ | $0.000785$ | 0.4036 | 0.4424 |
+| **v1 Blind Test `clr_1`** | Bivariate (`clr_1 ~ shock`) | **Out-of-Session (Clean)** | 47 | 1,197 | $-0.000679$ | $0.000789$ | 0.3898 | **0.4224** |
+| **v1 Blind Test `clr_1`** | Bivariate (`clr_1 ~ shock`) | **In-Session (Contaminated)** | 47 | 589 | $-0.000609$ | $0.001087$ | 0.5751 | **0.6336** |
+| **v1 Blind Test `clr_1`** | Pre-reg Overlap (`clr_1 ~ shock + ov`) | Full Sample | 47 | 1,786 | $-0.000620$ | $0.000804$ | 0.4407 | 0.4785 |
+| **v1 Blind Test `clr_1`** | Pre-reg Overlap (`clr_1 ~ shock + ov`) | **Out-of-Session (Clean)** | 47 | 1,197 | $-0.000595$ | $0.000804$ | 0.4594 | **0.4905** |
+| **v1 Blind Test `clr_1`** | Pre-reg Overlap (`clr_1 ~ shock + ov`) | **In-Session (Contaminated)** | 47 | 589 | $-0.000677$ | $0.001111$ | 0.5424 | **0.5956** |
+| **v1 Blind Test `clr_5`** | Bivariate (`clr_5 ~ shock`) | Full Sample | 47 | 1,786 | $-0.002518$ | $0.002163$ | 0.2443 | 0.2753 |
+| **v1 Blind Test `clr_5`** | Bivariate (`clr_5 ~ shock`) | **Out-of-Session (Clean)** | 47 | 1,197 | $-0.003518$ | $0.002185$ | 0.1073 | **0.1491** |
+| **v1 Blind Test `clr_5`** | Bivariate (`clr_5 ~ shock`) | **In-Session (Contaminated)** | 47 | 589 | $-0.000571$ | $0.002225$ | 0.7975 | **0.8118** |
+| **v1 Blind Test `clr_5`** | Pre-reg Overlap (`clr_5 ~ shock + ov`) | Full Sample | 47 | 1,786 | $-0.002261$ | $0.002083$ | 0.2776 | 0.3153 |
+| **v1 Blind Test `clr_5`** | Pre-reg Overlap (`clr_5 ~ shock + ov`) | **Out-of-Session (Clean)** | 47 | 1,197 | $-0.003344$ | $0.002117$ | 0.1142 | **0.1461** |
+| **v1 Blind Test `clr_5`** | Pre-reg Overlap (`clr_5 ~ shock + ov`) | **In-Session (Contaminated)** | 47 | 589 | $-0.000166$ | $0.002145$ | 0.9382 | **0.9459** |
+| | | | | | | | | |
+| **Tier 1 Final Fit `clr_5`** | Headline (`clr_5 ~ shock`) | Full Sample | 239 | 8,832 | $+0.003242$ | $0.003252$ | 0.3187 | 0.3664 |
+| **Tier 1 Final Fit `clr_5`** | Headline (`clr_5 ~ shock`) | **Out-of-Session (Clean)** | 239 | 6,119 | $+0.002533$ | $0.003264$ | 0.4376 | **0.5576** |
+| **Tier 1 Final Fit `clr_5`** | Headline (`clr_5 ~ shock`) | **In-Session (Contaminated)** | 238 | 2,713 | $+0.004926$ | $0.005011$ | 0.3256 | **0.4364** |
+| **Tier 1 Final Fit Lead** | Lead Placebo (`clr_pre5 ~ shock`) | Full Sample | 239 | 8,829 | $+0.003040$ | $0.003927$ | 0.4388 | 0.6066 |
+| **Tier 1 Final Fit Lead** | Lead Placebo (`clr_pre5 ~ shock`) | **Out-of-Session (Clean)** | 239 | 6,117 | $+0.004246$ | $0.004860$ | 0.3823 | 0.6857 |
+| **Tier 1 Final Fit Lead** | Lead Placebo (`clr_pre5 ~ shock`) | **In-Session (Contaminated)** | 238 | 2,712 | $+0.000156$ | $0.003525$ | 0.9648 | 0.9660 |
+| | | | | | | | | |
+| **Pooled Final Fit `clr_5`** | Headline (`clr_5 ~ shock + tier`) | Full Sample | 349 | 12,943 | $+0.001924$ | $0.000653$ | 0.0032 | 0.5686 |
+| **Pooled Final Fit `clr_5`** | Headline (`clr_5 ~ shock + tier`) | **Out-of-Session (Clean)** | 349 | 8,674 | $+0.002091$ | $0.000463$ | $6 \times 10^{-6}$ | **0.4505** |
+| **Pooled Final Fit `clr_5`** | Headline (`clr_5 ~ shock + tier`) | **In-Session (Contaminated)** | 347 | 4,269 | $-0.001630$ | $0.005089$ | 0.7487 | **0.7708** |
+| **Pooled Final Fit Lead** | Lead Placebo (`clr_pre5 ~ shock + tier`) | Full Sample | 349 | 12,940 | $-0.001407$ | $0.001066$ | 0.1868 | 0.7778 |
+| **Pooled Final Fit Lead** | Lead Placebo (`clr_pre5 ~ shock + tier`) | **Out-of-Session (Clean)** | 349 | 8,672 | $-0.001511$ | $0.000930$ | 0.1041 | 0.7938 |
+| **Pooled Final Fit Lead** | Lead Placebo (`clr_pre5 ~ shock + tier`) | **In-Session (Contaminated)** | 347 | 4,268 | $+0.001319$ | $0.005000$ | 0.7919 | 0.8048 |
+
+#### Conclusion on Window Timing
+**The empirical conclusion does not change.** 
+1. In the headline immediate response window (`clr_1`), the estimated shock coefficient is virtually identical between out-of-session decisions ($\beta = -0.000679$, $p_{\text{wild}} = 0.4224$) and in-session decisions ($\beta = -0.000609$, $p_{\text{wild}} = 0.6336$). Both subsets represent statistical nulls.
+2. In Tier 1 and Pooled `final_fit` models, restricting to clean out-of-session announcements leaves the estimates statistically indistinguishable from zero under wild cluster bootstrap ($p_{\text{wild}} = 0.5576$ for Tier 1; $p_{\text{wild}} = 0.4505$ for Pooled).
+3. The presence of pre-announcement morning trading in 21.08% of event pairs does not drive the observed empirical null.
 

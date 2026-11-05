@@ -159,6 +159,7 @@ def copy_code() -> None:
             "test_project_summary.py", "test_release_parquet_matches_summary.py",
             "test_docs_match_csvs.py", "test_modeling_harness.py",
             "test_model_guard_integrity.py", "test_agreement.py",
+            "test_inference_size.py",
         ),
     )
     # Copy root config files
@@ -554,6 +555,12 @@ Status at packaging, 2026-10-31: this version is a pre-clearance snapshot deposi
 - **Licence Review**: Pending institutional / supervisory review (`LICENCE_REVIEW_DONE = NO`)
 - **Vendor Redistribution Clearance**: Not cleared (`VENDOR_CLEARANCE = NOT_CLEARED`); derived returns restricted to academic replication requests
 - **Reason for Restricted Access**: Financial index return series are derived from commercial exchange closing prices without signed vendor redistribution clearance. Closing price levels (`level_local`) are omitted from all tables.
+
+### Out-of-Sample Test Split Architecture: Sample A (N = 70) vs. Sample B (N = 56 Pristine)
+The held-out 2024–2025 out-of-sample test split comprises 70 policy decisions (2,590 event rows):
+- **Sample A (Full Evaluation Set, N = 70 decisions, 2,590 event rows)**: The complete chronological test split, containing 14 European Central Bank decisions whose returns were evaluated under Tier 1 high-frequency identification in the v1 blind test (`run_v1_blind_test.py`), plus 20 Tier 2 Primary rate cuts and 36 Secondary holds.
+- **Sample B (Pristine Test Set, N = 56 decisions, 2,072 event rows)**: Excludes the 14 previously unblinded ECB decisions to provide an entirely unseen test set for independent validation.
+- **Crucial Methodological Boundary**: The 14 unblinded ECB decisions represent the **ONLY Tier 1 high-frequency identification decisions in the entire 2024–2025 test window**. Consequently, all 56 pristine decisions in Sample B rely exclusively on **Tier 2 daily sovereign yield proxies**, and the sample contains **zero interest rate hikes** (20 rate cuts and 36 holds). Researchers cannot evaluate clean high-frequency surprises or monetary tightening on the pristine unseen test split.
 
 ---
 

@@ -234,6 +234,8 @@ Status at packaging, 2026-10-31: this version is a pre-clearance snapshot deposi
    - Historical IP controls use first-available vintage indicators rather than point-in-time vintage triangles.
 7. **Statement Qualitative Hand Labels**:
    - Narrative qualitative hand classifications have not undergone double-blind expert replication and are excluded.
+8. **Test Split Partitioning (Sample A vs. Sample B)**:
+   - The held-out test split (2024–2025) contains 70 decisions (Sample A). 14 of these (all ECB Tier 1) were evaluated in the pre-registered v1 blind test. The remaining 56 decisions (Sample B) are pristine and unseen, but consist entirely of Tier 2 daily sovereign yield proxies and feature zero interest rate hikes.
 """
 
     with open(SUMMARY_PATH, "w", encoding="utf-8", newline="\n") as f:

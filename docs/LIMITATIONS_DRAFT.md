@@ -13,7 +13,7 @@ This document presents an exhaustive enumeration of all structural, empirical, a
 
 ---
 
-## 2. Ten Fundamental Empirical Limitations
+## 2. Eleven Fundamental Empirical Limitations
 
 ### Limitation 1: Emerging Market Timing Provenance (`timing_verified_level = "none"`)
 - **Empirical Reality**: Central bank announcement times for Banco Central do Brasil (BCB), Banco de Mexico (Banxico), and the Reserve Bank of India (RBI) could not be independently verified to the minute against public machine-readable feeds across 2000–2025.
@@ -67,3 +67,8 @@ This document presents an exhaustive enumeration of all structural, empirical, a
   - **Sample A (Full Test Set, $N = 70$ decisions, 2,590 event rows)**: The complete chronological evaluation window (14 ECB Tier 1 decisions, 20 Tier 2 Primary rate cuts, 36 Secondary holds).
   - **Sample B (Pristine Test Set, $N = 56$ decisions, 2,072 event rows)**: Pure unblinded sample containing exclusively decisions that were never in the v1 blind test.
 - **Critical Methodological Boundary**: The 14 excluded ECB decisions represent the **ONLY Tier 1 high-frequency identification decisions in the entire 2024–2025 test window**. Consequently, all 56 pristine decisions in Sample B are **Tier 2 daily sovereign yield proxy decisions**, and they feature **zero interest rate hikes** (20 rate cuts and 36 holds). Researchers cannot evaluate clean high-frequency surprises or monetary tightening on the pristine unseen test split.
+
+### Limitation 11: Pre-Announcement Morning Trading Contamination in In-Session Windows (21.08%)
+- **Empirical Reality**: In exactly **17,301 out of 82,054 decision-index pairs (21.08%)**, the central bank policy announcement occurs while the local equity exchange is open (`announce_in_session == 1`). Because the single-day reaction return is computed from previous close ($t-1$) to today's close ($t$), $\text{clr}_1 = \ln(P_t / P_{t-1})$ encapsulates between 15 minutes and 5.25 hours of pre-announcement morning trading (e.g., FOMC 14:00 ET releases vs US equity market open at 09:30 ET; ECB 14:15 CET releases vs European equity open at 09:00 CET).
+- **Protocol Action**: Robustness audits documented in `docs/INTEGRITY_AUDIT.md` (Section 6.6) re-estimated all confirmatory horizons and headline specifications separately on the clean out-of-session subset (`announce_in_session == 0`, 64,753 pairs, 78.92%) and the in-session subset (`announce_in_session == 1`, 17,301 pairs, 21.08%).
+- **Boundary**: In the immediate response window (`clr_1`), the shock coefficient is virtually identical between clean out-of-session decisions ($\beta = -0.000679$, $p_{\text{wild}} = 0.4224$) and in-session decisions ($\beta = -0.000609$, $p_{\text{wild}} = 0.6336$). Both subsets represent statistical nulls. While pre-announcement trading does not drive or mask the empirical null, fine-grained intraday tick/minute equity data are necessary to isolate high-frequency asset price discovery.

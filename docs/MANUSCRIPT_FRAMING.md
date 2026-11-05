@@ -35,16 +35,16 @@ While point estimates exhibit the negative direction predicted by economic theor
 ## 3. Title Options
 
 ### Option 1 (Descriptive / Data-Centric — Target: *Scientific Data* — Primary Recommendation)
-> **MoTrans-15: A Harmonized Leakage-Safe Multi-Country Benchmark of Central Bank Communication, Monetary Surprises, and Equity Reactions (2010–2025)**  
-> *Framing*: Emphasizes the standardized multi-country data asset, cryptographic freeze, leakage-proof train/test architecture, and multi-horizon equity return panels across six major central banks.
+> **MoTrans-15: A Harmonized Leakage-Safe Multi-Country Benchmark of Monetary Policy Surprises and Equity Reactions (2010–2025)**  
+> *Framing*: Emphasizes the standardized multi-country data asset, cryptographic freeze, leakage-proof train/test architecture, and multi-horizon equity return panels across six major central banks. (Removes "Central Bank Communication" as statement topic/tone labels did not meet inter-annotator agreement thresholds).
 
 ### Option 2 (Benchmark & Low-Power Null Framing — Target: *Scientific Data* / Macro-Finance)
-> **A Pre-Registered, Leakage-Safe Benchmark for Cross-Border Monetary Policy Transmission to Equities with a Low-Power Null Result Across Six Central Banks**  
-> *Framing*: Centers on methodological transparency, pre-registration integrity, leakage guards, and the honest reporting of a low-power statistical null finding across Fed, ECB, BoE, BoC, RBA, and CBR decisions.
+> **A Leakage-Safe Benchmark for Cross-Border Monetary Policy Transmission to Equities with a Low-Power Null Result Across Six Central Banks (Pre-registered, with one documented deviation)**  
+> *Framing*: Centers on methodological transparency, pre-registration integrity with documented specification disclosure, leakage guards, and the honest reporting of a low-power statistical null finding across Fed, ECB, BoE, BoC, RBA, and CBR decisions.
 
 ### Option 3 (Methodological & Multiplicity Framing — Alternative Descriptive Target)
-> **Cross-Border Monetary Transmission to Equities: A Pre-Registered Benchmark, Multiplicity Penalization, and Low-Power Null Findings Across Six Major Central Banks**  
-> *Framing*: Highlights econometric controls, cluster and permutation inference, instrument noise in daily yield proxies, and the full accounting of multiplicity in exploratory searches.
+> **Cross-Border Monetary Transmission to Equities: A Leakage-Safe Benchmark, Multiplicity Penalization, and Low-Power Null Findings Across Six Major Central Banks (Pre-registered, with one documented deviation)**  
+> *Framing*: Highlights econometric controls, cluster and permutation inference, instrument noise in daily yield proxies, full accounting of multiplicity in exploratory searches, and transparent disclosure of the forward-window overlap deviation.
 
 ---
 

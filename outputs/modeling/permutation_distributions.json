@@ -1,0 +1,46 @@
+{
+  "Tier 1 (final_fit)": {
+    "real_beta": 0.0032419983502992695,
+    "n_perms": 5000,
+    "placebo_mean": -3.075077991614255e-05,
+    "placebo_sd": 0.0016772807159402977,
+    "placebo_p025": -0.003376573704391887,
+    "placebo_p975": 0.003167407222627025,
+    "count_extreme": 267,
+    "p_perm_standard": 0.0534,
+    "p_perm_plus1": 0.05358928214357129
+  },
+  "Pooled with tier indicator (final_fit)": {
+    "real_beta": 0.0019236969388745416,
+    "n_perms": 5000,
+    "placebo_mean": 0.0002441243907984935,
+    "placebo_sd": 0.0009279394632690579,
+    "placebo_p025": -0.0018486846069857101,
+    "placebo_p975": 0.0019804843794516912,
+    "count_extreme": 247,
+    "p_perm_standard": 0.0494,
+    "p_perm_plus1": 0.049590081983603276
+  },
+  "Pooled bivariate (final_fit)": {
+    "real_beta": 0.0019143083127112284,
+    "n_perms": 5000,
+    "placebo_mean": 0.00023898648427833069,
+    "placebo_sd": 0.0009255340092386426,
+    "placebo_p025": -0.0018483590206452023,
+    "placebo_p975": 0.0019709587807777438,
+    "count_extreme": 253,
+    "p_perm_standard": 0.0506,
+    "p_perm_plus1": 0.05078984203159368
+  },
+  "Macro Revision Sensitivity (final_fit)": {
+    "real_beta": 0.0019143083127112271,
+    "n_perms": 5000,
+    "placebo_mean": 0.00023898648427833066,
+    "placebo_sd": 0.0009255340092386425,
+    "placebo_p025": -0.0018483590206452005,
+    "placebo_p975": 0.001970958780777744,
+    "count_extreme": 253,
+    "p_perm_standard": 0.0506,
+    "p_perm_plus1": 0.05078984203159368
+  }
+}

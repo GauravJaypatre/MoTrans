@@ -52,7 +52,15 @@ From `outputs/v2_1/prices_second_source_check.csv`:
 | Audit Specification | Matching Rule | Sessions Compared | Max Abs Return Diff | Share > 1 bp Diff | Audit Status | Diagnostic Assessment |
 | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
 | **Unadjusted Calendar** | Direct date match (`date_yahoo == date_fred`) | 3,177 | 0.2262 (2,262 bp) | 99.59% | `EXPLAINED_CONVENTION_DIFF` | Artifact of US-vs-Tokyo calendar date lag; compares session $t$ with session $t-1$. |
-| **Timezone Shifted (T+1)** | Shifted FRED date (`date_yahoo == date_fred - 1d`) | 4,105 | 0.0233 (233.45 bp) | 0.073% (3 / 4,105) | **`PASS`** | 99.93% of sessions match within 1 bp; max diff isolated to exchange holiday/typhoon schedule reconciliations. |
+| **Timezone Shifted (T+1)** | Shifted FRED date (`date_yahoo == date_fred - 1d`) | 4,105 | 0.0233 (233.45 bp) | 0.073% (3 / 4,105) | **`PASS`** | 99.93% of sessions match within 1 bp; exactly 3 sessions exceed 1 bp due to missing intermediate sessions in Yahoo. |
+
+### The Three Discrepant Sessions Beyond 1 bp
+An exact audit of the three sessions exceeding 1 bp return difference identifies:
+1. **2010-07-20** (Tokyo date): Return difference = **114.42 bp** (Yahoo return: $-1.38\%$ vs FRED return: $-0.23\%$). Yahoo omitted the intermediate session recorded in FRED on 2010-07-20 at price $9,300.46$, collapsing multi-day price changes from 2010-07-15 ($9,408.36$) to 2010-07-20 ($9,278.83$).
+2. **2010-09-15** (Tokyo date): Return difference = **233.45 bp** (Yahoo return: $+2.26\%$ vs FRED return: $-0.07\%$). Yahoo omitted the intermediate session recorded in FRED on 2010-09-15 at price $9,516.56$, computing return across two trading days from 2010-09-13 ($9,299.31$) to 2010-09-15 ($9,509.50$).
+3. **2026-10-21** (Tokyo date): Return difference = **141.85 bp** (Yahoo return: $-1.23\%$ vs FRED return: $-2.65\%$). Yahoo omitted the intermediate session recorded in FRED on 2026-10-21 at price $64,621.24$.
+
+In all three instances, the discrepancy is caused by the primary Yahoo feed omitting an intermediate trading day that was captured by FRED, causing Yahoo's daily return to reflect a multi-day return rather than market price disagreement.
 
 ### Conclusion for Peer Reviewers
 This verification establishes that the raw calendar mismatch is strictly a well-known reporting lag in the secondary FRED data feed. Under true chronological alignment, primary Yahoo Finance closing prices agree with independent FRED prices to cents across 4,105 trading sessions. The T+1 shift documents this reporting convention and does not conceal underlying market misalignment.
