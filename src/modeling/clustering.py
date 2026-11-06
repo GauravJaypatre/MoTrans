@@ -1,9 +1,11 @@
 """Clustering and Overlap Helpers for MoTrans-15 Empirical Inference.
 
 Provides:
-1. Decision-level (`event_id`) and index-level (`index_id`) cluster identifiers.
+1. Decision-level (`event_id`) cluster identifier extraction.
 2. Contamination filtering via prior-event overlap indicators (`overlap_prior_*`).
-3. Cluster-robust OLS inference using statsmodels with clustered covariance estimators.
+3. Cluster-robust OLS inference enforcing event-level or two-way clustering, with
+   default restricted wild cluster bootstrap p-values.
+4. Strict prohibition of unclustered or index-only clustered routines from the public API.
 """
 
 from __future__ import annotations
@@ -12,6 +14,8 @@ from typing import Dict, List, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
+
+from src.modeling.uncertainty import wild_cluster_bootstrap
 
 
 def get_cluster_ids(df: pd.DataFrame) -> Tuple[pd.Series, pd.Series]:
@@ -37,25 +41,9 @@ def filter_overlap(
     horizon: str = "5d",
     method: str = "drop",
 ) -> pd.DataFrame:
-    """Filter or flag events that overlap with prior policy decisions.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        Input dataset.
-    horizon : str
-        Window horizon: '1d', '3d', '5d', '20d', or '60d'.
-    method : str
-        'drop': excludes rows where overlap_prior_{horizon} == 1.
-        'flag': retains rows and ensures clean indicator column.
-
-    Returns
-    -------
-    pd.DataFrame
-    """
+    """Filter or flag events that overlap with prior policy decisions."""
     col_name = f"overlap_prior_{horizon}"
     if col_name not in df.columns:
-        # Check alternative naming
         alt_name = f"overlap_prior_{horizon.replace('d', '')}d"
         if alt_name in df.columns:
             col_name = alt_name
@@ -77,8 +65,11 @@ def fit_ols_clustered(
     x_cols: List[str],
     cluster_col: str = "event_id",
     add_constant: bool = True,
+    compute_wild_p: bool = True,
+    n_boot: int = 999,
+    seed: int = 42,
 ) -> Dict[str, Union[float, int, str, np.ndarray, sm.regression.linear_model.RegressionResultsWrapper]]:
-    """Estimate an OLS regression with cluster-robust standard errors.
+    """Estimate an OLS regression with cluster-robust standard errors and wild bootstrap.
 
     Parameters
     ----------
@@ -90,13 +81,33 @@ def fit_ols_clustered(
         List of explanatory variables.
     cluster_col : str
         Grouping variable for clustered covariance (default 'event_id').
+        Index-only or unclustered estimation is strictly rejected.
     add_constant : bool
         Whether to add an intercept.
+    compute_wild_p : bool
+        Whether to compute restricted wild cluster bootstrap p-value.
+    n_boot : int
+        Number of bootstrap replications.
+    seed : int
+        RNG seed for reproducibility.
 
     Returns
     -------
-    Dict containing regression results and model statistics.
+    Dict containing regression results, cluster statistics, and p_val_wild.
     """
+    if cluster_col is None or str(cluster_col).lower() in ["none", ""]:
+        raise ValueError(
+            "Unclustered OLS is prohibited in MoTrans-15 due to massive size distortion "
+            "under common event shocks. Inference must be clustered at event_id or coarser."
+        )
+
+    if cluster_col == "index_id":
+        raise ValueError(
+            "Index-only clustering ('index_id') is methodologically prohibited: monetary shocks "
+            "vary at the event_id level, leaving cross-index correlation within an event unaddressed. "
+            "Cluster at 'event_id' (or use fit_twoway_clustered() for two-way clustering)."
+        )
+
     required_cols = [y_col] + x_cols + [cluster_col]
     clean_df = df.dropna(subset=required_cols).copy()
     if clean_df.empty:
@@ -112,13 +123,28 @@ def fit_ols_clustered(
     model = sm.OLS(Y, X)
     results = model.fit(cov_type="cluster", cov_kwds={"groups": groups})
 
-    # Shock coefficient (assumes primary shock is first non-constant regressor)
     shock_var = x_cols[0]
     coef = float(results.params[shock_var])
     se = float(results.bse[shock_var])
     t_stat = float(results.tvalues[shock_var])
-    p_val = float(results.pvalues[shock_var])
+    p_val_analytic = float(results.pvalues[shock_var])
     ci = results.conf_int().loc[shock_var]
+
+    p_val_wild = np.nan
+    if compute_wild_p:
+        try:
+            wb = wild_cluster_bootstrap(
+                clean_df,
+                y_col=y_col,
+                x_cols=x_cols,
+                cluster_col=cluster_col,
+                target_var=shock_var,
+                n_boot=n_boot,
+                seed=seed,
+            )
+            p_val_wild = float(wb["p_val_wild"])
+        except Exception:
+            p_val_wild = np.nan
 
     return {
         "n_obs": int(results.nobs),
@@ -130,9 +156,10 @@ def fit_ols_clustered(
         "coef_shock": coef,
         "se_shock": se,
         "t_stat": t_stat,
-        "p_val": p_val,
+        "p_val": p_val_analytic,
+        "p_val_wild": p_val_wild,
+        "p_val_primary": p_val_wild if not np.isnan(p_val_wild) else p_val_analytic,
         "ci_lower": float(ci.iloc[0]),
         "ci_upper": float(ci.iloc[1]),
         "results_model": results,
     }
-

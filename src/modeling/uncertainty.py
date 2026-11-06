@@ -183,7 +183,10 @@ def fit_twoway_clustered(
     coef = float(m1.params[target])
     t_stat = coef / se_twoway if se_twoway > 0 else 0.0
     from scipy import stats
-    p_val = float(2 * (1 - stats.norm.cdf(abs(t_stat))))
+    g1_count = int(clean[cluster1].nunique())
+    g2_count = int(clean[cluster2].nunique())
+    df_t = max(1, min(g1_count - 1, g2_count - 1))
+    p_val = float(2 * (1 - stats.t.cdf(abs(t_stat), df=df_t)))
 
     return {
         "coef": coef,

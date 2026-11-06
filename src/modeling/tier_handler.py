@@ -63,6 +63,8 @@ def prepare_tier_sample(
     split: str = "train_val",
     drop_embargo: bool = True,
     is_sensitivity: bool = False,
+    pristine_only: bool = False,
+    version: str = "v2_2",
 ) -> pd.DataFrame:
     """Load and prepare an analysis dataset enforcing tier separation.
 
@@ -76,6 +78,10 @@ def prepare_tier_sample(
         Whether to exclude embargo-dropped rows.
     is_sensitivity : bool
         Whether this is a sensitivity run (required for secondary holds).
+    pristine_only : bool
+        If True, restricts to pristine decisions (read_by_prior_analysis == 0).
+    version : str
+        'v2_2' (default) or 'v2_1'.
 
     Returns
     -------
@@ -85,14 +91,32 @@ def prepare_tier_sample(
 
     if tier in ["tier1", "tier2", "tier2_primary", "secondary_holds"]:
         table_key = "tier2_primary" if tier == "tier2" else tier
-        df = load_modeling_data(table=table_key, split=split, drop_embargo=drop_embargo)
+        df = load_modeling_data(
+            table=table_key,
+            split=split,
+            drop_embargo=drop_embargo,
+            pristine_only=pristine_only,
+            version=version,
+        )
         df["is_sensitivity"] = 1 if is_sensitivity else 0
         return df
 
     elif tier == "pooled":
         # Load Tier 1 and Tier 2 Primary
-        df_t1 = load_modeling_data(table="tier1", split=split, drop_embargo=drop_embargo)
-        df_t2 = load_modeling_data(table="tier2_primary", split=split, drop_embargo=drop_embargo)
+        df_t1 = load_modeling_data(
+            table="tier1",
+            split=split,
+            drop_embargo=drop_embargo,
+            pristine_only=pristine_only,
+            version=version,
+        )
+        df_t2 = load_modeling_data(
+            table="tier2_primary",
+            split=split,
+            drop_embargo=drop_embargo,
+            pristine_only=pristine_only,
+            version=version,
+        )
 
         df_t1["shock_tier"] = 1
         df_t2["shock_tier"] = 2

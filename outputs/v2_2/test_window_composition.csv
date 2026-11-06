@@ -1,0 +1,10 @@
+tier,regime,read_by_prior_analysis,decisions_count,hikes_count,cuts_count,holds_count,event_rows_count
+secondary_holds,BoC,0,6,0,0,6,222
+secondary_holds,BoE,0,9,0,0,9,333
+secondary_holds,Fed,0,10,0,0,10,370
+secondary_holds,RBA,0,11,0,0,11,407
+tier1,ECB,1,14,0,8,6,518
+tier2_primary,BoC,0,8,0,8,0,296
+tier2_primary,BoE,0,5,0,5,0,185
+tier2_primary,Fed,0,4,0,4,0,148
+tier2_primary,RBA,0,3,0,3,0,111

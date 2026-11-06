@@ -1,0 +1,10 @@
+tier,final_split,decisions_count,hikes_count,cuts_count,holds_count,event_rows_count
+secondary_holds,test,36,0,0,36,1332
+secondary_holds,train,287,0,0,287,10676
+secondary_holds,validation,12,0,0,12,446
+tier1,test,14,0,8,6,518
+tier1,train,211,11,13,187,7794
+tier1,validation,28,21,0,7,1038
+tier2_primary,test,20,0,20,0,740
+tier2_primary,train,74,24,50,0,2777
+tier2_primary,validation,36,36,0,0,1334

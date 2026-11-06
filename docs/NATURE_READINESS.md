@@ -116,3 +116,51 @@ To incorporate qualitative central bank statement classifications into a Nature-
   - Granular data dictionary and data quality scorecard.
   - Zero-leakage testing suite with rolling-origin cross-validation folds.
 
+---
+
+## 8. 2026 Data Extension Readiness & Quarantined Buffer Audit
+
+A quarantined post-window observation buffer (`post_window_2026.parquet`) has been compiled to prepare for future benchmark extensions once 2026 high-frequency data and license clearances are finalized:
+
+### 8.1 Quarantined Buffer Summary (No Outcomes Evaluated)
+- **Total Quarantined Observations**: 2,280 event rows across **60 policy decisions** spanning January to October 2026.
+- **Central Bank Breakdown**:
+  - Federal Reserve: 6 decisions
+  - European Central Bank: 6 decisions
+  - Bank of England: 6 decisions
+  - Bank of Canada: 6 decisions
+  - Reserve Bank of Australia: 6 decisions
+  - Bank of Japan: 6 decisions
+  - Central Bank of Russia: 5 decisions
+  - Emerging Central Banks (BCB: 6, Banxico: 6, RBI: 5, BoK: 2)
+- **Decision Mix**: 38 holds, 12 rate cuts, **10 rate hikes**.
+- **Shock Instrumentation**:
+  - **Tier 1 (HFI)**: **0 decisions** (high-frequency surprises for 2026 are not yet published by official academic authors).
+  - **Tier 2 (Daily Proxy)**: 41 decisions.
+- **Outcome Status**: Return outcomes (`clr_1` through `clr_60`) are strictly quarantined and unblinded.
+
+### 8.2 TODO-HUMAN Deliverables for 2026 Extension
+| Deliverable ID | Item Description | Required External Resource / Authority | Status |
+| :--- | :--- | :--- | :---: |
+| `TODO-HUMAN-2026-01` | Bauer-Swanson 2026 Update | Federal Reserve Bank of San Francisco / Authors | PENDING PUBLICATION |
+| `TODO-HUMAN-2026-02` | EA-MPD 2026 Update | European Central Bank / Altavilla et al. | PENDING PUBLICATION |
+| `TODO-HUMAN-2026-03` | 2026 Index Price Verification | Refinitiv / Bloomberg institutional license | REQUIRED FOR VERIFICATION |
+| `TODO-HUMAN-2026-04` | 2026 Release Timestamp Audit | Bank of England & Bank of Canada press archives | MANUAL SCRAPE NEEDED |
+
+---
+
+## 9. Statistical Power & Minimum Detectable Effect (MDE) Summary
+
+Based on `scripts/power_analysis.py` (`outputs/modeling/power_analysis_mde.csv`), the Minimum Detectable Effect at 80% statistical power ($\alpha = 0.05$, two-sided) across specifications is:
+
+| Estimation Design | Decision Count ($N_{\text{decs}}$) | Event Rows ($N_{\text{obs}}$) | Cluster SE (5-Day Horizon) | MDE ($\beta$) | MDE (bp per SD Shock) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Tier 1 Final Fit** | 239 | 8,832 | 0.003252 | 0.009147 | **91.47 bp** |
+| **Tier 2 Primary Final Fit** | 110 | 4,111 | 0.001302 | 0.003682 | **36.82 bp** |
+| **Pooled Final Fit** | 349 | 12,943 | 0.000653 | 0.001835 | **18.35 bp** |
+| **Full Test Split (Sample A)** | 70 | 2,590 | 0.001458 (proj) | 0.004146 | **41.46 bp** |
+| **Pristine Test Split (Sample B)** | 56 | 2,072 | 0.001630 (proj) | 0.004653 | **46.53 bp** |
+
+**Interpretation**: In clean Tier 1 intraday shocks, statistical power is constrained; the design can only reliably detect large effects ($\ge 91$ bp). In the Pooled sample, power increases substantially, allowing detection of effects $\ge 18$ bp per 1 standard deviation policy surprise.
+
+

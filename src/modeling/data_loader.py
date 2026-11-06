@@ -1,28 +1,31 @@
 """Leakage-Proof Data Access Layer for MoTrans-15 Modeling.
 
 Strictly protects out-of-sample benchmark integrity:
-1. Blocks test-split outcome columns (clr_1 to clr_60) unless explicitly unlocked
-   via UNLOCK_TEST=1.
+1. Blocks test-split outcome columns (clr_1, clr_1_clean to clr_60) unless explicitly unlocked
+   via UNLOCK_TEST=1 and allow_test_outcomes=True.
 2. Attempting unauthorized access to test outcomes raises PermissionError AND logs
    the attempt to outputs/v2_1/unlock_audit.log.
 3. Automatically respects embargo boundaries by filtering out embargo_dropped rows.
 4. Provides convenient partition loading for rolling-origin CV folds and final_fit.
+5. In v2.2, provides Single Source of Truth split membership via splits.csv and
+   supports pristine_only out-of-sample partitioning.
 """
 
 from __future__ import annotations
 
 import os
 from pathlib import Path
-from typing import Sequence
+from typing import Optional, Sequence
 import pandas as pd
 
 from src.model_guard import log_unlock
 
 ROOT = Path(__file__).resolve().parent.parent.parent
-DATA_DIR = ROOT / "data" / "v2_1" / "release"
-FOLDS_PATH = ROOT / "data" / "v2_1" / "folds.csv"
+DATA_DIR_V2_1 = ROOT / "data" / "v2_1" / "release"
+DATA_DIR_V2_2 = ROOT / "data" / "v2_2" / "release"
+SPLITS_PATH_V2_2 = ROOT / "data" / "v2_2" / "splits.csv"
 
-OUTCOME_COLS = ["clr_1", "clr_3", "clr_5", "clr_20", "clr_60"]
+OUTCOME_COLS = ["clr_1", "clr_1_clean", "clr_3", "clr_5", "clr_20", "clr_60"]
 
 TABLE_FILENAMES = {
     "tier1": "analysis_tier1.parquet",
@@ -33,12 +36,22 @@ TABLE_FILENAMES = {
 }
 
 
+def load_splits_metadata(version: str = "v2_2") -> pd.DataFrame:
+    """Load the Single Source of Truth splits metadata table."""
+    path = SPLITS_PATH_V2_2 if version == "v2_2" else (ROOT / "data" / "v2_1" / "folds.csv")
+    if not path.exists():
+        raise FileNotFoundError(f"Splits metadata not found at {path}")
+    return pd.read_csv(path)
+
+
 def load_modeling_data(
     table: str = "tier1",
     split: str = "train_val",
     drop_embargo: bool = True,
     include_outcomes: bool = True,
     allow_test_outcomes: bool = False,
+    pristine_only: bool = False,
+    version: str = "v2_2",
 ) -> pd.DataFrame:
     """Load modeling data with cryptographic and leakage safeguards.
 
@@ -56,23 +69,28 @@ def load_modeling_data(
     drop_embargo : bool
         If True, excludes rows where embargo_dropped == 1.
     include_outcomes : bool
-        If True, loads outcome columns (clr_1 to clr_60).
+        If True, loads outcome columns (clr_1, clr_1_clean to clr_60).
     allow_test_outcomes : bool
         Explicit function-level override to load test outcomes. Still requires
         UNLOCK_TEST=1 in the environment.
+    pristine_only : bool
+        If True, restricts strictly to pristine decisions (read_by_prior_analysis == 0).
+    version : str
+        'v2_2' (default) or 'v2_1'.
 
     Returns
     -------
     pd.DataFrame
         Filtered and sanitized dataframe.
     """
+    data_dir = DATA_DIR_V2_2 if version == "v2_2" else DATA_DIR_V2_1
     fname = TABLE_FILENAMES.get(table, table)
     if not fname.endswith(".parquet"):
         fname = f"{fname}.parquet"
 
-    path = DATA_DIR / fname
+    path = data_dir / fname
     if not path.exists():
-        fallback_path = ROOT / "data" / "v2_1" / fname
+        fallback_path = ROOT / "data" / version / fname
         if fallback_path.exists():
             path = fallback_path
         else:
@@ -100,7 +118,11 @@ def load_modeling_data(
     else:
         raise ValueError(f"Unknown split: '{split}'. Expected 'train', 'validation', 'train_val', 'test', 'final_fit', or 'all'.")
 
-    # 3. Test outcome leakage guard
+    # 3. Pristine filter
+    if pristine_only and "read_by_prior_analysis" in df.columns:
+        df = df[df["read_by_prior_analysis"] == 0].copy()
+
+    # 4. Test outcome leakage guard
     has_test_rows = (df["final_split"] == "test").any() if "final_split" in df.columns else False
 
     if has_test_rows and include_outcomes:
@@ -135,26 +157,9 @@ def load_fold_data(
     role: str = "train",
     drop_embargo: bool = True,
     include_outcomes: bool = True,
+    version: str = "v2_2",
 ) -> pd.DataFrame:
-    """Load data for a specific rolling-origin cross-validation fold.
-
-    Parameters
-    ----------
-    fold_id : int
-        Fold index (1, 2, 3, or 4).
-    table : str
-        Table name ('tier1', 'tier2_primary', etc.).
-    role : str
-        'train' for training portion of fold, 'val' for validation portion.
-    drop_embargo : bool
-        If True, excludes embargo_dropped == 1 rows.
-    include_outcomes : bool
-        If True, includes outcome columns.
-
-    Returns
-    -------
-    pd.DataFrame
-    """
+    """Load data for a specific rolling-origin cross-validation fold."""
     if fold_id not in [1, 2, 3, 4]:
         raise ValueError(f"Invalid fold_id {fold_id}. Must be 1, 2, 3, or 4.")
     if role not in ["train", "val"]:
@@ -165,14 +170,12 @@ def load_fold_data(
         split="train_val",
         drop_embargo=drop_embargo,
         include_outcomes=include_outcomes,
+        version=version,
     )
 
     fold_col = f"fold_{fold_id}"
     if fold_col not in df.columns:
         raise KeyError(f"Fold column '{fold_col}' not found in table.")
 
-    # In MoTrans-15 release tables, fold columns contain 'train', 'val', or 'unused'
     fold_df = df[df[fold_col] == role].copy()
-
     return fold_df.reset_index(drop=True)
-

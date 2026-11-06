@@ -34,8 +34,14 @@ data/v2_1/release/*.parquet
 !data/v2_1/folds.csv
 !data/v2_1/release/folds.csv
 
-
-
+data/v2_2/*.parquet
+data/v2_2/release/*.parquet
+!data/v2_2/.gitkeep
+!data/v2_2/release/README.md
+!data/v2_2/folds.csv
+!data/v2_2/release/folds.csv
+!data/v2_2/splits.csv
+!data/v2_2/release/splits.csv
 
 # ── Outputs (regenerable) ───────────────────────────────────────
 outputs/*
@@ -48,11 +54,10 @@ outputs/*
 !outputs/v2/**
 !outputs/v2_1/
 !outputs/v2_1/**
+!outputs/v2_2/
+!outputs/v2_2/**
 !outputs/modeling/
 !outputs/modeling/**
-
-
-
 
 # ── IDE ──────────────────────────────────────────────────────────
 .vscode/
@@ -67,4 +72,3 @@ Thumbs.db
 
 # Scratch directory
 scratch/
-
