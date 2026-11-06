@@ -4,6 +4,7 @@ Ensures:
 1. Test-split outcome columns (clr_1 to clr_60) are physically blocked unless unlocked.
 2. Unauthorized attempts raise PermissionError and append to the audit log.
 3. Production modeling scripts rely on model_guard / data_loader rather than bypassing.
+4. Comprehensive scan across scripts/ and src/ confirms zero unguarded outcome reads.
 """
 
 from __future__ import annotations
@@ -18,6 +19,7 @@ from src.modeling.data_loader import (
     load_modeling_data,
     OUTCOME_COLS,
 )
+from scripts.verify_no_unguarded_outcomes import audit_file_content
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -81,3 +83,14 @@ def test_production_modeling_scripts_use_safe_loaders():
         text = py_file.read_text(encoding="utf-8")
         assert 'os.environ["UNLOCK_TEST"] = "1"' not in text, f"Illegal hardcoded unlock assignment in {py_file.name}"
         assert "os.environ['UNLOCK_TEST'] = '1'" not in text, f"Illegal hardcoded unlock assignment in {py_file.name}"
+
+
+def test_no_unguarded_outcome_reads_across_codebase():
+    """Verify that no script across scripts/ and src/ has unguarded outcome access or hardcoded unlocks."""
+    target_dirs = [ROOT / "scripts", ROOT / "src"]
+    violations = []
+    for tdir in target_dirs:
+        for py_path in tdir.rglob("*.py"):
+            violations.extend(audit_file_content(py_path))
+
+    assert not violations, f"Unguarded outcome reads or unlock assignments found: {violations}"

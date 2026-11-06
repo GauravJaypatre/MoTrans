@@ -68,7 +68,7 @@ def run_price_second_source_check():
     if yahoo_sp500.exists() and fred_sp500.exists():
         df_y = pd.read_csv(yahoo_sp500)
         df_y["date"] = pd.to_datetime(df_y["Date"], utc=True).dt.strftime("%Y-%m-%d")
-        df_y = df_y[df_y["date"] >= "2010-01-01"]
+        df_y = df_y[(df_y["date"] >= "2010-01-01") & (df_y["date"] <= "2025-12-31")]
         df_y["ret_close"] = df_y["Close"].pct_change(fill_method=None)
         df_y["ret_adj"] = df_y["Adj Close"].pct_change(fill_method=None)
 
@@ -76,6 +76,7 @@ def run_price_second_source_check():
         df_f.columns = ["date", "price"]
         df_f["price"] = pd.to_numeric(df_f["price"], errors="coerce")
         df_f = df_f.dropna(subset=["price"])
+        df_f = df_f[(df_f["date"] >= "2010-01-01") & (df_f["date"] <= "2025-12-31")]
         df_f["ret_fred"] = df_f["price"].pct_change(fill_method=None)
 
         m = pd.merge(df_y, df_f, on="date", how="inner").dropna(subset=["ret_close", "ret_fred"])
@@ -108,7 +109,7 @@ def run_price_second_source_check():
     if yahoo_n225.exists() and fred_n225.exists():
         df_y = pd.read_csv(yahoo_n225)
         df_y["date"] = pd.to_datetime(df_y["Date"], utc=True).dt.strftime("%Y-%m-%d")
-        df_y = df_y[df_y["date"] >= "2010-01-01"]
+        df_y = df_y[(df_y["date"] >= "2010-01-01") & (df_y["date"] <= "2025-12-31")]
         df_y["ret_close"] = df_y["Close"].pct_change(fill_method=None)
         df_y["ret_adj"] = df_y["Adj Close"].pct_change(fill_method=None)
 
@@ -116,6 +117,7 @@ def run_price_second_source_check():
         df_f.columns = ["date", "price"]
         df_f["price"] = pd.to_numeric(df_f["price"], errors="coerce")
         df_f = df_f.dropna(subset=["price"])
+        df_f = df_f[(df_f["date"] >= "2010-01-01") & (df_f["date"] <= "2025-12-31")]
         df_f["ret_fred"] = df_f["price"].pct_change(fill_method=None)
 
         # A: Direct calendar matching
@@ -156,13 +158,14 @@ def run_price_second_source_check():
             "share_above_1bp": float((diff_shift > 1e-4).mean()),
             "price_vs_total_ret_offset_max": float(tr_offset_n225.max()),
             "price_vs_total_ret_offset_mean": float(tr_offset_n225.mean()),
-            "verification_status": "PASS",
+            "verification_status": "PASS_WITH_DISCREPANCIES",
             "verification_notes": (
-                f"Under T+1 timezone alignment convention, FRED matches Yahoo within "
-                f"{diff_shift.max()*10000:.2f} bp across {len(m_shift):,} sessions."
+                f"Under T+1 timezone alignment convention, 3,909 of {len(m_shift):,} sessions (99.95%) match within 1 bp. "
+                f"Two sessions in 2010 (2010-07-20 at 114.4 bp and 2010-09-15 at 233.5 bp) exhibit unexplained discrepancies "
+                f"between Yahoo Finance and FRED. Strictly evaluated on 2010-2025 window (no post-2025 dates)."
             ),
         })
-        print(f"  Nikkei 225: PASS under T+1 alignment (max diff = {diff_shift.max()*10000:.2f} bp)")
+        print(f"  Nikkei 225: PASS under T+1 alignment (3,909/3,911 <= 1 bp; 2 unexplained 2010 discrepancies; max diff = {diff_shift.max()*10000:.2f} bp)")
 
     # 3. Load all unique panel tickers to catalog the remaining 36 series
     panel_path = ROOT / "data" / "final" / "panel_daily.parquet"
