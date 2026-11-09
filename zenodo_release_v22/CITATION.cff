@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this dataset or benchmark software, please cite it as below."
+title: "MoTrans-15: Monetary policy surprises and equity-index responses for the largest economies, 2010-2025"
+version: 2.2.0
+date-released: 2026-11-04
+authors:
+  - family-names: "Jaypatre"
+    given-names: "Gaurav Mansing"
+    affiliation: "Pimpri Chinchwad College of Engineering (PCCOE), Pune, India"
+  - family-names: "Pawar"
+    given-names: "Prachi Ravi"
+    affiliation: "Pimpri Chinchwad College of Engineering (PCCOE), Pune, India"
+abstract: "Standardized multi-country financial research benchmark providing monetary policy surprise series and equity index cumulative log return panels for six major central banks and 38 equity index series across 15 economies (2010-2025)."
+repository-code: "https://github.com/motrans15/motrans-15"

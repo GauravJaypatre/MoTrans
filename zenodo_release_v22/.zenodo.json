@@ -1,0 +1,25 @@
+{
+  "title": "MoTrans-15: Monetary policy surprises and equity-index responses for the largest economies, 2010-2025 (v2.2.0)",
+  "version": "2.2.0",
+  "upload_type": "dataset",
+  "publication_date": "2026-11-04",
+  "description": "Cryptographically frozen multi-country benchmark dataset linking high-frequency and daily monetary policy surprises from six major central banks to international equity returns (2010-2025). Restricted access deposit due to commercial vendor copyright for financial index return series.",
+  "access_right": "restricted",
+  "access_conditions": "Available upon request for non-commercial academic research replication only, subject to index provider licensing compliance.",
+  "creators": [
+    {
+      "name": "MoTrans-15 Research Consortium",
+      "affiliation": "Academic Research Collaboration"
+    }
+  ],
+  "keywords": [
+    "monetary policy",
+    "equity indices",
+    "central bank surprises",
+    "high-frequency identification",
+    "international spillovers",
+    "reproducible benchmark",
+    "leakage prevention"
+  ],
+  "notes": "Version 2.2.0 incorporates fold-safe scaling, window timing filters (clr_1_clean), single source of truth splits architecture, robust influence handling, and Sample A/B test split partitions."
+}

@@ -31,6 +31,8 @@ ROOT = Path(__file__).resolve().parent.parent
 EXCLUDED_SCRIPTS = {
     "run_test_scoring.py",  # Gated Phase 4 script, not run until explicit user unlock
     "verify_no_unguarded_outcomes.py",  # Scanner script itself
+    "run_v22_gates.py",  # Release gates verification runner
+    "build_v22_package.py",  # Release package builder
 }
 
 # Explicit allowlist of known historical exceptions (documented in docs/INTEGRITY_AUDIT.md)
