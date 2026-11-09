@@ -88,3 +88,41 @@ For confirmatory reporting across the 5 horizons ($M = 5$: $\text{clr}_1, \text{
 - **Holm-Bonferroni Adjusted p-values**:
   $$p_{(k)}^{\text{Holm}} = \min\left(1, \max_{j \le k} \left[(M - j + 1) \cdot p_{(j)}\right]\right)$$
 - No individual horizon may be claimed statistically significant unless its Holm-adjusted wild bootstrap p-value satisfies $p^{\text{Holm}} < 0.05$.
+
+---
+
+## 6. Statistical Power, Corrected MDE & Outlier Distortion
+
+### 6.1 Corrected Minimum Detectable Effect (MDE) Table
+All power calculations are generated from `scripts/power_analysis.py` (`outputs/modeling/power_analysis_mde.csv`) at 80% statistical power ($\alpha = 0.05$, two-sided):
+
+| Estimation Design | Decision Count ($N_{\text{decs}}$) | Event Rows ($N_{\text{obs}}$) | Asymptotic Cluster SE | Wild Bootstrap SE | Trim 1% SE | Headline Robust SE | Asymptotic MDE (bp) | Headline Robust MDE (bp) | Outlier Distortion Ratio |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Tier 1 Final Fit** | 239 | 8,832 | 0.003252 | 0.003600 | 0.003274 | **0.003600** | 91.47 bp | **101.27 bp** | +10.7% |
+| **Tier 2 Primary Final Fit** | 110 | 4,111 | 0.001302 | 0.001389 | 0.006107 | **0.006107** | 36.82 bp | **172.65 bp** | +368.9% |
+| **Pooled Final Fit** | 349 | 12,943 | 0.000653 | 0.000713 | 0.004239 | **0.004239** | 18.35 bp | **119.10 bp** | **+549.2%** |
+| **Full Test Split (Sample A)** | 70 | 2,590 | 0.001458 (proj) | 0.001594 (proj) | 0.009466 (proj) | **0.009466** | 41.46 bp | **269.12 bp** | +549.2% |
+| **Pristine Test Split (Sample B)**| 56 | 2,072 | 0.001630 (proj) | 0.001782 (proj) | 0.010583 (proj) | **0.010583** | 46.53 bp | **302.06 bp** | +549.2% |
+
+### 6.2 Mandatory Methodological Note on the Distorted 18.35 bp Figure
+> **CRITICAL METHODOLOGICAL CORRECTION**:
+> An earlier draft of the power analysis reported an asymptotic pooled MDE of **18.35 bp** per 1 SD shock. 
+> Econometric leverage auditing in Phase 0 definitively showed that this figure is an artifact of severe outlier distortion caused by a single event: `cbr_2014-12-16` (the Central Bank of Russia emergency 650 bp overnight rate hike, shock = +499 bp). 
+> In ordinary least squares, a single massive regressor outlier inflates the sample variance $(X'X)$ in the denominator of $(X'X)^{-1}$, creating a mechanically compressed asymptotic standard error ($SE = 0.000653$). 
+> When the top 1% most influential events are dropped, the true standard error jumps by 6.5x to $0.004239$.
+> Consequently, the **honest, robust headline MDE for the pooled specification is 119.10 bp** (a +549.2% correction). 
+> The earlier 18.35 bp figure must never be quoted without this explicit correction.
+
+---
+
+## 7. Robust Influence Handling Protocol
+
+To ensure empirical transparency and eliminate any possibility of post-hoc sample pruning:
+1. **Primary Headline Model**: The confirmatory and headline exploratory models are estimated on the **full, unpruned sample** ($N=349$ for pooled, $N=239$ for Tier 1) using restricted wild cluster bootstrap at `event_id`. Outliers are strictly **not dropped** from the primary specification.
+2. **Mandatory Pre-Declared Influence Robustness Check**: Every headline result must be accompanied side by side with a pre-declared robustness check:
+   - Re-fit the exact model omitting the single most influential event identified by Leave-One-Event-Out (LOEO) absolute DFBETA (for the pooled model: `cbr_2014-12-16`).
+   - Report $\beta$, clustered SE, wild bootstrap p-value, and $\Delta \beta$.
+   - Explicitly label this refit as `"Robustness Check: Dropping #1 Most Influential Event (cbr_2014-12-16)"`.
+   - If a result is statistically significant in the primary fit but collapses upon omitting that single event, it is classified as **"fragile to leverage; cannot reject null"**.
+
+

@@ -5,6 +5,7 @@ Ensures:
 2. Unauthorized attempts raise PermissionError and append to the audit log.
 3. Production modeling scripts rely on model_guard / data_loader rather than bypassing.
 4. Comprehensive scan across scripts/ and src/ confirms zero unguarded outcome reads.
+5. Historical allowlist and 14 ECB test decisions match docs/INTEGRITY_AUDIT.md.
 """
 
 from __future__ import annotations
@@ -19,7 +20,11 @@ from src.modeling.data_loader import (
     load_modeling_data,
     OUTCOME_COLS,
 )
-from scripts.verify_no_unguarded_outcomes import audit_file_content
+from scripts.verify_no_unguarded_outcomes import (
+    audit_file_content,
+    HISTORICAL_ALLOWLIST,
+    verify_prior_analysis_test_decisions,
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -94,3 +99,15 @@ def test_no_unguarded_outcome_reads_across_codebase():
             violations.extend(audit_file_content(py_path))
 
     assert not violations, f"Unguarded outcome reads or unlock assignments found: {violations}"
+
+
+def test_allowlist_and_integrity_audit_alignment():
+    """Verify historical allowlist structure and alignment of 14 prior-analysis test decisions."""
+    assert "src/modeling/run_v1_blind_test.py" in HISTORICAL_ALLOWLIST
+    entry = HISTORICAL_ALLOWLIST["src/modeling/run_v1_blind_test.py"]
+    assert entry["commit"] == "f771af7"
+    assert "INTEGRITY_AUDIT.md" in entry["reason"]
+
+    # Verify 14 ECB decisions match INTEGRITY_AUDIT.md
+    prior_violations = verify_prior_analysis_test_decisions()
+    assert not prior_violations, f"Prior analysis alignment failures: {prior_violations}"

@@ -5,7 +5,7 @@ Calculates statistical reliability metrics across human annotators:
 2. Fleiss' Kappa (generalized for m >= 2 raters)
 3. Krippendorff's Alpha (nominal, ordinal, and interval metrics)
 4. Non-parametric Bootstrap 95% Confidence Intervals (1,000 resamples)
-5. Adjudication extraction: flags discrepancies (|score1 - score2| >= 1 and >= 2)
+5. Adjudication workflow: extracts discrepancies and incorporates completed adjudication log
 
 Note: Production human coding is marked TODO-HUMAN. All mathematical functions
 are validated against synthetic fixtures in tests/test_agreement.py.
@@ -58,7 +58,7 @@ def cohen_kappa(
     categories = np.unique(np.concatenate([r1, r2]))
     k = len(categories)
     if k <= 1:
-        return 1.0  # Perfect agreement on single category
+        return 1.0
 
     cat_to_idx = {c: i for i, c in enumerate(categories)}
     idx1 = np.array([cat_to_idx[c] for c in r1])
@@ -120,10 +120,7 @@ def fleiss_kappa(ratings_matrix: np.ndarray) -> float:
     if n_raters <= 1:
         return np.nan
 
-    # Proportion of all assignments to each category
     p_j = mat.sum(axis=0) / (n_items * n_raters)
-
-    # Degree of agreement for each item
     p_i = (np.sum(mat ** 2, axis=1) - n_raters) / (n_raters * (n_raters - 1))
 
     mean_p = np.mean(p_i)
@@ -153,7 +150,6 @@ def krippendorff_alpha(
     mat = np.asarray(data, dtype=float)
     n_raters, n_items = mat.shape
 
-    # Collect pairs for coincidence matrix
     pairs = []
     values_set = set()
     for col in range(n_items):
@@ -165,63 +161,53 @@ def krippendorff_alpha(
             for i in range(m_u):
                 for j in range(m_u):
                     if i != j:
-                        pairs.append((valid_vals[i], valid_vals[j], 1.0 / (m_u - 1)))
+                        pairs.append((valid_vals[i], valid_vals[j]))
 
     if not pairs:
         return np.nan
 
     values = sorted(list(values_set))
-    k = len(values)
-    if k <= 1:
+    val_to_idx = {v: i for i, v in enumerate(values)}
+    v_len = len(values)
+
+    if v_len <= 1:
         return 1.0
 
-    val_to_idx = {v: i for i, v in enumerate(values)}
+    coincidence = np.zeros((v_len, v_len), dtype=float)
+    for c, k in pairs:
+        coincidence[val_to_idx[c], val_to_idx[k]] += 1.0
 
-    # Build coincidence matrix
-    coin = np.zeros((k, k), dtype=float)
-    for v1, v2, wt in pairs:
-        coin[val_to_idx[v1], val_to_idx[v2]] += wt
-
-    total_pairs = coin.sum()
+    total_pairs = coincidence.sum()
     if total_pairs == 0:
         return np.nan
 
-    # Marginals
-    n_c = coin.sum(axis=1)
+    marginals = coincidence.sum(axis=1)
 
-    # Metric distance function
-    diff = np.zeros((k, k), dtype=float)
-    if level_of_measurement == "nominal":
-        for i in range(k):
-            for j in range(k):
-                diff[i, j] = 0.0 if i == j else 1.0
-    elif level_of_measurement == "ordinal":
-        # Ordinal distance using cumulative frequencies
-        for i in range(k):
-            for j in range(k):
-                if i != j:
+    # Difference function delta^2(c, k)
+    delta2 = np.zeros((v_len, v_len), dtype=float)
+    for i, c in enumerate(values):
+        for j, k in enumerate(values):
+            if level_of_measurement == "nominal":
+                delta2[i, j] = 0.0 if c == k else 1.0
+            elif level_of_measurement == "ordinal":
+                if c == k:
+                    delta2[i, j] = 0.0
+                else:
                     low, high = min(i, j), max(i, j)
-                    # Sum between low and high
-                    mid = np.sum(n_c[low : high + 1]) - (n_c[low] + n_c[high]) / 2.0
-                    diff[i, j] = mid ** 2
-    elif level_of_measurement == "interval":
-        for i in range(k):
-            for j in range(k):
-                diff[i, j] = (values[i] - values[j]) ** 2
-    else:
-        raise ValueError(f"Unsupported measurement level: '{level_of_measurement}'")
+                    # Sum of marginals between categories + half ends
+                    g_sum = np.sum(marginals[low : high + 1]) - (marginals[low] + marginals[high]) / 2.0
+                    delta2[i, j] = g_sum ** 2
+            elif level_of_measurement == "interval":
+                delta2[i, j] = (float(c) - float(k)) ** 2
+            else:
+                raise ValueError(f"Unsupported level of measurement: '{level_of_measurement}'")
 
-    do = np.sum(coin * diff) / total_pairs
+    do = np.sum(coincidence * delta2)
+    de = np.sum(np.outer(marginals, marginals) * delta2) / (total_pairs - 1.0) if total_pairs > 1 else 0.0
 
-    de = 0.0
-    for i in range(k):
-        for j in range(k):
-            de += n_c[i] * n_c[j] * diff[i, j]
-    de /= (total_pairs * (total_pairs - 1.0)) if total_pairs > 1 else total_pairs
-
-    if de == 0:
-        return 1.0 if do == 0 else 0.0
-    return float(1.0 - do / de)
+    if de == 0.0:
+        return 1.0
+    return float(1.0 - (do / de))
 
 
 def bootstrap_agreement_ci(
@@ -240,6 +226,13 @@ def bootstrap_agreement_ci(
     r1 = r1[valid]
     r2 = r2[valid]
     n = len(r1)
+
+    if n < 2:
+        return {
+            "cohen_kappa_unweighted": (np.nan, np.nan),
+            "cohen_kappa_quadratic": (np.nan, np.nan),
+            "krippendorff_alpha_ordinal": (np.nan, np.nan),
+        }
 
     boot_ck = np.empty(n_boot)
     boot_ck_w = np.empty(n_boot)
@@ -276,7 +269,6 @@ def extract_adjudication_candidates(
         dimensions = ["hawkish_dovish", "inflation_concern", "growth_concern", "uncertainty", "forward_guidance_shift"]
 
     discrepancies = []
-    # Pivot coder ratings
     pivoted = df.pivot(index=["statement_id", "regime", "decision_date"], columns="coder_id", values=dimensions)
 
     for dim in dimensions:
@@ -299,6 +291,110 @@ def extract_adjudication_candidates(
                 })
 
     return pd.DataFrame(discrepancies)
+
+
+def generate_adjudication_log_from_samples(
+    ann1_path: Union[str, Path],
+    ann2_path: Union[str, Path],
+    out_log_path: Union[str, Path],
+    dimensions: Optional[List[str]] = None,
+) -> pd.DataFrame:
+    """Extract discrepancies between completed annotator 1 and annotator 2 samples into adjudication_log.csv."""
+    if dimensions is None:
+        dimensions = ["hawkish_dovish", "inflation_concern", "growth_concern", "uncertainty", "forward_guidance_shift"]
+
+    df1 = pd.read_csv(ann1_path).set_index("event_id")
+    df2 = pd.read_csv(ann2_path).set_index("event_id")
+    common_events = df1.index.intersection(df2.index)
+
+    rows = []
+    adj_id = 1
+    for eid in sorted(common_events):
+        r1 = df1.loc[eid]
+        r2 = df2.loc[eid]
+        regime = r1.get("regime", "")
+        dec_date = str(r1.get("decision_date", ""))
+
+        for dim in dimensions:
+            v1 = r1.get(dim)
+            v2 = r2.get(dim)
+            if pd.notna(v1) and pd.notna(v2) and v1 != v2:
+                diff = abs(float(v1) - float(v2))
+                rows.append({
+                    "adjudication_id": adj_id,
+                    "event_id": eid,
+                    "regime": regime,
+                    "decision_date": dec_date,
+                    "dimension": dim,
+                    "score_annotator_1": v1,
+                    "score_annotator_2": v2,
+                    "discrepancy_magnitude": int(diff),
+                    "adjudicated_score": np.nan,
+                    "adjudicator_id": "",
+                    "adjudication_timestamp": "",
+                    "notes": "MAJOR DISCREPANCY" if diff >= 2 else "MINOR DISCREPANCY",
+                })
+                adj_id += 1
+
+    df_out = pd.DataFrame(rows)
+    if not df_out.empty:
+        df_out.to_csv(out_log_path, index=False)
+        print(f"Generated {len(df_out)} adjudication candidates to {out_log_path}")
+    else:
+        print(f"No non-null discrepancies found; keeping template at {out_log_path}")
+    return df_out
+
+
+def merge_adjudicated_scores(
+    ann1_path: Union[str, Path],
+    ann2_path: Union[str, Path],
+    adj_log_path: Union[str, Path],
+    dimensions: Optional[List[str]] = None,
+) -> pd.DataFrame:
+    """Merge annotator scores and resolved adjudication scores into consensus dataset."""
+    if dimensions is None:
+        dimensions = ["hawkish_dovish", "inflation_concern", "growth_concern", "uncertainty", "forward_guidance_shift"]
+
+    df1 = pd.read_csv(ann1_path).set_index("event_id")
+    df2 = pd.read_csv(ann2_path).set_index("event_id")
+    common_events = df1.index.intersection(df2.index)
+
+    # Load adjudication log
+    adj_lookup = {}
+    if Path(adj_log_path).exists():
+        df_adj = pd.read_csv(adj_log_path)
+        if not df_adj.empty and "adjudicated_score" in df_adj.columns:
+            for _, row in df_adj.dropna(subset=["adjudicated_score"]).iterrows():
+                key = (row["event_id"], row["dimension"])
+                adj_lookup[key] = float(row["adjudicated_score"])
+
+    consensus_rows = []
+    for eid in sorted(common_events):
+        r1 = df1.loc[eid]
+        r2 = df2.loc[eid]
+        row_dict = {
+            "event_id": eid,
+            "regime": r1.get("regime", ""),
+            "decision_date": r1.get("decision_date", ""),
+        }
+        for dim in dimensions:
+            key = (eid, dim)
+            if key in adj_lookup:
+                row_dict[dim] = adj_lookup[key]
+            else:
+                v1 = r1.get(dim)
+                v2 = r2.get(dim)
+                if pd.notna(v1) and pd.notna(v2):
+                    row_dict[dim] = float(v1 + v2) / 2.0
+                elif pd.notna(v1):
+                    row_dict[dim] = float(v1)
+                elif pd.notna(v2):
+                    row_dict[dim] = float(v2)
+                else:
+                    row_dict[dim] = np.nan
+        consensus_rows.append(row_dict)
+
+    return pd.DataFrame(consensus_rows)
 
 
 def analyze_double_annotation_csv(file_path: Union[str, Path]) -> Dict[str, object]:
@@ -340,14 +436,23 @@ def analyze_double_annotation_csv(file_path: Union[str, Path]) -> Dict[str, obje
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Compute inter-annotator agreement metrics.")
-    parser.add_argument("--input", type=str, required=True, help="Path to double-annotation CSV")
+    parser = argparse.ArgumentParser(description="Compute inter-annotator agreement metrics and manage adjudication.")
+    parser.add_argument("--input", type=str, default=None, help="Path to double-annotation CSV")
     parser.add_argument("--output", type=str, default=None, help="Output JSON path")
+    parser.add_argument("--extract-adjudications", action="store_true", help="Extract discrepancies to adjudication log")
+    parser.add_argument("--ann1", type=str, default=str(ROOT / "data" / "annotation" / "annotator_1_sample.csv"))
+    parser.add_argument("--ann2", type=str, default=str(ROOT / "data" / "annotation" / "annotator_2_sample.csv"))
+    parser.add_argument("--adjudication-log", type=str, default=str(ROOT / "data" / "annotation" / "adjudication_log.csv"))
     args = parser.parse_args()
 
-    report = analyze_double_annotation_csv(args.input)
-    if args.output:
-        Path(args.output).write_text(json.dumps(report, indent=2), encoding="utf-8")
-        print(f"Saved agreement report to {args.output}")
+    if args.extract_adjudications:
+        generate_adjudication_log_from_samples(args.ann1, args.ann2, args.adjudication_log)
+    elif args.input:
+        report = analyze_double_annotation_csv(args.input)
+        if args.output:
+            Path(args.output).write_text(json.dumps(report, indent=2), encoding="utf-8")
+            print(f"Saved agreement report to {args.output}")
+        else:
+            print(json.dumps(report, indent=2))
     else:
-        print(json.dumps(report, indent=2))
+        print("Inter-Annotator Agreement Engine ready. Use --help for options.")

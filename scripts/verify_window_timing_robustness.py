@@ -109,9 +109,8 @@ def main():
     # 1. v1 Blind Test (47 decisions)
     # -------------------------------------------------------------
     print("\n[1/3] Running v1 Blind Test Timing Robustness (47 decisions)...")
-    v1_path = ROOT / "data" / "final" / "analysis_tier1.parquet"
-    df_raw = pd.read_parquet(v1_path)
-    bt = df_raw[df_raw["split_tag"] == "blind_test"].copy().reset_index(drop=True)
+    from src.modeling.run_v1_blind_test import load_v1_blind_test_sample
+    bt = load_v1_blind_test_sample()
     if "clr_pre5" not in bt.columns:
         bt = bt.merge(ev[["event_id", "index_id", "clr_pre5"]], on=["event_id", "index_id"], how="left")
 

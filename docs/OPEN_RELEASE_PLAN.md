@@ -66,3 +66,71 @@ flowchart TD
    - Present `LICENCE_AND_PROVENANCE.md` to university copyright librarians for formal determination of fair dealing / academic research exemption.
 3. **Recording Outcomes**:
    - If and only if written vendor clearance is acquired, findings will be recorded in `LICENCE_CLEARANCE.txt`. Until that point, all derived return tables remain restricted with no timeline for open release.
+
+---
+
+## 4. Open Release Components vs. Restricted Assets Matrix
+
+To ensure absolute clarity regarding what can be freely released to the public under open licenses versus what must remain restricted on Zenodo:
+
+| Component | Open CC-BY / MIT Release | Restricted Access Deposit | Justification & Distribution Mechanism |
+| :--- | :---: | :---: | :--- |
+| **Data Processing Pipeline** (`src/`, `tests/`, `tasks.py`) | **YES (MIT)** | Included | Fully open permissive source code. |
+| **Dataset Schemas & Column Dictionaries** | **YES (CC-BY-4.0)** | Included | Descriptive scientific documentation. |
+| **Splits & Partitions** (`splits.csv`, `folds.csv`) | **YES (CC-BY-4.0)** | Included | Origin dates, fold assignments, embargo flags; zero price data. |
+| **Cryptographic Checksums & Manifests** | **YES (CC-BY-4.0)** | Included | SHA-256 hashes for data integrity verification. |
+| **Monetary Policy Shocks** (`shocks.parquet`) | **YES (CC-BY-4.0)** | Included | Public-domain Fed surprises and open EA-MPD central bank shocks. |
+| **Vendor Download Rebuilding Script** | **YES (MIT)** | Included | Python scripts enabling any user with their own institutional vendor license to rebuild return panels locally. |
+| **Derived Cumulative Returns** (`clr_*` in analysis tables and `panel_returns_only.parquet`) | **NO** | **RESTRICTED ONLY** | Continuous log return residuals derived from commercial exchange closing prices. Retained under restricted access pending vendor clearance. |
+
+---
+
+## 5. Vendor Permission Request Template & Current Status
+
+### 5.1 Official Vendor Redistribution Status
+> **STATUS NOTICE**:  
+> **NO VENDOR REDISTRIBUTION PERMISSION HAS BEEN GRANTED.**  
+> To date, neither S&P Dow Jones, STOXX, FTSE Russell, Nikkei Inc., B3, nor any other primary index provider has granted permission to redistribute derived cumulative return panels under an open license.  
+> Derived return tables (`analysis_tier1.parquet`, `analysis_tier2_primary.parquet`, `secondary_holds.parquet`, `sensitivity_macro_revision.parquet`, and `panel_returns_only.parquet`) **must remain strictly restricted** under Zenodo's restricted access interface. No file, publication, or package in this project promises an open release.
+
+### 5.2 Formal Vendor Permission Request Template
+The following formal inquiry template is designated for institutional scholarly communication officers and principal investigators to submit to commercial index licensors:
+
+```text
+SUBJECT: Academic Research Inquiry Regarding Derived Index Return Residuals (MoTrans-15 Benchmark)
+
+TO: Index Licensing & Market Data Redistribution Office
+    [Licensor Name: e.g., S&P Dow Jones Indices / STOXX / FTSE Russell / Nikkei Inc.]
+
+FROM: [Principal Investigator Name & Academic Affiliation]
+      [University Research Department / Scholarly Communications Office]
+
+DATE: [Date]
+
+Dear Licensing Team,
+
+We are conducting an academic, non-commercial empirical finance research project titled "MoTrans-15: Monetary policy surprises and equity-index responses for the largest economies, 2010-2025," targeted for publication in an academic journal (Scientific Data / Nature Portfolio).
+
+As part of scientific reproducibility standards, we wish to clarify your institution's policy regarding the deposit and academic redistribution of mathematical residuals derived from historical daily index closing prices:
+
+1. Scope of Data:
+   - Our research dataset purges all nominal price index levels, closing levels, and absolute index prices (level_local = NULL).
+   - The data contain exclusively short-window cumulative log return differences (e.g., ln(P_{t+W}) - ln(P_{t-1})) across 1 to 60 trading days centered around central bank monetary policy announcements.
+   - It is impossible to reconstruct absolute price levels from these percentage return residuals without possessing an external, authorized baseline price level.
+
+2. Requested Determination:
+   Does your institution consider the non-commercial academic distribution of un-anchored, cumulative log return residuals around discrete event dates to be:
+   (a) Subject to commercial redistribution licensing fees and restrictions; OR
+   (b) Permissible for non-commercial academic research replication under a scholarly research data sharing exemption?
+
+3. Proposed Handling:
+   - Until explicit written confirmation is received, all tables containing derived returns are deposited under Zenodo Restricted Access (requiring individual institutional researcher verification).
+   - No public open distribution (such as CC-BY) will occur without your explicit, written consent.
+
+We would be deeply grateful for your formal guidance on this matter.
+
+Sincerely,
+
+[Principal Investigator Name & Title]
+[Institutional Contact & Research Office Information]
+```

@@ -8,3 +8,4 @@ This release directory contains cumulative log returns (`clr_1`, `clr_1_clean`, 
 1. All returns in `panel_returns_only.parquet` and the analysis tables are derived from closing price levels of licensed financial equity market indices.
 2. Proprietary price index levels (`level_local`) have been stripped from public release bundles.
 3. Due to upstream licensing terms for financial market indices, this dataset **must remain private and not redistributed** until commercial and academic distribution terms are cleared.
+

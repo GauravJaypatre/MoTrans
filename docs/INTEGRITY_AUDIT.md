@@ -41,6 +41,7 @@ The pre-registered v1 blind test evaluated 47 decisions from `data/final/analysi
 - **16 Federal Reserve decisions** (2022-01-26 to 2023-12-13): All fall within the v2.1 `validation` window (2022–2023). **Zero overlap with v2.1 test split.**
 - **16 ECB decisions** (2022-02-03 to 2023-12-14): All fall within the v2.1 `validation` window (2022–2023). **Zero overlap with v2.1 test split.**
 - **14 ECB decisions** (2024-01-25 to 2025-09-11): Fall within the v2.1 `test` window. **These 14 decisions overlap.**
+  The exact 14 decisions evaluated in the v1 blind test are: `ecb_2024-01-25`, `ecb_2024-03-07`, `ecb_2024-04-11`, `ecb_2024-06-06`, `ecb_2024-07-18`, `ecb_2024-09-12`, `ecb_2024-10-17`, `ecb_2024-12-12`, `ecb_2025-01-30`, `ecb_2025-03-06`, `ecb_2025-04-17`, `ecb_2025-06-05`, `ecb_2025-07-24`, `ecb_2025-09-11`.
 - **1 ECB decision** (`ecb_2025-10-30`): Excluded from v2.1 test split due to the 60-day embargo requirement prior to the dataset end date (2025-12-31).
 
 ### 2.3 Comprehensive Decision Accounting in V2.1 Test Split

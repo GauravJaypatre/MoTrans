@@ -1,7 +1,7 @@
 # MoTrans-15: Manuscript Framing & Scientific Strategy
 
 **Date**: 2026-11-04  
-**Target Journals**: *Scientific Data* (Data Descriptor — Primary Target) / *Nature Communications* (Article — Stretch Venue)  
+**Target Journals**: *Scientific Data* (Primary Target) / *Nature Communications* (Stretch only if all TODO-HUMAN items completed; Nature itself unsupported)  
 **Status**: ACTIVE WORKING DRAFT  
 **Guiding Principle**: Uncompromising scientific integrity; zero overclaiming; honest reporting of pre-registered null results.
 
@@ -32,23 +32,47 @@ While point estimates exhibit the negative direction predicted by economic theor
 
 ---
 
-## 3. Title Options
+## 3. Approved Manuscript Title & Scope Boundaries
 
-### Option 1 (Descriptive / Data-Centric — Target: *Scientific Data* — Primary Recommendation)
-> **MoTrans-15: A Harmonized Leakage-Safe Multi-Country Benchmark of Monetary Policy Surprises and Equity Reactions (2010–2025)**  
-> *Framing*: Emphasizes the standardized multi-country data asset, cryptographic freeze, leakage-proof train/test architecture, and multi-horizon equity return panels across six major central banks. (Removes "Central Bank Communication" as statement topic/tone labels did not meet inter-annotator agreement thresholds).
+### Approved Headline Title
+> **MoTrans-15: Monetary policy surprises and equity-index responses for the largest economies, 2010-2025**
 
-### Option 2 (Benchmark & Low-Power Null Framing — Target: *Scientific Data* / Macro-Finance)
-> **A Leakage-Safe Benchmark for Cross-Border Monetary Policy Transmission to Equities with a Low-Power Null Result Across Six Central Banks (Pre-registered, with one documented deviation)**  
-> *Framing*: Centers on methodological transparency, pre-registration integrity with documented specification disclosure, leakage guards, and the honest reporting of a low-power statistical null finding across Fed, ECB, BoE, BoC, RBA, and CBR decisions.
-
-### Option 3 (Methodological & Multiplicity Framing — Alternative Descriptive Target)
-> **Cross-Border Monetary Transmission to Equities: A Leakage-Safe Benchmark, Multiplicity Penalization, and Low-Power Null Findings Across Six Major Central Banks (Pre-registered, with one documented deviation)**  
-> *Framing*: Highlights econometric controls, cluster and permutation inference, instrument noise in daily yield proxies, full accounting of multiplicity in exploratory searches, and transparent disclosure of the forward-window overlap deviation.
+- **Modeling Scope**: Strictly six central banks (Federal Reserve, European Central Bank, Bank of England, Bank of Canada, Reserve Bank of Australia, Central Bank of Russia).
+- **Communication Scope Exclusion**: Zero mention of "central bank communication" in title or primary modeling framing (statement topic/tone labels are quarantined until formal double-annotation and adjudication are executed).
+- **Economy Scope Discipline**: Zero claim of "15 economies" for primary econometric modeling; the panel spans indices in 15 economies, but causal shock transmission models are strictly estimated on the six central banks with verified shock series.
 
 ---
 
-## 4. Multiplicity Summary across Headline Specifications
+## 4. Statistical Power, Corrected MDE & Outlier Distortion
+
+### 4.1 Minimum Detectable Effect (MDE) Table
+All power calculations are generated from `scripts/power_analysis.py` (`outputs/modeling/power_analysis_mde.csv`) at 80% statistical power ($\alpha = 0.05$, two-sided):
+
+| Estimation Design | Decision Count ($N_{\text{decs}}$) | Event Rows ($N_{\text{obs}}$) | Asymptotic Cluster SE | Wild Bootstrap SE | Trim 1% SE | Headline Robust SE | Asymptotic MDE (bp) | Headline Robust MDE (bp) | Outlier Distortion Ratio |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Tier 1 Final Fit** | 239 | 8,832 | 0.003252 | 0.003600 | 0.003274 | **0.003600** | 91.47 bp | **101.27 bp** | +10.7% |
+| **Tier 2 Primary Final Fit** | 110 | 4,111 | 0.001302 | 0.001389 | 0.006107 | **0.006107** | 36.82 bp | **172.65 bp** | +368.9% |
+| **Pooled Final Fit** | 349 | 12,943 | 0.000653 | 0.000713 | 0.004239 | **0.004239** | 18.35 bp | **119.10 bp** | **+549.2%** |
+| **Full Test Split (Sample A)** | 70 | 2,590 | 0.001458 (proj) | 0.001594 (proj) | 0.009466 (proj) | **0.009466** | 41.46 bp | **269.12 bp** | +549.2% |
+| **Pristine Test Split (Sample B)**| 56 | 2,072 | 0.001630 (proj) | 0.001782 (proj) | 0.010583 (proj) | **0.010583** | 46.53 bp | **302.06 bp** | +549.2% |
+
+### 4.2 Outlier Distortion Note on Distorted 18.35 bp Figure
+> **CRITICAL METHODOLOGICAL CORRECTION**:
+> An earlier draft of the power analysis reported an asymptotic pooled MDE of **18.35 bp** per 1 SD shock. 
+> Econometric leverage auditing in Phase 0 definitively showed that this figure is an artifact of severe outlier distortion caused by a single event: `cbr_2014-12-16` (the Central Bank of Russia emergency 650 bp overnight rate hike, shock = +499 bp). 
+> In ordinary least squares, a single massive regressor outlier inflates the sample variance $(X'X)$ in the denominator of $(X'X)^{-1}$, creating a mechanically compressed asymptotic standard error ($SE = 0.000653$). 
+> When the top 1% most influential events are dropped, the true standard error jumps by 6.5x to $0.004239$.
+> Consequently, the **honest, robust headline MDE for the pooled specification is 119.10 bp** (a +549.2% correction). 
+> The earlier 18.35 bp figure must never be quoted without this explicit correction.
+
+### 4.3 Robust Influence Handling Protocol
+To ensure empirical transparency and eliminate any possibility of post-hoc sample pruning:
+1. **Primary Headline Model**: Estimated on the **full, unpruned sample** ($N=349$ for pooled, $N=239$ for Tier 1) using restricted wild cluster bootstrap at `event_id`. Outliers are strictly **not dropped** from the primary specification.
+2. **Pre-Declared Robustness Check**: Alongside every headline result, authors report a pre-declared sensitivity check estimating the exact same model after excluding the single most influential event (`cbr_2014-12-16`).
+
+---
+
+## 5. Multiplicity Summary across Headline Specifications
 
 The table below summarizes headline exploratory specifications across raw inference, wild cluster bootstrap, 5,000-permutation empirical placebos, and full-ledger multiplicity corrections across all 61 model variations logged in `outputs/modeling/ledger.csv`:
 
@@ -62,7 +86,7 @@ The table below summarizes headline exploratory specifications across raw infere
 
 ---
 
-## 5. Journal Fit Assessment
+## 6. Journal Fit Assessment
 
 ### Target A: *Scientific Data* (Descriptor) — Primary Target
 - **Suitability**: **Exceptional (Primary Recommended Venue)**.
@@ -72,16 +96,17 @@ The table below summarizes headline exploratory specifications across raw infere
   - Comprehensive data dictionaries, quality scorecards, and multi-tier provenance levels.
   - Restricted access deposit on Zenodo complying with intellectual property terms for financial market indices.
 
-### Target B: *Nature Communications* (Article) — Stretch Venue
-- **Suitability**: **Stretch Venue (Confirmatory result is a null; high bar for standalone causal claims)**.
+### Target B: *Nature Communications* (Article) — Stretch Venue Only
+- **Suitability**: **Strictly a stretch venue contingent on all TODO-HUMAN deliverables being completed**.
 - **Realistic Editorial Assessment**:
   - The confirmatory result is an empirical null, and a low-power null in a turbulent post-pandemic transition does not definitively establish structural decoupling.
   - The test split contains zero interest rate hikes and zero Fed Tier 1 decisions, limiting generalizability.
-  - While *Nature Communications* values open science and pre-registration, positioning a pure null finding as an article-level contribution without mechanistic micro-foundations is a significant editorial stretch. *Scientific Data* represents the stronger, more defensible primary submission target.
+  - *Nature Communications* requires complete second-source price validation, independent human statement annotations, and vendor permissions that are currently unfinished TODO-HUMAN items.
+  - *Nature* itself is **completely unsupported** by this design and data asset. Positioning this work for *Nature* would constitute gross overclaiming. *Scientific Data* represents the honest, fully defensible primary submission venue.
 
 ---
 
-## 6. Related Literature Integration (`TODO-HUMAN`)
+## 7. Related Literature Integration (`TODO-HUMAN`)
 
 The final manuscript will contextualize these findings within key literature streams:
 1. **High-Frequency Identification & Fed Surprises**:

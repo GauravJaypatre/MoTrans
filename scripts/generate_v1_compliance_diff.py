@@ -24,15 +24,11 @@ if str(ROOT) not in sys.path:
 
 from src.modeling.clustering import fit_ols_clustered
 from src.modeling.uncertainty import wild_cluster_bootstrap, compute_effective_n
+from src.modeling.run_v1_blind_test import load_v1_blind_test_sample
 
 
 def run_compliance_diff() -> pd.DataFrame:
-    parquet_path = ROOT / "data" / "final" / "analysis_tier1.parquet"
-    if not parquet_path.exists():
-        raise FileNotFoundError(f"Missing {parquet_path}")
-
-    df = pd.read_parquet(parquet_path)
-    bt = df[df["split_tag"] == "blind_test"].copy().reset_index(drop=True)
+    bt = load_v1_blind_test_sample()
 
     n_decs = bt["event_id"].nunique()
     assert n_decs == 47, f"Expected 47 decisions, got {n_decs}"

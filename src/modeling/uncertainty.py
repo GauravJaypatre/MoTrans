@@ -109,6 +109,7 @@ def wild_cluster_bootstrap(
 
     # 3. Bootstrap resampling
     boot_t_stats = np.zeros(n_boot)
+    boot_coefs = np.zeros(n_boot)
     for b in range(n_boot):
         # Rademacher weights: +1 or -1 with probability 0.5 per cluster
         weights = rng.choice([-1.0, 1.0], size=G)
@@ -120,15 +121,20 @@ def wild_cluster_bootstrap(
         try:
             boot_model = sm.OLS(Y_boot, X).fit(cov_type="cluster", cov_kwds={"groups": clusters})
             boot_t_stats[b] = boot_model.tvalues[target_idx]
+            boot_coefs[b] = boot_model.params[target_idx]
         except Exception:
             boot_t_stats[b] = 0.0
+            boot_coefs[b] = 0.0
 
     # Two-sided empirical p-value
     p_val_wild = np.mean(np.abs(boot_t_stats) >= np.abs(t_stat_orig))
+    se_wild = float(np.std(boot_coefs, ddof=1))
 
     return {
         "coef": float(coef_orig),
         "t_stat": float(t_stat_orig),
+        "se_analytic": float(ols_unres.bse[target_idx]),
+        "se_wild": se_wild,
         "p_val_analytic": float(ols_unres.pvalues[target_idx]),
         "p_val_wild": float(p_val_wild),
         "n_boot": n_boot,

@@ -100,3 +100,4 @@ def test_no_modeling_script_reads_descriptive_shocks():
                 violations.append(f"{py_file.name} references '{bad}'")
 
     assert not violations, f"Prohibited descriptive shock references found in modeling code: {violations}"
+

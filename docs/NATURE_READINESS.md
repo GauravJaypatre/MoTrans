@@ -56,14 +56,59 @@ To incorporate qualitative central bank statement classifications into a Nature-
 
 ## 4. Independent Verification & Second-Source Plan
 
-### Current Status
-- S&P 500 (`us_sp500`) and Nikkei 225 (`jp_nikkei225`) are verified against independent FRED feeds (`price_source_verified = 1`).
-- The remaining 36 indices rely on primary financial vendor feeds (`price_source_verified = 0`).
+### 4.1 Verification Status Summary
+- **Verified Series (N=2)**:
+  - **S&P 500** (`^GSPC`): PASS vs. FRED (`SP500`). 2,309 common trading days compared; 100.0% within 1 bp; maximum absolute return difference = 11.94 bp.
+  - **Nikkei 225** (`^N225`): PASS with explained timezone convention vs. FRED (`NIKKEI225`). 3,911 trading sessions compared (2010–2025); 3,909 / 3,911 (99.95%) within 1 bp under T+1 alignment; exactly 2 unexplained 2010 calendar sessions differ (`2010-07-20` at 114.4 bp and `2010-09-15` at 233.5 bp).
+- **Shock Series Validity (N=413 overlapping decisions)**:
+  - Fed (N=202): $r = +0.5535, R^2 = 0.3064$ (69.4% non-HFI proxy noise).
+  - ECB (N=211): $r = +0.6115, R^2 = 0.3740$ (62.6% non-HFI proxy noise).
+  - Combined (N=413): $r = +0.5749, R^2 = 0.3305$ (67.0% non-HFI proxy noise).
 
-### Nature Submission Verification Plan
-1. **Second-Source Validation**: For the core headline economies (UK FTSE 100, German DAX, French CAC 40, Canadian S&P/TSX, Australian ASX 200), pull official exchange closing series from secondary archival repositories (e.g., Bloomberg, Refinitiv, or national central bank statistical portals).
-2. **Audit Metrics**: Document return correlation ($r > 0.9999$) and maximum absolute daily return difference ($\Delta_{\text{ret}} < 0.0001$).
-3. **Disclose Residual Single-Source Series**: Explicitly table all indices where second-source archives could not be acquired due to vendor terms.
+### 4.2 Complete Catalog of Remaining 36 Series (`TODO-HUMAN`)
+The remaining 36 equity series in the MoTrans-15 panel rely on primary financial vendor feeds (`price_source_verified = 0`). Due to intellectual property terms and lack of free public archival APIs, second-source verification requires physical institutional terminal downloads (Bloomberg, Refinitiv, or direct exchange market data agreements):
+
+| Ticker | Series Name | Primary Vendor Source | Candidate Second Source | Verification Deliverable Status |
+| :--- | :--- | :--- | :--- | :--- |
+| `000300` | Index 000300 | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `000905` | Index 000905 | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `000951` | Index 000951 | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `091170.KS` | Index 091170.KS | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `1563.T` | Index 1563.T | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `1615.T` | Index 1615.T | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `EXX1.DE` | Index EXX1.DE | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `FTSEMIB.MI` | FTSE MIB | Yahoo Finance / Stooq | Candidate: Borsa Italiana / Euronext Milan | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `IFNC` | Index IFNC | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `IMOEX` | Index IMOEX | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `MCXSM` | Index MCXSM | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `MOEXFN` | Index MOEXFN | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `NIFTY 50` | Index NIFTY 50 | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `NIFTY BANK` | Index NIFTY BANK | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `NIFTY SMALLCAP 100` | Index NIFTY SMALLCAP 100 | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `SMLL` | Index SMLL | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `SXRJ.DE` | Index SXRJ.DE | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^AXFJ` | Index ^AXFJ | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^AXJO` | S&P/ASX 200 | Yahoo Finance / Stooq | Candidate: ASX DataSphere / S&P Dow Jones | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^AXSO` | Index ^AXSO | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^BKX` | Index ^BKX | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^BVSP` | IBOVESPA | Yahoo Finance / Stooq | Candidate: B3 (Brasil, Bolsa, Balcao) market data | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^CXPBX` | Index ^CXPBX | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^FCHI` | CAC 40 | Yahoo Finance / Stooq | Candidate: Euronext Paris / Bloomberg CAC | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^FTSC` | Index ^FTSC | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^FTSE` | FTSE 100 | Yahoo Finance / Stooq | Candidate: FTSE Russell / LSE; Bloomberg UKX | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^GDAXI` | DAX 40 | Yahoo Finance / Stooq | Candidate: Deutsche Boerse / Boerse Frankfurt; Bloomberg DAX | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^GSPTSE` | S&P/TSX Composite | Yahoo Finance / Stooq | Candidate: TMX Group / S&P Dow Jones | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^IBEX` | IBEX 35 | Yahoo Finance / Stooq | Candidate: BME (Bolsas y Mercados Espanoles) | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^KQ11` | KOSDAQ | Yahoo Finance / Stooq | Candidate: Korea Exchange (KRX) Market Data | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^KS11` | KOSPI | Yahoo Finance / Stooq | Candidate: Korea Exchange (KRX) Market Data | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^MDAXI` | MDAX | Yahoo Finance / Stooq | Candidate: Deutsche Boerse direct feed | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^MXX` | IPC Mexico | Yahoo Finance / Stooq | Candidate: Bolsa Mexicana de Valores (BMV) | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^RUT` | Russell 2000 | Yahoo Finance / Stooq | Candidate: LSEG / FTSE Russell direct; Bloomberg RAY | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^SPCDNX` | Index ^SPCDNX | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+| `^SPTTFS` | Index ^SPTTFS | Yahoo Finance / Stooq | Candidate: Bloomberg / Refinitiv / Exchange Direct | `TODO-HUMAN` (Requires institutional terminal/exchange feed) |
+
+> **ACTION REQUIRED (`TODO-HUMAN`)**:  
+> Complete second-source validation by running `scripts/verify_prices_second_source.py` after downloading candidate historical closing feeds from institutional exchange archives.
 
 ---
 
@@ -153,14 +198,27 @@ A quarantined post-window observation buffer (`post_window_2026.parquet`) has be
 
 Based on `scripts/power_analysis.py` (`outputs/modeling/power_analysis_mde.csv`), the Minimum Detectable Effect at 80% statistical power ($\alpha = 0.05$, two-sided) across specifications is:
 
-| Estimation Design | Decision Count ($N_{\text{decs}}$) | Event Rows ($N_{\text{obs}}$) | Cluster SE (5-Day Horizon) | MDE ($\beta$) | MDE (bp per SD Shock) |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Tier 1 Final Fit** | 239 | 8,832 | 0.003252 | 0.009147 | **91.47 bp** |
-| **Tier 2 Primary Final Fit** | 110 | 4,111 | 0.001302 | 0.003682 | **36.82 bp** |
-| **Pooled Final Fit** | 349 | 12,943 | 0.000653 | 0.001835 | **18.35 bp** |
-| **Full Test Split (Sample A)** | 70 | 2,590 | 0.001458 (proj) | 0.004146 | **41.46 bp** |
-| **Pristine Test Split (Sample B)** | 56 | 2,072 | 0.001630 (proj) | 0.004653 | **46.53 bp** |
+| Estimation Design | Decision Count ($N_{\text{decs}}$) | Event Rows ($N_{\text{obs}}$) | Asymptotic Cluster SE | Wild Bootstrap SE | Trim 1% SE | Headline Robust SE | Asymptotic MDE (bp) | Headline Robust MDE (bp) | Outlier Distortion Ratio |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Tier 1 Final Fit** | 239 | 8,832 | 0.003252 | 0.003600 | 0.003274 | **0.003600** | 91.47 bp | **101.27 bp** | +10.7% |
+| **Tier 2 Primary Final Fit** | 110 | 4,111 | 0.001302 | 0.001389 | 0.006107 | **0.006107** | 36.82 bp | **172.65 bp** | +368.9% |
+| **Pooled Final Fit** | 349 | 12,943 | 0.000653 | 0.000713 | 0.004239 | **0.004239** | 18.35 bp | **119.10 bp** | **+549.2%** |
+| **Full Test Split (Sample A)** | 70 | 2,590 | 0.001458 (proj) | 0.001594 (proj) | 0.009466 (proj) | **0.009466** | 41.46 bp | **269.12 bp** | +549.2% |
+| **Pristine Test Split (Sample B)**| 56 | 2,072 | 0.001630 (proj) | 0.001782 (proj) | 0.010583 (proj) | **0.010583** | 46.53 bp | **302.06 bp** | +549.2% |
 
-**Interpretation**: In clean Tier 1 intraday shocks, statistical power is constrained; the design can only reliably detect large effects ($\ge 91$ bp). In the Pooled sample, power increases substantially, allowing detection of effects $\ge 18$ bp per 1 standard deviation policy surprise.
+### Outlier Distortion Note on Distorted 18.35 bp Figure
+> **CRITICAL METHODOLOGICAL CORRECTION**:
+> An earlier draft of the power analysis reported an asymptotic pooled MDE of **18.35 bp** per 1 SD shock. 
+> Econometric leverage auditing in Phase 0 definitively showed that this figure is an artifact of severe outlier distortion caused by a single extreme event: `cbr_2014-12-16` (the Central Bank of Russia emergency 650 bp overnight rate hike, shock = +499 bp). 
+> In ordinary least squares, a single massive regressor outlier inflates the sample variance $(X'X)$ in the denominator of $(X'X)^{-1}$, creating a mechanically compressed asymptotic standard error ($SE = 0.000653$). 
+> When the top 1% most influential events are dropped, the true standard error jumps by 6.5x to $0.004239$.
+> Consequently, the **honest, robust headline MDE for the pooled specification is 119.10 bp** (a +549.2% correction). 
+> The earlier 18.35 bp figure must never be quoted without this explicit correction.
 
+### Robust Influence Handling Protocol
+To ensure empirical transparency and eliminate any possibility of post-hoc sample pruning:
+1. **Primary Headline Model**: The confirmatory and headline exploratory models are estimated on the **full, unpruned sample** ($N=349$ for pooled, $N=239$ for Tier 1) using restricted wild cluster bootstrap at `event_id`. Outliers are strictly **not dropped** from the primary specification.
+2. **Pre-Declared Robustness Check**: Alongside every headline result, authors report a pre-declared labelled sensitivity check estimating the exact same model after excluding the single most influential event (`cbr_2014-12-16`). This makes the sensitivity transparent without tampering with primary sample definitions.
+
+**Interpretation**: In clean Tier 1 intraday shocks, statistical power is constrained; the design can reliably detect effects $\ge 101.27$ bp. In the Pooled sample, robust headline MDE is $119.10$ bp. Power in the held-out test split is limited (MDE $pprox 269 - 302$ bp), meaning the held-out test split serves primarily as a qualitative sanity check on sign and magnitude consistency rather than high-powered statistical rejection.
 
