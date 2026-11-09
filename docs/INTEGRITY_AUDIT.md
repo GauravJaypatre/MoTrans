@@ -266,6 +266,26 @@ To diagnose the econometric origin of this divergence, Leave-One-Event-Out (LOEO
 | **Drop Top 5% Influential** | 18 | 331 | 12,269 | $+0.001410$ | $0.002711$ | 0.520 | **0.6030** | **0.6126** |
 
 #### Econometric Resolution
-1. **Single-Event Dominance**: The entire positive point estimate of the Pooled model is driven by a single event: `cbr_2014-12-16` (the Russian Central Bank's emergency 650 bp overnight interest rate hike during the ruble collapse), which exhibits a shock of $+499$ bp and an extreme DFBETA of $3.867$.
+1. **Single-Event Dominance**: The entire positive point estimate of the Pooled model is driven by a single event: `cbr_2014-12-16` (the Central Bank of Russia emergency 650 bp overnight interest rate hike during the ruble collapse, policy rate decision `size_bp = 650.0`, instrumented by a sovereign 1-year yield proxy shock `shock_raw_bp = 499.0`, `shock_tier = 2`), which exhibits an extreme DFBETA of $3.867$.
 2. **Breakdown of Asymptotic Approximation**: When omitting this single outlier event, the point estimate collapses from $+0.001924$ to $-0.000601$. When dropping the top 1% most influential events (4 decisions), the asymptotic cluster p-value collapses from $p=0.0032$ to $p=0.9747$.
 3. **Validity of Wild Cluster Bootstrap**: The restricted wild cluster bootstrap, which is invariant to this extreme leverage because it resamples residuals at the cluster level under the null hypothesis, correctly identified that the data do not support rejecting the null ($p_{\text{wild}} = 0.5686$). This resolves the inference disagreement completely: the asymptotic cluster SE is invalid due to extreme outlier leverage, and the wild bootstrap correctly reveals the true empirical null.
+
+---
+
+### 6.9 Reconciliations Before Freeze: CBR 2014-12-16 & Statistical Power MDE Reporting
+
+#### A. CBR 2014-12-16 Explicit Accounting
+An econometric leverage audit identified `cbr_2014-12-16` as the single highest-leverage event across the 16-year panel. The exact database fields from `data/v2_2/analysis_tier2_primary.parquet` and `data/final/policy_decisions.csv` are:
+- **Decision ID / Event ID**: `cbr_2014-12-16`
+- **Policy Decision Action (`size_bp`)**: **650.0 bp** (The Bank of Russia raised the benchmark key rate from 10.50% to 17.00% at an unscheduled 1:00 AM meeting on December 16, 2014).
+- **Shock Instrument (`shock_raw_bp`)**: **+499.0 bp** (1-day sovereign 1-year Russian government bond yield change, source `1Y yield change, RU (bp)`).
+- **Shock Tier (`shock_tier`)**: **2** (`yield_proxy`, Tier 2 proxy action).
+- **Clarification**: `cbr_2014-12-16` is a **650 bp policy rate hike** instrumented by a **+499 bp sovereign yield proxy shock**. Any earlier references describing it as a "499 bp hike" or "650 bp shock" are superseded by this explicit distinction.
+
+#### B. Statistical Power & MDE Reporting Reconciliation
+The Minimum Detectable Effect (MDE) for the pooled model is reworded to ensure econometric precision:
+- **Untrimmed Asymptotic MDE**: **18.35 bp** per 1 SD shock ($SE = 0.000653$).
+- **Untrimmed Wild Bootstrap MDE**: **20.03 bp** per 1 SD shock ($SE = 0.000713$).
+- **Trimmed Top 1% MDE**: **119.10 bp** per 1 SD shock ($SE = 0.004239$).
+
+**Reporting Standard**: The 119.10 bp figure is designated as the **"conservative headline MDE after trimming the top 1% influential events"**, reported side by side with the untrimmed asymptotic (18.35 bp) and wild bootstrap (20.03 bp) MDEs. It is framed as an influence sensitivity check rather than an "error correction" or "+549% distortion": ordinary least squares denominator variance $(X'X)$ is compressed by the single extreme event `cbr_2014-12-16`, and trimming the top 1% restores an honest, conservative benchmark for statistical power.

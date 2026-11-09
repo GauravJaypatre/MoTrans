@@ -45,36 +45,35 @@ While point estimates exhibit the negative direction predicted by economic theor
 
 ## 4. Statistical Power, Corrected MDE & Outlier Distortion
 
-### 4.1 Minimum Detectable Effect (MDE) Table
+### 4.1 Statistical Power & Minimum Detectable Effect (MDE) Table
 All power calculations are generated from `scripts/power_analysis.py` (`outputs/modeling/power_analysis_mde.csv`) at 80% statistical power ($\alpha = 0.05$, two-sided):
 
-| Estimation Design | Decision Count ($N_{\text{decs}}$) | Event Rows ($N_{\text{obs}}$) | Asymptotic Cluster SE | Wild Bootstrap SE | Trim 1% SE | Headline Robust SE | Asymptotic MDE (bp) | Headline Robust MDE (bp) | Outlier Distortion Ratio |
+| Estimation Design | Decision Count ($N_{\text{decs}}$) | Event Rows ($N_{\text{obs}}$) | Untrimmed Asymptotic Cluster SE | Untrimmed Wild Bootstrap SE | Trimmed Top 1% SE | Headline Robust SE | Untrimmed Asymptotic MDE (bp) | Untrimmed Wild Bootstrap MDE (bp) | Conservative Headline MDE (bp) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Tier 1 Final Fit** | 239 | 8,832 | 0.003252 | 0.003600 | 0.003274 | **0.003600** | 91.47 bp | **101.27 bp** | +10.7% |
-| **Tier 2 Primary Final Fit** | 110 | 4,111 | 0.001302 | 0.001389 | 0.006107 | **0.006107** | 36.82 bp | **172.65 bp** | +368.9% |
-| **Pooled Final Fit** | 349 | 12,943 | 0.000653 | 0.000713 | 0.004239 | **0.004239** | 18.35 bp | **119.10 bp** | **+549.2%** |
-| **Full Test Split (Sample A)** | 70 | 2,590 | 0.001458 (proj) | 0.001594 (proj) | 0.009466 (proj) | **0.009466** | 41.46 bp | **269.12 bp** | +549.2% |
-| **Pristine Test Split (Sample B)**| 56 | 2,072 | 0.001630 (proj) | 0.001782 (proj) | 0.010583 (proj) | **0.010583** | 46.53 bp | **302.06 bp** | +549.2% |
+| **Tier 1 Final Fit** | 239 | 8,832 | 0.003252 | 0.003600 | 0.003274 | **0.003600** | 91.47 bp | 101.27 bp | **101.27 bp** |
+| **Tier 2 Primary Final Fit** | 110 | 4,111 | 0.001302 | 0.001389 | 0.006107 | **0.006107** | 36.82 bp | 39.28 bp | **172.65 bp** |
+| **Pooled Final Fit** | 349 | 12,943 | 0.000653 | 0.000713 | 0.004239 | **0.004239** | 18.35 bp | 20.03 bp | **119.10 bp** |
+| **Full Test Split (Sample A)** | 70 | 2,590 | 0.001458 (proj) | 0.001594 (proj) | 0.009466 (proj) | **0.009466** | 41.46 bp | 45.33 bp | **269.12 bp** |
+| **Pristine Test Split (Sample B)**| 56 | 2,072 | 0.001630 (proj) | 0.001782 (proj) | 0.010583 (proj) | **0.010583** | 46.53 bp | 50.87 bp | **302.06 bp** |
 
-### 4.2 Outlier Distortion Note on Distorted 18.35 bp Figure
-> **CRITICAL METHODOLOGICAL CORRECTION**:
-> An earlier draft of the power analysis reported an asymptotic pooled MDE of **18.35 bp** per 1 SD shock. 
-> Econometric leverage auditing in Phase 0 definitively showed that this figure is an artifact of severe outlier distortion caused by a single event: `cbr_2014-12-16` (the Central Bank of Russia emergency 650 bp overnight rate hike, shock = +499 bp). 
-> In ordinary least squares, a single massive regressor outlier inflates the sample variance $(X'X)$ in the denominator of $(X'X)^{-1}$, creating a mechanically compressed asymptotic standard error ($SE = 0.000653$). 
-> When the top 1% most influential events are dropped, the true standard error jumps by 6.5x to $0.004239$.
-> Consequently, the **honest, robust headline MDE for the pooled specification is 119.10 bp** (a +549.2% correction). 
-> The earlier 18.35 bp figure must never be quoted without this explicit correction.
+### 4.2 Methodological Note on Pooled MDE and Influence Sensitivity
+> **METHODOLOGICAL NOTE ON POOLED MDE AND INFLUENCE SENSITIVITY**:
+> An earlier draft of the power analysis reported an untrimmed asymptotic pooled MDE of **18.35 bp** per 1 SD shock ($SE = 0.000653$). 
+> Econometric leverage auditing in Phase 0 demonstrated that this asymptotic standard error is heavily compressed by a single high-leverage event: `cbr_2014-12-16` (the Central Bank of Russia emergency 650 bp overnight rate hike, where policy decision `size_bp = 650.0`, sovereign 1-year yield proxy shock `shock_raw_bp = 499.0`, and `shock_tier = 2`).
+> In ordinary least squares, a single massive regressor outlier inflates the sample variance $(X'X)$ in the denominator of $(X'X)^{-1}$, creating a mechanically compressed asymptotic standard error.
+> When trimming the top 1% most influential events, the standard error is $0.004239$, yielding a **conservative headline MDE of 119.10 bp**.
+> The pooled MDE of 119.10 bp is reported as the **"conservative headline MDE after trimming the top 1% influential events"**, presented side by side with the untrimmed asymptotic (18.35 bp) and wild bootstrap (20.03 bp) MDEs, rather than as an "error correction" or "+549% distortion". Both untrimmed and trimmed figures are reported together to ensure complete methodological transparency.
 
 ### 4.3 Robust Influence Handling Protocol
 To ensure empirical transparency and eliminate any possibility of post-hoc sample pruning:
 1. **Primary Headline Model**: Estimated on the **full, unpruned sample** ($N=349$ for pooled, $N=239$ for Tier 1) using restricted wild cluster bootstrap at `event_id`. Outliers are strictly **not dropped** from the primary specification.
-2. **Pre-Declared Robustness Check**: Alongside every headline result, authors report a pre-declared sensitivity check estimating the exact same model after excluding the single most influential event (`cbr_2014-12-16`).
+2. **Pre-Declared Robustness Check**: Alongside every headline result, authors report a pre-declared sensitivity check estimating the exact same model after excluding the single most influential event (`cbr_2014-12-16`, policy hike `size_bp = 650.0`, sovereign yield proxy shock `shock_raw_bp = 499.0`, `shock_tier = 2`).
 
 ---
 
 ## 5. Multiplicity Summary across Headline Specifications
 
-The table below summarizes headline exploratory specifications across raw inference, wild cluster bootstrap, 5,000-permutation empirical placebos, and full-ledger multiplicity corrections across all 61 model variations logged in `outputs/modeling/ledger.csv`:
+The table below summarizes headline exploratory specifications across raw inference, wild cluster bootstrap, 5,000-permutation empirical placebos, and full-ledger multiplicity corrections across all 123 model variations logged in `outputs/modeling/ledger.csv`:
 
 | Headline Specification | Coef ($\beta$) | Cluster SE | Raw $p$ | Wild Boot $p$ | 5,000-Perm Empirical $p$ | Holm $p$ (Full Ledger) | BH $q$ (Full Ledger) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
